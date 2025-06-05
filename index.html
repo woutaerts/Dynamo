@@ -1,15 +1,178 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Dynamo Beirs</title>
-    <link rel="stylesheet" href="style.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dynamo Beirs - Official Homepage</title>
+    <link rel="stylesheet" href="public/css/home.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 </head>
 <body>
-<h1>My Team Stats</h1>
-<div id="stats"></div>
+<header>
+    <nav class="container">
+        <div class="logo">
+            <img src="public/img/logos/Transparant%20Background.png" alt="Dynamo Beirs Logo" class="club-logo">
+        </div>
+        <ul class="nav-links">
+            <li><a href="#home">Home</a></li>
+            <li><a href="#stats">Statistics</a></li>
+            <li><a href="#players">Players</a></li>
+            <li><a href="#matches">Matches</a></li>
+        </ul>
+    </nav>
+</header>
 
-<script src="https://cdn.jsdelivr.net/npm/tabletop@1.5.4/tabletop.min.js"></script>
-<script src="script.js"></script>
+<main>
+    <section class="hero" id="home">
+        <div class="container">
+            <div class="hero-content">
+                <h1>Dynamo Beirs</h1>
+                <p>Dominating the field with passion, precision, and power since 2022</p>
+                <a href="#stats" class="cta-button">View Statistics</a>
+            </div>
+        </div>
+    </section>
+
+    <section class="stats-section" id="stats">
+        <div class="container">
+            <h2 class="section-title">Season Statistics</h2>
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-number" data-target="28">0</div>
+                    <div class="stat-label">Matches Played</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" data-target="21">0</div>
+                    <div class="stat-label">Wins</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" data-target="4">0</div>
+                    <div class="stat-label">Draws</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" data-target="3">0</div>
+                    <div class="stat-label">Losses</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" data-target="67">0</div>
+                    <div class="stat-label">Goals Scored</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" data-target="23">0</div>
+                    <div class="stat-label">Goals Conceded</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="player-stats" id="players">
+        <div class="container">
+            <h2 class="section-title">Top Players</h2>
+            <div class="player-grid">
+                <div class="player-card">
+                    <div class="player-name">Marcus Rodriguez</div>
+                    <div class="player-position">Forward</div>
+                    <div class="player-stats-list">
+                        <div class="player-stat">
+                            <div class="player-stat-number">23</div>
+                            <div class="player-stat-label">Goals</div>
+                        </div>
+                        <div class="player-stat">
+                            <div class="player-stat-number">8</div>
+                            <div class="player-stat-label">Assists</div>
+                        </div>
+                        <div class="player-stat">
+                            <div class="player-stat-number">26</div>
+                            <div class="player-stat-label">Matches</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="player-card">
+                    <div class="player-name">James Mitchell</div>
+                    <div class="player-position">Midfielder</div>
+                    <div class="player-stats-list">
+                        <div class="player-stat">
+                            <div class="player-stat-number">7</div>
+                            <div class="player-stat-label">Goals</div>
+                        </div>
+                        <div class="player-stat">
+                            <div class="player-stat-number">15</div>
+                            <div class="player-stat-label">Assists</div>
+                        </div>
+                        <div class="player-stat">
+                            <div class="player-stat-number">28</div>
+                            <div class="player-stat-label">Matches</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="player-card">
+                    <div class="player-name">David Chen</div>
+                    <div class="player-position">Goalkeeper</div>
+                    <div class="player-stats-list">
+                        <div class="player-stat">
+                            <div class="player-stat-number">15</div>
+                            <div class="player-stat-label">Clean Sheets</div>
+                        </div>
+                        <div class="player-stat">
+                            <div class="player-stat-number">89</div>
+                            <div class="player-stat-label">Saves</div>
+                        </div>
+                        <div class="player-stat">
+                            <div class="player-stat-number">25</div>
+                            <div class="player-stat-label">Matches</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="matches-section" id="matches">
+        <div class="container">
+            <h2 class="section-title">Recent Matches</h2>
+            <div class="matches-grid">
+                <div class="match-card">
+                    <div class="match-teams">Eagles FC vs Red Hawks FC</div>
+                    <div class="match-score">1-2</div>
+                    <div class="match-date">May 21, 2025</div>
+                </div>
+                <div class="match-card">
+                    <div class="match-teams">Eagles FC vs Red Hawks FC</div>
+                    <div class="match-score">1-2</div>
+                    <div class="match-date">May 21, 2025</div>
+                </div>
+                <div class="match-card">
+                    <div class="match-teams">Red Hawks FC vs City Lions</div>
+                    <div class="match-score">4-0</div>
+                    <div class="match-date">May 14, 2025</div>
+                </div>
+                <div class="match-card">
+                    <div class="match-teams">Storm FC vs Red Hawks FC</div>
+                    <div class="match-score">0-1</div>
+                    <div class="match-date">May 7, 2025</div>
+                </div>
+            </div>
+        </div>
+    </section>
+</main>
+
+<footer class="footer">
+    <div class="footer-content">
+        <a href="https://facebook.com/yourpage" target="_blank" aria-label="Facebook" class="footer-icon left">
+            <i class="fab fa-facebook-f"></i>
+        </a>
+
+        <a href="#" class="footer-logo">
+            <img src="public/img/logos/Red%20bear.png" alt="Logo">
+        </a>
+
+        <a href="https://instagram.com/yourpage" target="_blank" aria-label="Instagram" class="footer-icon right">
+            <i class="fab fa-instagram"></i>
+        </a>
+    </div>
+</footer>
+
+
+<script src="public/js/home.js"></script>
 </body>
 </html>
