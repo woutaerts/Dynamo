@@ -55,18 +55,6 @@ document.querySelectorAll('.stats-section, .player-card, .match-card').forEach(e
     observer.observe(el);
 });
 
-// Header scroll effect
-window.addEventListener('scroll', () => {
-    const header = document.querySelector('header');
-    if (window.scrollY > 100) {
-        header.style.background = 'rgba(255, 255, 255, 0.98)';
-        header.style.boxShadow = '0 4px 30px rgba(185, 10, 10, 0.15)';
-    } else {
-        header.style.background = 'rgba(255, 255, 255, 0.95)';
-        header.style.boxShadow = '0 4px 20px rgba(185, 10, 10, 0.1)';
-    }
-});
-
 // Add loading animation
 window.addEventListener('load', () => {
     document.body.style.opacity = '0';
@@ -74,15 +62,6 @@ window.addEventListener('load', () => {
         document.body.style.transition = 'opacity 0.5s ease';
         document.body.style.opacity = '1';
     }, 100);
-});
-
-// Parallax effect for hero section
-window.addEventListener('scroll', () => {
-    const scrolled = window.pageYOffset;
-    const hero = document.querySelector('.hero');
-    if (hero) {
-        hero.style.transform = `translateY(${scrolled * 0.5}px)`;
-    }
 });
 
 // Dynamic stat updates (simulate real-time updates)
@@ -136,43 +115,6 @@ function toggleMobileMenu() {
     }
 }
 
-// Performance optimization - debounce scroll events
-function debounce(func, wait) {
-    let timeout;
-    return function executedFunction(...args) {
-        const later = () => {
-            clearTimeout(timeout);
-            func(...args);
-        };
-        clearTimeout(timeout);
-        timeout = setTimeout(later, wait);
-    };
-}
-
-// Apply debounce to scroll events
-const debouncedScrollHandler = debounce(() => {
-    const header = document.querySelector('header');
-    const scrolled = window.pageYOffset;
-    const hero = document.querySelector('.hero');
-
-    // Header effect
-    if (scrolled > 100) {
-        header.style.background = 'rgba(255, 255, 255, 0.98)';
-        header.style.boxShadow = '0 4px 30px rgba(185, 10, 10, 0.15)';
-    } else {
-        header.style.background = 'rgba(255, 255, 255, 0.95)';
-        header.style.boxShadow = '0 4px 20px rgba(185, 10, 10, 0.1)';
-    }
-
-    // Parallax effect
-    if (hero) {
-        hero.style.transform = `translateY(${scrolled * 0.5}px)`;
-    }
-}, 10);
-
-// Replace scroll event listeners with debounced version
-window.addEventListener('scroll', debouncedScrollHandler);
-
 // Initialize page
 document.addEventListener('DOMContentLoaded', () => {
     console.log('Red Hawks FC Homepage loaded successfully!');
@@ -181,5 +123,64 @@ document.addEventListener('DOMContentLoaded', () => {
     const cards = document.querySelectorAll('.stat-card, .player-card, .match-card');
     cards.forEach((card, index) => {
         card.style.animationDelay = `${index * 0.1}s`;
+    });
+});
+
+// Modern Header JavaScript
+document.addEventListener('DOMContentLoaded', function() {
+    const header = document.querySelector('.modern-header');
+    const mobileToggle = document.querySelector('.mobile-menu-toggle');
+    const navLinks = document.querySelector('.nav-links');
+    const navLinkItems = document.querySelectorAll('.nav-link');
+
+    // Scroll effect for header
+    window.addEventListener('scroll', function() {
+        if (window.scrollY > 50) {
+            header.classList.add('scrolled');
+        } else {
+            header.classList.remove('scrolled');
+        }
+    });
+
+    // Mobile menu toggle
+    mobileToggle.addEventListener('click', function() {
+        mobileToggle.classList.toggle('active');
+        navLinks.classList.toggle('active');
+    });
+
+    // Close mobile menu when clicking on a link
+    navLinkItems.forEach(link => {
+        link.addEventListener('click', function() {
+            mobileToggle.classList.remove('active');
+            navLinks.classList.remove('active');
+
+            // Update active state
+            navLinkItems.forEach(l => l.classList.remove('active'));
+            this.classList.add('active');
+        });
+    });
+
+    // Close mobile menu when clicking outside
+    document.addEventListener('click', function(e) {
+        if (!header.contains(e.target)) {
+            mobileToggle.classList.remove('active');
+            navLinks.classList.remove('active');
+        }
+    });
+
+    // Smooth scroll for navigation links
+    navLinkItems.forEach(link => {
+        link.addEventListener('click', function(e) {
+            e.preventDefault();
+            const targetId = this.getAttribute('href');
+            const targetSection = document.querySelector(targetId);
+
+            if (targetSection) {
+                targetSection.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'start'
+                });
+            }
+        });
     });
 });

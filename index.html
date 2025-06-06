@@ -5,20 +5,28 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dynamo Beirs - Official Homepage</title>
     <link rel="stylesheet" href="public/css/home.css">
+    <link rel="stylesheet" href="public/css/header.css">
+    <link rel="stylesheet" href="public/css/footer.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 </head>
 <body>
-<header>
-    <nav class="container">
-        <div class="logo">
+<header class="modern-header">
+    <nav class="nav-container">
+        <div class="logo-section">
             <img src="public/img/logos/Transparent%20Background.png" alt="Dynamo Beirs Logo" class="club-logo">
+            <span class="club-name">Dynamo Beirs</span>
         </div>
         <ul class="nav-links">
-            <li><a href="#home">Home</a></li>
-            <li><a href="#stats">Statistics</a></li>
-            <li><a href="#players">Players</a></li>
-            <li><a href="#matches">Matches</a></li>
+            <li><a href="#home" class="nav-link active">Home</a></li>
+            <li><a href="#stats" class="nav-link">Statistics</a></li>
+            <li><a href="#players" class="nav-link">Players</a></li>
+            <li><a href="#matches" class="nav-link">Matches</a></li>
         </ul>
+        <div class="mobile-menu-toggle">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
     </nav>
 </header>
 
@@ -156,22 +164,30 @@
     </section>
 </main>
 
-<footer class="footer">
+<footer class="modern-footer">
     <div class="footer-content">
-        <a href="https://facebook.com/yourpage" target="_blank" aria-label="Facebook" class="footer-icon left">
-            <i class="fab fa-facebook-f"></i>
-        </a>
+        <div class="footer-top">
+            <div class="footer-brand">
+                <h3 class="footer-title">Dynamo Beirs</h3>
+                <img src="public/img/logos/White%20outlined%20logo.png" alt="Dynamo Beirs Logo" class="footer-logo">
+            </div>
+            <div class="footer-social">
+                <a href="https://facebook.com/yourpage" target="_blank" aria-label="Facebook" class="social-icon">
+                    <i class="fab fa-facebook-f"></i>
+                </a>
+                <a href="https://instagram.com/yourpage" target="_blank" aria-label="Instagram" class="social-icon">
+                    <i class="fab fa-instagram"></i>
+                </a>
+            </div>
+        </div>
 
-        <a href="#" class="footer-logo">
-            <img src="public/img/logos/Red%20bear.png" alt="Logo">
-        </a>
-
-        <a href="https://instagram.com/yourpage" target="_blank" aria-label="Instagram" class="footer-icon right">
-            <i class="fab fa-instagram"></i>
-        </a>
+        <div class="footer-bottom">
+            <div class="footer-copyright">
+                <p>&copy; 2025 Dynamo Beirs. All rights reserved.</p>
+            </div>
+        </div>
     </div>
 </footer>
-
 
 <script src="public/js/home.js"></script>
 </body>
