@@ -1,0 +1,129 @@
+.page-hero {
+    padding: 5rem 2rem;
+    text-align: center;
+    background: linear-gradient(135deg, #f8f9fa 0%, rgba(185, 10, 10, 0.05) 100%);
+}
+
+.page-hero h1 {
+    font-size: 3rem;
+    color: #B90A0A;
+    margin-bottom: 1rem;
+}
+
+.page-hero p {
+    color: #555;
+    font-size: 1.2rem;
+}
+
+/* Upcoming & Recent Matches */
+.upcoming-matches,
+.matches-section {
+    padding: 4rem 0;
+}
+
+.matches-grid {
+    display: grid;
+    gap: 1.5rem;
+}
+
+.match-card {
+    background: white;
+    padding: 1.5rem;
+    border-left: 5px solid transparent;
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+    transition: 0.3s ease;
+}
+
+.match-card.upcoming {
+    border-left-color: #3498db;
+}
+
+.match-card.result.win {
+    border-left-color: #2ecc71;
+}
+
+.match-card.result.draw {
+    border-left-color: #f1c40f;
+}
+
+.match-card.result.loss {
+    border-left-color: #e74c3c;
+}
+
+.match-teams {
+    font-weight: bold;
+    font-size: 1.1rem;
+}
+
+.match-score {
+    color: #B90A0A;
+    font-weight: 900;
+    font-size: 1.5rem;
+}
+
+.match-date, .match-time, .match-venue {
+    color: #666;
+    font-size: 0.9rem;
+}
+
+/* Match Details */
+.match-details {
+    margin-top: 0.5rem;
+    color: #444;
+    font-size: 0.95rem;
+}
+
+.goalscorers i {
+    margin-right: 0.5rem;
+    color: #B90A0A;
+}
+
+/* Match Performance */
+.match-statistics {
+    background: #f8f9fa;
+    padding: 4rem 0;
+}
+
+.performance-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 2rem;
+}
+
+.performance-card {
+    background: white;
+    padding: 2rem;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+    text-align: center;
+}
+
+.record-item {
+    display: flex;
+    justify-content: space-between;
+    margin: 0.5rem 0;
+}
+
+.form-results {
+    display: flex;
+    gap: 0.5rem;
+    justify-content: center;
+    margin: 1rem 0;
+}
+
+.form-result {
+    padding: 0.4rem 0.7rem;
+    border-radius: 5px;
+    font-weight: bold;
+    color: white;
+}
+
+.form-result.win { background: #2ecc71; }
+.form-result.draw { background: #f1c40f; }
+.form-result.loss { background: #e74c3c; }
+
+.form-description {
+    font-size: 0.85rem;
+    color: #555;
+}
