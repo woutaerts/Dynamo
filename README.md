@@ -1,4 +1,4 @@
-# ⚽ Dynamo Beirs – Official Club Website
+# Dynamo Beirs – Official Club Website
 
 Welcome to the official website of **Dynamo Beirs**, a fictional football club showcasing modern design, team stats, match history, and player information in a responsive, modular structure.
 
