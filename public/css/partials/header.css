@@ -16,7 +16,7 @@ body {
    MAIN HEADER CONTAINER
    ============================================== */
 
-.modern-header {
+.header {
     position: fixed;
     top: 0;
     left: 0;
@@ -40,7 +40,7 @@ body {
 }
 
 /* Enhanced Glassmorphism Overlay */
-.modern-header::before {
+.header::before {
     content: '';
     position: absolute;
     top: 0;
@@ -56,7 +56,7 @@ body {
 }
 
 /* Scrolled State Enhancement */
-.modern-header.scrolled {
+.header.scrolled {
     background: rgba(255, 255, 255, 0.92);
     backdrop-filter: blur(30px);
     -webkit-backdrop-filter: blur(30px);
@@ -370,7 +370,7 @@ body {
    ============================================== */
 
 @media (prefers-reduced-motion: reduce) {
-    .modern-header,
+    .header,
     .nav-link,
     .club-logo,
     .mobile-menu-toggle span {
@@ -394,7 +394,7 @@ body {
    PERFORMANCE OPTIMIZATIONS
    ============================================== */
 
-.modern-header {
+.header {
     will-change: background, box-shadow;
 }
 

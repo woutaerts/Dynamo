@@ -1,6 +1,6 @@
 // Header behavior
 document.addEventListener('DOMContentLoaded', function() {
-    const header = document.querySelector('.modern-header');
+    const header = document.querySelector('.header');
     const mobileToggle = document.querySelector('.mobile-menu-toggle');
     const navLinks = document.querySelector('.nav-links');
     const navLinkItems = document.querySelectorAll('.nav-link');
@@ -30,3 +30,11 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 });
+
+// Retrieve and display the header in the designated placeholder on all pages
+
+fetch("../../pages/partials/header.html")
+    .then(res => res.text())
+    .then(html => {
+        document.getElementById('header-placeholder').innerHTML = html;
+    });
