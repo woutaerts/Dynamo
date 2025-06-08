@@ -28,3 +28,19 @@ document.addEventListener('DOMContentLoaded', () => {
         document.getElementById("seconds").textContent = seconds;
     }, 1000);
 });
+
+document.querySelectorAll('.timeline-item').forEach(item => {
+    item.addEventListener('click', () => {
+        document.getElementById('matchCenterModal').style.display = 'flex';
+    });
+});
+
+document.querySelector('.close-modal').addEventListener('click', () => {
+    document.getElementById('matchCenterModal').style.display = 'none';
+});
+
+document.getElementById('matchCenterModal').addEventListener('click', (e) => {
+    if (e.target === e.currentTarget) {
+        e.currentTarget.style.display = 'none';
+    }
+});
