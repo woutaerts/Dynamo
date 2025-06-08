@@ -4,112 +4,50 @@
     background: linear-gradient(135deg, #f8f9fa 0%, rgba(185, 10, 10, 0.05) 100%);
 }
 
-.page-hero h1 {
-    font-size: 3rem;
+.section-title {
+    text-align: center;
+    font-size: 2.5rem;
+    margin-bottom: 2rem;
     color: #B90A0A;
-    margin-bottom: 1rem;
 }
 
-.page-hero p {
-    color: #555;
-    font-size: 1.2rem;
+/* Countdown */
+.countdown-section {
+    background: #fff8f8;
+    padding: 3rem 1rem;
 }
 
-/* Upcoming & Recent Matches */
-.upcoming-matches,
-.matches-section {
-    padding: 4rem 0;
-}
-
-.matches-grid {
-    display: grid;
-    gap: 1.5rem;
-}
-
-.match-card {
-    background: white;
-    padding: 1.5rem;
-    border-left: 5px solid transparent;
-    border-radius: 12px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
-    transition: 0.3s ease;
-}
-
-.match-card.upcoming {
-    border-left-color: #3498db;
-}
-
-.match-card.result.win {
-    border-left-color: #2ecc71;
-}
-
-.match-card.result.draw {
-    border-left-color: #f1c40f;
-}
-
-.match-card.result.loss {
-    border-left-color: #e74c3c;
-}
-
-.match-teams {
-    font-weight: bold;
-    font-size: 1.1rem;
-}
-
-.match-score {
-    color: #B90A0A;
-    font-weight: 900;
+.countdown {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
     font-size: 1.5rem;
 }
 
-.match-date, .match-time, .match-venue {
-    color: #666;
-    font-size: 0.9rem;
-}
-
-/* Match Details */
-.match-details {
-    margin-top: 0.5rem;
-    color: #444;
-    font-size: 0.95rem;
-}
-
-.goalscorers i {
-    margin-right: 0.5rem;
-    color: #B90A0A;
-}
-
-/* Match Performance */
-.match-statistics {
-    background: #f8f9fa;
-    padding: 4rem 0;
-}
-
-.performance-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-    gap: 2rem;
-}
-
-.performance-card {
+.countdown div {
     background: white;
-    padding: 2rem;
-    border-radius: 15px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+    padding: 1rem;
+    border-radius: 12px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.05);
     text-align: center;
 }
 
-.record-item {
-    display: flex;
-    justify-content: space-between;
-    margin: 0.5rem 0;
+.countdown small {
+    display: block;
+    font-size: 0.8rem;
+    color: #666;
+}
+
+/* Form section */
+.match-form-section {
+    background: #f0f0f0;
+    padding: 2rem 0;
 }
 
 .form-results {
     display: flex;
-    gap: 0.5rem;
     justify-content: center;
-    margin: 1rem 0;
+    gap: 0.5rem;
 }
 
 .form-result {
@@ -124,6 +62,43 @@
 .form-result.loss { background: #e74c3c; }
 
 .form-description {
-    font-size: 0.85rem;
+    text-align: center;
+    margin-top: 0.5rem;
+    font-size: 0.9rem;
     color: #555;
+}
+
+/* Match cards */
+.match-card.modern {
+    background: white;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+    transition: 0.3s;
+}
+
+.match-card .match-header {
+    background: #B90A0A;
+    color: white;
+    text-align: center;
+    padding: 0.5rem;
+    font-weight: bold;
+}
+
+.match-card .match-header.win {
+    background: #2ecc71;
+}
+
+.match-body {
+    padding: 1rem 1.5rem;
+}
+
+.match-body h3 {
+    margin: 0 0 0.5rem 0;
+}
+
+.matches-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 2rem;
 }

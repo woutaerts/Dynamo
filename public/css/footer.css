@@ -1,6 +1,6 @@
 /* Modern Gradient Footer Styles */
 .modern-footer {
-    background: #B90A0A;
+    background: linear-gradient(135deg, #B90A0A 0%, #8B0000 100%);
     color: white;
     padding: 60px 0 15px;
     margin-top: 80px;

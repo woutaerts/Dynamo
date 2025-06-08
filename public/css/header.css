@@ -164,7 +164,7 @@ body {
     left: 0;
     right: 0;
     bottom: 0;
-    background: linear-gradient(45deg, #B90A0A, #ff4757);
+    background: linear-gradient(135deg, #B90A0A 0%, #E71414 100%);
     border-radius: 25px;
     opacity: 0;
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);

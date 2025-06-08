@@ -1,21 +1,21 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>Matches - Dynamo Beirs</title>
-    <meta name="description" content="Recent matches and fixtures for Dynamo Beirs - stay updated with our latest games">
-    <link rel="stylesheet" href="../public/css/home.css">
-    <link rel="stylesheet" href="../public/css/header.css">
-    <link rel="stylesheet" href="../public/css/footer.css">
-    <link rel="stylesheet" href="../public/css/matches.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <meta name="description" content="Recent matches and fixtures for Dynamo Beirs - stay updated with our latest games"/>
+    <link rel="stylesheet" href="../public/css/home.css" />
+    <link rel="stylesheet" href="../public/css/header.css" />
+    <link rel="stylesheet" href="../public/css/footer.css" />
+    <link rel="stylesheet" href="../public/css/matches.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
 </head>
 <body>
 <header class="modern-header">
     <nav class="nav-container">
         <div class="logo-section">
-            <img src="../public/img/logos/Red%20Outlined%20Logo.png" alt="Dynamo Beirs Logo" class="club-logo">
+            <img src="../public/img/logos/Red%20Outlined%20Logo.png" alt="Dynamo Beirs Logo" class="club-logo" />
             <span class="club-name">Dynamo Beirs</span>
         </div>
         <ul class="nav-links">
@@ -25,9 +25,7 @@
             <li><a href="matches.html" class="nav-link active">Matches</a></li>
         </ul>
         <div class="mobile-menu-toggle">
-            <span></span>
-            <span></span>
-            <span></span>
+            <span></span><span></span><span></span>
         </div>
     </nav>
 </header>
@@ -40,30 +38,60 @@
         </div>
     </section>
 
+    <section class="countdown-section">
+        <div class="container">
+            <h2 class="section-title">Next Match Countdown</h2>
+            <div class="countdown" id="countdown">
+                <div><span id="days">0</span><small>Days</small></div>
+                <div><span id="hours">0</span><small>Hours</small></div>
+                <div><span id="minutes">0</span><small>Minutes</small></div>
+                <div><span id="seconds">0</span><small>Seconds</small></div>
+            </div>
+        </div>
+    </section>
+
+    <section class="match-form-section">
+        <div class="container">
+            <div class="form-display">
+                <div class="form-results">
+                    <span class="form-result win">W</span>
+                    <span class="form-result win">W</span>
+                    <span class="form-result win">W</span>
+                    <span class="form-result draw">D</span>
+                    <span class="form-result win">W</span>
+                </div>
+                <p class="form-description">Last 5 Matches</p>
+            </div>
+        </div>
+    </section>
+
     <section class="upcoming-matches">
         <div class="container">
             <h2 class="section-title">Upcoming Fixtures</h2>
             <div class="matches-grid">
-                <div class="match-card upcoming">
-                    <div class="match-status">Upcoming</div>
-                    <div class="match-teams">Dynamo Beirs vs Thunder United</div>
-                    <div class="match-time">15:00</div>
-                    <div class="match-date">June 12, 2025</div>
-                    <div class="match-venue">Home Stadium</div>
+                <div class="match-card modern">
+                    <div class="match-header"><span>Upcoming</span></div>
+                    <div class="match-body">
+                        <h3>Dynamo Beirs vs Thunder United</h3>
+                        <p>June 12, 2025 — 15:00</p>
+                        <p>Home Stadium</p>
+                    </div>
                 </div>
-                <div class="match-card upcoming">
-                    <div class="match-status">Upcoming</div>
-                    <div class="match-teams">City Rovers vs Dynamo Beirs</div>
-                    <div class="match-time">19:30</div>
-                    <div class="match-date">June 19, 2025</div>
-                    <div class="match-venue">City Arena</div>
+                <div class="match-card modern">
+                    <div class="match-header"><span>Upcoming</span></div>
+                    <div class="match-body">
+                        <h3>City Rovers vs Dynamo Beirs</h3>
+                        <p>June 19, 2025 — 19:30</p>
+                        <p>City Arena</p>
+                    </div>
                 </div>
-                <div class="match-card upcoming">
-                    <div class="match-status">Upcoming</div>
-                    <div class="match-teams">Dynamo Beirs vs Steel Warriors</div>
-                    <div class="match-time">16:00</div>
-                    <div class="match-date">June 26, 2025</div>
-                    <div class="match-venue">Home Stadium</div>
+                <div class="match-card modern">
+                    <div class="match-header"><span>Upcoming</span></div>
+                    <div class="match-body">
+                        <h3>Dynamo Beirs vs Steel Warriors</h3>
+                        <p>June 26, 2025 — 16:00</p>
+                        <p>Home Stadium</p>
+                    </div>
                 </div>
             </div>
         </div>
@@ -73,141 +101,15 @@
         <div class="container">
             <h2 class="section-title">Recent Results</h2>
             <div class="matches-grid">
-                <div class="match-card result win">
-                    <div class="match-result">W</div>
-                    <div class="match-teams">Dynamo Beirs vs Red Hawks FC</div>
-                    <div class="match-score">2-1</div>
-                    <div class="match-date">May 21, 2025</div>
-                    <div class="match-details">
-                        <div class="goalscorers">
-                            <i class="fas fa-futbol"></i>
-                            Rodriguez (23'), Mitchell (67')
-                        </div>
+                <div class="match-card modern result">
+                    <div class="match-header win"><span>W</span></div>
+                    <div class="match-body">
+                        <h3>Dynamo Beirs vs Red Hawks FC</h3>
+                        <p>May 21, 2025 — 2-1</p>
+                        <p><i class="fas fa-futbol"></i> Rodriguez (23'), Mitchell (67')</p>
                     </div>
                 </div>
-                <div class="match-card result win">
-                    <div class="match-result">W</div>
-                    <div class="match-teams">Dynamo Beirs vs City Lions</div>
-                    <div class="match-score">4-0</div>
-                    <div class="match-date">May 14, 2025</div>
-                    <div class="match-details">
-                        <div class="goalscorers">
-                            <i class="fas fa-futbol"></i>
-                            Rodriguez (15', 34'), Martinez (56'), Mitchell (78')
-                        </div>
-                    </div>
-                </div>
-                <div class="match-card result win">
-                    <div class="match-result">W</div>
-                    <div class="match-teams">Storm FC vs Dynamo Beirs</div>
-                    <div class="match-score">0-1</div>
-                    <div class="match-date">May 7, 2025</div>
-                    <div class="match-details">
-                        <div class="goalscorers">
-                            <i class="fas fa-futbol"></i>
-                            Rodriguez (89')
-                        </div>
-                    </div>
-                </div>
-                <div class="match-card result draw">
-                    <div class="match-result">D</div>
-                    <div class="match-teams">Dynamo Beirs vs Phoenix United</div>
-                    <div class="match-score">2-2</div>
-                    <div class="match-date">April 30, 2025</div>
-                    <div class="match-details">
-                        <div class="goalscorers">
-                            <i class="fas fa-futbol"></i>
-                            Martinez (12'), Rodriguez (75')
-                        </div>
-                    </div>
-                </div>
-                <div class="match-card result win">
-                    <div class="match-result">W</div>
-                    <div class="match-teams">Dynamo Beirs vs Lightning Bolts</div>
-                    <div class="match-score">3-1</div>
-                    <div class="match-date">April 23, 2025</div>
-                    <div class="match-details">
-                        <div class="goalscorers">
-                            <i class="fas fa-futbol"></i>
-                            Rodriguez (8'), Mitchell (42'), O'Connor (68')
-                        </div>
-                    </div>
-                </div>
-                <div class="match-card result loss">
-                    <div class="match-result">L</div>
-                    <div class="match-teams">Galaxy FC vs Dynamo Beirs</div>
-                    <div class="match-score">3-2</div>
-                    <div class="match-date">April 16, 2025</div>
-                    <div class="match-details">
-                        <div class="goalscorers">
-                            <i class="fas fa-futbol"></i>
-                            Rodriguez (33'), Martinez (71')
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section class="match-statistics">
-        <div class="container">
-            <h2 class="section-title">Match Performance</h2>
-            <div class="performance-grid">
-                <div class="performance-card">
-                    <h3>Home Record</h3>
-                    <div class="record-stats">
-                        <div class="record-item">
-                            <span class="record-label">Played</span>
-                            <span class="record-value">14</span>
-                        </div>
-                        <div class="record-item">
-                            <span class="record-label">Won</span>
-                            <span class="record-value">12</span>
-                        </div>
-                        <div class="record-item">
-                            <span class="record-label">Drawn</span>
-                            <span class="record-value">1</span>
-                        </div>
-                        <div class="record-item">
-                            <span class="record-label">Lost</span>
-                            <span class="record-value">1</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="performance-card">
-                    <h3>Away Record</h3>
-                    <div class="record-stats">
-                        <div class="record-item">
-                            <span class="record-label">Played</span>
-                            <span class="record-value">14</span>
-                        </div>
-                        <div class="record-item">
-                            <span class="record-label">Won</span>
-                            <span class="record-value">9</span>
-                        </div>
-                        <div class="record-item">
-                            <span class="record-label">Drawn</span>
-                            <span class="record-value">3</span>
-                        </div>
-                        <div class="record-item">
-                            <span class="record-label">Lost</span>
-                            <span class="record-value">2</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="performance-card">
-                    <h3>Recent Form</h3>
-                    <div class="form-display">
-                        <div class="form-results">
-                            <span class="form-result win">W</span>
-                            <span class="form-result win">W</span>
-                            <span class="form-result win">W</span>
-                            <span class="form-result draw">D</span>
-                            <span class="form-result win">W</span>
-                        </div>
-                        <p class="form-description">Last 5 matches</p>
-                    </div>
-                </div>
+                <!-- Add more recent results as needed -->
             </div>
         </div>
     </section>
@@ -218,22 +120,15 @@
         <div class="footer-top">
             <div class="footer-brand">
                 <h3 class="footer-title">Dynamo Beirs</h3>
-                <img src="../public/img/logos/White%20outlined%20logo.png" alt="Dynamo Beirs Logo" class="footer-logo">
+                <img src="../public/img/logos/White%20outlined%20logo.png" alt="Dynamo Beirs Logo" class="footer-logo" />
             </div>
             <div class="footer-social">
-                <a href="https://facebook.com/yourpage" target="_blank" aria-label="Facebook" class="social-icon">
-                    <i class="fab fa-facebook-f"></i>
-                </a>
-                <a href="https://instagram.com/yourpage" target="_blank" aria-label="Instagram" class="social-icon">
-                    <i class="fab fa-instagram"></i>
-                </a>
+                <a href="https://facebook.com/yourpage" target="_blank" class="social-icon"><i class="fab fa-facebook-f"></i></a>
+                <a href="https://instagram.com/yourpage" target="_blank" class="social-icon"><i class="fab fa-instagram"></i></a>
             </div>
         </div>
-
         <div class="footer-bottom">
-            <div class="footer-copyright">
-                <p>&copy; 2025 Dynamo Beirs. All rights reserved.</p>
-            </div>
+            <p>&copy; 2025 Dynamo Beirs. All rights reserved.</p>
         </div>
     </div>
 </footer>
