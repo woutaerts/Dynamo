@@ -10,6 +10,8 @@
     <link rel="stylesheet" href="../public/css/footer.css" />
     <link rel="stylesheet" href="../public/css/matches.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+    <!-- Leaflet CSS for free maps -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.css" />
 </head>
 <body>
 <header class="modern-header">
@@ -101,7 +103,7 @@
         <div class="container">
             <h2 class="section-title">Recent Results</h2>
             <div class="matches-grid">
-                <div class="match-card modern result">
+                <div class="match-card modern result" data-venue="Home Stadium" data-lat="50.9704" data-lng="5.7734" data-match-title="Dynamo Beirs vs Red Hawks FC">
                     <div class="match-header win"><span>W</span></div>
                     <div class="match-body">
                         <h3>Dynamo Beirs vs Red Hawks FC</h3>
@@ -109,7 +111,7 @@
                         <p><i class="fas fa-futbol"></i> Rodriguez (23'), Mitchell (67')</p>
                     </div>
                 </div>
-                <div class="match-card modern result">
+                <div class="match-card modern result" data-venue="Home Stadium" data-lat="50.9704" data-lng="5.7734" data-match-title="Dynamo Beirs vs Greenfield United">
                     <div class="match-header win"><span>W</span></div>
                     <div class="match-body">
                         <h3>Dynamo Beirs vs Greenfield United</h3>
@@ -117,7 +119,7 @@
                         <p><i class="fas fa-futbol"></i> Rodriguez (12', 45'), Thompson (78')</p>
                     </div>
                 </div>
-                <div class="match-card modern result">
+                <div class="match-card modern result" data-venue="Bluewave Stadium" data-lat="50.8503" data-lng="4.3517" data-match-title="Dynamo Beirs vs Bluewave FC">
                     <div class="match-header loss"><span>L</span></div>
                     <div class="match-body">
                         <h3>Dynamo Beirs vs Bluewave FC</h3>
@@ -125,7 +127,7 @@
                         <p><i class="fas fa-futbol"></i> Mitchell (56')</p>
                     </div>
                 </div>
-                <div class="match-card modern result">
+                <div class="match-card modern result" data-venue="Home Stadium" data-lat="50.9704" data-lng="5.7734" data-match-title="Dynamo Beirs vs Ironclad SC">
                     <div class="match-header win"><span>W</span></div>
                     <div class="match-body">
                         <h3>Dynamo Beirs vs Ironclad SC</h3>
@@ -133,7 +135,7 @@
                         <p><i class="fas fa-futbol"></i> Thompson (34'), Rodriguez (89')</p>
                     </div>
                 </div>
-                <div class="match-card modern result">
+                <div class="match-card modern result" data-venue="Victory Arena" data-lat="51.2194" data-lng="4.4025" data-match-title="Dynamo Beirs vs Victory FC">
                     <div class="match-header draw"><span>D</span></div>
                     <div class="match-body">
                         <h3>Dynamo Beirs vs Victory FC</h3>
@@ -141,7 +143,7 @@
                         <p><i class="fas fa-futbol"></i> Mitchell (45')</p>
                     </div>
                 </div>
-                <div class="match-card modern result">
+                <div class="match-card modern result" data-venue="Home Stadium" data-lat="50.9704" data-lng="5.7734" data-match-title="Dynamo Beirs vs Den Hout">
                     <div class="match-header win"><span>W</span></div>
                     <div class="match-body">
                         <h3>Dynamo Beirs vs Den Hout</h3>
@@ -149,7 +151,7 @@
                         <p><i class="fas fa-futbol"></i> Rodriguez (18', 55'), Thompson (79')</p>
                     </div>
                 </div>
-                <div class="match-card modern result">
+                <div class="match-card modern result" data-venue="Home Stadium" data-lat="50.9704" data-lng="5.7734" data-match-title="Dynamo Beirs vs Strikers United">
                     <div class="match-header win"><span>W</span></div>
                     <div class="match-body">
                         <h3>Dynamo Beirs vs Strikers United</h3>
@@ -157,14 +159,14 @@
                         <p><i class="fas fa-futbol"></i> Thompson (9', 37'), Rodriguez (58'), Mitchell (88')</p>
                     </div>
                 </div>
-                <div class="match-card modern result">
+                <div class="match-card modern result" data-venue="Phoenix Arena" data-lat="51.0500" data-lng="3.7303" data-match-title="Dynamo Beirs vs Phoenix FC">
                     <div class="match-header loss"><span>L</span></div>
                     <div class="match-body">
                         <h3>Dynamo Beirs vs Phoenix FC</h3>
                         <p>April 24, 2025 — 0-1</p>
                     </div>
                 </div>
-                <div class="match-card modern result">
+                <div class="match-card modern result" data-venue="Home Stadium" data-lat="50.9704" data-lng="5.7734" data-match-title="Dynamo Beirs vs Rapid FC">
                     <div class="match-header win"><span>W</span></div>
                     <div class="match-body">
                         <h3>Dynamo Beirs vs Rapid FC</h3>
@@ -172,7 +174,7 @@
                         <p><i class="fas fa-futbol"></i> Mitchell (29'), Thompson (64')</p>
                     </div>
                 </div>
-                <div class="match-card modern result">
+                <div class="match-card modern result" data-venue="Stars Stadium" data-lat="50.6292" data-lng="5.5797" data-match-title="Dynamo Beirs vs United Stars">
                     <div class="match-header win"><span>W</span></div>
                     <div class="match-body">
                         <h3>Dynamo Beirs vs United Stars</h3>
@@ -180,7 +182,7 @@
                         <p><i class="fas fa-futbol"></i> Rodriguez (11', 45'), Thompson (76')</p>
                     </div>
                 </div>
-                <div class="match-card modern result">
+                <div class="match-card modern result" data-venue="Wanderers Park" data-lat="50.8476" data-lng="4.3572" data-match-title="Dynamo Beirs vs City Wanderers">
                     <div class="match-header draw"><span>D</span></div>
                     <div class="match-body">
                         <h3>Dynamo Beirs vs City Wanderers</h3>
@@ -188,7 +190,7 @@
                         <p><i class="fas fa-futbol"></i> Mitchell (33'), Rodriguez (81')</p>
                     </div>
                 </div>
-                <div class="match-card modern result">
+                <div class="match-card modern result" data-venue="Home Stadium" data-lat="50.9704" data-lng="5.7734" data-match-title="Dynamo Beirs vs Elite SC">
                     <div class="match-header win"><span>W</span></div>
                     <div class="match-body">
                         <h3>Dynamo Beirs vs Elite SC</h3>
@@ -196,7 +198,7 @@
                         <p><i class="fas fa-futbol"></i> Thompson (53')</p>
                     </div>
                 </div>
-                <div class="match-card modern result">
+                <div class="match-card modern result" data-venue="Home Stadium" data-lat="50.9704" data-lng="5.7734" data-match-title="Dynamo Beirs vs Titans FC">
                     <div class="match-header win"><span>W</span></div>
                     <div class="match-body">
                         <h3>Dynamo Beirs vs Titans FC</h3>
@@ -204,7 +206,7 @@
                         <p><i class="fas fa-futbol"></i> Rodriguez (22', 68'), Mitchell (75')</p>
                     </div>
                 </div>
-                <div class="match-card modern result">
+                <div class="match-card modern result" data-venue="Lions Den" data-lat="51.2093" data-lng="2.9248" data-match-title="Dynamo Beirs vs Lions FC">
                     <div class="match-header loss"><span>L</span></div>
                     <div class="match-body">
                         <h3>Dynamo Beirs vs Lions FC</h3>
@@ -212,7 +214,7 @@
                         <p><i class="fas fa-futbol"></i> Thompson (47')</p>
                     </div>
                 </div>
-                <div class="match-card modern result">
+                <div class="match-card modern result" data-venue="Home Stadium" data-lat="50.9704" data-lng="5.7734" data-match-title="Dynamo Beirs vs Eagles FC">
                     <div class="match-header win"><span>W</span></div>
                     <div class="match-body">
                         <h3>Dynamo Beirs vs Eagles FC</h3>
@@ -220,7 +222,7 @@
                         <p><i class="fas fa-futbol"></i> Mitchell (19'), Rodriguez (85')</p>
                     </div>
                 </div>
-                <div class="match-card modern result">
+                <div class="match-card modern result" data-venue="Home Stadium" data-lat="50.9704" data-lng="5.7734" data-match-title="Dynamo Beirs vs Hawks FC">
                     <div class="match-header win"><span>W</span></div>
                     <div class="match-body">
                         <h3>Dynamo Beirs vs Hawks FC</h3>
@@ -228,7 +230,7 @@
                         <p><i class="fas fa-futbol"></i> Thompson (14', 50'), Rodriguez (36', 78')</p>
                     </div>
                 </div>
-                <div class="match-card modern result">
+                <div class="match-card modern result" data-venue="Home Stadium" data-lat="50.9704" data-lng="5.7734" data-match-title="Dynamo Beirs vs Falcons FC">
                     <div class="match-header win"><span>W</span></div>
                     <div class="match-body">
                         <h3>Dynamo Beirs vs Falcons FC</h3>
@@ -236,7 +238,7 @@
                         <p><i class="fas fa-futbol"></i> Rodriguez (27', 61'), Mitchell (73')</p>
                     </div>
                 </div>
-                <div class="match-card modern result">
+                <div class="match-card modern result" data-venue="Wolves Ground" data-lat="50.4501" data-lng="3.9522" data-match-title="Dynamo Beirs vs Wolves FC">
                     <div class="match-header draw"><span>D</span></div>
                     <div class="match-body">
                         <h3>Dynamo Beirs vs Wolves FC</h3>
@@ -244,7 +246,7 @@
                         <p><i class="fas fa-futbol"></i> Thompson (59')</p>
                     </div>
                 </div>
-                <div class="match-card modern result">
+                <div class="match-card modern result" data-venue="Home Stadium" data-lat="50.9704" data-lng="5.7734" data-match-title="Dynamo Beirs vs Bears FC">
                     <div class="match-header win"><span>W</span></div>
                     <div class="match-body">
                         <h3>Dynamo Beirs vs Bears FC</h3>
@@ -252,7 +254,7 @@
                         <p><i class="fas fa-futbol"></i> Mitchell (38'), Rodriguez (82')</p>
                     </div>
                 </div>
-                <div class="match-card modern result">
+                <div class="match-card modern result" data-venue="Home Stadium" data-lat="50.9704" data-lng="5.7734" data-match-title="Dynamo Beirs vs Sharks FC">
                     <div class="match-header win"><span>W</span></div>
                     <div class="match-body">
                         <h3>Dynamo Beirs vs Sharks FC</h3>
@@ -302,7 +304,7 @@
     <div id="matchCenterModal" class="modal-overlay">
         <div class="modal-content">
             <span class="close-modal">&times;</span>
-            <h2>Match Center</h2>
+            <h2 id="modalMatchTitle">Match Center</h2>
             <div class="modal-section">
                 <h3>Match Timeline</h3>
                 <ul class="match-events">
@@ -326,9 +328,13 @@
                     <li>Fouls: 11 - 9</li>
                 </ul>
             </div>
+            <div class="modal-section">
+                <h3>Match Venue</h3>
+                <p id="venueInfo">Home Stadium</p>
+                <div id="matchMap" class="match-map"></div>
+            </div>
         </div>
     </div>
-
 
 </main>
 
@@ -350,6 +356,7 @@
     </div>
 </footer>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.js"></script>
 <script src="../public/js/header.js"></script>
 <script src="../public/js/matches.js"></script>
 </body>
