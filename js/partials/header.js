@@ -51,7 +51,7 @@ async function loadHeader() {
 
 function loadFallbackHeader(isRootPage) {
     // Create a basic fallback header if the main one fails to load
-    const logoPath = isRootPage ? 'img/logos/red-outlined-logo.png' : '../img/logos/red-outlined-logo.png';
+    const logoPath = isRootPage ? 'img/logos/original-logo.png' : '../img/logos/original-logo.png';
     const homePath = isRootPage ? 'index.html' : '../index.html';
     const statsPath = isRootPage ? 'pages/statistics.html' : 'statistics.html';
     const playersPath = isRootPage ? 'pages/players.html' : 'players.html';
@@ -61,7 +61,7 @@ function loadFallbackHeader(isRootPage) {
         <header class="header">
             <nav class="nav-container">
                 <div class="logo-section">
-                    <img src="${logoPath}" alt="Red Outlined Dynamo Beirs Logo" class="club-logo">
+                    <img src="${logoPath}" alt="Logo Dynamo Beirs" class="club-logo">
                     <span class="club-name">Dynamo Beirs</span>
                 </div>
                 <ul class="nav-links">
@@ -104,7 +104,7 @@ function configureHeader(isRootPage) {
 
     if (isRootPage) {
         // Root page paths
-        clubLogo.src = 'img/logos/red-outlined-logo.png';
+        clubLogo.src = 'img/logos/original-logo.png';
         navLinks.forEach(link => {
             const page = link.getAttribute('data-page');
             switch(page) {
@@ -124,7 +124,7 @@ function configureHeader(isRootPage) {
         });
     } else {
         // Sub-page paths (pages folder)
-        clubLogo.src = '../img/logos/red-outlined-logo.png';
+        clubLogo.src = '../img/logos/original-logo.png';
         navLinks.forEach(link => {
             const page = link.getAttribute('data-page');
             switch(page) {

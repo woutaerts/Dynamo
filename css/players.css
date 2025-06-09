@@ -1,17 +1,19 @@
+/* Hero & Section Titles */
 .page-hero {
-    padding: 5rem 2rem;
+    padding: 3rem 1.5rem;
     text-align: center;
     background: linear-gradient(135deg, #B90A0A 0%, #8B0000 100%);
     color: white;
+    margin-top: 30px;
 }
 
 .page-hero h1 {
-    font-size: 3rem;
+    font-size: 2.4rem;
     color: white;
 }
 
 .page-hero p {
-    font-size: 1.2rem;
+    font-size: 1rem;
     color: rgba(255, 255, 255, 0.85);
 }
 
