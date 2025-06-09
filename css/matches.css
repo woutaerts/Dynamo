@@ -1,13 +1,13 @@
+/* Hero & Section Titles */
 .page-hero {
     padding: 5rem 2rem;
     text-align: center;
-    background: linear-gradient(135deg, #B90A0A 0%, #8B0000 100%);
+    background: linear-gradient(135deg, #B90A0A, #8B0000);
     color: white;
 }
 
 .page-hero h1 {
     font-size: 3rem;
-    color: white;
 }
 
 .page-hero p {
@@ -18,14 +18,27 @@
 .section-title {
     text-align: center;
     font-size: 2.5rem;
-    margin-bottom: 2rem;
+    margin-bottom: 3rem;
     color: #B90A0A;
+    position: relative;
+}
+
+.section-title::after {
+    content: '';
+    position: absolute;
+    bottom: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 60px;
+    height: 3px;
+    background: linear-gradient(90deg, #B90A0A, #8B0000);
+    border-radius: 2px;
 }
 
 /* Countdown */
 .countdown-section {
-    background: #fff8f8;
-    padding: 3rem 1rem;
+    background: linear-gradient(135deg, #fff8f8, #f5f5f5);
+    padding: 4rem 1rem;
 }
 
 .countdown {
@@ -37,125 +50,170 @@
 
 .countdown div {
     background: white;
-    padding: 1rem;
-    border-radius: 12px;
-    box-shadow: 0 0 10px rgba(0,0,0,0.05);
+    padding: 1.5rem;
+    border-radius: 16px;
+    box-shadow: 0 10px 25px rgba(185, 10, 10, 0.1);
     text-align: center;
+    min-width: 80px;
+    transition: transform 0.3s;
+}
+
+.countdown div:hover {
+    transform: translateY(-5px);
+}
+
+.countdown span {
+    display: block;
+    font-size: 2rem;
+    font-weight: bold;
+    color: #B90A0A;
+    margin-bottom: 0.5rem;
 }
 
 .countdown small {
     display: block;
-    font-size: 0.8rem;
+    font-size: 0.9rem;
     color: #666;
+    text-transform: uppercase;
+    letter-spacing: 1px;
 }
 
-/* Form section */
+/* Last Matches Summary */
 .match-form-section {
-    background: #f0f0f0;
-    padding: 2rem 0;
+    background: #f8f9fa;
+    padding: 3rem 0;
+}
+
+.form-display {
+    text-align: center;
 }
 
 .form-results {
     display: flex;
     justify-content: center;
-    gap: 0.5rem;
+    gap: 0.75rem;
+    margin-bottom: 1rem;
 }
 
 .form-result {
-    padding: 0.4rem 0.7rem;
-    border-radius: 5px;
+    padding: 0.6rem 1rem;
+    border-radius: 8px;
     font-weight: bold;
     color: white;
+    font-size: 1.1rem;
 }
 
-.form-result.win { background: #2ecc71; }
-.form-result.draw { background: #f1c40f; }
-.form-result.loss { background: #e74c3c; }
+/* Status colors */
+.form-result.win { background: linear-gradient(135deg, #2ecc71, #27ae60); }
+.form-result.draw { background: linear-gradient(135deg, #f1c40f, #f39c12); }
+.form-result.loss { background: linear-gradient(135deg, #e74c3c, #c0392b); }
 
 .form-description {
-    text-align: center;
-    margin-top: 0.5rem;
-    font-size: 0.9rem;
-    color: #555;
+    font-size: 1rem;
+    color: #666;
+    font-weight: 500;
 }
 
-/* Match cards */
+/* Match Cards */
+.matches-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 2rem;
+    padding: 0 1rem;
+}
+
 .match-card.modern {
     background: white;
-    border-radius: 16px;
+    border-radius: 20px;
     overflow: hidden;
-    box-shadow: 0 10px 25px rgba(0,0,0,0.05);
-    transition: 0.3s;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+    transition: all 0.3s;
     cursor: pointer;
 }
 
 .match-card.modern:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+    transform: translateY(-8px);
+    box-shadow: 0 20px 40px rgba(0,0,0,0.12);
 }
 
-.match-card .match-header {
-    background: #B90A0A;
-    color: white;
+.match-header {
+    padding: 1rem;
     text-align: center;
-    padding: 0.5rem;
     font-weight: bold;
+    font-size: 1.1rem;
 }
 
-.match-card .match-header.win {
-    background: #2ecc71;
+.match-header.win {
+    background: linear-gradient(135deg, #2ecc71, #27ae60);
+    color: white;
 }
 
-.match-card .match-header.loss {
-    background: #e74c3c;
+.match-header.draw {
+    background: linear-gradient(135deg, #f1c40f, #f39c12);
+    color: white;
 }
 
-.match-card .match-header.draw {
-    background: #f1c40f;
+.match-header.loss {
+    background: linear-gradient(135deg, #e74c3c, #c0392b);
+    color: white;
+}
+
+.match-header:not(.win):not(.draw):not(.loss) {
+    background: linear-gradient(135deg, #B90A0A, #8B0000);
+    color: white;
 }
 
 .match-body {
-    padding: 1rem 1.5rem;
+    padding: 1.5rem;
 }
 
 .match-body h3 {
-    margin: 0 0 0.5rem 0;
+    margin: 0 0 1rem;
+    font-size: 1.2rem;
+    color: #333;
 }
 
-.matches-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 2rem;
+.match-body p {
+    margin: 0 0 0.5rem;
+    font-size: 1rem;
+    color: #666;
 }
 
+/* Timeline */
 .match-timeline {
-    background: #fff;
-    padding: 3rem 0;
-    overflow-x: auto;
+    background: white;
+    padding: 4rem 0;
 }
 
 .timeline-wrapper {
+    padding: 1rem 0;
     overflow-x: auto;
 }
 
 .timeline {
     display: flex;
-    gap: 1rem;
+    gap: 1.5rem;
     padding: 1rem;
     overflow-x: auto;
     scroll-snap-type: x mandatory;
-    -webkit-overflow-scrolling: touch;
 }
 
 .timeline-item {
-    min-width: 70px;
+    min-width: 80px;
     text-align: center;
-    background: #f4f4f4;
-    padding: 0.5rem;
-    border-radius: 8px;
+    background: #f8f9fa;
+    padding: 1rem;
+    border-radius: 12px;
+    flex-shrink: 0;
     scroll-snap-align: start;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
     cursor: pointer;
+    transition: all 0.3s;
+}
+
+.timeline-item:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.1);
 }
 
 .result-icon {
@@ -164,115 +222,40 @@
     font-weight: bold;
     color: white;
     border-radius: 50%;
-    width: 30px;
-    height: 30px;
-    margin: 0 auto 0.5rem;
-    line-height: 30px;
+    width: 35px;
+    height: 35px;
+    line-height: 35px;
+    margin: 0 auto 0.75rem;
 }
 
-.timeline-item.win .result-icon { background: #2ecc71; }
-.timeline-item.draw .result-icon { background: #f1c40f; }
-.timeline-item.loss .result-icon { background: #e74c3c; }
+.timeline-item.win .result-icon { background: linear-gradient(135deg, #2ecc71, #27ae60); }
+.timeline-item.draw .result-icon { background: linear-gradient(135deg, #f1c40f, #f39c12); }
+.timeline-item.loss .result-icon { background: linear-gradient(135deg, #e74c3c, #c0392b); }
 
-.timeline::-webkit-scrollbar {
-    display: none;
-}
-.timeline {
+.timeline-item small { font-size: 0.85rem; color: #666; font-weight: 500; }
+
+.timeline, .timeline-wrapper {
     -ms-overflow-style: none;
     scrollbar-width: none;
 }
 
-/* Modal Styles */
-.modal-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    background: rgba(0, 0, 0, 0.6);
-    display: none;
-    justify-content: center;
-    align-items: center;
-    z-index: 9999;
-}
+.timeline::-webkit-scrollbar,
+.timeline-wrapper::-webkit-scrollbar { display: none; }
 
-.modal-content {
-    background: #fff;
-    padding: 2rem;
-    max-width: 700px;
-    width: 90%;
-    max-height: 90vh;
-    overflow-y: auto;
-    border-radius: 10px;
-    position: relative;
-}
-
-.close-modal {
-    position: absolute;
-    top: 15px;
-    right: 20px;
-    font-size: 1.5rem;
-    cursor: pointer;
-    color: #999;
-    z-index: 1000;
-}
-
-.close-modal:hover {
-    color: #B90A0A;
-}
-
-.modal-section {
-    margin-bottom: 1.5rem;
-}
-
-.modal-section h3 {
-    margin-bottom: 0.5rem;
-    color: #B90A0A;
-}
-
-.modal-section ul {
-    list-style: none;
-    padding-left: 0;
-}
-
-.modal-section li {
-    margin-bottom: 0.3rem;
-}
-
-/* Map Styles */
-.match-map {
-    width: 100%;
-    height: 300px;
-    border-radius: 8px;
-    overflow: hidden;
-    margin-top: 1rem;
-    border: 2px solid #e1e1e1;
-}
-
-#venueInfo {
-    font-size: 1.1rem;
-    font-weight: 600;
-    color: #333;
-    margin-bottom: 0.5rem;
-}
-
-/* Responsive adjustments */
+/* Responsive */
 @media (max-width: 768px) {
-    .modal-content {
-        width: 95%;
-        padding: 1.5rem;
-        max-height: 85vh;
-    }
+    .page-hero { padding: 3rem 1rem; }
+    .page-hero h1 { font-size: 2.2rem; }
+    .section-title { font-size: 2rem; margin-bottom: 2rem; }
+    .countdown div { min-width: 70px; padding: 1rem; }
+    .countdown span { font-size: 1.5rem; }
+    .matches-grid { grid-template-columns: 1fr; gap: 1.5rem; padding: 0 0.5rem; }
+    .timeline { gap: 1rem; padding: 0.5rem; }
+    .timeline-item { min-width: 70px; padding: 0.75rem; }
+    .result-icon { width: 30px; height: 30px; line-height: 30px; }
+}
 
-    .match-map {
-        height: 250px;
-    }
-
-    .countdown {
-        gap: 1rem;
-    }
-
-    .countdown div {
-        padding: 0.8rem;
-    }
+@media (max-width: 480px) {
+    .form-results { gap: 0.5rem; }
+    .form-result { padding: 0.5rem 0.75rem; font-size: 1rem; }
 }
