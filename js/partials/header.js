@@ -43,6 +43,12 @@ async function loadHeader() {
         // Configure the header after loading
         configureHeader(isRootPage);
 
+        // Initialize scroll progress bar
+        initializeScrollProgress();
+
+        // Setup header scroll effect (hide/show on scroll)
+        setupHeaderScrollEffect();
+
     } catch (error) {
         console.error('Error loading header:', error);
         loadFallbackHeader(isRootPage);
@@ -59,6 +65,9 @@ function loadFallbackHeader(isRootPage) {
 
     const fallbackHeader = `
         <header class="header">
+            <div class="scroll-progress-container">
+                <div class="scroll-progress-bar"></div>
+            </div>
             <nav class="nav-container">
                 <div class="logo-section">
                     <img src="${logoPath}" alt="Logo Dynamo Beirs" class="club-logo">
@@ -89,6 +98,8 @@ function loadFallbackHeader(isRootPage) {
     // Initialize functionality for fallback header
     highlightCurrentPage();
     initializeMobileMenu();
+    initializeScrollProgress();
+    setupHeaderScrollEffect();
 }
 
 function configureHeader(isRootPage) {
@@ -177,4 +188,135 @@ function initializeMobileMenu() {
             mobileMenuToggle.classList.toggle('active');
         });
     }
+}
+
+function initializeScrollProgress() {
+    // Find the scroll progress bar element
+    const progressBar = document.querySelector('.scroll-progress-bar');
+
+    if (!progressBar) {
+        console.warn('Scroll progress bar element not found');
+        return;
+    }
+
+    // Function to update scroll progress
+    function updateScrollProgress() {
+        // Get scroll position
+        const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+
+        // Get document height minus viewport height
+        const documentHeight = Math.max(
+            document.body.scrollHeight,
+            document.body.offsetHeight,
+            document.documentElement.clientHeight,
+            document.documentElement.scrollHeight,
+            document.documentElement.offsetHeight
+        );
+
+        const windowHeight = window.innerHeight;
+        const maxScroll = documentHeight - windowHeight;
+
+        // Calculate progress percentage
+        let progress = 0;
+        if (maxScroll > 0) {
+            progress = (scrollTop / maxScroll) * 100;
+            progress = Math.min(100, Math.max(0, progress)); // Clamp between 0 and 100
+        }
+
+        // Update progress bar width
+        progressBar.style.width = progress + '%';
+    }
+
+    // Throttled scroll handler for better performance
+    let ticking = false;
+    function throttledUpdateScrollProgress() {
+        if (!ticking) {
+            requestAnimationFrame(function() {
+                updateScrollProgress();
+                ticking = false;
+            });
+            ticking = true;
+        }
+    }
+
+    // Initial update
+    updateScrollProgress();
+
+    // Add scroll event listener
+    window.addEventListener('scroll', throttledUpdateScrollProgress, { passive: true });
+
+    // Update on window resize to handle dynamic content
+    window.addEventListener('resize', function() {
+        setTimeout(updateScrollProgress, 100); // Small delay to ensure layout has updated
+    });
+
+    // Optional: Handle dynamic content changes
+    // If you have content that loads dynamically and changes page height
+    const observer = new MutationObserver(function(mutations) {
+        let shouldUpdate = false;
+        mutations.forEach(function(mutation) {
+            if (mutation.type === 'childList' ||
+                (mutation.type === 'attributes' &&
+                    (mutation.attributeName === 'style' || mutation.attributeName === 'class'))) {
+                shouldUpdate = true;
+            }
+        });
+
+        if (shouldUpdate) {
+            setTimeout(updateScrollProgress, 50);
+        }
+    });
+
+    // Observe changes to body and main content areas
+    observer.observe(document.body, {
+        childList: true,
+        subtree: true,
+        attributes: true,
+        attributeFilter: ['style', 'class']
+    });
+}
+
+function setupHeaderScrollEffect() {
+    const header = document.querySelector(".header");
+
+    if (!header) {
+        console.warn('Header element not found for scroll effect');
+        return;
+    }
+
+    let lastScrollTop = 0;
+    let ticking = false;
+
+    // Minimum scroll distance before hiding header
+    const scrollThreshold = 100;
+
+    function handleScroll() {
+        const currentScroll = window.pageYOffset || document.documentElement.scrollTop;
+
+        if (!ticking) {
+            window.requestAnimationFrame(function() {
+                // Only hide/show header after scrolling past threshold
+                if (currentScroll > scrollThreshold) {
+                    if (currentScroll > lastScrollTop) {
+                        // Scrolling down - hide header
+                        header.classList.add('header-hidden');
+                    } else {
+                        // Scrolling up - show header
+                        header.classList.remove('header-hidden');
+                    }
+                } else {
+                    // Near top of page - always show header
+                    header.classList.remove('header-hidden');
+                }
+
+                // Prevent negative scroll values
+                lastScrollTop = currentScroll <= 0 ? 0 : currentScroll;
+                ticking = false;
+            });
+            ticking = true;
+        }
+    }
+
+    // Listen to scroll events with passive option for better performance
+    window.addEventListener("scroll", handleScroll, { passive: true });
 }
