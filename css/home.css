@@ -19,54 +19,65 @@ body {
     padding: 0 20px;
 }
 
-/* Hero Section */
+/* Hero Section with Vanta.js Background */
 .hero {
     height: 100vh;
     display: flex;
     align-items: center;
-    background: linear-gradient(135deg, rgba(185, 10, 10, 0.1) 0%, rgba(255, 255, 255, 0.9) 100%);
     position: relative;
     overflow: hidden;
+    /* Remove the old gradient background to let Vanta.js show through */
 }
 
+/* Optional overlay for better text readability over the fog */
 .hero::before {
     content: '';
     position: absolute;
-    top: -50%;
-    right: -50%;
-    width: 200%;
-    height: 200%;
-    background: radial-gradient(circle, rgba(185, 10, 10, 0.05) 0%, transparent 70%);
-    animation: float 20s ease-in-out infinite;
-}
-
-@keyframes float {
-    0%, 100% { transform: translate(0, 0) rotate(0deg); }
-    33% { transform: translate(30px, -30px) rotate(120deg); }
-    66% { transform: translate(-20px, 20px) rotate(240deg); }
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(255, 255, 255, 0.1);
+    z-index: 1;
+    pointer-events: none;
 }
 
 .hero-content {
     position: relative;
     z-index: 2;
+    text-align: center;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
 }
 
+
 .hero h1 {
-    font-size: 4rem;
-    font-weight: 900;
+    font-family: 'Titan One', cursive;
+    font-size: 5rem;
+    font-weight: 400;
     margin-bottom: 1rem;
-    background: linear-gradient(45deg, #333, #B90A0A);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
+    color: white;
+    text-align: center;
+    text-shadow:
+            -1px -1px 0 #000,
+            1px -1px 0 #000,
+            -1px  1px 0 #000,
+            1px  1px 0 #000,
+            2px  4px 6px rgba(0, 0, 0, 0.3); /* soft shadow */
     animation: slideInUp 1s ease-out;
 }
+
+
 
 .hero p {
     font-size: 1.3rem;
     color: #666;
     margin-bottom: 2rem;
     animation: slideInUp 1s ease-out 0.3s both;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
 }
 
 .cta-button {
