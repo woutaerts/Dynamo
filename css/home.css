@@ -19,27 +19,17 @@ body {
     padding: 0 20px;
 }
 
-/* Hero Section with Vanta.js Background */
+/* Hero Section with Background Image */
 .hero {
     height: 100vh;
     display: flex;
     align-items: center;
     position: relative;
     overflow: hidden;
-    /* Remove the old gradient background to let Vanta.js show through */
-}
-
-/* Optional overlay for better text readability over the fog */
-.hero::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: rgba(255, 255, 255, 0.1);
-    z-index: 1;
-    pointer-events: none;
+    background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.4)), url('../img/huddle.png');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
 }
 
 .hero-content {
@@ -53,31 +43,26 @@ body {
     justify-content: center;
 }
 
-
 .hero h1 {
     font-family: 'Titan One', cursive;
-    font-size: 5rem;
+    font-size: 4rem;
     font-weight: 400;
     margin-bottom: 1rem;
     color: white;
     text-align: center;
     text-shadow:
-            -1px -1px 0 #000,
-            1px -1px 0 #000,
-            -1px  1px 0 #000,
-            1px  1px 0 #000,
-            2px  4px 6px rgba(0, 0, 0, 0.3); /* soft shadow */
+            2px 2px 4px rgba(0, 0, 0, 0.8),
+            0 0 10px rgba(0, 0, 0, 0.5);
     animation: slideInUp 1s ease-out;
 }
 
-
-
 .hero p {
     font-size: 1.3rem;
-    color: #666;
+    color: #f8f9fa;
     margin-bottom: 2rem;
     animation: slideInUp 1s ease-out 0.3s both;
-    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+    max-width: 600px;
 }
 
 .cta-button {
@@ -176,6 +161,237 @@ body {
     color: #d63031;
 }
 
+/* Countdown Section */
+.countdown-section {
+    padding: 4rem 0;
+    background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
+}
+
+.countdown {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    font-size: 1.5rem;
+}
+
+.countdown-block {
+    text-align: center;
+    flex-shrink: 0;
+}
+
+.countdown-box {
+    background: white;
+    padding: 1.5rem;
+    border-radius: 16px;
+    box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.2);
+    transition: transform 0.3s;
+    width: 100px;
+}
+
+.countdown-box:hover {
+    transform: translateY(-5px);
+    box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.35);
+}
+
+.countdown-box span {
+    display: block;
+    font-size: 2rem;
+    font-weight: bold;
+    color: #B90A0A;
+}
+
+.countdown-block small {
+    display: block;
+    font-size: 0.9rem;
+    color: #666;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-top: 0.5rem;
+    font-weight: bold;
+}
+
+.upcoming-match-name {
+    text-align: center;
+    margin-top: 1.5rem;
+    margin-bottom: 1rem;
+}
+
+.upcoming-match-name h3 {
+    font-size: 1.5rem;
+    color: #333;
+    margin: 0;
+}
+
+/* Match Form Section */
+.match-form-section {
+    padding: 3rem 0;
+    background: #fff;
+}
+
+.form-display {
+    text-align: center;
+}
+
+.form-results {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.form-result {
+    width: 60px;
+    height: 60px;
+    border-radius: 8px;
+    font-weight: bold;
+    color: white;
+    font-size: 1.1rem;
+    box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.2);
+    transition: all 0.3s;
+    cursor: default;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0;
+}
+
+.form-result:hover {
+    transform: translateY(-3px);
+    box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.35);
+}
+
+.form-result.win {
+    background: linear-gradient(135deg, #2ecc71, #27ae60);
+}
+
+.form-result.draw {
+    background: linear-gradient(135deg, #f1c40f, #f39c12);
+}
+
+.form-result.loss {
+    background: linear-gradient(135deg, #e74c3c, #c0392b);
+}
+
+.form-description {
+    display: block;
+    font-size: 0.9rem;
+    color: #666;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
+    font-weight: bold;
+}
+
+/* Contact Section */
+.contact-section {
+    padding: 5rem 0;
+    background: #fff;
+}
+
+.contact-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 2rem;
+}
+
+.contact-card {
+    text-align: center;
+    background: linear-gradient(135deg, #ffffff 0%, #f9f9f9 100%);
+    padding: 2rem;
+    border-radius: 20px;
+    box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.2);
+    transition: all 0.3s ease;
+}
+
+.contact-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.35);
+}
+
+.contact-card i {
+    font-size: 2rem;
+    color: #B90A0A;
+    margin-bottom: 1rem;
+}
+
+.contact-card h3 {
+    font-size: 1.5rem;
+    color: #333;
+    margin-bottom: 0.5rem;
+}
+
+.contact-card p {
+    color: #666;
+    font-size: 1rem;
+    line-height: 1.6;
+}
+
+.social-links {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    margin-top: 2rem;
+}
+
+.social-link {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 50px;
+    height: 50px;
+    background: linear-gradient(135deg, #ffffff 0%, #f9f9f9 100%);
+    border-radius: 50%;
+    color: #B90A0A;
+    font-size: 1.2rem;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+}
+
+.social-link:hover {
+    background: linear-gradient(45deg, #B90A0A, #d63031);
+    color: white;
+    transform: translateY(-3px);
+    box-shadow: 0 15px 30px rgba(185, 10, 10, 0.3);
+}
+
+/* Map Section */
+.map-section {
+    padding: 4rem 0;
+    background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
+}
+
+.map-container {
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.2);
+    height: 400px;
+    position: relative;
+}
+
+.map-container iframe {
+    width: 100%;
+    height: 100%;
+    border: none;
+}
+
+.stadium-info {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.stadium-info h3 {
+    font-size: 1.8rem;
+    color: #333;
+    margin-bottom: 0.5rem;
+}
+
+.stadium-info p {
+    color: #666;
+    font-size: 1.1rem;
+}
+
 /* Responsive */
 @media (max-width: 768px) {
     .hero h1 {
@@ -186,5 +402,30 @@ body {
     }
     .section-title {
         font-size: 2rem;
+    }
+    .countdown {
+        gap: 1rem;
+    }
+    .countdown-box {
+        width: 80px;
+        padding: 1rem;
+    }
+    .countdown-box span {
+        font-size: 1.5rem;
+    }
+    .form-results {
+        gap: 0.5rem;
+    }
+    .form-result {
+        width: 50px;
+        height: 50px;
+        font-size: 1rem;
+    }
+    .contact-grid {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+    }
+    .map-container {
+        height: 300px;
     }
 }

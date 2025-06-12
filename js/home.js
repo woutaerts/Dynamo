@@ -1,41 +1,44 @@
-// Vanta.js Fog Background
-let vantaEffect;
+// Initialize countdown function
+function initializeCountdown() {
+    const targetDate = new Date("2025-06-15T15:00:00").getTime();
+    const countdownElement = document.getElementById("countdown");
 
-// Initialize Vanta.js fog effect
-function initVanta() {
-    if (window.VANTA && window.THREE) {
-        vantaEffect = VANTA.FOG({
-            el: "#home",
-            mouseControls: true,
-            touchControls: true,
-            gyroControls: false,
-            minHeight: 200.00,
-            minWidth: 200.00,
-            highlightColor: 0xe6f7ff,
-            midtoneColor: 0xb3e0ff,
-            lowlightColor: 0x66b3ff,
-            baseColor: 0xe6f7ff,
-            blurFactor: 0.4,
-            speed: 1.5,
-            zoom: 2
-        });
-    }
-}
+    if (!countdownElement) return;
 
-// Clean up Vanta effect on page unload
-function destroyVanta() {
-    if (vantaEffect) {
-        vantaEffect.destroy();
-    }
+    const countdown = setInterval(() => {
+        const now = new Date().getTime();
+        const distance = targetDate - now;
+
+        if (distance < 0) {
+            clearInterval(countdown);
+            countdownElement.innerHTML = "<div style='text-align: center; font-size: 1.5rem; color: #B90A0A; font-weight: bold;'>Match Started!</div>";
+            return;
+        }
+
+        const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+        const daysEl = document.getElementById("days");
+        const hoursEl = document.getElementById("hours");
+        const minutesEl = document.getElementById("minutes");
+        const secondsEl = document.getElementById("seconds");
+
+        if (daysEl) daysEl.textContent = days;
+        if (hoursEl) hoursEl.textContent = hours;
+        if (minutesEl) minutesEl.textContent = minutes;
+        if (secondsEl) secondsEl.textContent = seconds;
+    }, 1000);
 }
 
 // Initialize when DOM is ready
 document.addEventListener('DOMContentLoaded', () => {
-    // Initialize Vanta fog effect
-    initVanta();
+    // Initialize countdown
+    initializeCountdown();
 
     // Simple entrance animation delay for cards
-    const cards = document.querySelectorAll('.overview-card');
+    const cards = document.querySelectorAll('.overview-card, .contact-card');
     cards.forEach((card, index) => {
         card.style.animationDelay = `${index * 0.1}s`;
     });
@@ -60,6 +63,3 @@ window.addEventListener('load', () => {
         document.body.style.opacity = '1';
     }, 100);
 });
-
-// Clean up on page unload
-window.addEventListener('beforeunload', destroyVanta);

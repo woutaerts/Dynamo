@@ -68,7 +68,7 @@ section {
     background: white;
     padding: 1.5rem;
     border-radius: 16px;
-    box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.25);
+    box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.20);
     transition: transform 0.3s;
     width: 100px;
 }
@@ -92,6 +92,18 @@ section {
     letter-spacing: 1px;
     margin-top: 0.5rem;
     font-weight: bold;
+}
+
+.upcoming-match-name {
+    text-align: center;
+    margin-top: 1.5rem;
+    margin-bottom: 1rem;
+}
+
+.upcoming-match-name h3 {
+    font-size: 1.5rem;
+    color: #333;
+    margin: 0;
 }
 
 /* Form Display */
@@ -141,8 +153,13 @@ section {
 }
 
 .form-description {
-    font-size: 1rem;
+    display: block;
+    font-size: 0.9rem;
     color: #666;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
     font-weight: bold;
 }
 
