@@ -78,7 +78,6 @@
 .social-icon:hover {
     background: white;
     color: #8B0000;
-    transform: translateY(-3px) scale(1.05);
     box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
     border-color: rgba(255, 255, 255, 0.4);
 }

@@ -37,11 +37,63 @@ document.addEventListener('DOMContentLoaded', () => {
     // Initialize countdown
     initializeCountdown();
 
-    // Simple entrance animation delay for cards
-    const cards = document.querySelectorAll('.overview-card, .contact-card');
-    cards.forEach((card, index) => {
-        card.style.animationDelay = `${index * 0.1}s`;
-    });
+    // Select all animatable elements
+    const cards = document.querySelectorAll('.overview-card, .stat-card, .contact-card');
+    const countdownBlocks = document.querySelectorAll('.countdown-block');
+    const formResults = document.querySelectorAll('.form-result');
+
+    const observerOptions = {
+        root: null, // viewport
+        rootMargin: '0px',
+        threshold: 0.1 // Trigger when 10% visible
+    };
+
+    const observer = new IntersectionObserver((entries, obs) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                // Handle cards (existing logic)
+                if (entry.target.classList.contains('overview-card') ||
+                    entry.target.classList.contains('stat-card') ||
+                    entry.target.classList.contains('contact-card')) {
+
+                    const section = entry.target.closest('section');
+                    const cardsInSection = section.querySelectorAll('.overview-card, .stat-card, .contact-card');
+                    const cardIndex = Array.from(cardsInSection).indexOf(entry.target);
+
+                    setTimeout(() => {
+                        entry.target.classList.add('card-animate-in');
+                    }, cardIndex * 200);
+                }
+
+                // Handle countdown blocks
+                else if (entry.target.classList.contains('countdown-block')) {
+                    const allCountdownBlocks = document.querySelectorAll('.countdown-block');
+                    const blockIndex = Array.from(allCountdownBlocks).indexOf(entry.target);
+
+                    setTimeout(() => {
+                        entry.target.classList.add('animate-in');
+                    }, blockIndex * 150);
+                }
+
+                // Handle form results
+                else if (entry.target.classList.contains('form-result')) {
+                    const allFormResults = document.querySelectorAll('.form-result');
+                    const resultIndex = Array.from(allFormResults).indexOf(entry.target);
+
+                    setTimeout(() => {
+                        entry.target.classList.add('animate-in');
+                    }, resultIndex * 100);
+                }
+
+                obs.unobserve(entry.target); // Stop observing after animation is triggered
+            }
+        });
+    }, observerOptions);
+
+    // Observe all elements
+    cards.forEach(card => observer.observe(card));
+    countdownBlocks.forEach(block => observer.observe(block));
+    formResults.forEach(result => observer.observe(result));
 });
 
 // Smooth scrolling for internal hero navigation

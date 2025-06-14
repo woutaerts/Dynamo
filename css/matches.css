@@ -11,13 +11,14 @@
     border-radius: 20px;
     overflow: hidden;
     box-shadow: 0px 8px 25px rgba(0, 0, 0, 0.2);
-    transition: all 0.3s;
+    transition: opacity 0.6s ease-out, transform 0.6s ease-out;
     cursor: pointer;
 }
 
 .match-card.modern:hover {
-    transform: translateY(-8px);
+    transform: translateY(-8px) !important;
     box-shadow: 0px 8px 25px rgba(0, 0, 0, 0.35);
+    transition: transform 0.3s ease !important;
 }
 
 .match-header {
@@ -67,58 +68,91 @@
     font-family: 'Poppins', sans-serif;
 }
 
-/* Timeline */
+/* Timeline Container */
 .timeline-wrapper {
-    padding: 1rem 0;
-    overflow-x: visible;
+    overflow-x: auto;
     overflow-y: visible;
     position: relative;
-    z-index: 1;
+    border-radius: 15px;
+    margin: 1rem 0;
+    min-height: 220px;
 }
 
 .timeline {
     display: flex;
-    gap: 1.5rem;
-    padding: 1rem;
-    overflow-x: visible;
-    scroll-snap-type: x mandatory;
+    align-items: center;
+    gap: 0;
+    padding: 0 3rem;
+    position: relative;
+    min-height: 220px;
+    justify-content: flex-start;
+    width: max-content;
+    min-width: 100%;
 }
 
+/* Timeline Line - now properly spans the full width of timeline items */
+.timeline::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: #bbb;
+    border-radius: 2px;
+    z-index: 1;
+    transform: translateY(-2px);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    margin: 0 3rem;
+    opacity: 0;
+    transform: translateY(-2px) scaleX(0);
+    transform-origin: left center;
+    transition: opacity 0.6s ease-out, transform 0.8s ease-out;
+}
+
+.timeline.animate-in::before {
+    opacity: 1;
+    transform: translateY(-2px) scaleX(1);
+}
+
+/* Timeline Item Container */
 .timeline-item {
-    min-width: 80px;
-    text-align: center;
-    padding: 1rem;
-    border-radius: 12px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-width: 120px;
     flex-shrink: 0;
-    scroll-snap-align: start;
-    box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.2);
-    cursor: pointer;
-    transition: all 0.3s;
     position: relative;
-    z-index: 2;
+    z-index: 3;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    padding: 0 10px;
+    height: 100%;
+    justify-content: center;
 }
 
 .timeline-item:hover {
-    transform: translateY(-3px);
-    box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.35);
+    transform: translateY(-5px);
 }
 
+/* Result Icon - positioned above the timeline */
 .result-icon {
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 40px;
-    height: 40px;
-    padding: 0;
-    border-radius: 8px;
-    font-size: 1.1rem;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    font-size: 1.2rem;
     font-weight: bold;
     color: white;
-    box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.2);
-    margin: 0 auto 0.75rem;
-    cursor: default;
-    transition: all 0.3s;
+    margin-bottom: 1.5rem;
     font-family: 'Poppins', sans-serif;
+    border: 3px solid white;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+    transition: all 0.3s ease;
+    position: relative;
+    z-index: 4;
 }
 
 .timeline-item.win .result-icon {
@@ -133,26 +167,97 @@
     background: linear-gradient(135deg, #e74c3c, #c0392b);
 }
 
+.timeline-item:hover .result-icon {
+    transform: translateY(-50%) scale(1.1);
+    box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+}
+
+/* Timeline Node (Circle) - positioned on the timeline line */
+.timeline-item::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 20px;
+    height: 20px;
+    background: white;
+    border: 4px solid #ddd;
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 2;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+}
+
+/* Node colors based on result */
+.timeline-item.win::before {
+    border-color: #27ae60;
+    background: #2ecc71;
+}
+
+.timeline-item.draw::before {
+    border-color: #f39c12;
+    background: #f1c40f;
+}
+
+.timeline-item.loss::before {
+    border-color: #c0392b;
+    background: #e74c3c;
+}
+
+.timeline-item:hover::before {
+    transform: translate(-50%, -50%) scale(1.2);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+}
+
+/* Timeline Date - positioned below the timeline */
 .timeline-item small {
-    font-size: 0.85rem;
-    color: #666;
-    font-weight: 500;
+    font-size: 0.8rem;
+    color: #555;
+    font-weight: 600;
     font-family: 'Poppins', sans-serif;
+    text-align: center;
+    background: white;
+    padding: 0.3rem 0.6rem;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    border: 1px solid #eee;
+    white-space: nowrap;
+    position: relative;
+    z-index: 4;
+    margin-top: 1.5rem;
 }
 
-/* Scrollbar Hide */
-.timeline,
+/* Scrollbar styling */
 .timeline-wrapper {
-    -ms-overflow-style: none;
-    scrollbar-width: none;
+    scrollbar-width: thin;
+    scrollbar-color: #bbb #f1f1f1;
 }
 
-.timeline::-webkit-scrollbar,
 .timeline-wrapper::-webkit-scrollbar {
-    display: none;
+    height: 8px;
 }
 
-/* Match-specific responsive styles */
+.timeline-wrapper::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 10px;
+}
+
+.timeline-wrapper::-webkit-scrollbar-thumb {
+    background: linear-gradient(90deg, #bbb, #999);
+    border-radius: 10px;
+}
+
+.timeline-wrapper::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(90deg, #999, #777);
+}
+
+.animate-in {
+    opacity: 1 !important;
+    transform: translateY(0) !important;
+}
+
+/* Responsive Design */
 @media (max-width: 768px) {
     .matches-grid {
         grid-template-columns: 1fr;
@@ -160,19 +265,42 @@
         padding: 0 0.5rem;
     }
 
+    .timeline-wrapper {
+        padding: 4rem 0 3rem;
+        margin: 0.5rem 0;
+        min-height: 200px;
+    }
+
     .timeline {
-        gap: 1rem;
-        padding: 0.5rem;
+        padding: 0 2rem;
+        min-height: 200px;
+    }
+
+    .timeline::before {
+        margin: 0 2rem;
     }
 
     .timeline-item {
-        min-width: 70px;
-        padding: 0.75rem;
+        min-width: 100px;
+        padding: 0 8px;
     }
 
     .result-icon {
-        width: 30px;
-        height: 30px;
-        line-height: 30px;
+        width: 40px;
+        height: 40px;
+        font-size: 1rem;
+        margin-bottom: 1.2rem;
+    }
+
+    .timeline-item small {
+        font-size: 0.75rem;
+        padding: 0.25rem 0.5rem;
+        margin-top: 1.2rem;
+    }
+
+    .timeline-item::before {
+        width: 16px;
+        height: 16px;
+        border-width: 3px;
     }
 }
