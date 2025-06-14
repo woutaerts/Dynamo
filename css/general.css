@@ -1,0 +1,263 @@
+/* General resets */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    background: #f5f5f5;
+    color: #333;
+    line-height: 1.6;
+    overflow-x: hidden;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+/* General Page Hero (for non-homepage pages) */
+.page-hero {
+    padding: 2.3rem 1.5rem;
+    text-align: center;
+    background: linear-gradient(135deg, #B90A0A 0%, #8B0000 100%);
+    color: white;
+    margin-top: 30px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+}
+
+.page-hero h1 {
+    font-size: 3rem;
+    font-weight: 900;
+    color: white;
+    text-shadow: 2px 2px 8px rgba(0,0,0,0.4);
+    font-family: 'Poppins', sans-serif;
+}
+
+/* Responsive for page hero */
+@media (max-width: 768px) {
+    .page-hero {
+        padding: 2rem 1rem;
+    }
+
+    .page-hero h1 {
+        font-size: 2.2rem;
+    }
+}
+
+/* Section Titles and Subtitles */
+.section-title {
+    text-align: center;
+    font-size: 3rem;
+    font-weight: 800;
+    color: #333;
+    margin-top: 3rem;
+    margin-bottom: 3rem;
+    position: relative;
+    font-family: 'Poppins', sans-serif;
+}
+
+.section-title::after {
+    content: '';
+    position: absolute;
+    bottom: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80px;
+    height: 4px;
+    background: linear-gradient(45deg, #B90A0A, #d63031);
+    border-radius: 2px;
+}
+
+.section-subtitle {
+    text-align: center;
+    font-size: 1.8rem;
+    font-weight: 800;
+    color: #B90A0A;
+    margin-bottom: 2rem;
+    font-family: 'Poppins', sans-serif;
+    position: relative;
+}
+
+.section-subtitle::after {
+    content: '';
+    position: absolute;
+    bottom: -8px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 50px;
+    height: 2px;
+    background: #000000;
+    border-radius: 1px;
+}
+
+/* Countdown Section */
+.countdown-section {
+    padding: 2rem 0;
+}
+
+.countdown {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    font-size: 1.5rem;
+}
+
+.countdown-block {
+    text-align: center;
+    flex-shrink: 0;
+}
+
+.countdown-box {
+    background: white;
+    padding: 1rem;
+    border-radius: 16px;
+    box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.2);
+    transition: transform 0.3s;
+    width: 100px;
+}
+
+.countdown-box:hover {
+    transform: translateY(-5px);
+    box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.35);
+}
+
+.countdown-box span {
+    display: block;
+    font-size: 2rem;
+    font-weight: bold;
+    color: #B90A0A;
+    font-family: 'Poppins', sans-serif;
+}
+
+.countdown-block small {
+    display: block;
+    font-size: 0.9rem;
+    color: #666;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-top: 0.5rem;
+    font-weight: 700;
+}
+
+.upcoming-match-name {
+    text-align: center;
+    margin-top: 1.5rem;
+    margin-bottom: 1rem;
+}
+
+.upcoming-match-name h3 {
+    font-size: 1.5rem;
+    color: #333;
+    margin: 0;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 600;
+}
+
+/* Match Form Section */
+.match-form-section {
+    padding: 2rem 0;
+}
+
+.form-display {
+    text-align: center;
+}
+
+.form-results {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.form-result {
+    width: 60px;
+    height: 60px;
+    border-radius: 8px;
+    font-weight: bold;
+    color: white;
+    font-size: 1.1rem;
+    box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.2);
+    transition: all 0.3s;
+    cursor: default;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0;
+    font-family: 'Poppins', sans-serif;
+}
+
+.form-result:hover {
+    transform: translateY(-3px);
+    box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.35);
+}
+
+.form-result.win {
+    background: linear-gradient(135deg, #2ecc71, #27ae60);
+}
+
+.form-result.draw {
+    background: linear-gradient(135deg, #f1c40f, #f39c12);
+}
+
+.form-result.loss {
+    background: linear-gradient(135deg, #e74c3c, #c0392b);
+}
+
+.form-description {
+    text-align: center;
+    font-size: 0.9rem;
+    color: #666;
+    margin-top: 0.5rem;
+    margin-bottom: 1.5rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    font-weight: 600;
+    font-family: 'Poppins', sans-serif;
+}
+
+/* CTA Button */
+.cta-button {
+    display: inline-block;
+    padding: 1rem 2rem;
+    background: linear-gradient(45deg, #B90A0A, #d63031);
+    color: white;
+    text-decoration: none;
+    border-radius: 50px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.20);
+}
+
+.cta-button:hover {
+    transform: translateY(-3px);
+    box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.35);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .section-title {
+        font-size: 2rem;
+    }
+    .countdown {
+        gap: 1rem;
+    }
+    .countdown-box {
+        width: 80px;
+        padding: 1rem;
+    }
+    .countdown-box span {
+        font-size: 1.5rem;
+    }
+    .form-results {
+        gap: 0.5rem;
+    }
+    .form-result {
+        width: 50px;
+        height: 50px;
+        font-size: 1rem;
+    }
+}

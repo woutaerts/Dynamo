@@ -1,25 +1,4 @@
-/* General resets */
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
-body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
-    color: #333;
-    line-height: 1.6;
-    overflow-x: hidden;
-}
-
-.container {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 20px;
-}
-
-/* Hero Section with Background Image */
+/* Homepage Hero Section with Background Image */
 .hero {
     height: 100vh;
     display: flex;
@@ -44,9 +23,9 @@ body {
 }
 
 .hero h1 {
-    font-family: 'Titan One', cursive;
-    font-size: 4rem;
-    font-weight: 400;
+    font-family: 'Poppins', cursive;
+    font-size: 5rem;
+    font-weight: 900;
     margin-bottom: 1rem;
     color: white;
     text-align: center;
@@ -65,22 +44,8 @@ body {
     max-width: 600px;
 }
 
-.cta-button {
-    display: inline-block;
-    padding: 1rem 2rem;
-    background: linear-gradient(45deg, #B90A0A, #d63031);
-    color: white;
-    text-decoration: none;
-    border-radius: 50px;
-    font-weight: 600;
-    transition: all 0.3s ease;
-    box-shadow: 0 10px 30px rgba(185, 10, 10, 0.3);
+.hero .cta-button {
     animation: slideInUp 1s ease-out 0.6s both;
-}
-
-.cta-button:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 15px 40px rgba(185, 10, 10, 0.4);
 }
 
 @keyframes slideInUp {
@@ -96,29 +61,7 @@ body {
 
 /* Overview Section */
 .overview-section {
-    padding: 5rem 0;
-    background: #fff;
-}
-
-.section-title {
-    text-align: center;
-    font-size: 3rem;
-    font-weight: 800;
-    color: #333;
-    margin-bottom: 3rem;
-    position: relative;
-}
-
-.section-title::after {
-    content: '';
-    position: absolute;
-    bottom: -10px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 80px;
-    height: 4px;
-    background: linear-gradient(45deg, #B90A0A, #d63031);
-    border-radius: 2px;
+    padding: 2rem 0;
 }
 
 .overview-grid {
@@ -132,8 +75,13 @@ body {
     background: linear-gradient(135deg, #ffffff 0%, #f9f9f9 100%);
     padding: 2rem;
     border-radius: 20px;
-    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.05);
+    box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.20);
     transition: all 0.3s ease;
+}
+
+.overview-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.35);
 }
 
 .overview-card i {
@@ -146,6 +94,15 @@ body {
     font-size: 1.5rem;
     color: #333;
     margin-bottom: 0.5rem;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 600;
+}
+
+.overview-card p {
+    color: #666;
+    font-size: 1rem;
+    line-height: 1.6;
+    margin-bottom: 1rem;
 }
 
 .overview-link {
@@ -161,132 +118,50 @@ body {
     color: #d63031;
 }
 
-/* Countdown Section */
-.countdown-section {
-    padding: 4rem 0;
-    background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
+/* Statistics Overview Section */
+.stats-overview-section {
+    padding: 2rem 0;
 }
 
-.countdown {
-    display: flex;
-    justify-content: center;
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, 200px);
     gap: 2rem;
-    font-size: 1.5rem;
-}
-
-.countdown-block {
+    justify-content: center;
     text-align: center;
-    flex-shrink: 0;
 }
 
-.countdown-box {
+.stat-card {
     background: white;
-    padding: 1.5rem;
-    border-radius: 16px;
+    padding: 2rem;
+    border-radius: 15px;
     box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.2);
-    transition: transform 0.3s;
-    width: 100px;
+    transition: all 0.3s ease;
 }
 
-.countdown-box:hover {
+.stat-card:hover {
     transform: translateY(-5px);
     box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.35);
 }
 
-.countdown-box span {
-    display: block;
-    font-size: 2rem;
-    font-weight: bold;
+.stat-number {
+    font-size: 2.5rem;
     color: #B90A0A;
+    font-weight: 800;
+    font-family: 'Poppins', sans-serif;
 }
 
-.countdown-block small {
-    display: block;
-    font-size: 0.9rem;
+.stat-label {
     color: #666;
     text-transform: uppercase;
-    letter-spacing: 1px;
     margin-top: 0.5rem;
-    font-weight: bold;
-}
-
-.upcoming-match-name {
-    text-align: center;
-    margin-top: 1.5rem;
-    margin-bottom: 1rem;
-}
-
-.upcoming-match-name h3 {
-    font-size: 1.5rem;
-    color: #333;
-    margin: 0;
-}
-
-/* Match Form Section */
-.match-form-section {
-    padding: 3rem 0;
-    background: #fff;
-}
-
-.form-display {
-    text-align: center;
-}
-
-.form-results {
-    display: flex;
-    justify-content: center;
-    gap: 1rem;
-    margin-bottom: 1rem;
-}
-
-.form-result {
-    width: 60px;
-    height: 60px;
-    border-radius: 8px;
-    font-weight: bold;
-    color: white;
-    font-size: 1.1rem;
-    box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.2);
-    transition: all 0.3s;
-    cursor: default;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 0;
-}
-
-.form-result:hover {
-    transform: translateY(-3px);
-    box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.35);
-}
-
-.form-result.win {
-    background: linear-gradient(135deg, #2ecc71, #27ae60);
-}
-
-.form-result.draw {
-    background: linear-gradient(135deg, #f1c40f, #f39c12);
-}
-
-.form-result.loss {
-    background: linear-gradient(135deg, #e74c3c, #c0392b);
-}
-
-.form-description {
-    display: block;
-    font-size: 0.9rem;
-    color: #666;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    margin-top: 0.5rem;
-    margin-bottom: 0.5rem;
-    font-weight: bold;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 600;
 }
 
 /* Contact Section */
 .contact-section {
-    padding: 5rem 0;
-    background: #fff;
+    padding: 2rem 0;
 }
 
 .contact-grid {
@@ -302,11 +177,15 @@ body {
     border-radius: 20px;
     box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.2);
     transition: all 0.3s ease;
+    text-decoration: none;
+    color: inherit;
+    display: block;
 }
 
 .contact-card:hover {
     transform: translateY(-5px);
     box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.35);
+    text-decoration: none;
 }
 
 .contact-card i {
@@ -319,6 +198,8 @@ body {
     font-size: 1.5rem;
     color: #333;
     margin-bottom: 0.5rem;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 600;
 }
 
 .contact-card p {
@@ -358,8 +239,7 @@ body {
 
 /* Map Section */
 .map-section {
-    padding: 4rem 0;
-    background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
+    padding: 2rem 0;
 }
 
 .map-container {
@@ -385,6 +265,8 @@ body {
     font-size: 1.8rem;
     color: #333;
     margin-bottom: 0.5rem;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 600;
 }
 
 .stadium-info p {
@@ -392,34 +274,13 @@ body {
     font-size: 1.1rem;
 }
 
-/* Responsive */
+/* Homepage Responsive */
 @media (max-width: 768px) {
     .hero h1 {
         font-size: 2.5rem;
     }
     .hero p {
         font-size: 1.1rem;
-    }
-    .section-title {
-        font-size: 2rem;
-    }
-    .countdown {
-        gap: 1rem;
-    }
-    .countdown-box {
-        width: 80px;
-        padding: 1rem;
-    }
-    .countdown-box span {
-        font-size: 1.5rem;
-    }
-    .form-results {
-        gap: 0.5rem;
-    }
-    .form-result {
-        width: 50px;
-        height: 50px;
-        font-size: 1rem;
     }
     .contact-grid {
         grid-template-columns: 1fr;

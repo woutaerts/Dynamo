@@ -15,7 +15,7 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 function initializeCountdown() {
-    const targetDate = new Date("2025-06-12T15:00:00").getTime();
+    const targetDate = new Date("2025-06-30T15:00:00").getTime();
     const countdownElement = document.getElementById("countdown");
 
     if (!countdownElement) return;

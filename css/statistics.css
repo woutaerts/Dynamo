@@ -1,30 +1,11 @@
-/* Hero & Section Titles */
-.page-hero {
-    padding: 3rem 1.5rem;
-    text-align: center;
-    background: linear-gradient(135deg, #B90A0A 0%, #8B0000 100%);
-    color: white;
-    margin-top: 30px;
-}
-
-.page-hero h1 {
-    font-size: 2.4rem;
-    color: white;
-}
-
-.page-hero p {
-    font-size: 1rem;
-    color: rgba(255, 255, 255, 0.85);
-}
-
 /* Overall Stats */
 .stats-section {
-    padding: 4rem 0;
+    padding: 2rem 0;
 }
 
 .stats-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
     gap: 2rem;
     text-align: center;
 }
@@ -33,25 +14,27 @@
     background: white;
     padding: 2rem;
     border-radius: 15px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+    box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.20);
 }
 
 .stat-number {
     font-size: 2.5rem;
     color: #B90A0A;
-    font-weight: bold;
+    font-weight: 800;
+    font-family: 'Poppins', sans-serif;
 }
 
 .stat-label {
-    color: #555;
+    color: #666;
     text-transform: uppercase;
     margin-top: 0.5rem;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 600;
 }
 
 /* Detailed Stats */
 .detailed-stats {
-    background: #f8f9fa;
-    padding: 4rem 0;
+    padding: 2rem 0;
 }
 
 .stats-categories {
@@ -68,6 +51,9 @@
 .stat-category h3 {
     color: #B90A0A;
     margin-bottom: 1rem;
+    text-align: center;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 600;
 }
 
 .stat-item {
@@ -76,6 +62,16 @@
     background: white;
     padding: 0.75rem 1rem;
     border-radius: 10px;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.03);
+    box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.20);
     margin-bottom: 0.5rem;
+    font-family: 'Poppins', sans-serif;
+}
+
+.stat-item span:first-child {
+    font-weight: 500;
+}
+
+.stat-item span:last-child {
+    font-weight: 700;
+    color: #B90A0A;
 }
