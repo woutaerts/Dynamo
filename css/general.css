@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&display=swap');
+
 /* General resets */
 * {
     margin: 0;
@@ -54,7 +56,6 @@ body {
     font-size: 3rem;
     font-weight: 800;
     color: #333;
-    margin-top: 3rem;
     margin-bottom: 3rem;
     position: relative;
     font-family: 'Poppins', sans-serif;
@@ -67,7 +68,7 @@ body {
     left: 50%;
     transform: translateX(-50%);
     width: 80px;
-    height: 4px;
+    height: 5px;
     background: linear-gradient(45deg, #B90A0A, #d63031);
     border-radius: 2px;
 }
