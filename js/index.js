@@ -32,10 +32,28 @@ function initializeCountdown() {
     }, 1000);
 }
 
+function animateOnScroll() {
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add("card-animate-in");
+                observer.unobserve(entry.target);
+            }
+        });
+    }, {
+        threshold: 0.1
+    });
+
+    document.querySelectorAll('.map-container').forEach(el => {
+        observer.observe(el);
+    });
+}
+
 // Initialize when DOM is ready
 document.addEventListener('DOMContentLoaded', () => {
     // Initialize countdown
     initializeCountdown();
+    animateOnScroll();
 
     // Select all animatable elements
     const cards = document.querySelectorAll('.overview-card, .stat-card, .contact-card');

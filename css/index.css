@@ -257,6 +257,9 @@
     box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.2);
     height: 400px;
     position: relative;
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.6s ease-out, transform 0.6s ease-out;
 }
 
 .map-container iframe {

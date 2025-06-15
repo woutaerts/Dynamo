@@ -20,7 +20,7 @@ project-root/
 │   │   ├── header.css
 │   │   └── footer.css
 │   ├── js/
-│   │   ├── home.js
+│   │   ├── index.js
 │   │   ├── players.js
 │   │   ├── matches.js
 │   │   ├── statistics.js
@@ -46,7 +46,7 @@ project-root/
 ## ⚙️ JavaScript Behavior
 
 - Modular JS:
-    - `home.js`, `players.js`, `matches.js`, `statistics.js`: Page-specific animations and interactions
+    - `index.js`, `players.js`, `matches.js`, `statistics.js`: Page-specific animations and interactions
     - `header.js`: Handles mobile nav toggle, header scroll effect, and active menu states
 
 ## 📱 Responsive Design
