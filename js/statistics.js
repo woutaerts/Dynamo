@@ -18,77 +18,96 @@ function animateCounters() {
     });
 }
 
-// Setup staggered animations for statistics elements
+// Simplified setup staggered animations - matching index.js approach
 function setupStaggeredAnimations() {
-    // Select all animatable elements in statistics sections
-    const animatableElements = document.querySelectorAll('.stat-card, .stat-category, .player-card, .scorer-card, .record-category');
+    // Select all animatable elements (same as before)
+    const statCards = document.querySelectorAll('.stat-card');
+    const statCategories = document.querySelectorAll('.stat-category');
+    const playerCards = document.querySelectorAll('.player-card');
+    const scorerCards = document.querySelectorAll('.scorer-card');
+    const recordCategories = document.querySelectorAll('.record-category');
 
     const observerOptions = {
-        root: null, // viewport
+        root: null,
         rootMargin: '0px',
-        threshold: 0.1 // Trigger when 10% visible
+        threshold: 0.1
     };
 
     const observer = new IntersectionObserver((entries, obs) => {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
-                // Find all similar elements in the same section
-                const section = entry.target.closest('section') || entry.target.closest('.container') || entry.target.closest('.stats-section') || entry.target.closest('.detailed-stats') || entry.target.closest('.all-time-stats') || entry.target.closest('.toggles-container');
-
-                // Define different selectors for different types of elements
-                let sectionElements;
+                // Handle stat cards
                 if (entry.target.classList.contains('stat-card')) {
-                    sectionElements = section.querySelectorAll('.stat-card');
-                } else if (entry.target.classList.contains('stat-category')) {
-                    sectionElements = section.querySelectorAll('.stat-category');
-                } else if (entry.target.classList.contains('player-card')) {
-                    sectionElements = section.querySelectorAll('.player-card');
-                } else if (entry.target.classList.contains('scorer-card')) {
-                    sectionElements = section.querySelectorAll('.scorer-card');
-                } else if (entry.target.classList.contains('record-category')) {
-                    sectionElements = section.querySelectorAll('.record-category');
-                } else if (entry.target.classList.contains('toggle-wrapper')) {
-                    sectionElements = section.querySelectorAll('.toggle-wrapper');
-                } else {
-                    // Fallback for any other elements
-                    sectionElements = [entry.target];
-                }
+                    const section = entry.target.closest('section') || entry.target.closest('.stats-section');
+                    const cardsInSection = section.querySelectorAll('.stat-card');
+                    const cardIndex = Array.from(cardsInSection).indexOf(entry.target);
 
-                // Convert NodeList to Array and find the index of current element
-                const elementIndex = Array.from(sectionElements).indexOf(entry.target);
+                    setTimeout(() => {
+                        entry.target.classList.add('card-animate-in');
 
-                // Apply staggered delay: 150ms between each element
-                // Use shorter delay for smaller elements like toggle-wrapper
-                let baseDelay = entry.target.classList.contains('toggle-wrapper') ?
-                    elementIndex * 100 : elementIndex * 150;
-
-                setTimeout(() => {
-                    entry.target.classList.add('animate-in');
-
-                    // Trigger counter animation for stat cards
-                    if (entry.target.classList.contains('stat-card')) {
+                        // Trigger counter animation
                         const counter = entry.target.querySelector('.stat-number');
                         if (counter && counter.getAttribute('data-target')) {
                             animateCounter(counter);
                         }
-                    }
-                }, baseDelay);
+                    }, cardIndex * 200);
+                }
 
-                obs.unobserve(entry.target); // Stop observing after animation is triggered
+                // Handle stat categories
+                else if (entry.target.classList.contains('stat-category')) {
+                    const section = entry.target.closest('section') || entry.target.closest('.detailed-stats');
+                    const categoriesInSection = section.querySelectorAll('.stat-category');
+                    const categoryIndex = Array.from(categoriesInSection).indexOf(entry.target);
+
+                    setTimeout(() => {
+                        entry.target.classList.add('card-animate-in');
+                    }, categoryIndex * 200);
+                }
+
+                // Handle player cards
+                else if (entry.target.classList.contains('player-card')) {
+                    const section = entry.target.closest('section') || entry.target.closest('.container');
+                    const cardsInSection = section.querySelectorAll('.player-card');
+                    const cardIndex = Array.from(cardsInSection).indexOf(entry.target);
+
+                    setTimeout(() => {
+                        entry.target.classList.add('card-animate-in');
+                    }, cardIndex * 200);
+                }
+
+                // Handle scorer cards
+                else if (entry.target.classList.contains('scorer-card')) {
+                    const section = entry.target.closest('section') || entry.target.closest('.all-time-stats');
+                    const cardsInSection = section.querySelectorAll('.scorer-card');
+                    const cardIndex = Array.from(cardsInSection).indexOf(entry.target);
+
+                    setTimeout(() => {
+                        entry.target.classList.add('card-animate-in');
+                    }, cardIndex * 200);
+                }
+
+                // Handle record categories
+                else if (entry.target.classList.contains('record-category')) {
+                    const section = entry.target.closest('section') || entry.target.closest('.all-time-stats');
+                    const categoriesInSection = section.querySelectorAll('.record-category');
+                    const categoryIndex = Array.from(categoriesInSection).indexOf(entry.target);
+
+                    setTimeout(() => {
+                        entry.target.classList.add('card-animate-in');
+                    }, categoryIndex * 200);
+                }
+
+                obs.unobserve(entry.target);
             }
         });
     }, observerOptions);
 
-    // Set initial state and observe all elements
-    animatableElements.forEach(element => {
-        // Set initial invisible state
-        element.style.opacity = '0';
-        element.style.transform = 'translateY(30px)';
-        element.style.transition = 'opacity 0.6s ease-out, transform 0.6s ease-out';
-
-        // Observe for intersection
-        observer.observe(element);
-    });
+    // Observe all elements
+    statCards.forEach(card => observer.observe(card));
+    statCategories.forEach(category => observer.observe(category));
+    playerCards.forEach(card => observer.observe(card));
+    scorerCards.forEach(card => observer.observe(card));
+    recordCategories.forEach(category => observer.observe(category));
 }
 
 // Animate individual counter
@@ -160,28 +179,24 @@ function initToggle() {
 
         // Show appropriate section and set theme
         if (!isPlayer && !isAlltime) {
-            // Team + Season (default - no class needed, handled by default CSS)
             teamSeasonStats?.classList.remove('hidden');
             teamSeasonDetailed?.classList.remove('hidden');
             setTimeout(() => {
                 resetAndAnimateNewSection([teamSeasonStats, teamSeasonDetailed]);
             }, 100);
         } else if (!isPlayer && isAlltime) {
-            // Team + All Time
             teamAlltimeStats?.classList.remove('hidden');
             document.body.classList.add('team-alltime');
             setTimeout(() => {
                 resetAndAnimateNewSection([teamAlltimeStats]);
             }, 100);
         } else if (isPlayer && !isAlltime) {
-            // Player + Season
             playerSeasonStats?.classList.remove('hidden');
             document.body.classList.add('player-season');
             setTimeout(() => {
                 resetAndAnimateNewSection([playerSeasonStats]);
             }, 100);
         } else {
-            // Player + All Time
             playerAlltimeStats?.classList.remove('hidden');
             document.body.classList.add('player-alltime');
             setTimeout(() => {
@@ -198,7 +213,7 @@ function initToggle() {
     seasonAlltimeToggle?.addEventListener('change', updateView);
 }
 
-// Reset and animate new section when switching views
+// Updated reset and animate function to use card-animate-in class
 function resetAndAnimateNewSection(sections) {
     sections.forEach(section => {
         if (!section) return;
@@ -207,14 +222,12 @@ function resetAndAnimateNewSection(sections) {
         const elements = section.querySelectorAll('.stat-card, .stat-category, .player-card, .scorer-card, .record-category');
 
         elements.forEach((element, index) => {
-            // Reset animation state
-            element.classList.remove('animate-in');
-            element.style.opacity = '0';
-            element.style.transform = 'translateY(30px)';
+            // Reset animation state - remove the card-animate-in class
+            element.classList.remove('card-animate-in');
 
-            // Apply staggered animation
+            // Apply staggered animation using the same class as index.js
             setTimeout(() => {
-                element.classList.add('animate-in');
+                element.classList.add('card-animate-in');
 
                 // Trigger counter animation for stat cards
                 if (element.classList.contains('stat-card')) {
@@ -223,7 +236,7 @@ function resetAndAnimateNewSection(sections) {
                         animateCounter(counter);
                     }
                 }
-            }, index * 150);
+            }, index * 200); // Using 200ms delay like index.js
         });
     });
 }
