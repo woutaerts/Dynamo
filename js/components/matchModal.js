@@ -73,6 +73,12 @@ class MatchModal {
         // Show modal
         this.modal.style.display = 'flex';
 
+        // Reset scroll position to top
+        const modalContent = this.modal.querySelector('.modal-content'); // Adjust selector based on your HTML
+        if (modalContent) {
+            modalContent.scrollTop = 0;
+        }
+
         // Initialize map after modal is visible
         setTimeout(() => {
             this.initializeMap(lat, lng, stadium);
@@ -221,7 +227,7 @@ class MatchModal {
             console.error('Failed to initialize map:', error);
             // Show fallback message if map fails to load
             mapContainer.innerHTML = `
-                <div style="display: flex; align-items: center; justify-content: center; height: 100%; background: rgba(0,0,0,0.1); color: #666; font-family: Poppins;">
+                <div style="display: flex; align-items: center; justify-content: center; height: 100%; background: rgba(0,0,0,0.1); color: #666; font-family: Poppins,serif;">
                     <p>Map unavailable</p>
                 </div>
             `;
