@@ -1,3 +1,13 @@
+/* Match Modal - Enhanced Styling */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&display=swap');
+
+/* Prevent body scroll when modal is open */
+body.modal-open {
+    overflow: hidden;
+    position: fixed;
+    width: 100%;
+}
+
 /* Overlay */
 .modal-overlay {
     position: fixed;
@@ -5,12 +15,13 @@
     left: 0;
     width: 100vw;
     height: 100vh;
-    background: rgba(0, 0, 0, 0.7);
+    background: rgba(0, 0, 0, 0.75);
     display: none;
     justify-content: center;
     align-items: center;
     z-index: 9999;
-    animation: fadeIn 0.3s ease-out;
+    animation: fadeIn 0.4s ease-out;
+    backdrop-filter: blur(3px);
 }
 
 .modal-overlay.show {
@@ -20,38 +31,42 @@
 @keyframes fadeIn {
     from {
         opacity: 0;
+        backdrop-filter: blur(0px);
     }
     to {
         opacity: 1;
+        backdrop-filter: blur(3px);
     }
 }
 
-/* Modal Content (Glassmorphism Card Style) */
+/* Modal Content */
 .modal-content {
-    backdrop-filter: blur(16px) saturate(180%);
-    -webkit-backdrop-filter: blur(16px) saturate(180%);
-    background-color: rgba(255, 255, 255, 0.85);
-    border-radius: 16px;
-    border: 1px solid rgba(209, 213, 219, 0.4);
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-    padding: 2.5rem;
+    backdrop-filter: blur(20px) saturate(180%);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 24px;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    box-shadow:
+            0 25px 50px rgba(0, 0, 0, 0.15),
+            0 0 0 1px rgba(255, 255, 255, 0.1) inset;
+    padding: 3rem;
     width: 90%;
-    max-width: 700px;
+    max-width: 800px;
     max-height: 90vh;
     overflow-y: auto;
     position: relative;
-    color: #111;
-    font-family: 'Helvetica Neue', Arial, sans-serif;
-    animation: slideUp 0.3s ease-out;
+    color: #333;
+    font-family: 'Poppins', sans-serif;
+    animation: slideUp 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
 @keyframes slideUp {
     from {
-        transform: translateY(50px);
+        transform: translateY(60px) scale(0.95);
         opacity: 0;
     }
     to {
-        transform: translateY(0);
+        transform: translateY(0) scale(1);
         opacity: 1;
     }
 }
@@ -59,100 +74,457 @@
 /* Close Button */
 .close-modal {
     position: absolute;
-    top: 15px;
-    right: 20px;
-    font-size: 1.8rem;
-    color: #555;
-    background: none;
+    top: 20px;
+    right: 25px;
+    font-size: 2rem;
+    color: #666;
+    background: rgba(255, 255, 255, 0.8);
     border: none;
     cursor: pointer;
-    transition: color 0.2s ease, transform 0.2s ease;
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 300;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
 }
 
 .close-modal:hover {
+    background: rgba(185, 10, 10, 0.1);
     color: #B90A0A;
-    transform: scale(1.2);
+    transform: scale(1.1) rotate(90deg);
+    box-shadow: 0 6px 20px rgba(185, 10, 10, 0.2);
 }
 
-/* Title */
+/* Season */
+.season {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 700;
+    font-size: 1.5rem;
+    transition: color 0.3s ease;
+    user-select: none;
+    text-transform: uppercase;
+    color: #b8b8b8;
+    line-height: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    top: -8px;
+    margin-bottom: 1rem;
+    margin-top: 1rem;
+}
+
+/* Modal Title */
 #modalMatchTitle {
     text-align: center;
-    margin-bottom: 1.5rem;
-    font-size: 2.2rem;
-    font-weight: bold;
-    color: #111;
-    letter-spacing: -0.04em;
+    margin-bottom: 2.5rem;
+    font-size: 2.8rem;
+    font-weight: 800;
+    background: #333;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    letter-spacing: -0.02em;
+    font-family: 'Poppins', sans-serif;
+    position: relative;
 }
 
-/* Section Container */
+#modalMatchTitle::after {
+    content: '';
+    position: absolute;
+    bottom: -15px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100px;
+    height: 4px;
+    background: linear-gradient(45deg, #B90A0A, #d63031);
+    border-radius: 2px;
+}
+
+/* Modal Sections */
 .modal-section {
-    margin-bottom: 2rem;
+    margin-bottom: 2.5rem;
+    padding: 1.5rem;
+    background: rgba(255, 255, 255, 0.6);
+    border-radius: 16px;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    backdrop-filter: blur(10px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.05);
+    transition: all 0.3s ease;
+}
+
+.modal-section:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 35px rgba(0, 0, 0, 0.08);
 }
 
 .modal-section h3 {
-    margin-bottom: 0.8rem;
+    margin-bottom: 1.2rem;
     color: #B90A0A;
-    font-size: 1.4rem;
+    font-size: 1.6rem;
     text-align: center;
+    font-weight: 700;
+    font-family: 'Poppins', sans-serif;
+    position: relative;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.modal-section h3::after {
+    content: '';
+    position: absolute;
+    bottom: -8px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 50px;
+    height: 2px;
+    background: #333;
+    border-radius: 1px;
+}
+
+/* Date & Time Section - Centered styling */
+.modal-section p#matchDateTime {
+    text-align: center;
+    font-size: 1.3rem;
+    color: #333;
     font-weight: 600;
+    font-family: 'Poppins', sans-serif;
+    line-height: 1.4;
+    margin: 0;
+    padding: 1rem;
+    background: rgba(255, 255, 255, 0.7);
+    border-radius: 12px;
+    border: 1px solid rgba(0, 0, 0, 0.05);
+    backdrop-filter: blur(5px);
 }
 
 /* Lists */
 .modal-section ul {
     list-style: none;
     padding-left: 0;
-    text-align: center;
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
 }
 
 .modal-section li {
-    margin-bottom: 0.6rem;
+    padding: 1rem 1.5rem;
     font-size: 1.1rem;
     color: #333;
+    font-weight: 500;
+    font-family: 'Poppins', sans-serif;
+    background: rgba(255, 255, 255, 0.7);
+    border-radius: 12px;
+    border: 1px solid rgba(0, 0, 0, 0.05);
+    transition: all 0.3s ease;
+    text-align: center;
+    backdrop-filter: blur(5px);
 }
 
-/* Venue Info */
-#venueInfo {
-    font-size: 1.2rem;
-    font-weight: 600;
+.modal-section li:hover {
+    background: rgba(185, 10, 10, 0.05);
+    transform: translateX(5px);
+    border-color: rgba(185, 10, 10, 0.2);
+}
+
+/* Match Info Section */
+.match-info {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    margin-bottom: 2rem;
+}
+
+.info-card {
+    padding: 1.2rem;
+    background: rgba(255, 255, 255, 0.6);
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    backdrop-filter: blur(10px);
     text-align: center;
-    color: #000;
-    margin-bottom: 0.8rem;
+    transition: all 0.3s ease;
+}
+
+.info-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+}
+
+.info-card h4 {
+    font-size: 0.9rem;
+    color: #B90A0A;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 0.5rem;
+    font-family: 'Poppins', sans-serif;
+}
+
+.info-card p {
+    font-size: 1.1rem;
+    color: #333;
+    font-weight: 500;
+    font-family: 'Poppins', sans-serif;
+}
+
+/* Stadium Section */
+.stadium-section {
+    margin-bottom: 2.5rem;
+}
+
+.stadium-name {
+    text-align: center;
+    font-size: 1.3rem;
+    color: #333;
+    font-weight: 600;
+    font-family: 'Poppins', sans-serif;
+    line-height: 1.4;
+    margin: 0;
+    padding: 1rem;
+    background: rgba(255, 255, 255, 0.7);
+    border-radius: 12px;
+    border: 1px solid rgba(0, 0, 0, 0.05);
+    backdrop-filter: blur(5px);
+}
+
+/* Goalscorers Section */
+.goalscorers-section {
+    margin-bottom: 2.5rem;
+    padding: 1.5rem;
+    background: rgba(255, 255, 255, 0.6);
+    border-radius: 16px;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    backdrop-filter: blur(10px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.05);
+    transition: all 0.3s ease;
+}
+
+.goalscorers-section:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 35px rgba(0, 0, 0, 0.08);
+}
+
+.goalscorers-section h3 {
+    margin-bottom: 1.2rem;
+    color: #B90A0A;
+    font-size: 1.6rem;
+    text-align: center;
+    font-weight: 700;
+    font-family: 'Poppins', sans-serif;
+    position: relative;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.goalscorers-section h3::after {
+    content: '';
+    position: absolute;
+    bottom: -8px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 50px;
+    height: 2px;
+    background: #333;
+    border-radius: 1px;
+}
+
+.goalscorers-list {
+    list-style: none;
+    padding-left: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+}
+
+.goalscorer-item {
+    padding: 1rem 1.5rem;
+    font-size: 1.1rem;
+    color: #333;
+    font-weight: 500;
+    font-family: 'Poppins', sans-serif;
+    background: rgba(255, 255, 255, 0.7);
+    border-radius: 12px;
+    border: 1px solid rgba(0, 0, 0, 0.05);
+    transition: all 0.3s ease;
+    text-align: left;
+    backdrop-filter: blur(5px);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.goalscorer-item:hover {
+    background: rgba(185, 10, 10, 0.05);
+    transform: translateY(-2px);
+    border-color: rgba(185, 10, 10, 0.2);
+}
+
+/* Remove the ::before pseudo-element since we're using real icons now */
+.goalscorer-item::before {
+    content: none;
+}
+
+/* Style for the football icons */
+.goalscorer-item .fas.fa-futbol {
+    color: #333;
+    font-size: 1.1rem;
+    margin-right: 0.3rem;
 }
 
 /* Map Container */
 .match-map {
     width: 100%;
-    height: 300px;
-    border: 2px solid rgba(0, 0, 0, 0.1);
-    border-radius: 12px;
+    height: 350px;
+    border: 3px solid rgba(185, 10, 10, 0.2);
+    border-radius: 16px;
     overflow: hidden;
     margin-top: 1rem;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    box-shadow:
+            0 15px 35px rgba(0, 0, 0, 0.1),
+            0 5px 15px rgba(0, 0, 0, 0.05);
+    transition: all 0.3s ease;
 }
 
-/* Scrollbar (optional aesthetic tweak) */
+.match-map:hover {
+    transform: translateY(-3px);
+    box-shadow:
+            0 20px 45px rgba(0, 0, 0, 0.15),
+            0 8px 25px rgba(0, 0, 0, 0.08);
+}
+
+/* Enhanced Scrollbar */
 .modal-content::-webkit-scrollbar {
-    width: 8px;
+    width: 12px;
+}
+
+.modal-content::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 6px;
 }
 
 .modal-content::-webkit-scrollbar-thumb {
-    background: rgba(0, 0, 0, 0.2);
-    border-radius: 4px;
+    background: linear-gradient(45deg, #B90A0A, #d63031);
+    border-radius: 6px;
+    border: 2px solid rgba(255, 255, 255, 0.1);
 }
 
-/* Responsive Adjustments */
+.modal-content::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(45deg, #d63031, #B90A0A);
+}
+
+/* Add subtle animations for goalscorer items */
+.goalscorer-item {
+    animation: slideInFromLeft 0.5s ease-out;
+    animation-fill-mode: both;
+}
+
+.goalscorer-item:nth-child(1) { animation-delay: 0.1s; }
+.goalscorer-item:nth-child(2) { animation-delay: 0.2s; }
+.goalscorer-item:nth-child(3) { animation-delay: 0.3s; }
+.goalscorer-item:nth-child(4) { animation-delay: 0.4s; }
+.goalscorer-item:nth-child(5) { animation-delay: 0.5s; }
+
+@keyframes slideInFromLeft {
+    from {
+        opacity: 0;
+        transform: translateX(-30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+/* Responsive Design */
 @media (max-width: 768px) {
     .modal-content {
         width: 95%;
-        padding: 1.5rem;
+        padding: 2rem 1.5rem;
         max-height: 85vh;
+        border-radius: 20px;
+    }
+
+    .match-map {
+        height: 280px;
+    }
+
+    #modalMatchTitle {
+        font-size: 2.2rem;
+        margin-bottom: 2rem;
+    }
+
+    .match-info {
+        grid-template-columns: 1fr;
+        gap: 0.8rem;
+    }
+
+    .info-card {
+        padding: 1rem;
+    }
+
+    .goalscorers-section {
+        padding: 1rem;
+        margin-bottom: 1.5rem;
+    }
+
+    .goalscorers-section h3 {
+        font-size: 1.3rem;
+    }
+
+    .goalscorer-item {
+        font-size: 1rem;
+        padding: 0.8rem 1rem;
+    }
+
+    .close-modal {
+        width: 40px;
+        height: 40px;
+        font-size: 1.5rem;
+        top: 15px;
+        right: 20px;
+    }
+
+    .stadium-name {
+        font-size: 1.2rem;
+    }
+
+    .modal-section p#matchDateTime {
+        font-size: 1.1rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .modal-content {
+        padding: 1.5rem 1rem;
+    }
+
+    #modalMatchTitle {
+        font-size: 1.8rem;
+    }
+
+    .goalscorers-section h3 {
+        font-size: 1.1rem;
     }
 
     .match-map {
         height: 250px;
     }
 
-    #modalMatchTitle {
-        font-size: 1.8rem;
+    .info-card h4 {
+        font-size: 0.8rem;
+    }
+
+    .info-card p {
+        font-size: 1rem;
+    }
+
+    .modal-section p#matchDateTime {
+        font-size: 1rem;
     }
 }

@@ -1,36 +1,37 @@
 <!-- Match Center Modal Component -->
 <link rel="stylesheet" href="../../css/components/matchModal.css" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
 <div id="matchCenterModal" class="modal-overlay">
     <div class="modal-content">
         <span class="close-modal">&times;</span>
-        <h2 id="modalMatchTitle">Match Center</h2>
-        <div class="modal-section">
-            <h3>Match Timeline</h3>
-            <ul class="match-events">
-                <li>23' ⚽ Rodriguez scores</li>
-                <li>40' 🟨 Mitchell booked</li>
-                <li>67' ⚽ Mitchell scores</li>
+
+        <!-- Modal Title -->
+        <h2 id="modalMatchTitle">Match Details</h2>
+
+        <!-- Season shown at the top in styled format -->
+        <div class="season" id="matchSeason">'23-'24</div>
+
+        <!-- Goalscorers Section First -->
+        <div class="goalscorers-section modal-section">
+            <h3>Goal Scorers</h3>
+            <ul class="goalscorers-list" id="goalscorersList">
+                <li class="goalscorer-item">Rodriguez (2 goals)</li>
+                <li class="goalscorer-item">Mitchell (1 goal)</li>
+                <li class="goalscorer-item">Johnson (1 goal)</li>
             </ul>
         </div>
+
+        <!-- Date Section below Goal Scorers -->
         <div class="modal-section">
-            <h3>Player Stats</h3>
-            <ul class="player-stats">
-                <li>Rodriguez: 1 goal, 2 shots</li>
-                <li>Mitchell: 1 goal, 1 yellow card</li>
-            </ul>
+            <h3>Date & Time</h3>
+            <p id="matchDateTime">Saturday, 15 June 2024<br>15:00</p>
         </div>
-        <div class="modal-section">
-            <h3>Key Stats</h3>
-            <ul class="key-stats">
-                <li>Possession: 55% - 45%</li>
-                <li>Shots on Target: 7 - 3</li>
-                <li>Fouls: 11 - 9</li>
-            </ul>
-        </div>
-        <div class="modal-section">
-            <h3>Match Venue</h3>
-            <p id="venueInfo">Home Stadium</p>
+
+        <!-- Stadium Section -->
+        <div class="stadium-section modal-section">
+            <h3>Stadium</h3>
+            <p class="stadium-name" id="stadiumName">Home Stadium</p>
             <div id="matchMap" class="match-map"></div>
         </div>
     </div>

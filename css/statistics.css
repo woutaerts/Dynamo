@@ -151,11 +151,11 @@
 #button2 .checkbox:checked + .knob:before {
     content: "";
     left: 41px;
-    background-color: #b49bd1; /* Slightly darker than all-time bg */
+    background-color: #d1b49b; /* Slightly darker than all-time bg */
 }
 
 #button2 .checkbox:checked ~ .btn-bg {
-    background-color: #c7b3e6; /* All-Time background */
+    background-color: #e6d3a8; /* All-Time background */
 }
 
 /* Toggle Section Container */
@@ -222,7 +222,7 @@
 }
 
 #label-alltime.active {
-    color: #b49bd1; /* All-Time knob color */
+    color: #d1b49b; /* All-Time knob color */
 }
 
 /* Dynamic Theme Colors - Simplified approach */
@@ -230,7 +230,7 @@
     --team-color: #6b8bb3; /* Always blue for team stats */
     --player-color: #8fa76b; /* Always green for player stats */
     --season-underline: #c4918a; /* Season underline color */
-    --alltime-underline: #b49bd1; /* All-time underline color */
+    --alltime-underline: #d1b49b; /* All-time underline color */
     --primary-theme-color: var(--team-color); /* Default to team */
     --underline-color: var(--season-underline); /* Default to season */
 }

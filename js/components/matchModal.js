@@ -42,35 +42,48 @@ class MatchModal {
                 this.close();
             }
         });
+
+        // Close modal with Escape key
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && this.modal.style.display === 'flex') {
+                this.close();
+            }
+        });
     }
 
     show(matchData = {}) {
         if (!this.modal) return;
 
         const {
-            title = 'Match Center',
-            venue = 'Home Stadium',
+            title = 'Match Details',
+            dateTime = 'TBD',
+            season = 'Current Season',
+            stadium = 'Home Stadium',
             lat = 50.9704,
             lng = 5.7734,
-            events = [],
-            playerStats = [],
-            keyStats = []
+            goalscorers = []
         } = matchData;
 
+        // Prevent body scrolling
+        document.body.classList.add('modal-open');
+
         // Update modal content
-        this.updateContent(title, venue, events, playerStats, keyStats);
+        this.updateContent(title, dateTime, season, stadium, goalscorers);
 
         // Show modal
         this.modal.style.display = 'flex';
 
         // Initialize map after modal is visible
         setTimeout(() => {
-            this.initializeMap(lat, lng, venue);
+            this.initializeMap(lat, lng, stadium);
         }, 100);
     }
 
     close() {
         if (!this.modal) return;
+
+        // Re-enable body scrolling
+        document.body.classList.remove('modal-open');
 
         this.modal.style.display = 'none';
         if (this.map) {
@@ -79,41 +92,110 @@ class MatchModal {
         }
     }
 
-    updateContent(title, venue, events, playerStats, keyStats) {
+    updateContent(title, dateTime, season, stadium, goalscorers) {
         // Update title
         const titleEl = this.modal.querySelector('#modalMatchTitle');
         if (titleEl) titleEl.textContent = title;
 
-        // Update venue
-        const venueEl = this.modal.querySelector('#venueInfo');
-        if (venueEl) venueEl.textContent = venue;
+        // Update date and time - format for centered display
+        const dateTimeEl = this.modal.querySelector('#matchDateTime');
+        if (dateTimeEl) {
+            // Handle different dateTime formats
+            if (typeof dateTime === 'object' && dateTime.date && dateTime.time) {
+                dateTimeEl.innerHTML = `${dateTime.date}<br>${dateTime.time}`;
+            } else if (typeof dateTime === 'string') {
+                // If it already contains <br>, use as is
+                if (dateTime.includes('<br>')) {
+                    dateTimeEl.innerHTML = dateTime;
+                } else {
+                    // Try to parse different formats
+                    const dateTimeStr = dateTime.toString();
 
-        // Update match events if provided
-        if (events.length > 0) {
-            const eventsEl = this.modal.querySelector('.match-events');
-            if (eventsEl) {
-                eventsEl.innerHTML = events.map(event => `<li>${event}</li>`).join('');
+                    // Handle "May 21, 2025 — 2-1" format
+                    if (dateTimeStr.includes(' — ')) {
+                        const parts = dateTimeStr.split(' — ');
+                        const datePart = parts[0];
+                        const timePart = parts[1];
+
+                        // Check if the second part contains time (HH:MM format)
+                        const timeMatch = timePart.match(/\d{2}:\d{2}/);
+                        if (timeMatch) {
+                            dateTimeEl.innerHTML = `${datePart}<br>${timeMatch[0]}`;
+                        } else {
+                            // If no time found, just show the date
+                            dateTimeEl.innerHTML = datePart;
+                        }
+                    } else {
+                        // Default: just show the dateTime as is
+                        dateTimeEl.innerHTML = dateTimeStr;
+                    }
+                }
+            } else {
+                dateTimeEl.innerHTML = dateTime.toString();
             }
         }
 
-        // Update player stats if provided
-        if (playerStats.length > 0) {
-            const statsEl = this.modal.querySelector('.player-stats');
-            if (statsEl) {
-                statsEl.innerHTML = playerStats.map(stat => `<li>${stat}</li>`).join('');
-            }
-        }
+        // Update season
+        const seasonEl = this.modal.querySelector('#matchSeason');
+        if (seasonEl) seasonEl.textContent = season;
 
-        // Update key stats if provided
-        if (keyStats.length > 0) {
-            const keyStatsEl = this.modal.querySelector('.key-stats');
-            if (keyStatsEl) {
-                keyStatsEl.innerHTML = keyStats.map(stat => `<li>${stat}</li>`).join('');
-            }
-        }
+        // Update stadium
+        const stadiumEl = this.modal.querySelector('#stadiumName');
+        if (stadiumEl) stadiumEl.textContent = stadium;
+
+        // Update goalscorers
+        this.updateGoalscorers(goalscorers);
     }
 
-    initializeMap(lat, lng, venueName) {
+    updateGoalscorers(goalscorers) {
+        const goalscorersList = this.modal.querySelector('#goalscorersList');
+        if (!goalscorersList) return;
+
+        if (goalscorers.length === 0) {
+            goalscorersList.innerHTML = '<li class="goalscorer-item">No goals scored</li>';
+            return;
+        }
+
+        // Clear existing content
+        goalscorersList.innerHTML = '';
+
+        // Process goalscorers data
+        const scorerCounts = {};
+
+        // If goalscorers is an array of objects with player names
+        if (typeof goalscorers[0] === 'object') {
+            goalscorers.forEach(scorer => {
+                const playerName = scorer.player || scorer.name;
+                scorerCounts[playerName] = (scorerCounts[playerName] || 0) + 1;
+            });
+        }
+        // If goalscorers is an array of player names
+        else if (typeof goalscorers[0] === 'string') {
+            goalscorers.forEach(player => {
+                scorerCounts[player] = (scorerCounts[player] || 0) + 1;
+            });
+        }
+
+        // Create list items with football icons
+        Object.entries(scorerCounts).forEach(([player, goals], index) => {
+            const li = document.createElement('li');
+            li.className = 'goalscorer-item';
+            li.style.animationDelay = `${(index + 1) * 0.1}s`;
+
+            // Create football icons based on number of goals
+            let footballIcons = '';
+            for (let i = 0; i < goals; i++) {
+                footballIcons += '<i class="fas fa-futbol"></i> ';
+            }
+
+            // Set the content with icons and player name
+            li.innerHTML = `${footballIcons}${player}`;
+
+            goalscorersList.appendChild(li);
+        });
+    }
+
+    initializeMap(lat, lng, stadiumName) {
         // Remove existing map if it exists
         if (this.map) {
             this.map.remove();
@@ -123,7 +205,7 @@ class MatchModal {
         if (!mapContainer) return;
 
         try {
-            // Create new map centered on the venue
+            // Create new map centered on the stadium
             this.map = L.map('matchMap').setView([lat, lng], 15);
 
             // Add OpenStreetMap tile layer (free!)
@@ -132,11 +214,17 @@ class MatchModal {
                 maxZoom: 18
             }).addTo(this.map);
 
-            // Add a marker for the venue
+            // Add a marker for the stadium
             const marker = L.marker([lat, lng]).addTo(this.map);
-            marker.bindPopup(`<strong>${venueName}</strong><br>Match Venue`).openPopup();
+            marker.bindPopup(`<strong>${stadiumName}</strong><br>Match Venue`).openPopup();
         } catch (error) {
             console.error('Failed to initialize map:', error);
+            // Show fallback message if map fails to load
+            mapContainer.innerHTML = `
+                <div style="display: flex; align-items: center; justify-content: center; height: 100%; background: rgba(0,0,0,0.1); color: #666; font-family: Poppins;">
+                    <p>Map unavailable</p>
+                </div>
+            `;
         }
     }
 }

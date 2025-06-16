@@ -131,7 +131,7 @@ body {
 
 .club-name {
     font-size: 1.5rem;
-    font-weight: 900;
+    font-weight: 800;
     background: #B90A0A;
     background-size: 200% auto;
     -webkit-background-clip: text;
@@ -160,13 +160,14 @@ body {
     padding: 12px 24px;
     color: #000000;
     text-decoration: none;
-    font-weight: 700;
+    font-weight: 600;
     font-size: 0.95rem;
     border-radius: 25px;
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     position: relative;
     white-space: nowrap;
     z-index: 1;
+    letter-spacing: 1px;
 }
 
 .nav-link::before {
@@ -199,9 +200,10 @@ body {
 
 .nav-link.active {
     color: #ffffff;
-    font-weight: 900;
+    font-weight: 700;
     transform: translateY(-2px);
     text-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    letter-spacing: 1px;
 }
 
 .nav-link.active::before {
