@@ -267,6 +267,11 @@ body.player-alltime {
     transition: background 0.3s ease;
 }
 
+.section-subtitle::after {
+    background: var(--underline-color) !important;
+    transition: background 0.3s ease;
+}
+
 /* Stats Section */
 .stats-section {
     padding: 2rem 0;

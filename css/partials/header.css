@@ -15,7 +15,7 @@ body {
     left: 0;
     right: 0;
     z-index: 1000;
-    background: #f5f5f5;
+    background: #faf9f5;
     backdrop-filter: blur(25px);
     border-bottom: 1px solid rgba(255, 255, 255, 0.3);
     box-shadow: 0px 8px 25px rgba(0, 0, 0, 0.2);
@@ -31,7 +31,7 @@ body {
     left: 0;
     right: 0;
     bottom: 0;
-    background: #f5f5f5;
+    background: #faf9f5;
     pointer-events: none;
     z-index: -1;
 }
@@ -144,19 +144,41 @@ body {
 /* Navigation Links */
 .nav-links {
     display: flex;
+    align-items: center; /* Center links vertically */
     list-style: none;
     margin: 0;
-    padding: 8px;
+    padding: 8px; /* Uniform padding */
     gap: 0;
     background: rgba(255, 255, 255, 0.4);
     backdrop-filter: blur(15px);
     border-radius: 50px;
     border: 1px solid rgba(255, 255, 255, 0.6);
     box-shadow: 0px 8px 25px rgba(0, 0, 0, 0.2);
+    position: relative;
+}
+
+.nav-blob {
+    position: absolute;
+    top: 8px; /* Adjusted to center vertically */
+    left: 8px;
+    background: #B90A0A;
+    border-radius: 25px;
+    opacity: 0;
+    transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    z-index: 0;
+    pointer-events: none;
+    box-shadow: 0px 8px 25px rgba(0, 0, 0, 0.2);
+    height: calc(100% - 16px); /* Matches nav-link height minus padding */
+}
+
+.nav-blob.active {
+    opacity: 1; /* Visible when active */
 }
 
 .nav-link {
-    display: block;
+    display: flex; /* Use flex to center content */
+    align-items: center; /* Center text vertically */
+    justify-content: center; /* Center text horizontally */
     padding: 12px 24px;
     color: #000000;
     text-decoration: none;
@@ -168,6 +190,7 @@ body {
     white-space: nowrap;
     z-index: 1;
     letter-spacing: 1px;
+    height: 45px; /* Fixed height to ensure consistency */
 }
 
 .nav-link::before {
@@ -177,7 +200,7 @@ body {
     left: 0;
     right: 0;
     bottom: 0;
-    background: linear-gradient(135deg, #B90A0A 0%, #E71414 100%);
+    background: #B90A0A;
     border-radius: 25px;
     opacity: 0;
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
@@ -187,9 +210,8 @@ body {
 
 .nav-link:hover {
     color: #ffffff;
-    transform: translateY(-2px);
     text-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
-    font-weight: 700;
+    font-weight: 600;
 }
 
 .nav-link:hover::before {
@@ -200,8 +222,7 @@ body {
 
 .nav-link.active {
     color: #ffffff;
-    font-weight: 700;
-    transform: translateY(-2px);
+    font-weight: 600;
     text-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
     letter-spacing: 1px;
 }
@@ -210,6 +231,7 @@ body {
     opacity: 1;
     transform: scale(1);
     box-shadow: 0px 8px 25px rgba(0, 0, 0, 0.2);
+    animation: gentlePulse 1s ease-in-out infinite;
 }
 
 /* Mobile Menu Toggle */
@@ -312,6 +334,11 @@ body {
         font-size: 1rem;
         text-align: center;
         border-radius: 15px;
+        height: auto; /* Reset fixed height for mobile */
+    }
+
+    .nav-blob {
+        display: none; /* Hide blob on mobile */
     }
 }
 
@@ -355,6 +382,7 @@ body {
     .nav-link {
         padding: 12px 15px;
         font-size: 0.9rem;
+        height: auto; /* Reset fixed height for mobile */
     }
 }
 
@@ -364,7 +392,8 @@ body {
     .nav-link,
     .club-logo,
     .mobile-menu-toggle span,
-    .scroll-progress-bar {
+    .scroll-progress-bar,
+    .nav-blob {
         animation: none;
         transition: none;
     }
@@ -400,4 +429,47 @@ body {
 
 .scroll-progress-bar {
     will-change: width;
+}
+
+.nav-blob {
+    will-change: transform, opacity, width;
+}
+
+/* Heart-beating vibration animation */
+@keyframes heartbeat {
+    0% {
+        transform: scale(1);
+    }
+    14% {
+        transform: scale(1.03);
+    }
+    28% {
+        transform: scale(1);
+    }
+    42% {
+        transform: scale(1.05);
+    }
+    70% {
+        transform: scale(1);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
+/* Alternative subtle pulse for reduced motion preference */
+@keyframes gentlePulse {
+    0%, 100% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.03);
+    }
+}
+
+/* For users who prefer reduced motion */
+@media (prefers-reduced-motion: reduce) {
+    .nav-link.active::before {
+        animation: gentlePulse 3s ease-in-out infinite;
+    }
 }

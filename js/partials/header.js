@@ -49,6 +49,9 @@ async function loadHeader() {
         // Setup header scroll effect (hide/show on scroll)
         setupHeaderScrollEffect();
 
+        // Initialize blob hover effect
+        initializeNavBlob();
+
     } catch (error) {
         console.error('Error loading header:', error);
         loadFallbackHeader(isRootPage);
@@ -78,6 +81,7 @@ function loadFallbackHeader(isRootPage) {
                     <li><a href="${statsPath}" class="nav-link" data-page="statistics">Statistics</a></li>
                     <li><a href="${playersPath}" class="nav-link" data-page="players">Players</a></li>
                     <li><a href="${matchesPath}" class="nav-link" data-page="matches">Matches</a></li>
+                    <div class="nav-blob"></div>
                 </ul>
                 <div class="mobile-menu-toggle">
                     <span></span>
@@ -100,6 +104,7 @@ function loadFallbackHeader(isRootPage) {
     initializeMobileMenu();
     initializeScrollProgress();
     setupHeaderScrollEffect();
+    initializeNavBlob();
 }
 
 function configureHeader(isRootPage) {
@@ -319,4 +324,47 @@ function setupHeaderScrollEffect() {
 
     // Listen to scroll events with passive option for better performance
     window.addEventListener("scroll", handleScroll, { passive: true });
+}
+
+function initializeNavBlob() {
+    const navLinks = document.querySelectorAll('.nav-link');
+    const navLinksContainer = document.querySelector('.nav-links');
+    const navBlob = document.querySelector('.nav-blob');
+
+    if (!navLinksContainer || !navBlob) {
+        console.warn('Navigation links container or blob not found');
+        return;
+    }
+
+    function updateNavBlob(activeLink) {
+        if (window.innerWidth <= 768) return; // Disable blob on mobile
+
+        if (activeLink) {
+            const linkRect = activeLink.getBoundingClientRect();
+            const navRect = navLinksContainer.getBoundingClientRect();
+            const left = linkRect.left - navRect.left;
+            const width = linkRect.width - 1;
+
+            navBlob.style.left = left + 'px';
+            navBlob.style.width = width + 'px';
+            navBlob.classList.add('active');
+        } else {
+            navBlob.classList.remove('active');
+        }
+    }
+
+    // Add hover event listeners
+    navLinks.forEach(link => {
+        link.addEventListener('mouseenter', () => {
+            updateNavBlob(link);
+        });
+        link.addEventListener('mouseleave', () => {
+            updateNavBlob(null); // Hide blob when mouse leaves button
+        });
+    });
+
+    // Update blob position on window resize
+    window.addEventListener('resize', () => {
+        navBlob.classList.remove('active'); // Hide blob on resize to maintain default state
+    });
 }
