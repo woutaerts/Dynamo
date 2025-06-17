@@ -172,7 +172,8 @@ class MatchModal {
         if (typeof goalscorers[0] === 'object') {
             goalscorers.forEach(scorer => {
                 const playerName = scorer.player || scorer.name;
-                scorerCounts[playerName] = (scorerCounts[playerName] || 0) + 1;
+                const goals = scorer.goals || 1; // Use goals property if present, else default to 1
+                scorerCounts[playerName] = (scorerCounts[playerName] || 0) + goals;
             });
         }
         // If goalscorers is an array of player names

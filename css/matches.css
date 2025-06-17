@@ -86,8 +86,8 @@
 }
 
 .vs-divider {
-    font-size: 0.9rem;
     color: #6b7280;
+    font-size: 0.95rem;
     font-weight: 500;
     margin: 8px 0;
 }
@@ -105,6 +105,7 @@
     margin: 10px 0 20px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
     transition: all 0.3s ease;
+
 }
 
 .match-card.modern:hover .match-score {
@@ -123,8 +124,8 @@
 
 /* Date and Time - Updated with icon styling */
 .match-datetime {
-    color: #9ca3af;
-    font-size: 0.9rem;
+    color: #6b7280;
+    font-size: 0.95rem;
     font-family: 'Poppins', sans-serif;
     font-weight: 500;
     display: flex;
@@ -136,14 +137,14 @@
     content: '\f017'; /* FontAwesome clock icon */
     font-family: 'Font Awesome 6 Free', serif;
     font-weight: 900;
-    font-size: 0.8rem;
-    opacity: 0.7;
+    font-size: 0.9rem;
+    opacity: 0.8;
 }
 
 /* Venue - Updated styling to match date */
 .match-venue {
-    color: #9ca3af;
-    font-size: 0.9rem;
+    color: #6b7280;
+    font-size: 0.95rem;
     font-family: 'Poppins', sans-serif;
     font-weight: 500;
     display: flex;
@@ -152,8 +153,8 @@
 }
 
 .match-venue i {
-    font-size: 0.8rem;
-    opacity: 0.7;
+    font-size: 0.9rem;
+    opacity: 0.8;
 }
 
 /* Upcoming matches styling */

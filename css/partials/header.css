@@ -18,7 +18,7 @@ body {
     background: #faf9f5;
     backdrop-filter: blur(25px);
     border-bottom: 1px solid rgba(255, 255, 255, 0.3);
-    box-shadow: 0px 8px 25px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     animation: slideDown 0.8s cubic-bezier(0.4, 0, 0.2, 1);
     transform: translateY(0);
@@ -44,7 +44,7 @@ body {
 .header.scrolled {
     background: rgba(255, 255, 255, 0.92);
     backdrop-filter: blur(30px);
-    box-shadow: 0px 8px 25px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
     border-bottom: 1px solid rgba(185, 10, 10, 0.1);
 }
 
@@ -62,10 +62,9 @@ body {
 
 .scroll-progress-bar {
     height: 100%;
-    width: 0%;
-    background: #B90A0A;
+    width: 0;
     background-size: 200% 100%;
-    background-position: 0% 50%;
+    background: #B90A0A 0 50%;
     transition: width 0.1s ease-out;
     box-shadow: 0 0 10px rgba(185, 10, 10, 0.3);
     animation: gradientShift 3s ease-in-out infinite;
@@ -89,7 +88,7 @@ body {
 
 @keyframes gradientShift {
     0%, 100% {
-        background-position: 0% 50%;
+        background-position: 0 50%;
     }
     50% {
         background-position: 100% 50%;
@@ -99,13 +98,12 @@ body {
 /* Navigation Container */
 .nav-container {
     max-width: 1200px;
-    margin: 0 auto;
     display: flex;
     align-items: center;
     justify-content: space-between;
     padding: 15px 20px;
     position: relative;
-    margin-top: 10px;
+    margin: 10px auto 0;
 }
 
 /* Logo Section */
@@ -152,8 +150,7 @@ body {
     background: rgba(255, 255, 255, 0.4);
     backdrop-filter: blur(15px);
     border-radius: 50px;
-    border: 1px solid rgba(255, 255, 255, 0.6);
-    box-shadow: 0px 8px 25px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
     position: relative;
 }
 
@@ -167,7 +164,7 @@ body {
     transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
     z-index: 0;
     pointer-events: none;
-    box-shadow: 0px 8px 25px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
     height: calc(100% - 16px); /* Matches nav-link height minus padding */
 }
 
@@ -217,7 +214,7 @@ body {
 .nav-link:hover::before {
     opacity: 1;
     transform: scale(1);
-    box-shadow: 0px 8px 25px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
 }
 
 .nav-link.active {
@@ -230,7 +227,7 @@ body {
 .nav-link.active::before {
     opacity: 1;
     transform: scale(1);
-    box-shadow: 0px 8px 25px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
     animation: gentlePulse 1s ease-in-out infinite;
 }
 
@@ -244,7 +241,6 @@ body {
     background: rgba(255, 255, 255, 0.3);
     border-radius: 8px;
     backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 255, 255, 0.4);
     transition: all 0.3s ease;
 }
 
@@ -319,8 +315,7 @@ body {
         opacity: 0;
         visibility: hidden;
         transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        border: 1px solid rgba(255, 255, 255, 0.6);
-        box-shadow: 0px 8px 25px rgba(0, 0, 0, 0.2);
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
     }
 
     .nav-links.active {
