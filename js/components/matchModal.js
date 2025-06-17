@@ -61,20 +61,21 @@ class MatchModal {
             stadium = 'Home Stadium',
             lat = 50.9704,
             lng = 5.7734,
-            goalscorers = []
+            goalscorers = [],
+            score = null // Added score parameter
         } = matchData;
 
         // Prevent body scrolling
         document.body.classList.add('modal-open');
 
         // Update modal content
-        this.updateContent(title, dateTime, season, stadium, goalscorers);
+        this.updateContent(title, dateTime, season, stadium, goalscorers, score);
 
         // Show modal
         this.modal.style.display = 'flex';
 
         // Reset scroll position to top
-        const modalContent = this.modal.querySelector('.modal-content'); // Adjust selector based on your HTML
+        const modalContent = this.modal.querySelector('.modal-content');
         if (modalContent) {
             modalContent.scrollTop = 0;
         }
@@ -98,10 +99,22 @@ class MatchModal {
         }
     }
 
-    updateContent(title, dateTime, season, stadium, goalscorers) {
+    updateContent(title, dateTime, season, stadium, goalscorers, score) {
         // Update title
         const titleEl = this.modal.querySelector('#modalMatchTitle');
         if (titleEl) titleEl.textContent = title;
+
+        // Update score - Added score handling
+        const scoreEl = this.modal.querySelector('#modalMatchScore');
+        const scoreDisplayEl = this.modal.querySelector('.score-display');
+        if (scoreEl && scoreDisplayEl) {
+            if (score) {
+                scoreDisplayEl.textContent = score;
+                scoreEl.style.display = 'flex';
+            } else {
+                scoreEl.style.display = 'none';
+            }
+        }
 
         // Update date and time - format for centered display
         const dateTimeEl = this.modal.querySelector('#matchDateTime');

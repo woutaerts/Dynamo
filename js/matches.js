@@ -133,6 +133,40 @@ function setupMatchInteractions() {
         });
     });
 
+    // Add click listeners to upcoming fixture cards (no score data)
+    document.querySelectorAll('.match-card.modern:not(.result)').forEach(card => {
+        card.style.cursor = 'pointer';
+
+        card.addEventListener('click', () => {
+            const matchTitle = card.getAttribute('data-match-title');
+            const venue = card.getAttribute('data-venue');
+            const lat = parseFloat(card.getAttribute('data-lat'));
+            const lng = parseFloat(card.getAttribute('data-lng'));
+            const matchData = getMatchData(card);
+
+            if (window.matchModal) {
+                window.matchModal.show({
+                    title: matchTitle,
+                    stadium: venue,
+                    lat,
+                    lng,
+                    ...matchData
+                });
+            }
+        });
+
+        // Add hover effect
+        card.addEventListener('mouseenter', () => {
+            card.style.transform = 'translateY(-5px)';
+            card.style.boxShadow = '0 10px 25px rgba(0, 0, 0, 0.15)';
+        });
+
+        card.addEventListener('mouseleave', () => {
+            card.style.transform = 'translateY(0)';
+            card.style.boxShadow = '';
+        });
+    });
+
     // Add click listeners to timeline items
     document.querySelectorAll('.timeline-item').forEach((item, index) => {
         item.style.cursor = 'pointer';
@@ -144,19 +178,22 @@ function setupMatchInteractions() {
                     title: 'Dynamo Beirs vs Red Hawks FC',
                     date: 'May 21, 2025',
                     time: '15:00',
-                    goalscorers: [{ player: 'Rodriguez' }, { player: 'Mitchell' }]
+                    score: '2-1',
+                    goalscorers: [{ player: 'Lukaku' }, { player: 'De Bruyne' }]
                 },
                 {
                     title: 'Dynamo Beirs vs Greenfield United',
                     date: 'May 18, 2025',
                     time: '16:30',
-                    goalscorers: [{ player: 'Rodriguez' }, { player: 'Rodriguez' }, { player: 'Thompson' }]
+                    score: '3-0',
+                    goalscorers: [{ player: 'Lukaku', goals: 2 }, { player: 'Hazard' }]
                 },
                 {
-                    title: 'Dynamo Beirs vs Bluewave FC',
+                    title: 'Bluewave FC vs Dynamo Beirs',
                     date: 'May 14, 2025',
                     time: '19:00',
-                    goalscorers: [{ player: 'Mitchell' }]
+                    score: '2-1',
+                    goalscorers: [{ player: 'De Bruyne' }]
                 }
             ];
 
@@ -170,6 +207,7 @@ function setupMatchInteractions() {
                     lng: 5.7734,
                     dateTime: `${matchData.date}<br>${matchData.time}`,
                     season: "'24-'25",
+                    score: matchData.score,
                     goalscorers: matchData.goalscorers
                 });
             }
@@ -181,6 +219,7 @@ function getMatchData(card) {
     const matchDate = card.getAttribute('data-match-date') || 'TBD';
     const matchTime = card.getAttribute('data-match-time') || '';
     const season = card.getAttribute('data-match-season') || "'24-'25";
+    const score = card.getAttribute('data-score') || null; // Extract score data
     const goalscorersData = card.getAttribute('data-goalscorers');
     let goalscorers = [];
 
@@ -199,6 +238,7 @@ function getMatchData(card) {
     return {
         dateTime,
         season,
+        score, // Include score in returned data
         goalscorers
     };
 }
