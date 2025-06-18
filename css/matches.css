@@ -46,19 +46,19 @@
 }
 
 .match-header.win {
-    background: linear-gradient(135deg, #aabb88, #7d9459);
+    background: linear-gradient(45deg, #84b281, #648F5F); /* Base Green to Darker Green */
 }
 
 .match-header.draw {
-    background: linear-gradient(135deg, #e0cc9c, #c9b680);
+    background: linear-gradient(45deg, #E8B04B, #C69436); /* Golden Ochre */
 }
 
 .match-header.loss {
-    background: linear-gradient(135deg, #d9a8a2, #b87c74);
+    background: linear-gradient(45deg, #E07A5F, #C65B4D); /* Warm Terracotta */
 }
 
 .match-header:not(.win):not(.draw):not(.loss) {
-    background: linear-gradient(135deg, #99b3d9, #5a7a9f);
+    background: linear-gradient(45deg, #7B96B7, #3D5A80); /* Unchanged for non-result states */
 }
 
 /* Card Body */
@@ -159,13 +159,13 @@
 
 /* Upcoming matches styling */
 .match-card.modern:not(.result) .match-header {
-    background: linear-gradient(135deg, #99b3d9, #5a7a9f);
+    background: linear-gradient(45deg, #7B96B7, #3D5A80);
 }
 
 .match-card.modern:not(.result) .match-score {
-    background: #e6effa;
-    color: #6b8bb3;
-    border-color: #b3c7e6;
+    background: #E9EDF2;
+    color: #3D5A80;
+    border-color: #A1B2C8;
     font-size: 1.5rem;
     font-weight: 600;
 }
@@ -256,16 +256,17 @@
 }
 
 .timeline-item.win .result-icon {
-    background: linear-gradient(135deg, #aabb88, #7d9459);
+    background: linear-gradient(45deg, #84b281, #648F5F); /* Base Green to Darker Green */
 }
 
 .timeline-item.draw .result-icon {
-    background: linear-gradient(135deg, #e0cc9c, #c9b680);
+    background: linear-gradient(45deg, #E8B04B, #C69436); /* Updated gradient */
 }
 
 .timeline-item.loss .result-icon {
-    background: linear-gradient(135deg, #d9a8a2, #b87c74);
+    background: linear-gradient(45deg, #E07A5F, #C65B4D); /* Warm Terracotta */
 }
+
 
 .timeline-item:hover .result-icon {
     transform: translateY(-50%) scale(1.1);
@@ -290,18 +291,18 @@
 
 /* Node colors based on result */
 .timeline-item.win::before {
-    border-color: #7d9459;
-    background: #aabb88;
+    border-color: #648F5F; /* Darker Green from Gradient */
+    background: #84b281; /* Base Green */
 }
 
 .timeline-item.draw::before {
-    border-color: #c9b680;
-    background: #e0cc9c;
+    border-color: #D9A83F; /* Darker Golden Ochre */
+    background: #E8B04B; /* Golden Ochre */
 }
 
 .timeline-item.loss::before {
-    border-color: #b87c74;
-    background: #d9a8a2;
+    border-color: #C65B4D; /* Darker Warm Terracotta */
+    background: #E07A5F; /* Warm Terracotta */
 }
 
 .timeline-item:hover::before {

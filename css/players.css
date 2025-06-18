@@ -207,19 +207,19 @@
 
 /* Position-specific styling */
 .player-card[data-position="goalkeeper"] .player-position {
-    color: #6b8bb3;
+    color: #3D5A80;
 }
 
 .player-card[data-position="defender"] .player-position {
-    color: #8fa76b;
+    color: #648F5F;
 }
 
 .player-card[data-position="midfielder"] .player-position {
-    color: #d1b49b;
+    color: #C69436;
 }
 
 .player-card[data-position="attacker"] .player-position {
-    color: #c4918a;
+    color: #C65B4D;
 }
 
 /* Responsive Design */

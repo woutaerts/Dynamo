@@ -203,15 +203,15 @@ body {
 }
 
 .form-result.win {
-    background: linear-gradient(135deg, #aabb88, #7d9459);
+    background: linear-gradient(45deg, #84b281, #648F5F); /* Base Green to Darker Green */
 }
 
 .form-result.draw {
-    background: linear-gradient(135deg, #e0cc9c, #c9b680);
+    background: linear-gradient(45deg, #E8B04B, #C69436); /* Golden Ochre */
 }
 
 .form-result.loss {
-    background: linear-gradient(135deg, #d9a8a2, #b87c74);
+    background: linear-gradient(45deg, #E07A5F, #C65B4D); /* Warm Terracotta */
 }
 
 .form-description {

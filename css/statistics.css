@@ -60,7 +60,7 @@
 
 .btn-bg {
     width: 100%;
-    background-color: #99b3d9; /* Team default */
+    background-color: #7B96B7; /* Team default */
     transition: 0.3s ease all;
     z-index: 1;
 }
@@ -84,7 +84,7 @@
     text-align: center;
     line-height: 1;
     padding: 0px 4px;
-    background-color: #6b8bb3; /* Slightly darker than team bg */
+    background-color: #3D5A80; /* Slightly darker than team bg */
     border-radius: 50%;
     transition: all 0.3s ease, left 0.3s cubic-bezier(0.18, 0.89, 0.35, 1.15);
 }
@@ -101,17 +101,17 @@
 #button .checkbox:checked + .knob:before {
     content: "";
     left: 41px;
-    background-color: #8fa76b; /* Slightly darker than player bg */
+    background-color: #648F5F; /* Slightly darker than player bg */
 }
 
 #button .checkbox:checked ~ .btn-bg {
-    background-color: #aabb88; /* Player background */
+    background-color: #84b281; /* Player background */
 }
 
 /* Season/All-time Toggle */
 #button2 .btn-bg {
     width: 100%;
-    background-color: #d9a8a2; /* Season background */
+    background-color: #E07A5F; /* Season background */
     transition: 0.3s ease all;
     z-index: 1;
 }
@@ -134,7 +134,7 @@
     text-align: center;
     line-height: 1;
     padding: 0px 4px;
-    background-color: #c4918a; /* Slightly darker than season bg */
+    background-color: #C65B4D; /* Slightly darker than season bg */
     border-radius: 50%;
     transition: all 0.3s ease, left 0.3s cubic-bezier(0.18, 0.89, 0.35, 1.15);
 }
@@ -151,11 +151,11 @@
 #button2 .checkbox:checked + .knob:before {
     content: "";
     left: 41px;
-    background-color: #d1b49b; /* Slightly darker than all-time bg */
+    background-color: #C69436; /* Darker shade for the knob */
 }
 
 #button2 .checkbox:checked ~ .btn-bg {
-    background-color: #e6d3a8; /* All-Time background */
+    background-color: #F2C14E; /* All-Time background */
 }
 
 /* Toggle Section Container */
@@ -208,29 +208,29 @@
 
 /* Team label is active by default (toggle unchecked) */
 #label-team.active {
-    color: #6b8bb3; /* Team knob color */
+    color: #3D5A80; /* Team knob color */
 }
 
 /* Speler label is active when toggle is checked */
 #label-speler.active {
-    color: #8fa76b; /* Player knob color */
+    color: #648F5F; /* Player knob color */
 }
 
 /* Season/All-Time toggle colors */
 #label-seizoen.active {
-    color: #c4918a; /* Season knob color */
+    color: #C65B4D; /* Season knob color */
 }
 
 #label-alltime.active {
-    color: #d1b49b; /* All-Time knob color */
+    color: #C69436; /* All-Time knob color */
 }
 
 /* Dynamic Theme Colors - Simplified approach */
 :root {
-    --team-color: #6b8bb3; /* Always blue for team stats */
-    --player-color: #8fa76b; /* Always green for player stats */
-    --season-underline: #c4918a; /* Season underline color */
-    --alltime-underline: #d1b49b; /* All-time underline color */
+    --team-color: #3D5A80; /* Always blue for team stats */
+    --player-color: #648F5F; /* Always green for player stats */
+    --season-underline: #C65B4D; /* Season underline color */
+    --alltime-underline: #C69436; /* All-time underline color */
     --primary-theme-color: var(--team-color); /* Default to team */
     --underline-color: var(--season-underline); /* Default to season */
 }
@@ -238,14 +238,14 @@
 /* Team mode (default) */
 body {
     --primary-theme-color: var(--team-color);
-    --primary-theme-hover: #5a7a9f;
+    --primary-theme-hover: #7B96B7;
 }
 
 /* Player mode */
 body.player-season,
 body.player-alltime {
     --primary-theme-color: var(--player-color);
-    --primary-theme-hover: #7d9459;
+    --primary-theme-hover: #84b281;
 }
 
 /* Season underline (default) */
