@@ -135,7 +135,7 @@ body {
     flex-shrink: 0;
     transition: opacity 0.6s ease-out, transform 0.6s ease-out;
     opacity: 0;
-    transform: translateY(30px);
+    transform: translateY(100px);
 }
 
 .countdown-box {
@@ -143,14 +143,13 @@ body {
     padding: 1rem;
     border-radius: 16px;
     box-shadow: var(--shadow-medium);
-    transition: transform 0.3s;
+    transition: transform 0.3s, box-shadow 0.3s ease;
     width: 100px;
 }
 
 .countdown-box:hover {
     box-shadow: var(--shadow-hover);
     transform: translateY(-5px);
-    transition: transform 0.3s ease;
 }
 
 .countdown-box span {
@@ -214,8 +213,9 @@ body {
     justify-content: center;
     align-items: center;
     font-family: 'Poppins', sans-serif;
-    transition: opacity 0.6s ease-out, transform 0.3s ease, box-shadow 0.3s ease;
+    transition: opacity 0.6s ease-out, transform 0.6s ease-out, box-shadow 0.3s ease;
     opacity: 0;
+    transform: translateY(100px);
 }
 
 /* Add this to your existing CSS to target the last match result */
@@ -240,18 +240,30 @@ body {
     box-shadow: 0 0 0 2px var(--soft-coral);
 }
 
+/* Specific colored box-shadows for last-child depending on result type */
+.form-result.win:last-child:hover {
+    box-shadow: 0 0 0 2px var(--light-green), var(--shadow-hover) !important;
+}
+
+.form-result.draw:last-child:hover {
+    box-shadow: 0 0 0 2px var(--golden-yellow), var(--shadow-hover) !important;
+}
+
+.form-result.loss:last-child:hover {
+    box-shadow: 0 0 0 2px var(--soft-coral), var(--shadow-hover) !important;
+}
+
 /* Hover effect for the last form result */
 .form-result:last-child:hover {
-    transform: translateY(-5px) !important;
-    box-shadow: var(--shadow-hover); !important;
-    border: none !important;
+    transform: translateY(-5px);
+    border: 2px solid var(--off-white) !important;
 }
 
 
 .form-result:hover {
-    box-shadow: var(--shadow-hover);
-    transform: translateY(-5px);
-    transition: transform 0.3s ease;
+    box-shadow: var(--shadow-hover)!important;
+    transform: translateY(-5px)!important;
+    transition: transform 0.3s ease !important;
 }
 
 .form-result.win {

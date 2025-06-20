@@ -11,7 +11,7 @@
     color: var(--off-white);
     font-family: 'Poppins', sans-serif;
     box-shadow: var(--shadow-medium);
-    transition: all 0.3s ease;
+    transition: opacity 0.6s ease-out, transform 0.6s ease-out, box-shadow 0.3s ease;
     position: relative;
     z-index: 2;
 }
@@ -29,10 +29,13 @@
     border-radius: 16px;
     overflow: hidden;
     box-shadow: var(--shadow-medium);
-    transition: all 0.3s ease;
+    transition: opacity 0.6s ease-out, transform 0.6s ease-out, box-shadow 0.3s ease;
     cursor: pointer;
     border: 1px solid rgba(0, 0, 0, 0.05);
     position: relative;
+    /* Initial state for entrance animation - same as countdown/form */
+    opacity: 0;
+    transform: translateY(100px);
 }
 
 .match-card.modern:hover {
@@ -108,7 +111,7 @@
     border: 2px solid var(--silver-mist);
     margin: 10px 0 20px;
     box-shadow: var(--shadow-medium);
-    transition: all 0.3s ease;
+    transition: opacity 0.6s ease-out, transform 0.6s ease-out, box-shadow 0.3s ease;
 }
 
 /* Match Details Container */
@@ -172,7 +175,7 @@
     border: 2px solid var(--silver-mist);
     margin: 10px 0 20px;
     box-shadow: var(--shadow-medium);
-    transition: all 0.3s ease;
+    transition: opacity 0.6s ease-out, transform 0.6s ease-out, box-shadow 0.3s ease;
 }
 
 /* Timeline Container */
@@ -224,10 +227,9 @@
     left: 3rem;
     right: 1rem;
     margin: 0;
-    opacity: 0;
     transform-origin: left center;
-    transition: opacity 0.6s ease-out, transform 0.8s ease-out;
 }
+
 
 .timeline::after {
     content: "\f054";
@@ -244,7 +246,7 @@
     z-index: 3;
 }
 
-.timeline.animate-in::before {
+.timeline.card-animate-in::before {
     opacity: 1;
     transform: translateY(-2px) scaleX(1);
 }
@@ -259,15 +261,17 @@
     position: relative;
     z-index: 3;
     cursor: pointer;
-    transition: all 0.3s ease;
+    transition: opacity 0.6s ease-out, transform 0.6s ease-out, box-shadow 0.3s ease;
     padding: 0 10px;
     height: 100%;
     justify-content: center;
+    opacity: 0;
+    transform: translateY(100px);
 }
 
 .timeline-item:hover {
-    transform: translateY(-5px);
-    transition: transform 0.3s ease;
+    transform: translateY(-5px)!important;
+    transition: transform 0.3s ease!important;
 }
 
 /* Result Icon in Timeline */
@@ -290,8 +294,8 @@
 
 .timeline-item:hover .result-icon {
     box-shadow: var(--shadow-hover);
-    transform: translateY(-5px);
-    transition: transform 0.3s ease;
+    transform: translateY(-5px)!important;
+    transition: transform 0.3s ease!important;
 }
 
 /* Timeline Node */
@@ -306,7 +310,7 @@
     border-radius: 50%;
     transform: translate(-50%, -50%);
     z-index: 2;
-    transition: all 0.3s ease;
+    transition: opacity 0.6s ease-out, transform 0.6s ease-out, box-shadow 0.3s ease;
     box-shadow: var(--shadow-medium);
 }
 
@@ -323,8 +327,8 @@
 }
 
 .timeline-item:hover::before {
-    box-shadow: var(--shadow-hover);
-    transition: transform 0.3s ease;
+    box-shadow: var(--shadow-hover)!important;
+    transition: transform 0.3s ease!important;
 }
 
 /* Timeline Date */
@@ -368,7 +372,7 @@
     background: var(--medium-gray);
 }
 
-.animate-in {
+.card-animate-in {
     opacity: 1 !important;
     transform: translateY(0) !important;
 }

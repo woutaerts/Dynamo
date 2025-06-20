@@ -17,8 +17,7 @@ body {
     z-index: 1000;
     background: var(--off-white);
     backdrop-filter: blur(25px);
-    border-bottom: 1px solid var(--medium-gray);
-    box-shadow: var(--shadow-medium);
+    box-shadow: var(--shadow-hover);
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     animation: slideDown 0.8s cubic-bezier(0.4, 0, 0.2, 1);
     transform: translateY(0);
@@ -119,11 +118,6 @@ body {
     height: 80px;
     width: auto;
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.club-logo:hover {
-    transform: scale(1.10);
-    filter: var(--shadow-hover);
 }
 
 .club-name {
