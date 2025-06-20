@@ -1,0 +1,69 @@
+/* Player stats specific styling */
+.player-stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1.5rem;
+}
+
+.player-card {
+    background: white;
+    border-radius: 15px;
+    padding: 1.5rem;
+    box-shadow: var(--shadow-medium);
+    text-align: center;
+    transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+    opacity: 0;
+    transform: translateY(30px);
+    border: 2px solid transparent;
+}
+
+.player-card:hover {
+    box-shadow: var(--shadow-hover);
+    transform: translateY(-5px) !important;
+    transition: transform 0.3s ease !important;
+}
+
+.player-card.card-animate-in {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.player-name {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: var(--primary-theme-color);
+    margin-bottom: 1rem;
+    transition: color 0.3s ease;
+}
+
+.player-position {
+    font-size: 0.9rem;
+    color: var(--medium-gray);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 1rem;
+}
+
+.player-stats {
+    display: flex;
+    justify-content: space-around;
+    text-align: center;
+}
+
+.player-stat {
+    flex: 1;
+}
+
+.player-stat-number {
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: var(--primary-theme-color);
+    transition: color 0.3s ease;
+}
+
+.player-stat-label {
+    font-size: 0.8rem;
+    color: var(--medium-gray);
+    text-transform: uppercase;
+    margin-top: 0.3rem;
+}

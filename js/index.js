@@ -11,7 +11,7 @@ function initializeCountdown() {
 
         if (distance < 0) {
             clearInterval(countdown);
-            countdownElement.innerHTML = "<div style='text-align: center; font-size: 1.5rem; color: #B90A0A; font-weight: bold;'>Match Started!</div>";
+            countdownElement.innerHTML = "<div style='text-align: center; font-size: 1.5rem; color: var(--dynamo-red); font-weight: bold;'>Match Started!</div>";
             return;
         }
 

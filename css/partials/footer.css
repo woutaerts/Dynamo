@@ -6,21 +6,10 @@
     justify-content: center;
     height: 182px;
     padding: 20px 0;
-    background: linear-gradient(135deg, #B90A0A 0%, #8B0000 100%);
+    background: var(--dynamo-red);
     color: white;
     margin-top: 80px;
     overflow: hidden;
-}
-
-.footer::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: linear-gradient(135deg, rgba(255,255,255,0.1) 0%, transparent 50%);
-    pointer-events: none;
 }
 
 .footer-content {
@@ -78,8 +67,8 @@
 
 .social-icon:hover {
     background: white;
-    color: #B90A0A;
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+    color: var(--dynamo-red);
+    box-shadow: var(--shadow-hover);
 }
 
 .social-icon:active {
@@ -105,7 +94,7 @@
 
 .footer-copyright p {
     margin: 0;
-    color: #ffffff;
+    color: white;
     font-size: 0.8rem;
     font-weight: 300;
 }

@@ -5,10 +5,8 @@
     align-items: center;
     position: relative;
     overflow: hidden;
-    background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.4)), url('../img/huddle.png');
     background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
+    background: url('../img/huddle.png') no-repeat center;
 }
 
 .hero-content {
@@ -37,7 +35,7 @@
 
 .hero p {
     font-size: 1.3rem;
-    color: #f8f9fa;
+    color: var(--off-white);
     margin-bottom: 2rem;
     animation: slideInUp 1s ease-out 0.3s both;
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
@@ -72,37 +70,36 @@
 
 .overview-card {
     text-align: center;
-    background: linear-gradient(135deg, #ffffff 0%, #f9f9f9 100%);
+    background: white;
     padding: 2rem;
     border-radius: 20px;
-    box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.20);
+    box-shadow: var(--shadow-medium);
     transition: opacity 0.6s ease-out, transform 0.6s ease-out;
     opacity: 0;
-    transform: translateY(30px);
 }
 
 .overview-card:hover {
+    box-shadow: var(--shadow-hover);
     transform: translateY(-5px);
-    box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.35);
     transition: transform 0.3s ease;
 }
 
 .overview-card i {
     font-size: 2rem;
-    color: #B90A0A;
+    color: var(--dynamo-red);
     margin-bottom: 1rem;
 }
 
 .overview-card h3 {
     font-size: 1.5rem;
-    color: #333;
+    color: var(--dark-gray);
     margin-bottom: 0.5rem;
     font-family: 'Poppins', sans-serif;
     font-weight: 600;
 }
 
 .overview-card p {
-    color: #666;
+    color: var(--medium-gray);
     font-size: 1rem;
     line-height: 1.6;
     margin-bottom: 1rem;
@@ -111,14 +108,10 @@
 .overview-link {
     display: inline-block;
     margin-top: 1rem;
-    color: #B90A0A;
+    color: var(--dynamo-red);
     font-weight: bold;
     text-decoration: none;
     transition: color 0.3s ease;
-}
-
-.overview-link:hover {
-    color: #d63031;
 }
 
 /* Statistics Overview Section */
@@ -138,27 +131,27 @@
     background: white;
     padding: 2rem;
     border-radius: 15px;
-    box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.2);
+    box-shadow: var(--shadow-medium);
     transition: opacity 0.6s ease-out, transform 0.6s ease-out;
     opacity: 0;
     transform: translateY(30px);
 }
 
 .stat-card:hover {
+    box-shadow: var(--shadow-hover);
     transform: translateY(-5px);
-    box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.35);
-    transition: transform 0.3s;
+    transition: transform 0.3s ease;
 }
 
 .stat-number {
     font-size: 2.5rem;
-    color: #B90A0A;
+    color: var(--dynamo-red);
     font-weight: 800;
     font-family: 'Poppins', sans-serif;
 }
 
 .stat-label {
-    color: #666;
+    color: var(--medium-gray);
     text-transform: uppercase;
     margin-top: 0.5rem;
     font-family: 'Poppins', sans-serif;
@@ -178,10 +171,10 @@
 
 .contact-card {
     text-align: center;
-    background: linear-gradient(135deg, #ffffff 0%, #f9f9f9 100%);
+    background: white;
     padding: 2rem;
     border-radius: 20px;
-    box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.2);
+    box-shadow: var(--shadow-medium);
     text-decoration: none;
     color: inherit;
     display: block;
@@ -191,59 +184,29 @@
 }
 
 .contact-card:hover {
+    box-shadow: var(--shadow-hover);
     transform: translateY(-5px);
-    box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.35);
-    text-decoration: none;
-    transition: transform 0.3s;
+    transition: transform 0.3s ease;
 }
 
 .contact-card i {
     font-size: 2rem;
-    color: #B90A0A;
+    color: var(--dynamo-red);
     margin-bottom: 1rem;
 }
 
 .contact-card h3 {
     font-size: 1.5rem;
-    color: #333;
+    color: var(--dark-gray);
     margin-bottom: 0.5rem;
     font-family: 'Poppins', sans-serif;
     font-weight: 600;
 }
 
 .contact-card p {
-    color: #666;
+    color: var(--medium-gray);
     font-size: 1rem;
     line-height: 1.6;
-}
-
-.social-links {
-    display: flex;
-    justify-content: center;
-    gap: 1rem;
-    margin-top: 2rem;
-}
-
-.social-link {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 50px;
-    height: 50px;
-    background: linear-gradient(135deg, #ffffff 0%, #f9f9f9 100%);
-    border-radius: 50%;
-    color: #B90A0A;
-    font-size: 1.2rem;
-    transition: all 0.3s ease;
-    text-decoration: none;
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
-}
-
-.social-link:hover {
-    background: linear-gradient(45deg, #B90A0A, #d63031);
-    color: white;
-    transform: translateY(-5px);
-    box-shadow: 0 15px 30px rgba(185, 10, 10, 0.3);
 }
 
 /* Map Section */
@@ -254,7 +217,7 @@
 .map-container {
     border-radius: 15px;
     overflow: hidden;
-    box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.2);
+    box-shadow: var(--shadow-medium);
     height: 400px;
     position: relative;
     opacity: 0;
@@ -275,14 +238,14 @@
 
 .stadium-info h3 {
     font-size: 1.8rem;
-    color: #333;
+    color: var(--dark-gray);
     margin-bottom: 0.5rem;
     font-family: 'Poppins', sans-serif;
     font-weight: 600;
 }
 
 .stadium-info p {
-    color: #666;
+    color: var(--medium-gray);
     font-size: 1.1rem;
 }
 

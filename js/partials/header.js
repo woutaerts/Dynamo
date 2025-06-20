@@ -338,17 +338,17 @@ function initializeNavBlob() {
 
     function updateNavBlob(activeLink) {
         if (window.innerWidth <= 768) return; // Disable blob on mobile
-
         if (activeLink) {
             const linkRect = activeLink.getBoundingClientRect();
             const navRect = navLinksContainer.getBoundingClientRect();
             const left = linkRect.left - navRect.left;
             const width = linkRect.width - 1;
-
             navBlob.style.left = left + 'px';
             navBlob.style.width = width + 'px';
+            navBlob.style.transform = 'scale(1)'; // Show the blob
             navBlob.classList.add('active');
         } else {
+            navBlob.style.transform = 'scale(0.95)'; // Hide the blob
             navBlob.classList.remove('active');
         }
     }

@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>Matches - Dynamo Beirs</title>
     <meta name="description" content="Recent matches and fixtures for Dynamo Beirs - stay updated with our latest games"/>
-
     <!-- Stylesheet CSS files -->
     <link rel="stylesheet" href="../css/general.css">
     <link rel="stylesheet" href="../css/partials/header.css" />
@@ -13,7 +12,6 @@
     <link rel="stylesheet" href="../css/matches.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.css" />
-
     <!-- Deferred JavaScript files -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.js" defer></script>
     <script src="../js/partials/header.js" defer></script>
@@ -22,9 +20,7 @@
     <script src="../js/matches.js" defer></script>
 </head>
 <body>
-
 <div id="header-placeholder"></div>
-
 <main>
     <section class="page-hero">
         <div class="container">
@@ -32,7 +28,6 @@
             <p>Stay updated with our latest games and upcoming fixtures</p>
         </div>
     </section>
-
     <section class="countdown-section">
         <div class="container">
             <h2 class="section-title">Next Match Countdown</h2>
@@ -59,24 +54,21 @@
             </div>
         </div>
     </section>
-
-
     <section class="match-form-section">
         <div class="container">
             <div class="form-display">
                 <h3 class="section-subtitle">Form</h3>
                 <p class="form-description">Last 5 Matches</p>
                 <div class="form-results">
-                    <span class="form-result win">W</span>
-                    <span class="form-result win">W</span>
-                    <span class="form-result win">W</span>
-                    <span class="form-result draw">D</span>
-                    <span class="form-result win">W</span>
+                    <span class="form-result win"><i class="fas fa-check"></i></span>
+                    <span class="form-result win"><i class="fas fa-check"></i></span>
+                    <span class="form-result win"><i class="fas fa-check"></i></span>
+                    <span class="form-result draw"><i class="fas fa-minus"></i></span>
+                    <span class="form-result win"><i class="fas fa-check"></i></span>
                 </div>
             </div>
         </div>
     </section>
-
     <!-- Upcoming Fixtures Section -->
     <section class="upcoming-matches" style="margin-top: 4rem;">
         <div class="container">
@@ -90,7 +82,7 @@
                      data-match-date="June 12, 2025"
                      data-match-time="15:00"
                      data-match-season="2024-25">
-                    <div class="match-header"><span>UP</span></div>
+                    <div class="result-icon"><span>NXT</span></div>
                     <div class="match-body">
                         <div class="match-teams">
                             <div class="home-team">Dynamo Beirs</div>
@@ -106,7 +98,6 @@
                         </div>
                     </div>
                 </div>
-
                 <div class="match-card modern"
                      data-venue="City Arena"
                      data-lat="50.8503"
@@ -115,7 +106,7 @@
                      data-match-date="June 19, 2025"
                      data-match-time="19:30"
                      data-match-season="2024-25">
-                    <div class="match-header"><span>UP</span></div>
+                    <div class="result-icon"><span>NXT</span></div>
                     <div class="match-body">
                         <div class="match-teams">
                             <div class="home-team">City Rovers</div>
@@ -131,7 +122,6 @@
                         </div>
                     </div>
                 </div>
-
                 <div class="match-card modern"
                      data-venue="Home Stadium"
                      data-lat="51.311250"
@@ -140,7 +130,7 @@
                      data-match-date="June 26, 2025"
                      data-match-time="16:00"
                      data-match-season="2024-25">
-                    <div class="match-header"><span>UP</span></div>
+                    <div class="result-icon"><span>NXT</span></div>
                     <div class="match-body">
                         <div class="match-teams">
                             <div class="home-team">Dynamo Beirs</div>
@@ -159,7 +149,6 @@
             </div>
         </div>
     </section>
-
     <section class="matches-section" id="matches">
         <div class="container">
             <h2 class="section-title">Recent Results</h2>
@@ -174,7 +163,7 @@
                      data-match-time="19:00"
                      data-match-season="2024-25"
                      data-goalscorers='[{"player":"Lukaku", "goals":1}, {"player":"De Bruyne", "goals":1}]'>
-                    <div class="match-header win"><span>W</span></div>
+                    <div class="result-icon win"><span><i class="fas fa-check"></i></span></div>
                     <div class="match-body">
                         <div class="match-teams">
                             <div class="home-team">Dynamo Beirs</div>
@@ -191,7 +180,6 @@
                         </div>
                     </div>
                 </div>
-
                 <div class="match-card modern result"
                      data-venue="KFC Lentezon"
                      data-lat="51.311250"
@@ -202,7 +190,7 @@
                      data-match-time="19:00"
                      data-match-season="2024-25"
                      data-goalscorers='[{"player":"Lukaku", "goals":2}, {"player":"Hazard", "goals":1}]'>
-                    <div class="match-header win"><span>W</span></div>
+                    <div class="result-icon win"><span><i class="fas fa-check"></i></span></div>
                     <div class="match-body">
                         <div class="match-teams">
                             <div class="home-team">Dynamo Beirs</div>
@@ -219,7 +207,6 @@
                         </div>
                     </div>
                 </div>
-
                 <div class="match-card modern result"
                      data-venue="Bluewave Stadium"
                      data-lat="50.8503"
@@ -230,7 +217,7 @@
                      data-match-time="19:00"
                      data-match-season="2024-25"
                      data-goalscorers='[{"player":"De Bruyne", "goals":1}]'>
-                    <div class="match-header loss"><span>L</span></div>
+                    <div class="result-icon loss"><span><i class="fas fa-times"></i></span></div>
                     <div class="match-body">
                         <div class="match-teams">
                             <div class="home-team">Bluewave FC</div>
@@ -247,7 +234,6 @@
                         </div>
                     </div>
                 </div>
-
                 <div class="match-card modern result"
                      data-venue="KFC Lentezon"
                      data-lat="51.311250"
@@ -258,7 +244,7 @@
                      data-match-time="19:00"
                      data-match-season="2024-25"
                      data-goalscorers='[{"player":"Lukaku", "goals":1}, {"player":"Hazard", "goals":1}]'>
-                    <div class="match-header win"><span>W</span></div>
+                    <div class="result-icon win"><span><i class="fas fa-check"></i></span></div>
                     <div class="match-body">
                         <div class="match-teams">
                             <div class="home-team">Dynamo Beirs</div>
@@ -275,7 +261,6 @@
                         </div>
                     </div>
                 </div>
-
                 <div class="match-card modern result"
                      data-venue="Victory Arena"
                      data-lat="50.8503"
@@ -286,7 +271,7 @@
                      data-match-time="19:00"
                      data-match-season="2024-25"
                      data-goalscorers='[{"player":"De Bruyne", "goals":1}]'>
-                    <div class="match-header draw"><span>D</span></div>
+                    <div class="result-icon draw"><span><i class="fas fa-minus"></i></span></div>
                     <div class="match-body">
                         <div class="match-teams">
                             <div class="home-team">Werk Der Toekomst</div>
@@ -303,7 +288,6 @@
                         </div>
                     </div>
                 </div>
-
                 <div class="match-card modern result"
                      data-venue="KFC Lentezon"
                      data-lat="51.311250"
@@ -314,7 +298,7 @@
                      data-match-time="19:00"
                      data-match-season="2024-25"
                      data-goalscorers='[{"player":"Lukaku", "goals":2}, {"player":"De Bruyne", "goals":1}]'>
-                    <div class="match-header win"><span>W</span></div>
+                    <div class="result-icon win"><span><i class="fas fa-check"></i></span></div>
                     <div class="match-body">
                         <div class="match-teams">
                             <div class="home-team">Dynamo Beirs</div>
@@ -335,67 +319,67 @@
         </div>
     </section>
 
-
     <section class="match-timeline">
         <div class="container">
             <h2 class="section-title">Season Timeline</h2>
             <div class="timeline-wrapper">
+                <div class="timeline-start-knob"></div>
                 <div class="timeline">
-                    <div class="timeline-item win" data-match="match1">
-                        <span class="result-icon">W</span>
-                        <small>May 21</small>
-                    </div>
-                    <div class="timeline-item win" data-match="match2">
-                        <span class="result-icon">W</span>
-                        <small>May 14</small>
-                    </div>
-                    <div class="timeline-item win" data-match="match3">
-                        <span class="result-icon">W</span>
-                        <small>May 7</small>
-                    </div>
-                    <div class="timeline-item draw" data-match="match4">
-                        <span class="result-icon">D</span>
-                        <small>Apr 30</small>
-                    </div>
-                    <div class="timeline-item win" data-match="match5">
-                        <span class="result-icon">W</span>
-                        <small>Apr 23</small>
-                    </div>
-                    <div class="timeline-item loss" data-match="match6">
-                        <span class="result-icon">L</span>
-                        <small>Apr 16</small>
-                    </div>
-                    <div class="timeline-item win" data-match="match7">
-                        <span class="result-icon">W</span>
-                        <small>May 7</small>
-                    </div>
-                    <div class="timeline-item draw" data-match="match8">
-                        <span class="result-icon">D</span>
-                        <small>Apr 30</small>
-                    </div>
-                    <div class="timeline-item win" data-match="match9">
-                        <span class="result-icon">W</span>
-                        <small>Apr 23</small>
-                    </div>
-                    <div class="timeline-item loss" data-match="match10">
-                        <span class="result-icon">L</span>
-                        <small>Apr 16</small>
-                    </div>
-                    <div class="timeline-item win" data-match="match11">
-                        <span class="result-icon">W</span>
-                        <small>May 7</small>
-                    </div>
-                    <div class="timeline-item draw" data-match="match12">
-                        <span class="result-icon">D</span>
-                        <small>Apr 30</small>
+                    <div class="timeline-item loss" data-match="match14">
+                        <span class="result-icon"><i class="fas fa-times"></i></span>
+                        <small>Feb 16</small>
                     </div>
                     <div class="timeline-item win" data-match="match13">
-                        <span class="result-icon">W</span>
+                        <span class="result-icon"><i class="fas fa-check"></i></span>
+                        <small>Feb 23</small>
+                    </div>
+                    <div class="timeline-item draw" data-match="match12">
+                        <span class="result-icon"><i class="fas fa-minus"></i></span>
+                        <small>Feb 30</small>
+                    </div>
+                    <div class="timeline-item win" data-match="match11">
+                        <span class="result-icon"><i class="fas fa-check"></i></span>
+                        <small>Mar 1</small>
+                    </div>
+                    <div class="timeline-item loss" data-match="match10">
+                        <span class="result-icon"><i class="fas fa-times"></i></span>
+                        <small>Mar 7</small>
+                    </div>
+                    <div class="timeline-item win" data-match="match9">
+                        <span class="result-icon"><i class="fas fa-check"></i></span>
+                        <small>Mar 16</small>
+                    </div>
+                    <div class="timeline-item draw" data-match="match8">
+                        <span class="result-icon"><i class="fas fa-minus"></i></span>
+                        <small>Mar 23</small>
+                    </div>
+                    <div class="timeline-item win" data-match="match7">
+                        <span class="result-icon"><i class="fas fa-check"></i></span>
+                        <small>Mar 30</small>
+                    </div>
+                    <div class="timeline-item loss" data-match="match6">
+                        <span class="result-icon"><i class="fas fa-times"></i></span>
+                        <small>Apr 16</small>
+                    </div>
+                    <div class="timeline-item win" data-match="match5">
+                        <span class="result-icon"><i class="fas fa-check"></i></span>
                         <small>Apr 23</small>
                     </div>
-                    <div class="timeline-item loss" data-match="match14">
-                        <span class="result-icon">L</span>
-                        <small>Apr 16</small>
+                    <div class="timeline-item draw" data-match="match4">
+                        <span class="result-icon"><i class="fas fa-minus"></i></span>
+                        <small>Apr 30</small>
+                    </div>
+                    <div class="timeline-item win" data-match="match3">
+                        <span class="result-icon"><i class="fas fa-check"></i></span>
+                        <small>May 7</small>
+                    </div>
+                    <div class="timeline-item win" data-match="match2">
+                        <span class="result-icon"><i class="fas fa-check"></i></span>
+                        <small>May 14</small>
+                    </div>
+                    <div class="timeline-item win" data-match="match1">
+                        <span class="result-icon"><i class="fas fa-check"></i></span>
+                        <small>May 21</small>
                     </div>
                 </div>
             </div>
@@ -403,7 +387,6 @@
     </section>
 
     <div id="match-modal-placeholder"></div>
-
 </main>
 
 <div id="footer-placeholder"></div>

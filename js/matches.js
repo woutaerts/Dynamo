@@ -9,8 +9,17 @@ document.addEventListener('DOMContentLoaded', async () => {
     window.matchModal = new MatchModal();
     await window.matchModal.init();
 
+    const timelineWrapper = document.querySelector('.timeline-wrapper');
+    if (timelineWrapper) {
+        timelineWrapper.scrollTo({
+            left: timelineWrapper.scrollWidth,
+            behavior: 'smooth'
+        });
+    }
+
     setupMatchInteractions();
 });
+
 
 function setupStaggeredAnimations() {
     const animatableElements = document.querySelectorAll('.match-card, .timeline-item, .countdown-block, .form-result');
@@ -242,5 +251,3 @@ function getMatchData(card) {
         goalscorers
     };
 }
-
-document.head.appendChild(style);

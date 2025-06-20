@@ -241,7 +241,7 @@ class MatchModal {
             console.error('Failed to initialize map:', error);
             // Show fallback message if map fails to load
             mapContainer.innerHTML = `
-                <div style="display: flex; align-items: center; justify-content: center; height: 100%; background: rgba(0,0,0,0.1); color: #666; font-family: Poppins,serif;">
+                <div style="display: flex; align-items: center; justify-content: center; height: 100%; background: rgba(0,0,0,0.1); color: var(--medium-gray); font-family: Poppins,serif;">
                     <p>Map unavailable</p>
                 </div>
             `;

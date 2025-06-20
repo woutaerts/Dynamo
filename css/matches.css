@@ -1,5 +1,19 @@
-.section-title {
-    margin-top: 3rem;
+/* General Icon Style */
+.result-icon {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    font-size: 1.4rem;
+    font-weight: bold;
+    color: var(--off-white);
+    font-family: 'Poppins', sans-serif;
+    box-shadow: var(--shadow-medium);
+    transition: all 0.3s ease;
+    position: relative;
+    z-index: 2;
 }
 
 /* Match Cards */
@@ -14,7 +28,7 @@
     background: white;
     border-radius: 16px;
     overflow: hidden;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    box-shadow: var(--shadow-medium);
     transition: all 0.3s ease;
     cursor: pointer;
     border: 1px solid rgba(0, 0, 0, 0.05);
@@ -22,43 +36,33 @@
 }
 
 .match-card.modern:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
+    box-shadow: var(--shadow-hover) !important;
+    transform: translateY(-5px) !important;
+    transition: transform 0.3s ease !important;
 }
 
 /* Result Badge */
-.match-header {
+.result-icon.win {
+    background: var(--light-green);
+}
+
+.result-icon.draw {
+    background: var(--golden-yellow);
+}
+
+.result-icon.loss {
+    background: var(--soft-coral);
+}
+
+.result-icon:not(.win):not(.draw):not(.loss) {
+    background: var(--dusty-blue);
+}
+
+/* Positioning for the result-icon in match-card */
+.match-card.modern .result-icon {
     position: absolute;
     top: 16px;
     right: 16px;
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 1.2rem;
-    font-weight: bold;
-    color: white;
-    font-family: 'Poppins', sans-serif;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-    z-index: 2;
-}
-
-.match-header.win {
-    background: linear-gradient(45deg, #84b281, #648F5F); /* Base Green to Darker Green */
-}
-
-.match-header.draw {
-    background: linear-gradient(45deg, #E8B04B, #C69436); /* Golden Ochre */
-}
-
-.match-header.loss {
-    background: linear-gradient(45deg, #E07A5F, #C65B4D); /* Warm Terracotta */
-}
-
-.match-header:not(.win):not(.draw):not(.loss) {
-    background: linear-gradient(45deg, #7B96B7, #3D5A80); /* Unchanged for non-result states */
 }
 
 /* Card Body */
@@ -70,7 +74,7 @@
     text-align: center;
 }
 
-/* Match Teams - Updated for separate lines */
+/* Match Teams */
 .match-teams {
     margin: 0 0 20px;
     width: 100%;
@@ -78,7 +82,7 @@
 
 .home-team, .away-team {
     font-size: 1.1rem;
-    color: #1f2937;
+    color: var(--dark-gray);
     font-family: 'Poppins', sans-serif;
     font-weight: 600;
     line-height: 1;
@@ -86,34 +90,28 @@
 }
 
 .vs-divider {
-    color: #6b7280;
+    color: var(--medium-gray);
     font-size: 0.95rem;
     font-weight: 500;
     margin: 8px 0;
 }
 
-/* Score - Centered and more prominent */
+/* Score */
 .match-score {
-    background: #f8fafc;
+    background: var(--off-white);
     padding: 12px 20px;
     border-radius: 25px;
     font-size: 2rem;
     font-weight: 700;
-    color: #1f2937;
+    color: var(--dark-gray);
     font-family: 'Poppins', sans-serif;
-    border: 2px solid #e2e8f0;
+    border: 2px solid var(--silver-mist);
     margin: 10px 0 20px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    box-shadow: var(--shadow-medium);
     transition: all 0.3s ease;
-
 }
 
-.match-card.modern:hover .match-score {
-    transform: scale(1.05);
-    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
-}
-
-/* Match Details Container - Updated for icon layout */
+/* Match Details Container */
 .match-details {
     display: flex;
     flex-direction: column;
@@ -122,9 +120,9 @@
     width: 100%;
 }
 
-/* Date and Time - Updated with icon styling */
+/* Date and Time */
 .match-datetime {
-    color: #6b7280;
+    color: var(--medium-gray);
     font-size: 0.95rem;
     font-family: 'Poppins', sans-serif;
     font-weight: 500;
@@ -134,16 +132,16 @@
 }
 
 .match-datetime::before {
-    content: '\f017'; /* FontAwesome clock icon */
+    content: '\f017';
     font-family: 'Font Awesome 6 Free', serif;
     font-weight: 900;
     font-size: 0.9rem;
     opacity: 0.8;
 }
 
-/* Venue - Updated styling to match date */
+/* Venue */
 .match-venue {
-    color: #6b7280;
+    color: var(--medium-gray);
     font-size: 0.95rem;
     font-family: 'Poppins', sans-serif;
     font-weight: 500;
@@ -158,16 +156,23 @@
 }
 
 /* Upcoming matches styling */
-.match-card.modern:not(.result) .match-header {
-    background: linear-gradient(45deg, #7B96B7, #3D5A80);
+.match-card.modern:not(.result) .result-icon {
+    background: var(--dusty-blue);
+    font-size: 1.1rem;
 }
 
 .match-card.modern:not(.result) .match-score {
-    background: #E9EDF2;
-    color: #3D5A80;
-    border-color: #A1B2C8;
-    font-size: 1.5rem;
-    font-weight: 600;
+    background: var(--off-white);
+    padding: 12px 20px;
+    border-radius: 25px;
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: var(--dark-gray);
+    font-family: 'Poppins', sans-serif;
+    border: 2px solid var(--silver-mist);
+    margin: 10px 0 20px;
+    box-shadow: var(--shadow-medium);
+    transition: all 0.3s ease;
 }
 
 /* Timeline Container */
@@ -192,23 +197,51 @@
     min-width: 100%;
 }
 
-/* Timeline Line - now properly spans the full width of timeline items */
+/* Timeline Line */
+.timeline-start-knob {
+    position: absolute;
+    top: 50%;
+    left: 3rem;
+    width: 12px;
+    height: 12px;
+    background: var(--light-gray);
+    border-radius: 50%;
+    transform: translateY(-50%);
+    box-shadow: var(--shadow-medium);
+    z-index: 2;
+}
+
 .timeline::before {
     content: '';
     position: absolute;
     top: 50%;
-    left: 0;
-    right: 0;
     height: 4px;
-    background: #bbb;
+    background: var(--light-gray);
     border-radius: 2px;
     z-index: 1;
     transform: translateY(-2px);
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-    margin: 0 3rem;
+    box-shadow: var(--shadow-medium);
+    left: 3rem;
+    right: 1rem;
+    margin: 0;
     opacity: 0;
     transform-origin: left center;
     transition: opacity 0.6s ease-out, transform 0.8s ease-out;
+}
+
+.timeline::after {
+    content: "\f054";
+    font-family: "Font Awesome 6 Free", serif;
+    font-weight: 900;
+    position: absolute;
+    top: 50%;
+    right: 1.27rem;
+    transform: translate(50%, -50%);
+    font-size: 26px;
+    color: var(--light-gray);
+    pointer-events: none;
+    user-select: none;
+    z-index: 3;
 }
 
 .timeline.animate-in::before {
@@ -234,46 +267,34 @@
 
 .timeline-item:hover {
     transform: translateY(-5px);
+    transition: transform 0.3s ease;
 }
 
-/* Result Icon - positioned above the timeline */
-.result-icon {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
-    font-size: 1.2rem;
-    font-weight: bold;
-    color: white;
+/* Result Icon in Timeline */
+.timeline-item .result-icon {
     margin-bottom: 1.5rem;
-    font-family: 'Poppins', sans-serif;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-    transition: all 0.3s ease;
-    position: relative;
     z-index: 4;
 }
 
 .timeline-item.win .result-icon {
-    background: linear-gradient(45deg, #84b281, #648F5F); /* Base Green to Darker Green */
+    background: var(--light-green) !important;
 }
 
 .timeline-item.draw .result-icon {
-    background: linear-gradient(45deg, #E8B04B, #C69436); /* Updated gradient */
+    background: var(--golden-yellow) !important;
 }
 
 .timeline-item.loss .result-icon {
-    background: linear-gradient(45deg, #E07A5F, #C65B4D); /* Warm Terracotta */
+    background: var(--soft-coral) !important;
 }
-
 
 .timeline-item:hover .result-icon {
-    transform: translateY(-50%) scale(1.1);
-    box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+    box-shadow: var(--shadow-hover);
+    transform: translateY(-5px);
+    transition: transform 0.3s ease;
 }
 
-/* Timeline Node (Circle) - positioned on the timeline line */
+/* Timeline Node */
 .timeline-item::before {
     content: '';
     position: absolute;
@@ -286,42 +307,37 @@
     transform: translate(-50%, -50%);
     z-index: 2;
     transition: all 0.3s ease;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+    box-shadow: var(--shadow-medium);
 }
 
-/* Node colors based on result */
 .timeline-item.win::before {
-    border-color: #648F5F; /* Darker Green from Gradient */
-    background: #84b281; /* Base Green */
+    background: var(--light-green);
 }
 
 .timeline-item.draw::before {
-    border-color: #D9A83F; /* Darker Golden Ochre */
-    background: #E8B04B; /* Golden Ochre */
+    background: var(--golden-yellow);
 }
 
 .timeline-item.loss::before {
-    border-color: #C65B4D; /* Darker Warm Terracotta */
-    background: #E07A5F; /* Warm Terracotta */
+    background: var(--soft-coral);
 }
 
 .timeline-item:hover::before {
-    transform: translate(-50%, -50%) scale(1.2);
-    box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+    box-shadow: var(--shadow-hover);
+    transition: transform 0.3s ease;
 }
 
-/* Timeline Date - positioned below the timeline */
+/* Timeline Date */
 .timeline-item small {
     font-size: 0.8rem;
-    color: #555;
+    color: var(--medium-gray);
     font-weight: 600;
     font-family: 'Poppins', sans-serif;
     text-align: center;
     background: white;
     padding: 0.3rem 0.6rem;
     border-radius: 12px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-    border: 1px solid #eee;
+    box-shadow: var(--shadow-medium);
     white-space: nowrap;
     position: relative;
     z-index: 4;
@@ -331,7 +347,7 @@
 /* Scrollbar styling */
 .timeline-wrapper {
     scrollbar-width: thin;
-    scrollbar-color: #bbb #f1f1f1;
+    scrollbar-color: var(--light-gray) var(--silver-mist);
 }
 
 .timeline-wrapper::-webkit-scrollbar {
@@ -339,17 +355,17 @@
 }
 
 .timeline-wrapper::-webkit-scrollbar-track {
-    background: #f1f1f1;
+    background: var(--silver-mist);
     border-radius: 10px;
 }
 
 .timeline-wrapper::-webkit-scrollbar-thumb {
-    background: linear-gradient(90deg, #bbb, #999);
+    background: var(--light-gray);
     border-radius: 10px;
 }
 
 .timeline-wrapper::-webkit-scrollbar-thumb:hover {
-    background: linear-gradient(90deg, #999, #777);
+    background: var(--medium-gray);
 }
 
 .animate-in {
@@ -374,7 +390,7 @@
         padding-right: 45px;
     }
 
-    .match-header {
+    .match-card.modern .result-icon {
         width: 40px;
         height: 40px;
         font-size: 1rem;
@@ -407,7 +423,7 @@
         padding: 0 8px;
     }
 
-    .result-icon {
+    .timeline-item .result-icon {
         width: 40px;
         height: 40px;
         font-size: 1rem;
@@ -423,6 +439,5 @@
     .timeline-item::before {
         width: 16px;
         height: 16px;
-        border-width: 3px;
     }
 }

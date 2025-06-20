@@ -1,7 +1,7 @@
 /* Filter Section */
 .filter-section {
     padding: 2rem 0 1rem 0;
-    background: #f8f9fa;
+    background: var(--off-white);
 }
 
 .filter-controls {
@@ -13,34 +13,72 @@
 
 .filter-btn {
     background: white;
-    border: 2px solid #e9ecef;
-    color: #6c757d;
+    border: none;
+    color:  var(--medium-gray);
     padding: 0.75rem 1.5rem;
     border-radius: 25px;
     font-family: 'Poppins', sans-serif;
-    font-weight: 600;
+    font-weight: 700;
+    letter-spacing: 1px;
     font-size: 0.9rem;
     cursor: pointer;
     transition: all 0.3s ease;
     display: flex;
     align-items: center;
     gap: 0.5rem;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    box-shadow: var(--shadow-medium);
 }
 
-.filter-btn:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-    border-color: #B90A0A;
-    color: #B90A0A;
+/* Position-specific hover filter button colors */
+.filter-btn:hover[data-position="goalkeeper"] {
+    background: var(--dark-blue);
+    color: var(--off-white);
 }
 
-.filter-btn.active {
-    background: linear-gradient(45deg, #B90A0A, #d63031);
-    color: white;
-    border-color: #B90A0A;
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(185, 10, 10, 0.3);
+.filter-btn:hover[data-position="defender"] {
+    background: var(--dark-green);
+    color: var(--off-white);
+}
+
+.filter-btn:hover[data-position="midfielder"] {
+    background: var(--dark-yellow);
+    color: var(--off-white);
+}
+
+.filter-btn:hover[data-position="attacker"] {
+    background: var(--dark-coral);
+    color: var(--off-white);
+}
+
+.filter-btn:hover[data-position="all"] {
+    background: var(--medium-gray);
+    color: var(--off-white);
+}
+
+/* Position-specific active filter button colors */
+.filter-btn.active[data-position="goalkeeper"] {
+    background: var(--dark-blue);
+    color: var(--off-white);
+}
+
+.filter-btn.active[data-position="defender"] {
+    background: var(--dark-green);
+    color: var(--off-white);
+}
+
+.filter-btn.active[data-position="midfielder"] {
+    background: var(--dark-yellow);
+    color: var(--off-white);
+}
+
+.filter-btn.active[data-position="attacker"] {
+    background: var(--dark-coral);
+    color: var(--off-white);
+}
+
+.filter-btn.active[data-position="all"] {
+    background: var(--medium-gray);
+    color: var(--off-white);
 }
 
 .filter-btn i {
@@ -65,15 +103,14 @@
     left: 1rem;
     top: 50%;
     transform: translateY(-50%);
-    color: #6c757d;
+    color: var(--medium-gray);
     font-size: 1rem;
-    pointer-events: none; /* Prevents icon from being clickable */
+    pointer-events: none;
 }
 
 .player-search {
-    padding: 0.75rem 1rem;
-    padding-left: 2.5rem; /* Space for the icon */
-    border: 2px solid #e9ecef;
+    padding: 0.75rem 1rem 0.75rem 2.5rem;
+    border: 2px solid white;
     border-radius: 25px;
     font-family: 'Poppins', sans-serif;
     font-size: 0.9rem;
@@ -82,15 +119,15 @@
     text-align: center;
     transition: all 0.3s ease;
     outline: none;
+    box-shadow: var(--shadow-medium);
 }
 
 .player-search:focus {
-    border-color: #B90A0A;
-    box-shadow: 0 0 0 3px rgba(185, 10, 10, 0.1);
+    border-color: var(--light-gray);
 }
 
 .player-search::placeholder {
-    color: #6c757d;
+    color: var(--medium-gray);
     opacity: 1;
 }
 
@@ -110,7 +147,7 @@
     background: white;
     border-radius: 16px;
     padding: 2rem;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    box-shadow: var(--shadow-medium);
     transition: all 0.3s ease;
     cursor: pointer;
     border: 2px solid transparent;
@@ -119,28 +156,36 @@
     position: relative;
     overflow: hidden;
     display: block;
-}
 
-.player-card::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 4px;
-    background: linear-gradient(90deg, #B90A0A, #d63031);
-    opacity: 0;
-    transition: opacity 0.3s ease;
 }
 
 .player-card:hover {
-    transform: translateY(-8px) scale(1.02);
-    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
-    border-color: #B90A0A;
+    box-shadow: var(--shadow-hover)!important;
+    transform: translateY(-5px) !important;
+    transition: transform 0.3s ease!important;
 }
 
-.player-card:hover::before {
-    opacity: 1;
+/* Position-specific hover border colors */
+.player-card[data-position="goalkeeper"]:hover {
+    border-color: var(--dark-blue); /* Blue for goalkeeper */
+}
+
+.player-card[data-position="defender"]:hover {
+    border-color: var(--dark-green); /* Green for defender */
+}
+
+.player-card[data-position="midfielder"]:hover {
+    border-color: var(--dark-yellow); /* Ochre for midfielder */
+}
+
+.player-card[data-position="attacker"]:hover {
+    border-color: var(--dark-coral); /* Red for attacker */
+}
+
+.flag-icon {
+    width: 40px;
+    height: auto;
+    vertical-align: middle;
 }
 
 /* Filter Animation */
@@ -171,18 +216,17 @@
 .player-name {
     font-size: 1.4rem;
     font-weight: 700;
-    color: #333;
+    color: var(--dark-gray);
     margin-bottom: 0.5rem;
     font-family: 'Poppins', sans-serif;
 }
 
 .player-position {
     text-transform: uppercase;
-    color: #B90A0A;
+    color: var(--dynamo-red);
     font-size: 0.9rem;
-    font-weight: 600;
+    font-weight: 800;
     margin-bottom: 1rem;
-    letter-spacing: 0.5px;
 }
 
 .player-nationality {
@@ -190,10 +234,9 @@
     align-items: center;
     justify-content: center;
     gap: 0.5rem;
-    color: #666;
+    color: var(--medium-gray);
     font-size: 0.95rem;
     font-weight: 500;
-    background: #f8f9fa;
     padding: 0.5rem 1rem;
     border-radius: 20px;
     margin: 0 auto;
@@ -201,25 +244,25 @@
 }
 
 .player-nationality i {
-    color: #B90A0A;
+    color: var(--dynamo-red);
     font-size: 0.9rem;
 }
 
 /* Position-specific styling */
 .player-card[data-position="goalkeeper"] .player-position {
-    color: #3D5A80;
+    color: var(--dark-blue);
 }
 
 .player-card[data-position="defender"] .player-position {
-    color: #648F5F;
+    color: var(--dark-green);
 }
 
 .player-card[data-position="midfielder"] .player-position {
-    color: #C69436;
+    color: var(--dark-yellow);
 }
 
 .player-card[data-position="attacker"] .player-position {
-    color: #C65B4D;
+    color: var(--dark-coral);
 }
 
 /* Responsive Design */
