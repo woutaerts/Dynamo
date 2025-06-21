@@ -14,7 +14,7 @@
 .filter-btn {
     background: white;
     border: none;
-    color:  var(--medium-gray);
+    color: var(--medium-gray);
     padding: 0.75rem 1.5rem;
     border-radius: 25px;
     font-family: 'Poppins', sans-serif;
@@ -29,63 +29,42 @@
     box-shadow: var(--shadow-medium);
 }
 
-/* Position-specific hover filter button colors */
-.filter-btn:hover[data-position="goalkeeper"] {
-    background: var(--dark-blue);
-    color: var(--off-white);
+.filter-btn i {
+    font-size: 1rem;
 }
 
-.filter-btn:hover[data-position="defender"] {
-    background: var(--dark-green);
-    color: var(--off-white);
-}
-
-.filter-btn:hover[data-position="midfielder"] {
-    background: var(--dark-yellow);
-    color: var(--off-white);
-}
-
-.filter-btn:hover[data-position="attacker"] {
-    background: var(--dark-coral);
-    color: var(--off-white);
-}
-
-.filter-btn:hover[data-position="all"] {
-    background: var(--medium-gray);
-    color: var(--off-white);
-}
-
-/* Position-specific active filter button colors */
+/* Filter button hover states */
+.filter-btn:hover[data-position="goalkeeper"],
 .filter-btn.active[data-position="goalkeeper"] {
     background: var(--dark-blue);
     color: var(--off-white);
 }
 
+.filter-btn:hover[data-position="defender"],
 .filter-btn.active[data-position="defender"] {
     background: var(--dark-green);
     color: var(--off-white);
 }
 
+.filter-btn:hover[data-position="midfielder"],
 .filter-btn.active[data-position="midfielder"] {
     background: var(--dark-yellow);
     color: var(--off-white);
 }
 
+.filter-btn:hover[data-position="attacker"],
 .filter-btn.active[data-position="attacker"] {
-    background: var(--dark-coral);
+    background: var(--dynamo-red);
     color: var(--off-white);
 }
 
+.filter-btn:hover[data-position="all"],
 .filter-btn.active[data-position="all"] {
     background: var(--medium-gray);
     color: var(--off-white);
 }
 
-.filter-btn i {
-    font-size: 1rem;
-}
-
-/* Search Container */
+/* Search Section */
 .search-container {
     margin-top: 1rem;
     text-align: center;
@@ -140,7 +119,6 @@
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
     gap: 2rem;
-    transition: all 0.5s ease;
 }
 
 .player-card {
@@ -148,67 +126,53 @@
     border-radius: 16px;
     padding: 2rem;
     box-shadow: var(--shadow-medium);
-    transition: all 0.3s ease;
-    cursor: pointer;
+    cursor: default;
     border: 2px solid transparent;
-    opacity: 1;
-    transform: scale(1);
+    opacity: 0;
+    transform: translateY(100px);
     position: relative;
     overflow: hidden;
-    display: block;
-
+    transition: all 0.3s ease;
 }
 
 .player-card:hover {
-    box-shadow: var(--shadow-hover)!important;
-    transform: translateY(-5px) !important;
-    transition: transform 0.3s ease!important;
+    box-shadow: var(--shadow-hover);
+    transform: translateY(-5px);
 }
 
-/* Position-specific hover border colors */
+.player-card.animate-in {
+    opacity: 1;
+    transform: translateY(0);
+    animation-delay: calc(var(--animation-delay) * 100ms);
+}
+
+/* Position-specific hover colors */
 .player-card[data-position="goalkeeper"]:hover {
-    border-color: var(--dark-blue); /* Blue for goalkeeper */
+    border-color: var(--dark-blue);
 }
 
 .player-card[data-position="defender"]:hover {
-    border-color: var(--dark-green); /* Green for defender */
+    border-color: var(--dark-green);
 }
 
 .player-card[data-position="midfielder"]:hover {
-    border-color: var(--dark-yellow); /* Ochre for midfielder */
+    border-color: var(--dark-yellow);
 }
 
 .player-card[data-position="attacker"]:hover {
-    border-color: var(--dark-coral); /* Red for attacker */
+    border-color: var(--dynamo-red);
 }
 
-.flag-icon {
-    width: 40px;
-    height: auto;
-    vertical-align: middle;
-}
-
-/* Filter Animation */
+/* Filter animations */
 .player-card.filter-hidden {
     display: none;
 }
 
 .player-card.filter-visible {
     display: block;
-    animation: fadeInUp 0.4s ease forwards;
 }
 
-@keyframes fadeInUp {
-    from {
-        opacity: 0;
-        transform: translateY(20px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
+/* Player info styling */
 .player-info {
     text-align: center;
 }
@@ -248,7 +212,13 @@
     font-size: 0.9rem;
 }
 
-/* Position-specific styling */
+.flag-icon {
+    width: 40px;
+    height: auto;
+    vertical-align: middle;
+}
+
+/* Position-specific text colors */
 .player-card[data-position="goalkeeper"] .player-position {
     color: var(--dark-blue);
 }
@@ -262,7 +232,7 @@
 }
 
 .player-card[data-position="attacker"] .player-position {
-    color: var(--dark-coral);
+    color: var(--dynamo-red);
 }
 
 /* Responsive Design */

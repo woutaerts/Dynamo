@@ -1,36 +1,22 @@
-// Players page interactivity
+// Player page initialization and functionality
 document.addEventListener('DOMContentLoaded', () => {
-    // Initialize page
     initializePlayerCards();
     initializeFilters();
     addSearchFunctionality();
-
-    // Check for hash on page load after a short delay
-    setTimeout(() => {
-        checkInitialHash();
-    }, 100);
+    animateOnScroll();
+    setTimeout(checkInitialHash, 100);
 });
 
-// Initialize player cards
+// Player card setup and hover effects
 function initializePlayerCards() {
-    const cards = document.querySelectorAll('.player-card');
-
-    cards.forEach((card, index) => {
-        // Remove click event for modal (as requested)
+    document.querySelectorAll('.player-card').forEach(card => {
         card.style.cursor = 'default';
-
-        // Keep hover effects
-        card.addEventListener('mouseenter', () => {
-            card.style.transform = 'translateY(-8px) scale(1.02)';
-        });
-
-        card.addEventListener('mouseleave', () => {
-            card.style.transform = 'translateY(0) scale(1)';
-        });
+        card.addEventListener('mouseenter', () => card.style.transform = 'translateY(-8px) scale(1.02)');
+        card.addEventListener('mouseleave', () => card.style.transform = 'translateY(0) scale(1)');
     });
 }
 
-// Initialize filter functionality
+// Filter button functionality
 function initializeFilters() {
     const filterButtons = document.querySelectorAll('.filter-btn');
     const playerCards = document.querySelectorAll('.player-card');
@@ -39,64 +25,48 @@ function initializeFilters() {
         button.addEventListener('click', () => {
             const targetPosition = button.getAttribute('data-position');
 
-            // Update active button
             filterButtons.forEach(btn => btn.classList.remove('active'));
             button.classList.add('active');
 
-            // Filter players
             filterPlayers(targetPosition, playerCards);
 
-            // Clear search when filter changes
             const searchInput = document.querySelector('.player-search');
-            if (searchInput) {
-                searchInput.value = '';
-            }
+            if (searchInput) searchInput.value = '';
 
-            // Update URL hash for bookmarking
             history.replaceState(null, null, targetPosition === 'all' ? '#players' : `#${targetPosition}`);
         });
     });
 }
 
-// Filter players based on position
+// Filter players by position
 function filterPlayers(position, cards) {
-    cards.forEach((card) => {
+    cards.forEach(card => {
         const cardPosition = card.getAttribute('data-position');
         const shouldShow = position === 'all' || cardPosition === position;
 
-        if (shouldShow) {
-            card.classList.remove('filter-hidden');
-            card.classList.add('filter-visible');
-        } else {
-            card.classList.add('filter-hidden');
-            card.classList.remove('filter-visible');
-        }
+        card.classList.toggle('filter-hidden', !shouldShow);
+        card.classList.toggle('filter-visible', shouldShow);
     });
 }
 
-// Check initial hash on page load
+// Handle initial page hash
 function checkInitialHash() {
     const hash = window.location.hash.substring(1);
     const validPositions = ['goalkeeper', 'defender', 'midfielder', 'attacker'];
 
     if (validPositions.includes(hash)) {
         const targetButton = document.querySelector(`[data-position="${hash}"]`);
-        if (targetButton) {
-            targetButton.click();
-        }
+        if (targetButton) targetButton.click();
     }
 }
 
-// Add search functionality
+// Search functionality setup
 function addSearchFunctionality() {
     const searchInput = document.querySelector('.player-search');
-
-    if (searchInput) {
-        searchInput.addEventListener('input', handleSearch);
-    }
+    if (searchInput) searchInput.addEventListener('input', handleSearch);
 }
 
-// Handle search functionality
+// Handle search with filter combination
 function handleSearch(e) {
     const searchTerm = e.target.value.toLowerCase().trim();
     const playerCards = document.querySelectorAll('.player-card');
@@ -106,27 +76,18 @@ function handleSearch(e) {
     playerCards.forEach(card => {
         const playerName = card.querySelector('.player-name').textContent.toLowerCase();
         const cardPosition = card.getAttribute('data-position');
-
         const matchesSearch = searchTerm === '' || playerName.includes(searchTerm);
         const matchesFilter = activePosition === 'all' || cardPosition === activePosition;
 
-        if (matchesSearch && matchesFilter) {
-            card.classList.remove('filter-hidden');
-            card.classList.add('filter-visible');
-        } else {
-            card.classList.add('filter-hidden');
-            card.classList.remove('filter-visible');
-        }
+        card.classList.toggle('filter-hidden', !(matchesSearch && matchesFilter));
+        card.classList.toggle('filter-visible', matchesSearch && matchesFilter);
     });
 }
 
-// Add keyboard navigation support for filters
+// Keyboard navigation for filters
 document.addEventListener('keydown', (e) => {
-    // Only handle arrow keys if search input is not focused
     const searchInput = document.querySelector('.player-search');
-    if (searchInput && document.activeElement === searchInput) {
-        return;
-    }
+    if (searchInput && document.activeElement === searchInput) return;
 
     const filterButtons = document.querySelectorAll('.filter-btn');
     const activeButton = document.querySelector('.filter-btn.active');
@@ -134,8 +95,8 @@ document.addEventListener('keydown', (e) => {
 
     if (e.key === 'ArrowLeft' || e.key === 'ArrowRight') {
         e.preventDefault();
-
         let newIndex;
+
         if (e.key === 'ArrowLeft') {
             newIndex = currentIndex > 0 ? currentIndex - 1 : filterButtons.length - 1;
         } else {
@@ -146,3 +107,22 @@ document.addEventListener('keydown', (e) => {
         filterButtons[newIndex].click();
     }
 });
+
+// Scroll animation observer
+function animateOnScroll() {
+    const observer = new IntersectionObserver((entries, observer) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                const container = entry.target.closest('.players-grid');
+                const itemsInContainer = container.querySelectorAll('.player-card');
+                const itemIndex = Array.from(itemsInContainer).indexOf(entry.target);
+
+                entry.target.style.setProperty('--animation-delay', itemIndex);
+                entry.target.classList.add('animate-in');
+                observer.unobserve(entry.target);
+            }
+        });
+    }, { root: null, rootMargin: '0px', threshold: 0.1 });
+
+    document.querySelectorAll('.player-card').forEach(item => observer.observe(item));
+}

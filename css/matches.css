@@ -1,4 +1,4 @@
-/* General Icon Style */
+/* Base result icon styling */
 .result-icon {
     display: flex;
     justify-content: center;
@@ -6,17 +6,20 @@
     width: 50px;
     height: 50px;
     border-radius: 50%;
-    font-size: 1.4rem;
-    font-weight: bold;
+    font-size: 1.6rem;
     color: var(--off-white);
-    font-family: 'Poppins', sans-serif;
     box-shadow: var(--shadow-medium);
     transition: opacity 0.6s ease-out, transform 0.6s ease-out, box-shadow 0.3s ease;
     position: relative;
     z-index: 2;
 }
 
-/* Match Cards */
+.result-icon.win { background: var(--light-green); }
+.result-icon.draw { background: var(--golden-yellow); }
+.result-icon.loss { background: var(--soft-coral); }
+.result-icon:not(.win):not(.draw):not(.loss) { background: var(--dusty-blue); }
+
+/* Match cards layout */
 .matches-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
@@ -33,7 +36,6 @@
     cursor: pointer;
     border: 1px solid rgba(0, 0, 0, 0.05);
     position: relative;
-    /* Initial state for entrance animation - same as countdown/form */
     opacity: 0;
     transform: translateY(100px);
 }
@@ -44,31 +46,13 @@
     transition: transform 0.3s ease !important;
 }
 
-/* Result Badge */
-.result-icon.win {
-    background: var(--light-green);
-}
-
-.result-icon.draw {
-    background: var(--golden-yellow);
-}
-
-.result-icon.loss {
-    background: var(--soft-coral);
-}
-
-.result-icon:not(.win):not(.draw):not(.loss) {
-    background: var(--dusty-blue);
-}
-
-/* Positioning for the result-icon in match-card */
 .match-card.modern .result-icon {
     position: absolute;
     top: 16px;
     right: 16px;
 }
 
-/* Card Body */
+/* Match card content */
 .match-body {
     padding: 20px 24px 24px;
     display: flex;
@@ -77,7 +61,6 @@
     text-align: center;
 }
 
-/* Match Teams */
 .match-teams {
     margin: 0 0 20px;
     width: 100%;
@@ -99,7 +82,6 @@
     margin: 8px 0;
 }
 
-/* Score */
 .match-score {
     background: var(--off-white);
     padding: 12px 20px;
@@ -114,7 +96,11 @@
     transition: opacity 0.6s ease-out, transform 0.6s ease-out, box-shadow 0.3s ease;
 }
 
-/* Match Details Container */
+.match-card.modern:not(.result) .match-score {
+    font-size: 1.3rem;
+}
+
+/* Match details */
 .match-details {
     display: flex;
     flex-direction: column;
@@ -123,8 +109,7 @@
     width: 100%;
 }
 
-/* Date and Time */
-.match-datetime {
+.match-date, .match-venue {
     color: var(--medium-gray);
     font-size: 0.95rem;
     font-family: 'Poppins', sans-serif;
@@ -134,59 +119,27 @@
     gap: 6px;
 }
 
-.match-datetime::before {
-    content: '\f017';
-    font-family: 'Font Awesome 6 Free', serif;
-    font-weight: 900;
+.match-date i, .match-venue i {
     font-size: 0.9rem;
     opacity: 0.8;
 }
 
-/* Venue */
-.match-venue {
-    color: var(--medium-gray);
-    font-size: 0.95rem;
-    font-family: 'Poppins', sans-serif;
-    font-weight: 500;
-    display: flex;
-    align-items: center;
-    gap: 6px;
-}
-
-.match-venue i {
-    font-size: 0.9rem;
-    opacity: 0.8;
-}
-
-/* Upcoming matches styling */
-.match-card.modern:not(.result) .result-icon {
-    background: var(--dusty-blue);
-    font-size: 1.1rem;
-}
-
-.match-card.modern:not(.result) .match-score {
-    background: var(--off-white);
-    padding: 12px 20px;
-    border-radius: 25px;
-    font-size: 1.3rem;
-    font-weight: 700;
-    color: var(--dark-gray);
-    font-family: 'Poppins', sans-serif;
-    border: 2px solid var(--silver-mist);
-    margin: 10px 0 20px;
-    box-shadow: var(--shadow-medium);
-    transition: opacity 0.6s ease-out, transform 0.6s ease-out, box-shadow 0.3s ease;
-}
-
-/* Timeline Container */
+/* Timeline layout */
 .timeline-wrapper {
     overflow-x: auto;
-    overflow-y: visible;
+    overflow-y: hidden;
     position: relative;
     border-radius: 15px;
     margin: 1rem 0;
     min-height: 220px;
+    scrollbar-width: thin;
+    scrollbar-color: var(--light-gray) var(--silver-mist);
 }
+
+.timeline-wrapper::-webkit-scrollbar { height: 8px; }
+.timeline-wrapper::-webkit-scrollbar-track { background: var(--silver-mist); border-radius: 10px; }
+.timeline-wrapper::-webkit-scrollbar-thumb { background: var(--light-gray); border-radius: 10px; }
+.timeline-wrapper::-webkit-scrollbar-thumb:hover { background: var(--medium-gray); }
 
 .timeline {
     display: flex;
@@ -200,7 +153,7 @@
     min-width: 100%;
 }
 
-/* Timeline Line */
+/* Timeline visual elements */
 .timeline-start-knob {
     position: absolute;
     top: 50%;
@@ -230,7 +183,6 @@
     transform-origin: left center;
 }
 
-
 .timeline::after {
     content: "\f054";
     font-family: "Font Awesome 6 Free", serif;
@@ -246,12 +198,12 @@
     z-index: 3;
 }
 
-.timeline.card-animate-in::before {
+.timeline.animate-in {
     opacity: 1;
-    transform: translateY(-2px) scaleX(1);
+    transform: translateY(0);
 }
 
-/* Timeline Item Container */
+/* Timeline items */
 .timeline-item {
     display: flex;
     flex-direction: column;
@@ -270,35 +222,25 @@
 }
 
 .timeline-item:hover {
-    transform: translateY(-5px)!important;
-    transition: transform 0.3s ease!important;
+    transform: translateY(-5px) !important;
+    transition: transform 0.3s ease !important;
 }
 
-/* Result Icon in Timeline */
 .timeline-item .result-icon {
     margin-bottom: 1.5rem;
     z-index: 4;
 }
 
-.timeline-item.win .result-icon {
-    background: var(--light-green) !important;
-}
-
-.timeline-item.draw .result-icon {
-    background: var(--golden-yellow) !important;
-}
-
-.timeline-item.loss .result-icon {
-    background: var(--soft-coral) !important;
-}
+.timeline-item.win .result-icon { background: var(--light-green) !important; }
+.timeline-item.draw .result-icon { background: var(--golden-yellow) !important; }
+.timeline-item.loss .result-icon { background: var(--soft-coral) !important; }
 
 .timeline-item:hover .result-icon {
     box-shadow: var(--shadow-hover);
-    transform: translateY(-5px)!important;
-    transition: transform 0.3s ease!important;
+    transform: translateY(-5px) !important;
+    transition: transform 0.3s ease !important;
 }
 
-/* Timeline Node */
 .timeline-item::before {
     content: '';
     position: absolute;
@@ -314,24 +256,15 @@
     box-shadow: var(--shadow-medium);
 }
 
-.timeline-item.win::before {
-    background: var(--light-green);
-}
-
-.timeline-item.draw::before {
-    background: var(--golden-yellow);
-}
-
-.timeline-item.loss::before {
-    background: var(--soft-coral);
-}
+.timeline-item.win::before { background: var(--light-green); }
+.timeline-item.draw::before { background: var(--golden-yellow); }
+.timeline-item.loss::before { background: var(--soft-coral); }
 
 .timeline-item:hover::before {
-    box-shadow: var(--shadow-hover)!important;
-    transition: transform 0.3s ease!important;
+    box-shadow: var(--shadow-hover) !important;
+    transition: transform 0.3s ease !important;
 }
 
-/* Timeline Date */
 .timeline-item small {
     font-size: 0.8rem;
     color: var(--medium-gray);
@@ -348,36 +281,13 @@
     margin-top: 1.5rem;
 }
 
-/* Scrollbar styling */
-.timeline-wrapper {
-    scrollbar-width: thin;
-    scrollbar-color: var(--light-gray) var(--silver-mist);
-}
-
-.timeline-wrapper::-webkit-scrollbar {
-    height: 8px;
-}
-
-.timeline-wrapper::-webkit-scrollbar-track {
-    background: var(--silver-mist);
-    border-radius: 10px;
-}
-
-.timeline-wrapper::-webkit-scrollbar-thumb {
-    background: var(--light-gray);
-    border-radius: 10px;
-}
-
-.timeline-wrapper::-webkit-scrollbar-thumb:hover {
-    background: var(--medium-gray);
-}
-
-.card-animate-in {
+/* Animation class */
+.animate-in {
     opacity: 1 !important;
     transform: translateY(0) !important;
 }
 
-/* Responsive Design */
+/* Responsive design */
 @media (max-width: 768px) {
     .matches-grid {
         grid-template-columns: 1fr;
@@ -407,41 +317,13 @@
         padding: 10px 16px;
     }
 
-    .timeline-wrapper {
-        padding: 4rem 0 3rem;
-        margin: 0.5rem 0;
-        min-height: 200px;
+    .match-date,
+    .match-time,
+    .match-venue {
+        font-size: 0.9rem;
     }
 
-    .timeline {
-        padding: 0 2rem;
-        min-height: 200px;
-    }
-
-    .timeline::before {
-        margin: 0 2rem;
-    }
-
-    .timeline-item {
-        min-width: 100px;
-        padding: 0 8px;
-    }
-
-    .timeline-item .result-icon {
-        width: 40px;
-        height: 40px;
-        font-size: 1rem;
-        margin-bottom: 1.2rem;
-    }
-
-    .timeline-item small {
-        font-size: 0.75rem;
-        padding: 0.25rem 0.5rem;
-        margin-top: 1.2rem;
-    }
-
-    .timeline-item::before {
-        width: 16px;
-        height: 16px;
+    .match-venue i {
+        font-size: 0.85rem;
     }
 }

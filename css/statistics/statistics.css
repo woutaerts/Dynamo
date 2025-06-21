@@ -1,38 +1,27 @@
 /* Color Variables */
 :root {
-    /* Team Colors */
     --team-color: var(--dark-blue);
     --team-bg: var(--dusty-blue);
-
-    /* Player Colors */
     --player-color: var(--dark-green);
     --player-bg: var(--light-green);
-
-    /* Season Colors */
-    --season-color: var(--dark-coral);
+    --season-color: var(--dynamo-red);
     --season-bg: var(--soft-coral);
-
-    /* All-Time Colors */
     --alltime-color: var(--dark-yellow);
     --alltime-bg: var(--golden-yellow);
-
-    /* Default Theme Colors */
     --primary-theme-color: var(--team-color);
     --primary-theme-hover: var(--team-bg);
     --underline-color: var(--season-color);
 }
 
-/* Toggle button */
-.gd {
-    display: grid;
-}
+/* Toggle Button Base Structure */
+.gd { display: grid; }
 
 .toggle-button-container {
     position: relative;
     width: 100px;
     height: 80px;
-    box-sizing: border-box;
     margin: 0 auto 1rem auto;
+    box-sizing: border-box;
 }
 
 .toggle-button {
@@ -45,10 +34,7 @@
 
 .knob, .btn-bg {
     position: absolute;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0;
+    inset: 0;
 }
 
 .btn {
@@ -76,9 +62,7 @@
     z-index: 3;
 }
 
-.knob {
-    z-index: 2;
-}
+.knob { z-index: 2; }
 
 .btn-bg {
     width: 100%;
@@ -87,51 +71,8 @@
     z-index: 1;
 }
 
-/* Player/Team Toggle */
-#button .knob:before {
-    content: "";
-    position: absolute;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    top: 50%;
-    transform: translateY(-50%);
-    left: 3px;
-    width: 21px;
-    height: 27px;
-    padding: 0 4px;
-    background-color: var(--team-color);
-    border-radius: 50%;
-    transition: all 0.3s ease, left 0.3s cubic-bezier(0.18, 0.89, 0.35, 1.15);
-}
-
-#button .checkbox:active + .knob:before {
-    width: 33px;
-    border-radius: 200px;
-}
-
-#button .checkbox:checked:active + .knob:before {
-    margin-left: -12px;
-}
-
-#button .checkbox:checked + .knob:before {
-    content: "";
-    left: 41px;
-    background-color: var(--player-color);
-}
-
-#button .checkbox:checked ~ .btn-bg {
-    background-color: var(--player-bg);
-}
-
-/* Season/All-time Toggle */
-#button2 .btn-bg {
-    width: 100%;
-    background-color: var(--season-bg);
-    transition: 0.3s ease all;
-    z-index: 1;
-}
-
+/* Shared Toggle Knob Styles */
+#button .knob:before,
 #button2 .knob:before {
     content: "";
     position: absolute;
@@ -144,34 +85,39 @@
     width: 21px;
     height: 27px;
     padding: 0 4px;
-    background-color: var(--season-color);
     border-radius: 50%;
     transition: all 0.3s ease, left 0.3s cubic-bezier(0.18, 0.89, 0.35, 1.15);
 }
 
+#button .checkbox:active + .knob:before,
 #button2 .checkbox:active + .knob:before {
     width: 33px;
     border-radius: 200px;
 }
 
+#button .checkbox:checked:active + .knob:before,
 #button2 .checkbox:checked:active + .knob:before {
     margin-left: -12px;
 }
 
+#button .checkbox:checked + .knob:before,
 #button2 .checkbox:checked + .knob:before {
-    content: "";
     left: 41px;
-    background-color: var(--alltime-color);
 }
 
-#button2 .checkbox:checked ~ .btn-bg {
-    background-color: var(--alltime-bg);
-}
+/* Team/Player Toggle Specific */
+#button .knob:before { background-color: var(--team-color); }
+#button .checkbox:checked + .knob:before { background-color: var(--player-color); }
+#button .checkbox:checked ~ .btn-bg { background-color: var(--player-bg); }
 
-/* Toggle Section Container */
-.toggle-section {
-    padding: 1rem 0 0.5rem 0;
-}
+/* Season/All-time Toggle Specific */
+#button2 .btn-bg { background-color: var(--season-bg); }
+#button2 .knob:before { background-color: var(--season-color); }
+#button2 .checkbox:checked + .knob:before { background-color: var(--alltime-color); }
+#button2 .checkbox:checked ~ .btn-bg { background-color: var(--alltime-bg); }
+
+/* Toggle Section Layout */
+.toggle-section { padding: 1rem 0 0.5rem 0; }
 
 .toggles-container {
     display: flex;
@@ -193,6 +139,7 @@
     transition: opacity 0.6s ease-out, transform 0.6s ease-out;
 }
 
+/* Toggle Labels */
 .toggle-label {
     font-family: 'Poppins', sans-serif;
     font-weight: 700;
@@ -208,37 +155,19 @@
     top: -8px;
 }
 
-.toggle-label:first-child {
-    justify-self: end;
-}
+.toggle-label:first-child { justify-self: end; }
+.toggle-label:last-child { justify-self: start; }
 
-.toggle-label:last-child {
-    justify-self: start;
-}
-
-/* Team label is active by default (toggle unchecked) */
-#label-team.active {
-    color: var(--team-color);
-}
-
-/* Player label is active when toggle is checked */
-#label-player.active {
-    color: var(--player-color);
-}
-
-/* Season/All-Time toggle colors */
-#label-season.active {
-    color: var(--season-color);
-}
-
-#label-alltime.active {
-    color: var(--alltime-color);
-}
+#label-team.active { color: var(--team-color); }
+#label-player.active { color: var(--player-color); }
+#label-season.active { color: var(--season-color); }
+#label-alltime.active { color: var(--alltime-color); }
 
 /* Dynamic Theme Colors */
 body {
     --primary-theme-color: var(--team-color);
     --primary-theme-hover: var(--team-bg);
+    --underline-color: var(--season-color);
 }
 
 body.player-season,
@@ -247,58 +176,56 @@ body.player-alltime {
     --primary-theme-hover: var(--player-bg);
 }
 
-body, body.team-season, body.player-season {
-    --underline-color: var(--season-color);
-}
-
-body.team-alltime, body.player-alltime {
+body.team-alltime,
+body.player-alltime {
     --underline-color: var(--alltime-color);
 }
 
-/* Override section title underline color - only this changes with season/all-time */
-.section-title::after {
-    background: var(--underline-color) !important;
-    transition: background 0.3s ease;
-}
-
+/* Section Title Underline Override */
+.section-title::after,
 .section-subtitle::after {
     background: var(--underline-color) !important;
     transition: background 0.3s ease;
 }
 
-/* Hidden class for toggling */
-.hidden {
-    display: none;
-}
+/* Utility Classes */
+.hidden { display: none; }
 
-/* Responsive */
+/* Responsive Design */
 @media (max-width: 768px) {
     .page-hero {
         padding: 2rem 1rem;
     }
+
     .page-hero h1 {
         font-size: 2.2rem;
     }
+
     .section-title {
         font-size: 2rem;
     }
+
     .toggles-container {
         gap: 1rem;
     }
+
     .toggle-wrapper {
         gap: 1rem;
         height: 100px;
         max-width: 300px;
     }
+
     .toggle-button-container {
         width: 160px;
         height: 100px;
     }
+
     .btn {
         width: 100px;
         height: 40px;
         margin: -20px auto 0 auto;
     }
+
     #button .knob:before,
     #button2 .knob:before {
         width: 28px;
@@ -306,10 +233,12 @@ body.team-alltime, body.player-alltime {
         font-size: 8px;
         left: 3px;
     }
+
     #button .checkbox:checked + .knob:before,
     #button2 .checkbox:checked + .knob:before {
         left: 57px;
     }
+
     .toggle-label {
         font-size: 1.2rem;
     }

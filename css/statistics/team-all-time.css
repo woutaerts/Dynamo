@@ -14,9 +14,9 @@
     padding: 2rem;
     border-radius: 15px;
     box-shadow: var(--shadow-medium);
-    transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+    transition: opacity 0.6s ease-out, transform 0.6s ease-out, box-shadow 0.3s ease;
     opacity: 0;
-    transform: translateY(30px);
+    transform: translateY(100px);
 }
 
 .record-category:hover {
@@ -37,7 +37,7 @@
     font-family: 'Poppins', sans-serif;
     font-weight: 700;
     font-size: 1.4rem;
-    transition: color 0.3s ease;
+    transition: opacity 0.6s ease-out, transform 0.6s ease-out, box-shadow 0.3s ease;
 }
 
 .record-item {
@@ -62,7 +62,7 @@
     font-weight: 700;
     color: var(--primary-theme-color);
     font-size: 1.2rem;
-    transition: color 0.3s ease;
+    transition: opacity 0.6s ease-out, transform 0.6s ease-out, box-shadow 0.3s ease;
 }
 
 .record-season {

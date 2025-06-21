@@ -1,233 +1,211 @@
-document.addEventListener('DOMContentLoaded', async () => {
-    // Initialize countdown clock
+// Matches page initialization and functionality
+document.addEventListener('DOMContentLoaded', () => {
     initializeCountdown();
-    // Setup staggered animations using the same system as index.js
     animateOnScroll();
-    // Initialize modal and then setup interactions
-    window.matchModal = new MatchModal();
-    await window.matchModal.init();
-    const timelineWrapper = document.querySelector('.timeline-wrapper');
-    if (timelineWrapper) {
-        timelineWrapper.scrollTo({
-            left: timelineWrapper.scrollWidth,
-            behavior: 'smooth'
-        });
-    }
     setupMatchInteractions();
 });
 
-/* Animate elements on scroll */
+// Animation system
 function animateOnScroll() {
-    const matchCards = document.querySelectorAll('.match-card');
-    const timelineItems = document.querySelectorAll('.timeline-item');
-    const countdownBlocks = document.querySelectorAll('.countdown-block');
-    const formResults = document.querySelectorAll('.form-result');
+    const elements = [
+        { selector: '.match-card', containerSelector: 'section' },
+        { selector: '.timeline-item', containerSelector: ['section', '.container'] },
+        { selector: '.countdown-block', containerSelector: null },
+        { selector: '.form-result', containerSelector: null }
+    ];
 
-    const observerOptions = {
-        root: null,
-        rootMargin: '0px',
-        threshold: 0.1
-    };
-
-    const observer = new IntersectionObserver((entries, obs) => {
+    const observer = new IntersectionObserver((entries, observer) => {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
-                if (entry.target.classList.contains('match-card')) {
-                    const section = entry.target.closest('section');
-                    const cardsInSection = section.querySelectorAll('.match-card');
-                    const cardIndex = Array.from(cardsInSection).indexOf(entry.target);
-                    setTimeout(() => {
-                        entry.target.classList.add('card-animate-in');
-                    }, cardIndex * 200);
-                }
-                else if (entry.target.classList.contains('timeline-item')) {
-                    const section = entry.target.closest('section') || entry.target.closest('.container');
-                    const itemsInSection = section.querySelectorAll('.timeline-item');
-                    const itemIndex = Array.from(itemsInSection).indexOf(entry.target);
-                    setTimeout(() => {
-                        entry.target.classList.add('card-animate-in');
-                    }, itemIndex * 200); // Extra delay for timeline line animation
-                }
-                else if (entry.target.classList.contains('countdown-block')) {
-                    const allCountdownBlocks = document.querySelectorAll('.countdown-block');
-                    const blockIndex = Array.from(allCountdownBlocks).indexOf(entry.target);
+                const elementType = elements.find(el => entry.target.matches(el.selector));
+                if (elementType) {
+                    const container = getContainer(entry.target, elementType.containerSelector);
+                    const itemsInContainer = container.querySelectorAll(elementType.selector);
+                    const itemIndex = Array.from(itemsInContainer).indexOf(entry.target);
                     setTimeout(() => {
                         entry.target.classList.add('animate-in');
-                    }, blockIndex * 150);
+                    }, itemIndex * 100);
+                    observer.unobserve(entry.target);
                 }
-                else if (entry.target.classList.contains('form-result')) {
-                    const allFormResults = document.querySelectorAll('.form-result');
-                    const resultIndex = Array.from(allFormResults).indexOf(entry.target);
-                    setTimeout(() => {
-                        entry.target.classList.add('animate-in');
-                    }, resultIndex * 100);
-                }
-                obs.unobserve(entry.target);
             }
         });
-    }, observerOptions);
+    }, { root: null, rootMargin: '0px', threshold: 0.1 });
 
-    matchCards.forEach(card => observer.observe(card));
-    timelineItems.forEach(item => observer.observe(item));
-    countdownBlocks.forEach(block => observer.observe(block));
-    formResults.forEach(result => observer.observe(result));
+    elements.forEach(el => {
+        document.querySelectorAll(el.selector).forEach(item => observer.observe(item));
+    });
+
+    function getContainer(target, containerSelector) {
+        if (!containerSelector) return document;
+        if (Array.isArray(containerSelector)) {
+            for (const selector of containerSelector) {
+                const container = target.closest(selector);
+                if (container) return container;
+            }
+        }
+        return target.closest(containerSelector);
+    }
 }
 
-/* Initialize countdown function */
+// Countdown timer
 function initializeCountdown() {
     const targetDate = new Date("2025-06-30T15:00:00").getTime();
     const countdownElement = document.getElementById("countdown");
     if (!countdownElement) return;
+
     const countdown = setInterval(() => {
         const now = new Date().getTime();
         const distance = targetDate - now;
+
         if (distance < 0) {
             clearInterval(countdown);
             countdownElement.innerHTML = "<div style='text-align: center; font-size: 1.5rem; color: #B90A0A; font-weight: bold;'>Match Started!</div>";
             return;
         }
+
         const days = Math.floor(distance / (1000 * 60 * 60 * 24));
         const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
         const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
         const seconds = Math.floor((distance % (1000 * 60)) / 1000);
-        const daysEl = document.getElementById("days");
-        const hoursEl = document.getElementById("hours");
-        const minutesEl = document.getElementById("minutes");
-        const secondsEl = document.getElementById("seconds");
-        if (daysEl) daysEl.textContent = days;
-        if (hoursEl) hoursEl.textContent = hours;
-        if (minutesEl) minutesEl.textContent = minutes;
-        if (secondsEl) secondsEl.textContent = seconds;
+
+        const elements = { days, hours, minutes, seconds };
+        Object.keys(elements).forEach(key => {
+            const el = document.getElementById(key);
+            if (el) el.textContent = elements[key];
+        });
     }, 1000);
 }
 
+// Match interactions
 function setupMatchInteractions() {
-    // Add click listeners to result match cards
-    document.querySelectorAll('.match-card.result').forEach(card => {
+    // Result and upcoming match cards
+    document.querySelectorAll('.match-card.modern').forEach(card => {
         card.style.cursor = 'pointer';
         card.addEventListener('click', () => {
-            const matchTitle = card.getAttribute('data-match-title');
-            const venue = card.getAttribute('data-venue');
-            const lat = parseFloat(card.getAttribute('data-lat'));
-            const lng = parseFloat(card.getAttribute('data-lng'));
-            const matchData = getMatchData(card);
+            const matchData = {
+                title: card.getAttribute('data-match-title') || 'Match Details',
+                stadium: card.getAttribute('data-venue') || 'Home Stadium',
+                ...getMatchData(card)
+            };
             if (window.matchModal) {
-                window.matchModal.show({
-                    title: matchTitle,
-                    stadium: venue,
-                    lat,
-                    lng,
-                    ...matchData
-                });
+                window.matchModal.show(matchData);
+            } else {
+                console.error('MatchModal not initialized');
             }
         });
-        // Add hover effect
+
+        // Hover effects
         card.addEventListener('mouseenter', () => {
             card.style.transform = 'translateY(-5px)';
             card.style.boxShadow = '0 10px 25px rgba(0, 0, 0, 0.15)';
         });
+
         card.addEventListener('mouseleave', () => {
             card.style.transform = 'translateY(0)';
             card.style.boxShadow = '';
         });
     });
 
-    // Add click listeners to upcoming fixture cards (no score data)
-    document.querySelectorAll('.match-card.modern:not(.result)').forEach(card => {
-        card.style.cursor = 'pointer';
-        card.addEventListener('click', () => {
-            const matchTitle = card.getAttribute('data-match-title');
-            const venue = card.getAttribute('data-venue');
-            const lat = parseFloat(card.getAttribute('data-lat'));
-            const lng = parseFloat(card.getAttribute('data-lng'));
-            const matchData = getMatchData(card);
-            if (window.matchModal) {
-                window.matchModal.show({
-                    title: matchTitle,
-                    stadium: venue,
-                    lat,
-                    lng,
-                    ...matchData
-                });
-            }
-        });
-        // Add hover effect
-        card.addEventListener('mouseenter', () => {
-            card.style.transform = 'translateY(-5px)';
-            card.style.boxShadow = '0 10px 25px rgba(0, 0, 0, 0.15)';
-        });
-        card.addEventListener('mouseleave', () => {
-            card.style.transform = 'translateY(0)';
-            card.style.boxShadow = '';
-        });
-    });
-
-    // Add click listeners to timeline items
+    // Timeline items
     document.querySelectorAll('.timeline-item').forEach((item, index) => {
         item.style.cursor = 'pointer';
         item.addEventListener('click', () => {
-            // Sample data for timeline items - you can customize this
+            // Map timeline items to recent results from matches.html
             const timelineMatches = [
                 {
                     title: 'Dynamo Beirs vs Red Hawks FC',
-                    date: 'May 21, 2025',
-                    time: '15:00',
+                    dateTime: { date: '21 mei', time: '19:00' },
+                    season: '2024-25',
+                    stadium: 'KFC Lentezon',
                     score: '2-1',
-                    goalscorers: [{ player: 'Lukaku' }, { player: 'De Bruyne' }]
+                    goalscorers: [{ player: 'Lukaku', goals: 1 }, { player: 'De Bruyne', goals: 1 }]
                 },
                 {
                     title: 'Dynamo Beirs vs Greenfield United',
-                    date: 'May 18, 2025',
-                    time: '16:30',
+                    dateTime: { date: '18 mei', time: '19:00' },
+                    season: '2024-25',
+                    stadium: 'KFC Lentezon',
                     score: '3-0',
-                    goalscorers: [{ player: 'Lukaku', goals: 2 }, { player: 'Hazard' }]
+                    goalscorers: [{ player: 'Lukaku', goals: 2 }, { player: 'Hazard', goals: 1 }]
                 },
                 {
                     title: 'Bluewave FC vs Dynamo Beirs',
-                    date: 'May 14, 2025',
-                    time: '19:00',
+                    dateTime: { date: '14 mei', time: '19:00' },
+                    season: '2024-25',
+                    stadium: 'Bluewave Stadium',
                     score: '2-1',
-                    goalscorers: [{ player: 'De Bruyne' }]
+                    goalscorers: [{ player: 'De Bruyne', goals: 1 }]
+                },
+                {
+                    title: 'Dynamo Beirs vs Ironclad SC',
+                    dateTime: { date: '10 mei', time: '19:00' },
+                    season: '2024-25',
+                    stadium: 'KFC Lentezon',
+                    score: '2-0',
+                    goalscorers: [{ player: 'Lukaku', goals: 1 }, { player: 'Hazard', goals: 1 }]
+                },
+                {
+                    title: 'Werk Der Toekomst vs Dynamo Beirs',
+                    dateTime: { date: '6 mei', time: '19:00' },
+                    season: '2024-25',
+                    stadium: 'Victory Arena',
+                    score: '1-1',
+                    goalscorers: [{ player: 'De Bruyne', goals: 1 }]
+                },
+                {
+                    title: 'Dynamo Beirs vs Den Hout Athletic Club',
+                    dateTime: { date: '2 mei', time: '19:00' },
+                    season: '2024-25',
+                    stadium: 'KFC Lentezon',
+                    score: '3-2',
+                    goalscorers: [{ player: 'Lukaku', goals: 2 }, { player: 'De Bruyne', goals: 1 }]
                 }
+                // Add more matches for remaining timeline items (match7 to match14) if needed
             ];
-            const matchData = timelineMatches[index % timelineMatches.length];
+
+            // Map timeline items to matches (reverse order to match timeline)
+            const matchIndex = timelineMatches.length - 1 - index; // Reverse to align with timeline
+            const matchData = matchIndex >= 0 && matchIndex < timelineMatches.length
+                ? timelineMatches[matchIndex]
+                : {
+                    title: `Match ${item.dataset.match}`,
+                    dateTime: { date: item.querySelector('small')?.textContent || 'TBD', time: 'TBD' },
+                    season: '2024-25',
+                    stadium: 'Unknown Stadium',
+                    score: null,
+                    goalscorers: []
+                };
+
             if (window.matchModal) {
-                window.matchModal.show({
-                    title: matchData.title,
-                    stadium: 'Home Stadium',
-                    lat: 50.9704,
-                    lng: 5.7734,
-                    dateTime: `${matchData.date}<br>${matchData.time}`,
-                    season: "'24-'25",
-                    score: matchData.score,
-                    goalscorers: matchData.goalscorers
-                });
+                window.matchModal.show(matchData);
+            } else {
+                console.error('MatchModal not initialized');
             }
         });
     });
 }
 
+// Extract match data from card attributes
 function getMatchData(card) {
     const matchDate = card.getAttribute('data-match-date') || 'TBD';
-    const matchTime = card.getAttribute('data-match-time') || '';
-    const season = card.getAttribute('data-match-season') || "'24-'25";
-    const score = card.getAttribute('data-score') || null; // Extract score data
-    const goalscorersData = card.getAttribute('data-goalscorers');
+    const matchTime = card.getAttribute('data-match-time') || 'TBD';
+    const season = card.getAttribute('data-match-season') || '2024-25';
+    const score = card.getAttribute('data-score') || null;
+
     let goalscorers = [];
-    try {
-        if (goalscorersData) {
+    const goalscorersData = card.getAttribute('data-goalscorers');
+    if (goalscorersData) {
+        try {
             goalscorers = JSON.parse(goalscorersData);
+        } catch (error) {
+            console.warn('Failed to parse goalscorers data:', error);
         }
-    } catch (error) {
-        console.warn('Failed to parse goalscorers data:', error);
-        goalscorers = [];
     }
-    // Format date and time for centered display
-    const dateTime = matchTime ? `${matchDate}<br>${matchTime}` : matchDate;
+
     return {
-        dateTime,
+        dateTime: { date: matchDate, time: matchTime },
         season,
-        score, // Include score in returned data
+        score,
         goalscorers
     };
 }

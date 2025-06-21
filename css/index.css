@@ -1,12 +1,12 @@
-/* Homepage Hero Section with Background Image */
+/* Hero Section */
 .hero {
     height: 100vh;
     display: flex;
     align-items: center;
     position: relative;
     overflow: hidden;
-    background-size: cover;
     background: url('../img/huddle.png') no-repeat center;
+    background-size: cover;
 }
 
 .hero-content {
@@ -21,15 +21,11 @@
 }
 
 .hero h1 {
-    font-family: 'Poppins', sans-serif;
     font-size: 5rem;
     font-weight: 900;
     margin-bottom: 1rem;
     color: white;
-    text-align: center;
-    text-shadow:
-            2px 2px 4px rgba(0, 0, 0, 0.8),
-            0 0 10px rgba(0, 0, 0, 0.5);
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8), 0 0 10px rgba(0, 0, 0, 0.5);
     animation: slideInUp 1s ease-out;
 }
 
@@ -80,9 +76,8 @@
 }
 
 .overview-card:hover {
-    box-shadow: var(--shadow-hover) !important;
-    transform: translateY(-5px) !important;
-    transition: transform 0.3s ease !important;
+    box-shadow: var(--shadow-hover);
+    transform: translateY(-5px);
 }
 
 .overview-card i {
@@ -95,7 +90,6 @@
     font-size: 1.5rem;
     color: var(--dark-gray);
     margin-bottom: 0.5rem;
-    font-family: 'Poppins', sans-serif;
     font-weight: 600;
 }
 
@@ -115,7 +109,7 @@
     transition: color 0.3s ease;
 }
 
-/* Statistics Overview Section */
+/* Statistics Section */
 .stats-overview-section {
     padding: 2rem 0;
 }
@@ -139,23 +133,20 @@
 }
 
 .stat-card:hover {
-    box-shadow: var(--shadow-hover)!important;
-    transform: translateY(-5px)!important;
-    transition: transform 0.3s ease!important;
+    box-shadow: var(--shadow-hover);
+    transform: translateY(-5px);
 }
 
 .stat-number {
     font-size: 2.5rem;
     color: var(--dynamo-red);
     font-weight: 800;
-    font-family: 'Poppins', sans-serif;
 }
 
 .stat-label {
     color: var(--medium-gray);
     text-transform: uppercase;
     margin-top: 0.5rem;
-    font-family: 'Poppins', sans-serif;
     font-weight: 600;
 }
 
@@ -185,9 +176,8 @@
 }
 
 .contact-card:hover {
-    box-shadow: var(--shadow-hover)!important;
-    transform: translateY(-5px)!important;
-    transition: transform 0.3s ease!important;
+    box-shadow: var(--shadow-hover);
+    transform: translateY(-5px);
 }
 
 .contact-card i {
@@ -200,7 +190,6 @@
     font-size: 1.5rem;
     color: var(--dark-gray);
     margin-bottom: 0.5rem;
-    font-family: 'Poppins', sans-serif;
     font-weight: 600;
 }
 
@@ -241,7 +230,6 @@
     font-size: 1.8rem;
     color: var(--dark-gray);
     margin-bottom: 0.5rem;
-    font-family: 'Poppins', sans-serif;
     font-weight: 600;
 }
 
@@ -250,24 +238,27 @@
     font-size: 1.1rem;
 }
 
-/* Entrance animation active class */
+/* Animation Classes */
 .card-animate-in {
     opacity: 1;
     transform: translateY(0);
 }
 
-/* Homepage Responsive */
+/* Responsive Design */
 @media (max-width: 768px) {
     .hero h1 {
         font-size: 2.5rem;
     }
+
     .hero p {
         font-size: 1.1rem;
     }
+
     .contact-grid {
         grid-template-columns: 1fr;
         gap: 2rem;
     }
+
     .map-container {
         height: 300px;
     }

@@ -1,38 +1,39 @@
-// Retrieve and display the footer in the designated placeholder on all pages
+/* Footer Loader and Animation Handler */
+(function() {
+    // Load Footer Content
+    fetch("../../pages/partials/footer.html")
+        .then(res => res.text())
+        .then(html => {
+            document.getElementById('footer-placeholder').innerHTML = html;
+            initFooterAnimation();
+        });
 
-fetch("../../pages/partials/footer.html")
-    .then(res => res.text())
-    .then(html => {
-        document.getElementById('footer-placeholder').innerHTML = html;
-
-        // Secret animation for footer logo
+    // Initialize Secret Animation
+    function initFooterAnimation() {
         const footerLogo = document.querySelector('.footer-logo');
-        if (footerLogo) {
-            let clickCount = 0;
-            let clickTimer = null;
+        if (!footerLogo) return;
 
-            footerLogo.addEventListener('click', function() {
-                clickCount++;
+        let clickCount = 0;
+        let clickTimer = null;
 
-                // Reset timer on each click
-                if (clickTimer) {
-                    clearTimeout(clickTimer);
-                }
+        footerLogo.addEventListener('click', function() {
+            clickCount++;
 
-                // Secret animation sequence based on click count
-                if (clickCount === 5) {
-                    // five clicks - EXPLOSIVE pulse animation + reset
-                    this.classList.add('secret-pulse');
-                    setTimeout(() => {
-                        this.classList.remove('secret-pulse');
-                        clickCount = 0; // Reset for next sequence
-                    }, 2500);
-                }
+            if (clickTimer) clearTimeout(clickTimer);
 
-                // Reset click count after 2 seconds of no clicks
-                clickTimer = setTimeout(() => {
+            // Trigger animation on 5 clicks
+            if (clickCount === 5) {
+                this.classList.add('secret-pulse');
+                setTimeout(() => {
+                    this.classList.remove('secret-pulse');
                     clickCount = 0;
-                }, 2000);
-            });
-        }
-    });
+                }, 2500);
+            }
+
+            // Reset counter after 2 seconds
+            clickTimer = setTimeout(() => {
+                clickCount = 0;
+            }, 2000);
+        });
+    }
+})();

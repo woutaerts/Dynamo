@@ -1,5 +1,4 @@
-/* Initialize countdown function */
-
+// Countdown initialization
 function initializeCountdown() {
     const targetDate = new Date("2025-06-30T15:00:00").getTime();
     const countdownElement = document.getElementById("countdown");
@@ -20,108 +19,85 @@ function initializeCountdown() {
         const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
         const seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
-        const daysEl = document.getElementById("days");
-        const hoursEl = document.getElementById("hours");
-        const minutesEl = document.getElementById("minutes");
-        const secondsEl = document.getElementById("seconds");
+        const elements = {
+            days: document.getElementById("days"),
+            hours: document.getElementById("hours"),
+            minutes: document.getElementById("minutes"),
+            seconds: document.getElementById("seconds")
+        };
 
-        if (daysEl) daysEl.textContent = days;
-        if (hoursEl) hoursEl.textContent = hours;
-        if (minutesEl) minutesEl.textContent = minutes;
-        if (secondsEl) secondsEl.textContent = seconds;
+        Object.entries(elements).forEach(([key, el]) => {
+            if (el) el.textContent = eval(key);
+        });
     }, 1000);
 }
 
-/* Animate elements on scroll */
-
-function animateOnScroll() {
-    const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                entry.target.classList.add("card-animate-in");
-                observer.unobserve(entry.target);
-            }
-        });
-    }, {
-        threshold: 0.1
-    });
-
-    document.querySelectorAll('.map-container').forEach(el => {
-        observer.observe(el);
-    });
-}
-
-/* Initialize functions when DOM is ready */
-
-document.addEventListener('DOMContentLoaded', () => {
-    initializeCountdown();
-    animateOnScroll();
-
-    const cards = document.querySelectorAll('.overview-card, .stat-card, .contact-card');
-    const countdownBlocks = document.querySelectorAll('.countdown-block');
-    const formResults = document.querySelectorAll('.form-result');
-
-    const observerOptions = {
-        root: null,
-        rootMargin: '0px',
-        threshold: 0.1
-    };
+// Unified intersection observer for all animations
+function setupAnimations() {
+    const observerOptions = { root: null, rootMargin: '0px', threshold: 0.1 };
 
     const observer = new IntersectionObserver((entries, obs) => {
         entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                if (entry.target.classList.contains('overview-card') ||
-                    entry.target.classList.contains('stat-card') ||
-                    entry.target.classList.contains('contact-card')) {
-                    const section = entry.target.closest('section');
-                    const cardsInSection = section.querySelectorAll('.overview-card, .stat-card, .contact-card');
-                    const cardIndex = Array.from(cardsInSection).indexOf(entry.target);
-                    setTimeout(() => {
-                        entry.target.classList.add('card-animate-in');
-                    }, cardIndex * 200);
-                }
-                else if (entry.target.classList.contains('countdown-block')) {
-                    const allCountdownBlocks = document.querySelectorAll('.countdown-block');
-                    const blockIndex = Array.from(allCountdownBlocks).indexOf(entry.target);
-                    setTimeout(() => {
-                        entry.target.classList.add('animate-in');
-                    }, blockIndex * 150);
-                }
-                else if (entry.target.classList.contains('form-result')) {
-                    const allFormResults = document.querySelectorAll('.form-result');
-                    const resultIndex = Array.from(allFormResults).indexOf(entry.target);
-                    setTimeout(() => {
-                        entry.target.classList.add('animate-in');
-                    }, resultIndex * 100);
-                }
-                obs.unobserve(entry.target);
+            if (!entry.isIntersecting) return;
+
+            const target = entry.target;
+
+            if (target.classList.contains('overview-card') || target.classList.contains('stat-card') || target.classList.contains('contact-card')) {
+                const section = target.closest('section');
+                const cardsInSection = section.querySelectorAll('.overview-card, .stat-card, .contact-card');
+                const cardIndex = Array.from(cardsInSection).indexOf(target);
+                setTimeout(() => target.classList.add('card-animate-in'), cardIndex * 200);
             }
+            else if (target.classList.contains('countdown-block')) {
+                const allCountdownBlocks = document.querySelectorAll('.countdown-block');
+                const blockIndex = Array.from(allCountdownBlocks).indexOf(target);
+                setTimeout(() => target.classList.add('animate-in'), blockIndex * 150);
+            }
+            else if (target.classList.contains('form-result')) {
+                const allFormResults = document.querySelectorAll('.form-result');
+                const resultIndex = Array.from(allFormResults).indexOf(target);
+                setTimeout(() => target.classList.add('animate-in'), resultIndex * 100);
+            }
+            else if (target.classList.contains('map-container')) {
+                target.classList.add('card-animate-in');
+            }
+
+            obs.unobserve(target);
         });
     }, observerOptions);
 
-    cards.forEach(card => observer.observe(card));
-    countdownBlocks.forEach(block => observer.observe(block));
-    formResults.forEach(result => observer.observe(result));
-});
+    document.querySelectorAll('.overview-card, .stat-card, .contact-card, .countdown-block, .form-result, .map-container')
+        .forEach(el => observer.observe(el));
+}
 
-/* Smooth scrolling for internal hero navigation */
-
-document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-    anchor.addEventListener('click', function (e) {
-        const target = document.querySelector(this.getAttribute('href'));
-        if (target) {
-            e.preventDefault();
-            target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        }
+// Smooth scrolling for anchor links
+function setupSmoothScrolling() {
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
+            const target = document.querySelector(this.getAttribute('href'));
+            if (target) {
+                e.preventDefault();
+                target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+        });
     });
-});
+}
 
-/* Home page load animation */
+// Page load fade-in effect
+function setupPageLoadAnimation() {
+    window.addEventListener('load', () => {
+        document.body.style.opacity = '0';
+        setTimeout(() => {
+            document.body.style.transition = 'opacity 0.5s ease';
+            document.body.style.opacity = '1';
+        }, 100);
+    });
+}
 
-window.addEventListener('load', () => {
-    document.body.style.opacity = '0';
-    setTimeout(() => {
-        document.body.style.transition = 'opacity 0.5s ease';
-        document.body.style.opacity = '1';
-    }, 100);
+// DOM ready initialization
+document.addEventListener('DOMContentLoaded', () => {
+    initializeCountdown();
+    setupAnimations();
+    setupSmoothScrolling();
+    setupPageLoadAnimation();
 });

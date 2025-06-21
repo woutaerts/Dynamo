@@ -1,10 +1,9 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&display=swap');
 
-/* Variables */
+/* CSS Variables */
 :root {
     /* Colors */
     --dynamo-red: #B90A0A;
-    --dark-coral: #b85b48;
     --soft-coral: #E07A5F;
     --golden-yellow: #E8B04B;
     --dark-yellow: #C69436;
@@ -21,14 +20,12 @@
     --shadow-small: 0 8px 20px rgba(0, 0, 0, 0.10);
     --shadow-medium: 0 8px 20px rgba(0, 0, 0, 0.20);
     --shadow-hover: 0 8px 20px rgba(0, 0, 0, 0.35);
+    /* Delays */
+    --animation-delay: 0;
 }
 
-/* General resets */
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
+/* Base Reset and Typography */
+* { margin: 0; padding: 0; box-sizing: border-box; }
 
 body {
     font-family: 'Poppins', sans-serif;
@@ -44,7 +41,7 @@ body {
     padding: 0 20px;
 }
 
-/* General Page Hero (for non-homepage pages) */
+/* Page Hero (Non-homepage) */
 .page-hero {
     padding: 2.3rem 1.5rem;
     text-align: center;
@@ -62,24 +59,13 @@ body {
     font-family: 'Poppins', sans-serif;
 }
 
-/* Responsive for page hero */
-@media (max-width: 768px) {
-    .page-hero {
-        padding: 2rem 1rem;
-    }
-    .page-hero h1 {
-        font-size: 2.2rem;
-    }
-}
-
-/* Section Titles and Subtitles */
+/* Section Titles */
 .section-title {
     text-align: center;
     font-size: 3rem;
     font-weight: 800;
     color: var(--dark-gray);
-    margin-bottom: 3rem;
-    margin-top: 2rem;
+    margin: 2rem 0 3rem;
     position: relative;
     font-family: 'Poppins', sans-serif;
 }
@@ -119,9 +105,7 @@ body {
 }
 
 /* Countdown Section */
-.countdown-section {
-    padding: 2rem 0;
-}
+.countdown-section { padding: 2rem 0; }
 
 .countdown {
     display: flex;
@@ -172,8 +156,7 @@ body {
 
 .upcoming-match-name {
     text-align: center;
-    margin-top: 1.5rem;
-    margin-bottom: 1rem;
+    margin: 1.5rem 0 1rem;
 }
 
 .upcoming-match-name h3 {
@@ -185,13 +168,9 @@ body {
 }
 
 /* Match Form Section */
-.match-form-section {
-    padding: 2rem 0;
-}
+.match-form-section { padding: 2rem 0; }
 
-.form-display {
-    text-align: center;
-}
+.form-display { text-align: center; }
 
 .form-results {
     display: flex;
@@ -218,64 +197,34 @@ body {
     transform: translateY(100px);
 }
 
-/* Add this to your existing CSS to target the last match result */
 .form-result:last-child {
     border: 2px solid var(--off-white);
-    border-radius: 50%;
     width: calc(50px + 4px);
     height: calc(50px + 4px);
     margin: -2px;
 }
 
-/* Specific colored box-shadows for last-child depending on result type */
-.form-result.win:last-child {
-    box-shadow: 0 0 0 2px var(--light-green);
-}
+.form-result.win { background: var(--light-green); }
+.form-result.draw { background: var(--golden-yellow); }
+.form-result.loss { background: var(--soft-coral); }
 
-.form-result.draw:last-child {
-    box-shadow: 0 0 0 2px var(--golden-yellow);
-}
-
-.form-result.loss:last-child {
-    box-shadow: 0 0 0 2px var(--soft-coral);
-}
-
-/* Specific colored box-shadows for last-child depending on result type */
-.form-result.win:last-child:hover {
-    box-shadow: 0 0 0 2px var(--light-green), var(--shadow-hover) !important;
-}
-
-.form-result.draw:last-child:hover {
-    box-shadow: 0 0 0 2px var(--golden-yellow), var(--shadow-hover) !important;
-}
-
-.form-result.loss:last-child:hover {
-    box-shadow: 0 0 0 2px var(--soft-coral), var(--shadow-hover) !important;
-}
-
-/* Hover effect for the last form result */
-.form-result:last-child:hover {
-    transform: translateY(-5px);
-    border: 2px solid var(--off-white) !important;
-}
-
+.form-result.win:last-child { box-shadow: 0 0 0 2px var(--light-green); }
+.form-result.draw:last-child { box-shadow: 0 0 0 2px var(--golden-yellow); }
+.form-result.loss:last-child { box-shadow: 0 0 0 2px var(--soft-coral); }
 
 .form-result:hover {
-    box-shadow: var(--shadow-hover)!important;
-    transform: translateY(-5px)!important;
+    box-shadow: var(--shadow-hover) !important;
+    transform: translateY(-5px) !important;
     transition: transform 0.3s ease !important;
 }
 
-.form-result.win {
-    background: var(--light-green);
-}
+.form-result.win:last-child:hover { box-shadow: 0 0 0 2px var(--light-green), var(--shadow-hover) !important; }
+.form-result.draw:last-child:hover { box-shadow: 0 0 0 2px var(--golden-yellow), var(--shadow-hover) !important; }
+.form-result.loss:last-child:hover { box-shadow: 0 0 0 2px var(--soft-coral), var(--shadow-hover) !important; }
 
-.form-result.draw {
-    background: var(--golden-yellow);
-}
-
-.form-result.loss {
-    background: var(--soft-coral);
+.form-result:last-child:hover {
+    transform: translateY(-5px);
+    border: 2px solid var(--off-white) !important;
 }
 
 .form-description {
@@ -288,9 +237,14 @@ body {
     font-weight: 700;
 }
 
-/* Animation active class for countdown and form elements */
+/* Animation Classes */
 .countdown-block.animate-in,
 .form-result.animate-in {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.card-animate-in {
     opacity: 1;
     transform: translateY(0);
 }
@@ -308,24 +262,37 @@ body {
     box-shadow: var(--shadow-medium);
 }
 
-/* Responsive */
+/* Responsive Design */
 @media (max-width: 768px) {
+    .page-hero {
+        padding: 2rem 1rem;
+    }
+
+    .page-hero h1 {
+        font-size: 2.2rem;
+    }
+
     .section-title {
         font-size: 2rem;
     }
+
     .countdown {
         gap: 1rem;
     }
+
     .countdown-box {
         width: 80px;
         padding: 1rem;
     }
+
     .countdown-box span {
         font-size: 1.5rem;
     }
+
     .form-results {
         gap: 0.5rem;
     }
+
     .form-result {
         width: 40px;
         height: 40px;

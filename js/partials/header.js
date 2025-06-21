@@ -1,105 +1,93 @@
-// js/partials/header.js
-document.addEventListener('DOMContentLoaded', function() {
-    loadHeader();
-});
+document.addEventListener('DOMContentLoaded', loadHeader);
 
+// Main header loader
 async function loadHeader() {
     try {
-        // Determine the correct path based on current page location
-        const isRootPage = window.location.pathname === '/' ||
-            window.location.pathname.endsWith('/index.html') ||
-            !window.location.pathname.includes('/pages/');
-
+        const isRootPage = isOnRootPage();
         const headerPath = isRootPage ? 'pages/partials/header.html' : 'partials/header.html';
 
-        // Fetch the header HTML
         const response = await fetch(headerPath);
 
-        // Handle different types of fetch failures
-        if (!response.ok) {
-            console.error(`Failed to load header from ${headerPath}: ${response.status} ${response.statusText}`);
-            loadFallbackHeader(isRootPage);
-            return;
+        if (!response.ok || !await response.text()) {
+            throw new Error(`Failed to load header: ${response.status}`);
         }
 
         const headerHTML = await response.text();
-
-        // Validate that we actually got content
-        if (!headerHTML.trim()) {
-            console.error('Header file is empty');
-            loadFallbackHeader(isRootPage);
-            return;
-        }
-
-        // Find the header placeholder and replace it
-        const headerPlaceholder = document.getElementById('header-placeholder');
-        if (headerPlaceholder) {
-            headerPlaceholder.outerHTML = headerHTML;
-        } else {
-            // If no placeholder, insert at the beginning of body
-            document.body.insertAdjacentHTML('afterbegin', headerHTML);
-        }
-
-        // Configure the header after loading
-        configureHeader(isRootPage);
-
-        // Initialize scroll progress bar
-        initializeScrollProgress();
-
-        // Setup header scroll effect (hide/show on scroll)
-        setupHeaderScrollEffect();
-
-        // Initialize blob hover effect
-        initializeNavBlob();
+        insertHeader(headerHTML);
+        initializeHeader(isRootPage);
 
     } catch (error) {
         console.error('Error loading header:', error);
-        loadFallbackHeader(isRootPage);
+        loadFallbackHeader();
     }
 }
 
-function loadFallbackHeader(isRootPage) {
-    // Create a basic fallback header if the main one fails to load
-    const logoPath = isRootPage ? 'img/logos/original-logo.png' : '../img/logos/original-logo.png';
-    const homePath = isRootPage ? 'index.html' : '../index.html';
-    const statsPath = isRootPage ? 'pages/statistics.html' : 'statistics.html';
-    const playersPath = isRootPage ? 'pages/players.html' : 'players.html';
-    const matchesPath = isRootPage ? 'pages/matches.html' : 'matches.html';
+// Helper functions
+function isOnRootPage() {
+    const path = window.location.pathname;
+    return path === '/' || path.endsWith('/index.html') || !path.includes('/pages/');
+}
 
-    const fallbackHeader = `
+function insertHeader(headerHTML) {
+    const placeholder = document.getElementById('header-placeholder');
+    if (placeholder) {
+        placeholder.outerHTML = headerHTML;
+    } else {
+        document.body.insertAdjacentHTML('afterbegin', headerHTML);
+    }
+}
+
+// Fallback header creation
+function loadFallbackHeader() {
+    const isRootPage = isOnRootPage();
+    const paths = getPaths(isRootPage);
+
+    const fallbackHTML = `
         <header class="header">
             <div class="scroll-progress-container">
                 <div class="scroll-progress-bar"></div>
             </div>
             <nav class="nav-container">
                 <div class="logo-section">
-                    <img src="${logoPath}" alt="Logo Dynamo Beirs" class="club-logo">
+                    <img src="${paths.logo}" alt="Logo Dynamo Beirs" class="club-logo">
                     <span class="club-name">Dynamo Beirs</span>
                 </div>
                 <ul class="nav-links">
-                    <li><a href="${homePath}" class="nav-link" data-page="home">Home</a></li>
-                    <li><a href="${statsPath}" class="nav-link" data-page="statistics">Statistics</a></li>
-                    <li><a href="${playersPath}" class="nav-link" data-page="players">Players</a></li>
-                    <li><a href="${matchesPath}" class="nav-link" data-page="matches">Matches</a></li>
+                    <li><a href="${paths.home}" class="nav-link" data-page="home">Home</a></li>
+                    <li><a href="${paths.stats}" class="nav-link" data-page="statistics">Statistics</a></li>
+                    <li><a href="${paths.players}" class="nav-link" data-page="players">Players</a></li>
+                    <li><a href="${paths.matches}" class="nav-link" data-page="matches">Matches</a></li>
                     <div class="nav-blob"></div>
                 </ul>
                 <div class="mobile-menu-toggle">
-                    <span></span>
-                    <span></span>
-                    <span></span>
+                    <span></span><span></span><span></span>
                 </div>
             </nav>
-        </header>
-    `;
+        </header>`;
 
-    const headerPlaceholder = document.getElementById('header-placeholder');
-    if (headerPlaceholder) {
-        headerPlaceholder.outerHTML = fallbackHeader;
-    } else {
-        document.body.insertAdjacentHTML('afterbegin', fallbackHeader);
-    }
+    insertHeader(fallbackHTML);
+    initializeHeader(isRootPage);
+}
 
-    // Initialize functionality for fallback header
+function getPaths(isRootPage) {
+    return isRootPage ? {
+        logo: 'img/logos/original-logo.png',
+        home: 'index.html',
+        stats: 'pages/statistics.html',
+        players: 'pages/players.html',
+        matches: 'pages/matches.html'
+    } : {
+        logo: '../img/logos/original-logo.png',
+        home: '../index.html',
+        stats: 'statistics.html',
+        players: 'players.html',
+        matches: 'matches.html'
+    };
+}
+
+// Header initialization
+function initializeHeader(isRootPage) {
+    configureHeaderPaths(isRootPage);
     highlightCurrentPage();
     initializeMobileMenu();
     initializeScrollProgress();
@@ -107,172 +95,94 @@ function loadFallbackHeader(isRootPage) {
     initializeNavBlob();
 }
 
-function configureHeader(isRootPage) {
-    // Set correct paths for logo and navigation links
+function configureHeaderPaths(isRootPage) {
     const clubLogo = document.getElementById('club-logo');
     const navLinks = document.querySelectorAll('.nav-link');
 
-    // Ensure elements exist before configuring
-    if (!clubLogo) {
-        console.warn('Club logo element not found');
-        return;
-    }
+    if (!clubLogo) return;
 
-    if (isRootPage) {
-        // Root page paths
-        clubLogo.src = 'img/logos/original-logo.png';
-        navLinks.forEach(link => {
-            const page = link.getAttribute('data-page');
-            switch(page) {
-                case 'home':
-                    link.href = 'index.html';
-                    break;
-                case 'statistics':
-                    link.href = 'pages/statistics.html';
-                    break;
-                case 'players':
-                    link.href = 'pages/players.html';
-                    break;
-                case 'matches':
-                    link.href = 'pages/matches.html';
-                    break;
-            }
-        });
-    } else {
-        // Sub-page paths (pages folder)
-        clubLogo.src = '../img/logos/original-logo.png';
-        navLinks.forEach(link => {
-            const page = link.getAttribute('data-page');
-            switch(page) {
-                case 'home':
-                    link.href = '../index.html';
-                    break;
-                case 'statistics':
-                    link.href = 'statistics.html';
-                    break;
-                case 'players':
-                    link.href = 'players.html';
-                    break;
-                case 'matches':
-                    link.href = 'matches.html';
-                    break;
-            }
-        });
-    }
+    const paths = getPaths(isRootPage);
+    clubLogo.src = paths.logo;
 
-    // Highlight current page
-    highlightCurrentPage();
-
-    // Initialize mobile menu toggle
-    initializeMobileMenu();
+    navLinks.forEach(link => {
+        const page = link.getAttribute('data-page');
+        link.href = paths[page] || paths.home;
+    });
 }
 
+// Page highlighting
 function highlightCurrentPage() {
     const currentPath = window.location.pathname;
     const navLinks = document.querySelectorAll('.nav-link');
 
     navLinks.forEach(link => {
         link.classList.remove('active');
+        const page = link.getAttribute('data-page');
 
-        // Check if this link corresponds to the current page
-        if ((currentPath === '/' || currentPath.endsWith('/index.html')) && link.getAttribute('data-page') === 'home') {
+        if ((currentPath === '/' || currentPath.endsWith('/index.html')) && page === 'home') {
             link.classList.add('active');
-        } else if (currentPath.includes(link.getAttribute('data-page'))) {
+        } else if (currentPath.includes(page)) {
             link.classList.add('active');
         }
     });
 }
 
+// Mobile menu functionality
 function initializeMobileMenu() {
-    const mobileMenuToggle = document.querySelector('.mobile-menu-toggle');
+    const toggle = document.querySelector('.mobile-menu-toggle');
     const navLinks = document.querySelector('.nav-links');
 
-    if (mobileMenuToggle && navLinks) {
-        mobileMenuToggle.addEventListener('click', function() {
+    if (toggle && navLinks) {
+        toggle.addEventListener('click', () => {
             navLinks.classList.toggle('active');
-            mobileMenuToggle.classList.toggle('active');
+            toggle.classList.toggle('active');
         });
     }
 }
 
+// Scroll progress bar
 function initializeScrollProgress() {
-    // Find the scroll progress bar element
     const progressBar = document.querySelector('.scroll-progress-bar');
+    if (!progressBar) return;
 
-    if (!progressBar) {
-        console.warn('Scroll progress bar element not found');
-        return;
-    }
+    let ticking = false;
 
-    // Function to update scroll progress
-    function updateScrollProgress() {
-        // Get scroll position
+    function updateProgress() {
         const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-
-        // Get document height minus viewport height
         const documentHeight = Math.max(
             document.body.scrollHeight,
-            document.body.offsetHeight,
-            document.documentElement.clientHeight,
-            document.documentElement.scrollHeight,
-            document.documentElement.offsetHeight
+            document.documentElement.scrollHeight
         );
-
         const windowHeight = window.innerHeight;
         const maxScroll = documentHeight - windowHeight;
 
-        // Calculate progress percentage
-        let progress = 0;
-        if (maxScroll > 0) {
-            progress = (scrollTop / maxScroll) * 100;
-            progress = Math.min(100, Math.max(0, progress)); // Clamp between 0 and 100
-        }
-
-        // Update progress bar width
+        const progress = maxScroll > 0 ? Math.min(100, Math.max(0, (scrollTop / maxScroll) * 100)) : 0;
         progressBar.style.width = progress + '%';
     }
 
-    // Throttled scroll handler for better performance
-    let ticking = false;
-    function throttledUpdateScrollProgress() {
+    function throttledUpdate() {
         if (!ticking) {
-            requestAnimationFrame(function() {
-                updateScrollProgress();
+            requestAnimationFrame(() => {
+                updateProgress();
                 ticking = false;
             });
             ticking = true;
         }
     }
 
-    // Initial update
-    updateScrollProgress();
+    updateProgress();
+    window.addEventListener('scroll', throttledUpdate, { passive: true });
+    window.addEventListener('resize', () => setTimeout(updateProgress, 100));
 
-    // Add scroll event listener
-    window.addEventListener('scroll', throttledUpdateScrollProgress, { passive: true });
-
-    // Update on window resize to handle dynamic content
-    window.addEventListener('resize', function() {
-        setTimeout(updateScrollProgress, 100); // Small delay to ensure layout has updated
+    // Dynamic content observer
+    const observer = new MutationObserver(mutations => {
+        const shouldUpdate = mutations.some(mutation =>
+            mutation.type === 'childList' ||
+            (mutation.type === 'attributes' && ['style', 'class'].includes(mutation.attributeName))
+        );
+        if (shouldUpdate) setTimeout(updateProgress, 50);
     });
 
-    // Optional: Handle dynamic content changes
-    // If you have content that loads dynamically and changes page height
-    const observer = new MutationObserver(function(mutations) {
-        let shouldUpdate = false;
-        mutations.forEach(function(mutation) {
-            if (mutation.type === 'childList' ||
-                (mutation.type === 'attributes' &&
-                    (mutation.attributeName === 'style' || mutation.attributeName === 'class'))) {
-                shouldUpdate = true;
-            }
-        });
-
-        if (shouldUpdate) {
-            setTimeout(updateScrollProgress, 50);
-        }
-    });
-
-    // Observe changes to body and main content areas
     observer.observe(document.body, {
         childList: true,
         subtree: true,
@@ -281,90 +191,69 @@ function initializeScrollProgress() {
     });
 }
 
+// Header hide/show on scroll
 function setupHeaderScrollEffect() {
-    const header = document.querySelector(".header");
-
-    if (!header) {
-        console.warn('Header element not found for scroll effect');
-        return;
-    }
+    const header = document.querySelector('.header');
+    if (!header) return;
 
     let lastScrollTop = 0;
     let ticking = false;
-
-    // Minimum scroll distance before hiding header
     const scrollThreshold = 100;
 
     function handleScroll() {
-        const currentScroll = window.pageYOffset || document.documentElement.scrollTop;
+        if (ticking) return;
 
-        if (!ticking) {
-            window.requestAnimationFrame(function() {
-                // Only hide/show header after scrolling past threshold
-                if (currentScroll > scrollThreshold) {
-                    if (currentScroll > lastScrollTop) {
-                        // Scrolling down - hide header
-                        header.classList.add('header-hidden');
-                    } else {
-                        // Scrolling up - show header
-                        header.classList.remove('header-hidden');
-                    }
-                } else {
-                    // Near top of page - always show header
-                    header.classList.remove('header-hidden');
-                }
+        requestAnimationFrame(() => {
+            const currentScroll = window.pageYOffset || document.documentElement.scrollTop;
 
-                // Prevent negative scroll values
-                lastScrollTop = currentScroll <= 0 ? 0 : currentScroll;
-                ticking = false;
-            });
-            ticking = true;
-        }
+            if (currentScroll > scrollThreshold) {
+                header.classList.toggle('header-hidden', currentScroll > lastScrollTop);
+            } else {
+                header.classList.remove('header-hidden');
+            }
+
+            lastScrollTop = Math.max(0, currentScroll);
+            ticking = false;
+        });
+        ticking = true;
     }
 
-    // Listen to scroll events with passive option for better performance
-    window.addEventListener("scroll", handleScroll, { passive: true });
+    window.addEventListener('scroll', handleScroll, { passive: true });
 }
 
+// Navigation blob effect
 function initializeNavBlob() {
     const navLinks = document.querySelectorAll('.nav-link');
-    const navLinksContainer = document.querySelector('.nav-links');
+    const navContainer = document.querySelector('.nav-links');
     const navBlob = document.querySelector('.nav-blob');
 
-    if (!navLinksContainer || !navBlob) {
-        console.warn('Navigation links container or blob not found');
-        return;
-    }
+    if (!navContainer || !navBlob) return;
 
-    function updateNavBlob(activeLink) {
-        if (window.innerWidth <= 768) return; // Disable blob on mobile
+    function updateBlob(activeLink) {
+        if (window.innerWidth <= 768) return;
+
         if (activeLink) {
             const linkRect = activeLink.getBoundingClientRect();
-            const navRect = navLinksContainer.getBoundingClientRect();
+            const navRect = navContainer.getBoundingClientRect();
             const left = linkRect.left - navRect.left;
             const width = linkRect.width - 1;
-            navBlob.style.left = left + 'px';
-            navBlob.style.width = width + 'px';
-            navBlob.style.transform = 'scale(1)'; // Show the blob
+
+            Object.assign(navBlob.style, {
+                left: left + 'px',
+                width: width + 'px',
+                transform: 'scale(1)'
+            });
             navBlob.classList.add('active');
         } else {
-            navBlob.style.transform = 'scale(0.95)'; // Hide the blob
+            navBlob.style.transform = 'scale(0.95)';
             navBlob.classList.remove('active');
         }
     }
 
-    // Add hover event listeners
     navLinks.forEach(link => {
-        link.addEventListener('mouseenter', () => {
-            updateNavBlob(link);
-        });
-        link.addEventListener('mouseleave', () => {
-            updateNavBlob(null); // Hide blob when mouse leaves button
-        });
+        link.addEventListener('mouseenter', () => updateBlob(link));
+        link.addEventListener('mouseleave', () => updateBlob(null));
     });
 
-    // Update blob position on window resize
-    window.addEventListener('resize', () => {
-        navBlob.classList.remove('active'); // Hide blob on resize to maintain default state
-    });
+    window.addEventListener('resize', () => navBlob.classList.remove('active'));
 }

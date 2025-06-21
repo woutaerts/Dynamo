@@ -1,4 +1,4 @@
-/* Modern Gradient Footer Styles */
+/* Base Footer Layout */
 .footer {
     position: relative;
     display: flex;
@@ -6,9 +6,9 @@
     justify-content: center;
     height: 182px;
     padding: 20px 0;
+    margin-top: 80px;
     background: var(--dynamo-red);
     color: white;
-    margin-top: 80px;
     overflow: hidden;
 }
 
@@ -20,6 +20,7 @@
     z-index: 2;
 }
 
+/* Top Section Layout */
 .footer-top {
     display: flex;
     justify-content: center;
@@ -43,6 +44,7 @@
     cursor: pointer;
 }
 
+/* Social Media Icons */
 .footer-social-left,
 .footer-social-right {
     display: flex;
@@ -75,6 +77,7 @@
     transform: translateY(-1px) scale(1.02);
 }
 
+/* Bottom Section */
 .footer-bottom {
     position: absolute;
     bottom: -35px;
@@ -99,7 +102,26 @@
     font-weight: 300;
 }
 
-/* Responsive Design */
+/* Secret Animation */
+.footer-logo.secret-pulse {
+    animation: secretPulse 2.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    z-index: 1000;
+    filter: drop-shadow(0 0 30px rgba(255, 255, 255, 0.8));
+}
+
+@keyframes secretPulse {
+    0% { transform: scale(1) rotate(0deg); filter: brightness(1) saturate(1) drop-shadow(0 0 20px rgba(255,255,255,0.5)); opacity: 1; }
+    12% { transform: scale(3.5) rotate(180deg); filter: brightness(4) saturate(5) drop-shadow(0 0 120px rgba(255,0,128,1)); opacity: 0.9; }
+    25% { transform: scale(2.2) rotate(360deg); filter: brightness(3.2) saturate(4.2) drop-shadow(0 0 100px rgba(128,0,255,1)); opacity: 0.7; }
+    37% { transform: scale(3.8) rotate(540deg); filter: brightness(5) saturate(6) drop-shadow(0 0 150px rgba(0,255,128,1)); opacity: 0.8; }
+    50% { transform: scale(1.8) rotate(720deg); filter: brightness(2.8) saturate(3.8) drop-shadow(0 0 80px rgba(255,255,0,1)); opacity: 0.6; }
+    62% { transform: scale(4.2) rotate(900deg); filter: brightness(6) saturate(7) drop-shadow(0 0 180px rgba(255,128,255,1)); opacity: 0.9; }
+    75% { transform: scale(2.5) rotate(1080deg); filter: brightness(3.5) saturate(4.5) drop-shadow(0 0 110px rgba(128,255,255,1)); opacity: 0.7; }
+    87% { transform: scale(3.5) rotate(1260deg); filter: brightness(4.5) saturate(5.5) drop-shadow(0 0 140px rgba(255,64,64,1)); opacity: 0.8; }
+    100% { transform: scale(1) rotate(1440deg); filter: brightness(1) saturate(1) drop-shadow(0 0 20px rgba(255,255,255,0.3)); opacity: 1; }
+}
+
+/* Tablet Responsive */
 @media (max-width: 768px) {
     .footer {
         height: 166px;
@@ -141,66 +163,9 @@
     }
 }
 
+/* Mobile Responsive */
 @media (max-width: 480px) {
     .footer-content {
         padding: 0 15px;
-    }
-}
-
-/* Secret Animation - Triggered by multiple clicks */
-.footer-logo.secret-pulse {
-    animation: secretPulse 2.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-    z-index: 1000;
-}
-
-.footer-logo.secret-pulse {
-    filter: drop-shadow(0 0 30px rgba(255, 255, 255, 0.8));
-}
-
-@keyframes secretPulse {
-    0% {
-        transform: scale(1) rotate(0deg);
-        filter: brightness(1) saturate(1) drop-shadow(0 0 20px rgba(255,255,255,0.5));
-        opacity: 1;
-    }
-    12% {
-        transform: scale(3.5) rotate(180deg);
-        filter: brightness(4) saturate(5) drop-shadow(0 0 120px rgba(255,0,128,1));
-        opacity: 0.9;
-    }
-    25% {
-        transform: scale(2.2) rotate(360deg);
-        filter: brightness(3.2) saturate(4.2) drop-shadow(0 0 100px rgba(128,0,255,1));
-        opacity: 0.7;
-    }
-    37% {
-        transform: scale(3.8) rotate(540deg);
-        filter: brightness(5) saturate(6) drop-shadow(0 0 150px rgba(0,255,128,1));
-        opacity: 0.8;
-    }
-    50% {
-        transform: scale(1.8) rotate(720deg);
-        filter: brightness(2.8) saturate(3.8) drop-shadow(0 0 80px rgba(255,255,0,1));
-        opacity: 0.6;
-    }
-    62% {
-        transform: scale(4.2) rotate(900deg);
-        filter: brightness(6) saturate(7) drop-shadow(0 0 180px rgba(255,128,255,1));
-        opacity: 0.9;
-    }
-    75% {
-        transform: scale(2.5) rotate(1080deg);
-        filter: brightness(3.5) saturate(4.5) drop-shadow(0 0 110px rgba(128,255,255,1));
-        opacity: 0.7;
-    }
-    87% {
-        transform: scale(3.5) rotate(1260deg);
-        filter: brightness(4.5) saturate(5.5) drop-shadow(0 0 140px rgba(255,64,64,1));
-        opacity: 0.8;
-    }
-    100% {
-        transform: scale(1) rotate(1440deg);
-        filter: brightness(1) saturate(1) drop-shadow(0 0 20px rgba(255,255,255,0.3));
-        opacity: 1;
     }
 }

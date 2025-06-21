@@ -1,4 +1,4 @@
-/* Base Styles */
+/* Base Setup */
 html {
     scroll-behavior: smooth;
     scroll-padding-top: 80px;
@@ -8,7 +8,7 @@ body {
     padding-top: 80px;
 }
 
-/* Main Header Container */
+/* Header Container */
 .header {
     position: fixed;
     top: 0;
@@ -20,22 +20,18 @@ body {
     box-shadow: var(--shadow-hover);
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     animation: slideDown 0.8s cubic-bezier(0.4, 0, 0.2, 1);
-    transform: translateY(0);
+    will-change: transform, background, box-shadow;
 }
 
 .header::before {
     content: '';
     position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
+    inset: 0;
     background: var(--off-white);
     pointer-events: none;
     z-index: -1;
 }
 
-/* Header Hidden State - Scroll Down */
 .header.header-hidden {
     transform: translateY(-100%);
 }
@@ -62,13 +58,12 @@ body {
 .scroll-progress-bar {
     height: 100%;
     width: 0;
-    background-size: 200% 100%;
-    background: var(--dynamo-red) 0 50%;
+    background: var(--dynamo-red);
     transition: width 0.1s ease-out;
     box-shadow: var(--shadow-medium);
     animation: gradientShift 3s ease-in-out infinite;
-    position: relative;
     border-radius: 0 6px 6px 0;
+    will-change: width;
 }
 
 .scroll-progress-bar::after {
@@ -79,19 +74,8 @@ body {
     transform: translateY(-50%);
     width: 14px;
     height: 14px;
-    background-image: url('../../img/icons/white-footall-icon.png');
-    background-size: contain;
-    background-repeat: no-repeat;
+    background: url('../../img/icons/white-footall-icon.png') no-repeat center/contain;
     z-index: 1;
-}
-
-@keyframes gradientShift {
-    0%, 100% {
-        background-position: 0 50%;
-    }
-    50% {
-        background-position: 100% 50%;
-    }
 }
 
 /* Navigation Container */
@@ -101,7 +85,6 @@ body {
     align-items: center;
     justify-content: space-between;
     padding: 15px 20px;
-    position: relative;
     margin: 10px auto 0;
 }
 
@@ -118,13 +101,13 @@ body {
     height: 80px;
     width: auto;
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    will-change: transform, filter;
 }
 
 .club-name {
     font-size: 1.5rem;
     font-weight: 800;
     background: var(--dynamo-red);
-    background-size: 200% auto;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
@@ -135,10 +118,10 @@ body {
 /* Navigation Links */
 .nav-links {
     display: flex;
-    align-items: center; /* Center links vertically */
+    align-items: center;
     list-style: none;
     margin: 0;
-    padding: 8px; /* Uniform padding */
+    padding: 8px;
     gap: 0;
     background: rgba(255, 255, 255, 0.4);
     backdrop-filter: blur(15px);
@@ -151,55 +134,51 @@ body {
     position: absolute;
     top: 8px;
     left: 8px;
+    height: calc(100% - 16px);
     background: var(--dynamo-red);
     border-radius: 25px;
     opacity: 0;
     transform: scale(0.95) translateZ(0);
-    transition:
-            left 0.4s cubic-bezier(0.25, 0.8, 0.25, 1),
-            width 0.4s cubic-bezier(0.25, 0.8, 0.25, 1),
-            opacity 0.3s ease,
-            transform 0.4s ease;
+    transition: left 0.4s cubic-bezier(0.25, 0.8, 0.25, 1),
+    width 0.4s cubic-bezier(0.25, 0.8, 0.25, 1),
+    opacity 0.3s ease,
+    transform 0.4s ease;
     z-index: 0;
     pointer-events: none;
     box-shadow: var(--shadow-medium);
-    height: calc(100% - 16px);
+    will-change: transform, opacity, width;
 }
 
-
 .nav-blob.active {
-    opacity: 1; /* Visible when active */
+    opacity: 1;
 }
 
 .nav-link {
-    display: flex; /* Use flex to center content */
-    align-items: center; /* Center text vertically */
-    justify-content: center; /* Center text horizontally */
+    display: flex;
+    align-items: center;
+    justify-content: center;
     padding: 12px 24px;
+    height: 45px;
     color: var(--dark-gray);
     text-decoration: none;
     font-weight: 600;
     font-size: 0.95rem;
     border-radius: 25px;
-    transition:
-            color 0.15s ease-in,
-            text-shadow 0.15s ease-in,
-            background 0.3s ease,
-            transform 0.3s ease;
+    transition: color 0.15s ease-in,
+    text-shadow 0.15s ease-in,
+    background 0.3s ease,
+    transform 0.3s ease;
     position: relative;
     white-space: nowrap;
     z-index: 1;
     letter-spacing: 1px;
-    height: 45px; /* Fixed height to ensure consistency */
+    will-change: transform, color;
 }
 
 .nav-link::before {
     content: '';
     position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
+    inset: 0;
     background: var(--dynamo-red);
     border-radius: 25px;
     opacity: 0;
@@ -208,29 +187,21 @@ body {
     transform: scale(0.8);
 }
 
-.nav-link:hover {
-    color: white;
-    text-shadow: var(--shadow-hover);
-    font-weight: 600;
-}
-
-.nav-link:hover::before {
-    opacity: 1;
-    transform: scale(1);
-    box-shadow: var(--shadow-hover);
-}
-
+.nav-link:hover,
 .nav-link.active {
     color: white;
-    font-weight: 600;
     text-shadow: var(--shadow-hover);
-    letter-spacing: 1px;
+    font-weight: 600;
 }
 
+.nav-link:hover::before,
 .nav-link.active::before {
     opacity: 1;
     transform: scale(1);
     box-shadow: var(--shadow-hover);
+}
+
+.nav-link.active::before {
     animation: gentlePulse 1s ease-in-out infinite;
 }
 
@@ -285,7 +256,17 @@ body {
     }
 }
 
-/* Responsive Design - Tablet */
+@keyframes gradientShift {
+    0%, 100% { background-position: 0 50%; }
+    50% { background-position: 100% 50%; }
+}
+
+@keyframes gentlePulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.03); }
+}
+
+/* Tablet Responsive */
 @media (max-width: 768px) {
     .nav-container {
         padding: 12px 20px;
@@ -332,18 +313,18 @@ body {
         font-size: 1rem;
         text-align: center;
         border-radius: 15px;
-        height: auto; /* Reset fixed height for mobile */
+        height: auto;
     }
 
     .nav-blob {
-        display: none; /* Hide blob on mobile */
+        display: none;
     }
 }
 
-/* Responsive Design - Mobile */
+/* Mobile Responsive */
 @media (max-width: 480px) {
     body {
-        padding-top: 82px; /* Adjusted for slightly taller progress bar */
+        padding-top: 82px;
     }
 
     .scroll-progress-container {
@@ -380,87 +361,25 @@ body {
     .nav-link {
         padding: 12px 15px;
         font-size: 0.9rem;
-        height: auto; /* Reset fixed height for mobile */
+        height: auto;
     }
 }
 
-/* Accessibility Enhancements */
+/* Accessibility & Performance */
 @media (prefers-reduced-motion: reduce) {
-    .header,
-    .nav-link,
-    .club-logo,
-    .mobile-menu-toggle span,
-    .scroll-progress-bar,
-    .nav-blob {
-        animation: none;
-        transition: none;
+    * {
+        animation: none !important;
+        transition: none !important;
     }
 
     html {
         scroll-behavior: auto;
     }
 
-    /* Still allow header hide/show but with reduced motion */
     .header {
         transition: transform 0.1s ease;
     }
-}
 
-/* Performance Optimizations */
-.header {
-    will-change: transform, background, box-shadow;
-}
-
-.nav-link {
-    will-change: transform, color;
-}
-
-.club-logo {
-    will-change: transform, filter;
-}
-
-.scroll-progress-bar {
-    will-change: width;
-}
-
-.nav-blob {
-    will-change: transform, opacity, width;
-}
-
-/* Heart-beating vibration animation */
-@keyframes heartbeat {
-    0% {
-        transform: scale(1);
-    }
-    14% {
-        transform: scale(1.03);
-    }
-    28% {
-        transform: scale(1);
-    }
-    42% {
-        transform: scale(1.05);
-    }
-    70% {
-        transform: scale(1);
-    }
-    100% {
-        transform: scale(1);
-    }
-}
-
-/* Alternative subtle pulse for reduced motion preference */
-@keyframes gentlePulse {
-    0%, 100% {
-        transform: scale(1);
-    }
-    50% {
-        transform: scale(1.03);
-    }
-}
-
-/* For users who prefer reduced motion */
-@media (prefers-reduced-motion: reduce) {
     .nav-link.active::before {
         animation: gentlePulse 3s ease-in-out infinite;
     }

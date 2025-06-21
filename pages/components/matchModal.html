@@ -1,43 +1,60 @@
 <!-- Match Center Modal Component -->
-<link rel="stylesheet" href="../../css/components/matchModal.css" />
+<link rel="stylesheet" href="../../css/components/matchModal.css"/>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
 <div id="matchCenterModal" class="modal-overlay">
     <div class="modal-content">
+        <!-- Close Button -->
         <span class="close-modal">&times;</span>
 
-        <!-- Modal Title -->
+        <!-- Title and Season -->
         <h2 id="modalMatchTitle">Match Details</h2>
+        <div class="season" id="matchSeason">2024-25</div>
 
-        <!-- Season shown at the top in styled format -->
-        <div class="season" id="matchSeason">'23-'24</div>
-
-        <!-- Match Score Section - Added prominently at the top -->
+        <!-- Score Display -->
         <div class="modal-match-score" id="modalMatchScore" style="display: none;">
             <div class="score-display">2-1</div>
         </div>
 
-        <!-- Goalscorers Section First -->
-        <div class="goalscorers-section modal-section">
+        <!-- Goalscorers Section -->
+        <div class="goalscorers-section">
             <h3>Goal Scorers</h3>
             <ul class="goalscorers-list" id="goalscorersList">
-                <li class="goalscorer-item">Rodriguez (2 goals)</li>
-                <li class="goalscorer-item">Mitchell (1 goal)</li>
-                <li class="goalscorer-item">Johnson (1 goal)</li>
+                <li class="goalscorer-item">
+                    <i class="fas fa-futbol"></i>
+                    Rodriguez (2 goals)
+                </li>
+                <li class="goalscorer-item">
+                    <i class="fas fa-futbol"></i>
+                    Mitchell (1 goal)
+                </li>
+                <li class="goalscorer-item">
+                    <i class="fas fa-futbol"></i>
+                    Johnson (1 goal)
+                </li>
             </ul>
         </div>
 
-        <!-- Date Section below Goal Scorers -->
-        <div class="modal-section">
-            <h3>Date & Time</h3>
-            <p id="matchDateTime">Saturday, 15 June 2024<br>15:00</p>
-        </div>
-
-        <!-- Stadium Section -->
-        <div class="stadium-section modal-section">
-            <h3>Stadium</h3>
-            <p class="stadium-name" id="stadiumName">Home Stadium</p>
-            <div id="matchMap" class="match-map"></div>
+        <!-- Match Details -->
+        <div class="match-details-container">
+            <div class="modal-section date-time-section">
+                <h3>Date & Time</h3>
+                <div class="date-time-container">
+                    <div class="date-box">
+                        <p id="matchDate">15 mei</p>
+                    </div>
+                    <div class="time-box">
+                        <p id="matchTime">15:00</p>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-section">
+                <h3>Stadium</h3>
+                <p class="stadium-name" id="stadiumName">
+                    <i class="fas fa-map-marker-alt"></i>
+                    Home Stadium
+                </p>
+            </div>
         </div>
     </div>
 </div>
