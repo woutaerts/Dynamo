@@ -149,7 +149,7 @@ body {
     letter-spacing: 1px;
     font-size: 0.9rem;
     cursor: pointer;
-    transition: all 0.1s ease;
+    transition: all 0.3s ease;
     display: flex;
     align-items: center;
     gap: 0.5rem;
@@ -168,7 +168,7 @@ body {
     height: 0;
     border-radius: 50%;
     background-color: var(--dynamo-red);
-    transition: width 0.2s ease-in-out, height 0.2s ease-in-out;
+    transition: width 0.4s ease-in-out, height 0.4s ease-in-out;
     transform: translate(-50%, -50%);
     z-index: -1;
 }
