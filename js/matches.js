@@ -3,6 +3,7 @@ document.addEventListener('DOMContentLoaded', () => {
     initializeCountdown();
     animateOnScroll();
     setupMatchInteractions();
+    scrollTimelineToEnd();
 });
 
 // Animation system
@@ -208,4 +209,12 @@ function getMatchData(card) {
         score,
         goalscorers
     };
+}
+
+/* Timeline scroller */
+function scrollTimelineToEnd() {
+    const timelineWrapper = document.querySelector('.timeline-wrapper');
+    if (timelineWrapper) {
+        timelineWrapper.scrollLeft = timelineWrapper.scrollWidth;
+    }
 }

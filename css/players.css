@@ -27,41 +27,84 @@
     align-items: center;
     gap: 0.5rem;
     box-shadow: var(--shadow-medium);
+    position: relative;
+    overflow: hidden;
+    z-index: 1;
 }
 
 .filter-btn i {
     font-size: 1rem;
+    z-index: 2;
+    position: relative;
 }
 
-/* Filter button hover states */
-.filter-btn:hover[data-position="goalkeeper"],
+/* Position-aware hover effect span */
+.filter-btn .hover-effect {
+    position: absolute;
+    display: block;
+    width: 0;
+    height: 0;
+    border-radius: 50%;
+    transition: width 0.4s ease-in-out, height 0.4s ease-in-out;
+    transform: translate(-50%, -50%);
+    z-index: -1;
+}
+
+/* Position-specific hover effect backgrounds */
+.filter-btn[data-position="goalkeeper"] .hover-effect {
+    background-color: var(--dark-blue);
+}
+
+.filter-btn[data-position="defender"] .hover-effect {
+    background-color: var(--dark-green);
+}
+
+.filter-btn[data-position="midfielder"] .hover-effect {
+    background-color: var(--dark-yellow);
+}
+
+.filter-btn[data-position="attacker"] .hover-effect {
+    background-color: var(--dynamo-red);
+}
+
+.filter-btn[data-position="all"] .hover-effect {
+    background-color: var(--medium-gray);
+}
+
+/* Hover state for text color */
+.filter-btn:hover {
+    color: var(--off-white);
+}
+
+/* Active hover effect */
+.filter-btn:hover .hover-effect {
+    width: 225%;
+    height: 200px;
+}
+
+/* Active state styling */
+.filter-btn.active {
+    color: var(--off-white);
+}
+
 .filter-btn.active[data-position="goalkeeper"] {
     background: var(--dark-blue);
-    color: var(--off-white);
 }
 
-.filter-btn:hover[data-position="defender"],
 .filter-btn.active[data-position="defender"] {
     background: var(--dark-green);
-    color: var(--off-white);
 }
 
-.filter-btn:hover[data-position="midfielder"],
 .filter-btn.active[data-position="midfielder"] {
     background: var(--dark-yellow);
-    color: var(--off-white);
 }
 
-.filter-btn:hover[data-position="attacker"],
 .filter-btn.active[data-position="attacker"] {
     background: var(--dynamo-red);
-    color: var(--off-white);
 }
 
-.filter-btn:hover[data-position="all"],
 .filter-btn.active[data-position="all"] {
     background: var(--medium-gray);
-    color: var(--off-white);
 }
 
 /* Search Section */

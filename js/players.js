@@ -4,6 +4,7 @@ document.addEventListener('DOMContentLoaded', () => {
     initializeFilters();
     addSearchFunctionality();
     animateOnScroll();
+    initializePositionAwareHover();
     setTimeout(checkInitialHash, 100);
 });
 
@@ -34,6 +35,38 @@ function initializeFilters() {
             if (searchInput) searchInput.value = '';
 
             history.replaceState(null, null, targetPosition === 'all' ? '#players' : `#${targetPosition}`);
+        });
+    });
+}
+
+// Position-aware hover effect initialization
+function initializePositionAwareHover() {
+    const filterButtons = document.querySelectorAll('.filter-btn');
+
+    filterButtons.forEach(button => {
+        // Add hover effect span to each button
+        const hoverSpan = document.createElement('span');
+        hoverSpan.className = 'hover-effect';
+        button.appendChild(hoverSpan);
+
+        // Mouse enter event
+        button.addEventListener('mouseenter', (e) => {
+            const rect = button.getBoundingClientRect();
+            const relX = e.clientX - rect.left;
+            const relY = e.clientY - rect.top;
+
+            hoverSpan.style.top = relY + 'px';
+            hoverSpan.style.left = relX + 'px';
+        });
+
+        // Mouse leave event
+        button.addEventListener('mouseleave', (e) => {
+            const rect = button.getBoundingClientRect();
+            const relX = e.clientX - rect.left;
+            const relY = e.clientY - rect.top;
+
+            hoverSpan.style.top = relY + 'px';
+            hoverSpan.style.left = relX + 'px';
         });
     });
 }

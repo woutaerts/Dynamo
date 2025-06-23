@@ -1,186 +1,302 @@
-document.addEventListener('DOMContentLoaded', loadHeader);
+document.addEventListener('DOMContentLoaded', function() {
+    loadHeader();
+});
 
-// Main header loader
 async function loadHeader() {
     try {
-        const isRootPage = isOnRootPage();
+        const isRootPage = window.location.pathname === '/' ||
+            window.location.pathname.endsWith('/index.html') ||
+            !window.location.pathname.includes('/pages/');
         const headerPath = isRootPage ? 'pages/partials/header.html' : 'partials/header.html';
-
         const response = await fetch(headerPath);
 
-        if (!response.ok || !await response.text()) {
-            throw new Error(`Failed to load header: ${response.status}`);
+        if (!response.ok) {
+            console.error(`Failed to load header from ${headerPath}: ${response.status} ${response.statusText}`);
+            loadFallbackHeader(isRootPage);
+            return;
         }
 
         const headerHTML = await response.text();
-        insertHeader(headerHTML);
-        initializeHeader(isRootPage);
 
+        if (!headerHTML.trim()) {
+            console.error('Header file is empty');
+            loadFallbackHeader(isRootPage);
+            return;
+        }
+
+        const headerPlaceholder = document.getElementById('header-placeholder');
+        if (headerPlaceholder) {
+            headerPlaceholder.outerHTML = headerHTML;
+        } else {
+            document.body.insertAdjacentHTML('afterbegin', headerHTML);
+        }
+
+        configureHeader(isRootPage);
+        initializeScrollProgress();
+        setupHeaderScrollEffect();
+        setupPositionAwareHoverEffect();
     } catch (error) {
         console.error('Error loading header:', error);
-        loadFallbackHeader();
+        loadFallbackHeader(isRootPage);
     }
 }
 
-// Helper functions
-function isOnRootPage() {
-    const path = window.location.pathname;
-    return path === '/' || path.endsWith('/index.html') || !path.includes('/pages/');
-}
-
-function insertHeader(headerHTML) {
-    const placeholder = document.getElementById('header-placeholder');
-    if (placeholder) {
-        placeholder.outerHTML = headerHTML;
+function setupPositionAwareHoverEffect() {
+    // Check if jQuery is available, if not, use vanilla JavaScript
+    if (typeof jQuery !== 'undefined') {
+        setupJQueryHoverEffect();
     } else {
-        document.body.insertAdjacentHTML('afterbegin', headerHTML);
+        setupVanillaHoverEffect();
     }
 }
 
-// Fallback header creation
-function loadFallbackHeader() {
-    const isRootPage = isOnRootPage();
-    const paths = getPaths(isRootPage);
+function setupJQueryHoverEffect() {
+    $(function() {
+        $('.nav-link').each(function() {
+            // Ensure all nav-links have a span element
+            if ($(this).find('span').length === 0) {
+                $(this).append('<span></span>');
+            }
 
-    const fallbackHTML = `
+            $(this).on('mouseenter', function(e) {
+                if (!$(this).hasClass('active')) {
+                    const parentOffset = $(this).offset();
+                    const relX = e.pageX - parentOffset.left;
+                    const relY = e.pageY - parentOffset.top;
+                    $(this).find('span').css({ top: relY, left: relX });
+                }
+            }).on('mouseout', function(e) {
+                if (!$(this).hasClass('active')) {
+                    const parentOffset = $(this).offset();
+                    const relX = e.pageX - parentOffset.left;
+                    const relY = e.pageY - parentOffset.top;
+                    $(this).find('span').css({ top: relY, left: relX });
+                }
+            });
+        });
+    });
+}
+
+function setupVanillaHoverEffect() {
+    const navLinks = document.querySelectorAll('.nav-link');
+
+    navLinks.forEach(function(link) {
+        // Ensure all nav-links have a span element
+        if (!link.querySelector('span')) {
+            const span = document.createElement('span');
+            link.appendChild(span);
+        }
+
+        link.addEventListener('mouseenter', function(e) {
+            if (!this.classList.contains('active')) {
+                const rect = this.getBoundingClientRect();
+                const relX = e.clientX - rect.left;
+                const relY = e.clientY - rect.top;
+                const span = this.querySelector('span');
+                span.style.top = relY + 'px';
+                span.style.left = relX + 'px';
+            }
+        });
+
+        link.addEventListener('mouseleave', function(e) {
+            if (!this.classList.contains('active')) {
+                const rect = this.getBoundingClientRect();
+                const relX = e.clientX - rect.left;
+                const relY = e.clientY - rect.top;
+                const span = this.querySelector('span');
+                span.style.top = relY + 'px';
+                span.style.left = relX + 'px';
+            }
+        });
+    });
+}
+
+function loadFallbackHeader(isRootPage) {
+    const logoPath = isRootPage ? 'img/logos/original-logo.png' : '../img/logos/original-logo.png';
+    const homePath = isRootPage ? 'index.html' : '../index.html';
+    const statsPath = isRootPage ? 'pages/statistics.html' : 'statistics.html';
+    const playersPath = isRootPage ? 'pages/players.html' : 'players.html';
+    const matchesPath = isRootPage ? 'pages/matches.html' : 'matches.html';
+
+    const fallbackHeader = `
         <header class="header">
             <div class="scroll-progress-container">
                 <div class="scroll-progress-bar"></div>
             </div>
             <nav class="nav-container">
                 <div class="logo-section">
-                    <img src="${paths.logo}" alt="Logo Dynamo Beirs" class="club-logo">
+                    <img src="${logoPath}" alt="Logo Dynamo Beirs" class="club-logo">
                     <span class="club-name">Dynamo Beirs</span>
                 </div>
                 <ul class="nav-links">
-                    <li><a href="${paths.home}" class="nav-link" data-page="home">Home</a></li>
-                    <li><a href="${paths.stats}" class="nav-link" data-page="statistics">Statistics</a></li>
-                    <li><a href="${paths.players}" class="nav-link" data-page="players">Players</a></li>
-                    <li><a href="${paths.matches}" class="nav-link" data-page="matches">Matches</a></li>
-                    <div class="nav-blob"></div>
+                    <li><a href="${homePath}" class="nav-link" data-page="home">Home<span></span></a></li>
+                    <li><a href="${statsPath}" class="nav-link" data-page="statistics">Statistics<span></span></a></li>
+                    <li><a href="${playersPath}" class="nav-link" data-page="players">Players<span></span></a></li>
+                    <li><a href="${matchesPath}" class="nav-link" data-page="matches">Matches<span></span></a></li>
                 </ul>
                 <div class="mobile-menu-toggle">
-                    <span></span><span></span><span></span>
+                    <span></span>
+                    <span></span>
+                    <span></span>
                 </div>
             </nav>
-        </header>`;
+        </header>
+    `;
 
-    insertHeader(fallbackHTML);
-    initializeHeader(isRootPage);
-}
+    const headerPlaceholder = document.getElementById('header-placeholder');
+    if (headerPlaceholder) {
+        headerPlaceholder.outerHTML = fallbackHeader;
+    } else {
+        document.body.insertAdjacentHTML('afterbegin', fallbackHeader);
+    }
 
-function getPaths(isRootPage) {
-    return isRootPage ? {
-        logo: 'img/logos/original-logo.png',
-        home: 'index.html',
-        stats: 'pages/statistics.html',
-        players: 'pages/players.html',
-        matches: 'pages/matches.html'
-    } : {
-        logo: '../img/logos/original-logo.png',
-        home: '../index.html',
-        stats: 'statistics.html',
-        players: 'players.html',
-        matches: 'matches.html'
-    };
-}
-
-// Header initialization
-function initializeHeader(isRootPage) {
-    configureHeaderPaths(isRootPage);
     highlightCurrentPage();
     initializeMobileMenu();
     initializeScrollProgress();
     setupHeaderScrollEffect();
-    initializeNavBlob();
+    setupPositionAwareHoverEffect();
 }
 
-function configureHeaderPaths(isRootPage) {
+function configureHeader(isRootPage) {
     const clubLogo = document.getElementById('club-logo');
     const navLinks = document.querySelectorAll('.nav-link');
 
-    if (!clubLogo) return;
+    if (!clubLogo) {
+        console.warn('Club logo element not found');
+        return;
+    }
 
-    const paths = getPaths(isRootPage);
-    clubLogo.src = paths.logo;
+    if (isRootPage) {
+        clubLogo.src = 'img/logos/original-logo.png';
+        navLinks.forEach(link => {
+            const page = link.getAttribute('data-page');
+            switch(page) {
+                case 'home':
+                    link.href = 'index.html';
+                    break;
+                case 'statistics':
+                    link.href = 'pages/statistics.html';
+                    break;
+                case 'players':
+                    link.href = 'pages/players.html';
+                    break;
+                case 'matches':
+                    link.href = 'pages/matches.html';
+                    break;
+            }
+        });
+    } else {
+        clubLogo.src = '../img/logos/original-logo.png';
+        navLinks.forEach(link => {
+            const page = link.getAttribute('data-page');
+            switch(page) {
+                case 'home':
+                    link.href = '../index.html';
+                    break;
+                case 'statistics':
+                    link.href = 'statistics.html';
+                    break;
+                case 'players':
+                    link.href = 'players.html';
+                    break;
+                case 'matches':
+                    link.href = 'matches.html';
+                    break;
+            }
+        });
+    }
 
-    navLinks.forEach(link => {
-        const page = link.getAttribute('data-page');
-        link.href = paths[page] || paths.home;
-    });
+    highlightCurrentPage();
+    initializeMobileMenu();
 }
 
-// Page highlighting
 function highlightCurrentPage() {
     const currentPath = window.location.pathname;
     const navLinks = document.querySelectorAll('.nav-link');
 
     navLinks.forEach(link => {
         link.classList.remove('active');
-        const page = link.getAttribute('data-page');
 
-        if ((currentPath === '/' || currentPath.endsWith('/index.html')) && page === 'home') {
+        if ((currentPath === '/' || currentPath.endsWith('/index.html')) && link.getAttribute('data-page') === 'home') {
             link.classList.add('active');
-        } else if (currentPath.includes(page)) {
+        } else if (currentPath.includes(link.getAttribute('data-page'))) {
             link.classList.add('active');
         }
     });
 }
 
-// Mobile menu functionality
 function initializeMobileMenu() {
-    const toggle = document.querySelector('.mobile-menu-toggle');
+    const mobileMenuToggle = document.querySelector('.mobile-menu-toggle');
     const navLinks = document.querySelector('.nav-links');
 
-    if (toggle && navLinks) {
-        toggle.addEventListener('click', () => {
+    if (mobileMenuToggle && navLinks) {
+        mobileMenuToggle.addEventListener('click', function() {
             navLinks.classList.toggle('active');
-            toggle.classList.toggle('active');
+            mobileMenuToggle.classList.toggle('active');
         });
     }
 }
 
-// Scroll progress bar
 function initializeScrollProgress() {
     const progressBar = document.querySelector('.scroll-progress-bar');
-    if (!progressBar) return;
 
-    let ticking = false;
+    if (!progressBar) {
+        console.warn('Scroll progress bar element not found');
+        return;
+    }
 
-    function updateProgress() {
+    function updateScrollProgress() {
         const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
         const documentHeight = Math.max(
             document.body.scrollHeight,
-            document.documentElement.scrollHeight
+            document.body.offsetHeight,
+            document.documentElement.clientHeight,
+            document.documentElement.scrollHeight,
+            document.documentElement.offsetHeight
         );
+
         const windowHeight = window.innerHeight;
         const maxScroll = documentHeight - windowHeight;
+        let progress = 0;
+        if (maxScroll > 0) {
+            progress = (scrollTop / maxScroll) * 100;
+            progress = Math.min(100, Math.max(0, progress));
+        }
 
-        const progress = maxScroll > 0 ? Math.min(100, Math.max(0, (scrollTop / maxScroll) * 100)) : 0;
         progressBar.style.width = progress + '%';
     }
 
-    function throttledUpdate() {
+    let ticking = false;
+    function throttledUpdateScrollProgress() {
         if (!ticking) {
-            requestAnimationFrame(() => {
-                updateProgress();
+            requestAnimationFrame(function() {
+                updateScrollProgress();
                 ticking = false;
             });
             ticking = true;
         }
     }
 
-    updateProgress();
-    window.addEventListener('scroll', throttledUpdate, { passive: true });
-    window.addEventListener('resize', () => setTimeout(updateProgress, 100));
+    updateScrollProgress();
+    window.addEventListener('scroll', throttledUpdateScrollProgress, { passive: true });
 
-    // Dynamic content observer
-    const observer = new MutationObserver(mutations => {
-        const shouldUpdate = mutations.some(mutation =>
-            mutation.type === 'childList' ||
-            (mutation.type === 'attributes' && ['style', 'class'].includes(mutation.attributeName))
-        );
-        if (shouldUpdate) setTimeout(updateProgress, 50);
+    window.addEventListener('resize', function() {
+        setTimeout(updateScrollProgress, 100);
+    });
+
+    const observer = new MutationObserver(function(mutations) {
+        let shouldUpdate = false;
+        mutations.forEach(function(mutation) {
+            if (mutation.type === 'childList' ||
+                (mutation.type === 'attributes' &&
+                    (mutation.attributeName === 'style' || mutation.attributeName === 'class'))) {
+                shouldUpdate = true;
+            }
+        });
+
+        if (shouldUpdate) {
+            setTimeout(updateScrollProgress, 50);
+        }
     });
 
     observer.observe(document.body, {
@@ -191,69 +307,39 @@ function initializeScrollProgress() {
     });
 }
 
-// Header hide/show on scroll
 function setupHeaderScrollEffect() {
-    const header = document.querySelector('.header');
-    if (!header) return;
+    const header = document.querySelector(".header");
+
+    if (!header) {
+        console.warn('Header element not found for scroll effect');
+        return;
+    }
 
     let lastScrollTop = 0;
     let ticking = false;
     const scrollThreshold = 100;
 
     function handleScroll() {
-        if (ticking) return;
+        const currentScroll = window.pageYOffset || document.documentElement.scrollTop;
 
-        requestAnimationFrame(() => {
-            const currentScroll = window.pageYOffset || document.documentElement.scrollTop;
+        if (!ticking) {
+            window.requestAnimationFrame(function() {
+                if (currentScroll > scrollThreshold) {
+                    if (currentScroll > lastScrollTop) {
+                        header.classList.add('header-hidden');
+                    } else {
+                        header.classList.remove('header-hidden');
+                    }
+                } else {
+                    header.classList.remove('header-hidden');
+                }
 
-            if (currentScroll > scrollThreshold) {
-                header.classList.toggle('header-hidden', currentScroll > lastScrollTop);
-            } else {
-                header.classList.remove('header-hidden');
-            }
-
-            lastScrollTop = Math.max(0, currentScroll);
-            ticking = false;
-        });
-        ticking = true;
-    }
-
-    window.addEventListener('scroll', handleScroll, { passive: true });
-}
-
-// Navigation blob effect
-function initializeNavBlob() {
-    const navLinks = document.querySelectorAll('.nav-link');
-    const navContainer = document.querySelector('.nav-links');
-    const navBlob = document.querySelector('.nav-blob');
-
-    if (!navContainer || !navBlob) return;
-
-    function updateBlob(activeLink) {
-        if (window.innerWidth <= 768) return;
-
-        if (activeLink) {
-            const linkRect = activeLink.getBoundingClientRect();
-            const navRect = navContainer.getBoundingClientRect();
-            const left = linkRect.left - navRect.left;
-            const width = linkRect.width - 1;
-
-            Object.assign(navBlob.style, {
-                left: left + 'px',
-                width: width + 'px',
-                transform: 'scale(1)'
+                lastScrollTop = currentScroll <= 0 ? 0 : currentScroll;
+                ticking = false;
             });
-            navBlob.classList.add('active');
-        } else {
-            navBlob.style.transform = 'scale(0.95)';
-            navBlob.classList.remove('active');
+            ticking = true;
         }
     }
 
-    navLinks.forEach(link => {
-        link.addEventListener('mouseenter', () => updateBlob(link));
-        link.addEventListener('mouseleave', () => updateBlob(null));
-    });
-
-    window.addEventListener('resize', () => navBlob.classList.remove('active'));
+    window.addEventListener("scroll", handleScroll, { passive: true });
 }
