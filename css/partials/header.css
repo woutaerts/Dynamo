@@ -3,7 +3,6 @@ html {
     scroll-behavior: smooth;
     scroll-padding-top: 80px;
 }
-
 body {
     padding-top: 80px;
 }
@@ -22,7 +21,6 @@ body {
     animation: slideDown 0.8s cubic-bezier(0.4, 0, 0.2, 1);
     transform: translateY(0);
 }
-
 .header::before {
     content: '';
     position: absolute;
@@ -39,7 +37,6 @@ body {
 .header.header-hidden {
     transform: translateY(-100%);
 }
-
 .header.scrolled {
     background: rgba(255, 255, 255, 0.92);
     backdrop-filter: blur(30px);
@@ -58,7 +55,6 @@ body {
     background: rgba(0, 0, 0, 0.05);
     backdrop-filter: blur(10px);
 }
-
 .scroll-progress-bar {
     height: 100%;
     width: 0;
@@ -70,7 +66,6 @@ body {
     position: relative;
     border-radius: 0 6px 6px 0;
 }
-
 .scroll-progress-bar::after {
     content: '';
     position: absolute;
@@ -84,7 +79,6 @@ body {
     background-repeat: no-repeat;
     z-index: 1;
 }
-
 @keyframes gradientShift {
     0%, 100% {
         background-position: 0 50%;
@@ -113,13 +107,11 @@ body {
     z-index: 1001;
     transition: all 0.3s ease;
 }
-
 .club-logo {
     height: 80px;
     width: auto;
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
-
 .club-name {
     font-size: 1.5rem;
     font-weight: 800;
@@ -139,14 +131,13 @@ body {
     list-style: none;
     margin: 0;
     padding: 8px;
-    gap: 0; /* Original gap to maintain container layout */
-    background: white; /* Keep original container box */
-    backdrop-filter: blur(15px); /* Keep original blur */
-    border-radius: 50px; /* Keep original rounded container */
-    box-shadow: var(--shadow-medium); /* Keep original shadow */
+    gap: 0;
+    background: white;
+    backdrop-filter: blur(15px);
+    border-radius: 50px;
+    box-shadow: var(--shadow-medium);
     position: relative;
 }
-
 .nav-link {
     background: white;
     border: none;
@@ -158,15 +149,15 @@ body {
     letter-spacing: 1px;
     font-size: 0.9rem;
     cursor: pointer;
-    transition: all 0.3s ease;
+    transition: all 0.1s ease;
     display: flex;
     align-items: center;
     gap: 0.5rem;
     position: relative;
     overflow: hidden;
     z-index: 1;
-    text-decoration: none; /* Preserve link functionality */
-    height: auto; /* Allow natural sizing */
+    text-decoration: none;
+    height: auto;
 }
 
 /* Position-aware hover effect span */
@@ -176,8 +167,8 @@ body {
     width: 0;
     height: 0;
     border-radius: 50%;
-    background-color: var(--dynamo-red); /* Single color for all nav links */
-    transition: width 0.4s ease-in-out, height 0.4s ease-in-out; /* Match filter-btn */
+    background-color: var(--dynamo-red);
+    transition: width 0.2s ease-in-out, height 0.2s ease-in-out;
     transform: translate(-50%, -50%);
     z-index: -1;
 }
@@ -190,13 +181,13 @@ body {
 /* Active hover effect */
 .nav-link:hover span {
     width: 225%;
-    height: 200px; /* Match filter-btn */
+    height: 200px;
 }
 
 /* Active state styling */
 .nav-link.active {
     color: var(--off-white);
-    background: var(--dynamo-red); /* Solid background for active state */
+    background: var(--dynamo-red);
 }
 
 /* Focus state for accessibility */
@@ -204,7 +195,6 @@ body {
     color: var(--off-white);
     outline: none;
 }
-
 .nav-link:focus span {
     width: 225%;
     height: 200px;
@@ -222,12 +212,10 @@ body {
     backdrop-filter: blur(10px);
     transition: all 0.3s ease;
 }
-
 .mobile-menu-toggle:hover {
     background: rgba(255, 255, 255, 0.5);
     transform: scale(1.05);
 }
-
 .mobile-menu-toggle span {
     width: 25px;
     height: 3px;
@@ -236,15 +224,12 @@ body {
     border-radius: 2px;
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
-
 .mobile-menu-toggle.active span:nth-child(1) {
     transform: rotate(-45deg) translate(-5px, 6px);
 }
-
 .mobile-menu-toggle.active span:nth-child(2) {
     opacity: 0;
 }
-
 .mobile-menu-toggle.active span:nth-child(3) {
     transform: rotate(45deg) translate(-5px, -6px);
 }
@@ -266,19 +251,15 @@ body {
     .nav-container {
         padding: 12px 20px;
     }
-
     .club-logo {
         height: 40px;
     }
-
     .club-name {
         font-size: 1.3rem;
     }
-
     .mobile-menu-toggle {
         display: flex;
     }
-
     .nav-links {
         position: absolute;
         top: 100%;
@@ -289,25 +270,23 @@ body {
         backdrop-filter: blur(25px);
         border-radius: 20px;
         padding: 20px;
-        gap: 0.5rem; /* Match filter-controls */
+        gap: 0.5rem;
         transform: translateY(-20px);
         opacity: 0;
         visibility: hidden;
         transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         box-shadow: var(--shadow-medium);
     }
-
     .nav-links.active {
         transform: translateY(10px);
         opacity: 1;
         visibility: visible;
     }
-
     .nav-link {
-        padding: 0.5rem 1rem; /* Match filter-btn */
-        font-size: 0.8rem; /* Match filter-btn */
-        justify-content: center; /* Center text for consistency */
-        width: 200px; /* Match filter-btn width on mobile */
+        padding: 0.5rem 1rem;
+        font-size: 0.8rem;
+        justify-content: center;
+        width: 200px;
     }
 }
 
@@ -316,44 +295,36 @@ body {
     body {
         padding-top: 82px;
     }
-
     .scroll-progress-container {
         height: 10px;
     }
-
     .scroll-progress-bar::after {
         font-size: 12px;
         right: -8px;
     }
-
     .nav-container {
         padding: 10px 15px;
     }
-
     .logo-section {
         gap: 10px;
     }
-
     .club-logo {
         height: 35px;
     }
-
     .club-name {
         font-size: 1.1rem;
     }
-
     .nav-links {
         left: 15px;
         right: 15px;
         padding: 15px;
-        gap: 0.5rem; /* Match filter-controls */
+        gap: 0.5rem;
     }
-
     .nav-link {
-        padding: 0.5rem 1rem; /* Match filter-btn */
-        font-size: 0.8rem; /* Match filter-btn */
-        width: 200px; /* Match filter-btn */
-        justify-content: center; /* Match filter-btn */
+        padding: 0.5rem 1rem;
+        font-size: 0.8rem;
+        width: 200px;
+        justify-content: center;
     }
 }
 
@@ -367,19 +338,15 @@ body {
         animation: none;
         transition: none;
     }
-
     html {
         scroll-behavior: auto;
     }
-
     .header {
         transition: transform 0.1s ease;
     }
-
     .nav-link span {
         transition: none;
     }
-
     .nav-link.active {
         animation: none;
     }
@@ -389,15 +356,12 @@ body {
 .header {
     will-change: transform, background, box-shadow;
 }
-
 .nav-link {
     will-change: transform, color;
 }
-
 .club-logo {
     will-change: transform, filter;
 }
-
 .scroll-progress-bar {
     will-change: width;
 }
