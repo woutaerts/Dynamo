@@ -17,6 +17,7 @@
     --light-gray: #ccc;
     --silver-mist: #e8e8e8;
     --off-white: #FAF9F5;
+    --nested-box: #EFF2F7;
     /* Shadows */
     --shadow-small: 0 8px 20px rgba(0, 0, 0, 0.10);
     --shadow-medium: 0 8px 20px rgba(0, 0, 0, 0.20);
@@ -238,24 +239,25 @@ body {
     font-weight: 700;
 }
 
-/* Animation Classes */
-.countdown-block.animate-in,
-.form-result.animate-in {
-    opacity: 1;
-    transform: translateY(0);
+/* Animations */
+
+.overview-card, .stat-card, .contact-card, .countdown-block, .form-result, .map-container, .record-category, .scorer-card, .player-card, .stat-category, .match-card, .timeline-item, .modal-match-score, .goalscorers-section, .date-time-section, .stadium-section{
+    opacity: 0;
+    transform: translateY(100px);
+    transition: opacity 0.6s ease-out, transform 0.6s ease-out, box-shadow 0.3s ease;
 }
 
-.card-animate-in {
+.animate-in {
     opacity: 1;
     transform: translateY(0);
 }
 
 /* CTA Button */
 .cta-button {
+    background: var(--nested-box);
+    color: var(--dark-gray);
     display: inline-block;
     padding: 1rem 2rem;
-    background: var(--dynamo-red);
-    color: white;
     text-decoration: none;
     border-radius: 50px;
     font-weight: 600;

@@ -1,85 +1,24 @@
+// matches.js
+import { initializeCountdown, animateOnScroll } from './general.js';
+
+// Define animation elements
+const animationElements = [
+    { selector: '.match-card', containerSelector: 'section' },
+    { selector: '.timeline-item', containerSelector: ['section', '.container'] },
+    { selector: '.countdown-block', containerSelector: null },
+    { selector: '.form-result', containerSelector: null }
+];
+
 // Matches page initialization and functionality
 document.addEventListener('DOMContentLoaded', () => {
     initializeCountdown();
-    animateOnScroll();
+    animateOnScroll(animationElements);
     setupMatchInteractions();
     scrollTimelineToEnd();
 });
 
-// Animation system
-function animateOnScroll() {
-    const elements = [
-        { selector: '.match-card', containerSelector: 'section' },
-        { selector: '.timeline-item', containerSelector: ['section', '.container'] },
-        { selector: '.countdown-block', containerSelector: null },
-        { selector: '.form-result', containerSelector: null }
-    ];
-
-    const observer = new IntersectionObserver((entries, observer) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                const elementType = elements.find(el => entry.target.matches(el.selector));
-                if (elementType) {
-                    const container = getContainer(entry.target, elementType.containerSelector);
-                    const itemsInContainer = container.querySelectorAll(elementType.selector);
-                    const itemIndex = Array.from(itemsInContainer).indexOf(entry.target);
-                    setTimeout(() => {
-                        entry.target.classList.add('animate-in');
-                    }, itemIndex * 100);
-                    observer.unobserve(entry.target);
-                }
-            }
-        });
-    }, { root: null, rootMargin: '0px', threshold: 0.1 });
-
-    elements.forEach(el => {
-        document.querySelectorAll(el.selector).forEach(item => observer.observe(item));
-    });
-
-    function getContainer(target, containerSelector) {
-        if (!containerSelector) return document;
-        if (Array.isArray(containerSelector)) {
-            for (const selector of containerSelector) {
-                const container = target.closest(selector);
-                if (container) return container;
-            }
-        }
-        return target.closest(containerSelector);
-    }
-}
-
-// Countdown timer
-function initializeCountdown() {
-    const targetDate = new Date("2025-06-30T15:00:00").getTime();
-    const countdownElement = document.getElementById("countdown");
-    if (!countdownElement) return;
-
-    const countdown = setInterval(() => {
-        const now = new Date().getTime();
-        const distance = targetDate - now;
-
-        if (distance < 0) {
-            clearInterval(countdown);
-            countdownElement.innerHTML = "<div style='text-align: center; font-size: 1.5rem; color: #B90A0A; font-weight: bold;'>Match Started!</div>";
-            return;
-        }
-
-        const days = Math.floor(distance / (1000 * 60 * 60 * 24));
-        const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-        const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-        const seconds = Math.floor((distance % (1000 * 60)) / 1000);
-
-        const elements = { days, hours, minutes, seconds };
-        Object.keys(elements).forEach(key => {
-            const el = document.getElementById(key);
-            if (el) el.textContent = elements[key];
-        });
-    }, 1000);
-}
-
 // Match interactions
 function setupMatchInteractions() {
-    // Result and upcoming match cards
     document.querySelectorAll('.match-card.modern').forEach(card => {
         card.style.cursor = 'pointer';
         card.addEventListener('click', () => {
@@ -95,7 +34,6 @@ function setupMatchInteractions() {
             }
         });
 
-        // Hover effects
         card.addEventListener('mouseenter', () => {
             card.style.transform = 'translateY(-5px)';
             card.style.boxShadow = '0 10px 25px rgba(0, 0, 0, 0.15)';
@@ -107,11 +45,9 @@ function setupMatchInteractions() {
         });
     });
 
-    // Timeline items
     document.querySelectorAll('.timeline-item').forEach((item, index) => {
         item.style.cursor = 'pointer';
         item.addEventListener('click', () => {
-            // Map timeline items to recent results from matches.html
             const timelineMatches = [
                 {
                     title: 'Dynamo Beirs vs Red Hawks FC',
@@ -161,11 +97,9 @@ function setupMatchInteractions() {
                     score: '3-2',
                     goalscorers: [{ player: 'Lukaku', goals: 2 }, { player: 'De Bruyne', goals: 1 }]
                 }
-                // Add more matches for remaining timeline items (match7 to match14) if needed
             ];
 
-            // Map timeline items to matches (reverse order to match timeline)
-            const matchIndex = timelineMatches.length - 1 - index; // Reverse to align with timeline
+            const matchIndex = timelineMatches.length - 1 - index;
             const matchData = matchIndex >= 0 && matchIndex < timelineMatches.length
                 ? timelineMatches[matchIndex]
                 : {

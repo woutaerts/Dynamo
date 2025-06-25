@@ -7,8 +7,8 @@ async function loadFooter() {
     try {
         const isRootPage = window.location.pathname === '/' ||
             window.location.pathname.endsWith('/index.html') ||
-            !window.location.pathname.includes('/pages/');
-        const footerPath = isRootPage ? 'pages/partials/footer.html' : 'partials/footer.html';
+            !window.location.pathname.includes('/html/');
+        const footerPath = isRootPage ? 'html/partials/footer.html' : 'partials/footer.html';
         const response = await fetch(footerPath);
 
         if (!response.ok) {
@@ -40,8 +40,8 @@ async function loadFooter() {
 }
 
 function loadFallbackFooter(isRootPage) {
-    const logoGreyPath = isRootPage ? 'img/logos/gray-outlined-logo.png' : '../img/logos/gray-outlined-logo.png';
-    const logoRedPath = isRootPage ? 'img/logos/red-outlined-logo.png' : '../img/logos/red-outlined-logo.png';
+    const logoGreyPath = isRootPage ? 'img/logos/gray-outlined-logo.png' : '../../img/logos/gray-outlined-logo.png';
+    const logoRedPath = isRootPage ? 'img/logos/red-outlined-logo.png' : '../../img/logos/red-outlined-logo.png';
     const homePath = isRootPage ? 'index.html' : '../index.html';
 
     const fallbackFooter = `
@@ -107,8 +107,8 @@ function configureFooter(isRootPage) {
         logoGrey.src = 'img/logos/gray-outlined-logo.png';
         logoRed.src = 'img/logos/red-outlined-logo.png';
     } else {
-        logoLink.href = '../index.html';
-        logoGrey.src = '../img/logos/gray-outlined-logo.png';
-        logoRed.src = '../img/logos/red-outlined-logo.png';
+        logoLink.href = '../../index.html';
+        logoGrey.src = '../../img/logos/gray-outlined-logo.png';
+        logoRed.src = '../../img/logos/red-outlined-logo.png';
     }
 }

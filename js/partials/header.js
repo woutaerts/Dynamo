@@ -6,8 +6,8 @@ async function loadHeader() {
     try {
         const isRootPage = window.location.pathname === '/' ||
             window.location.pathname.endsWith('/index.html') ||
-            !window.location.pathname.includes('/pages/');
-        const headerPath = isRootPage ? 'pages/partials/header.html' : 'partials/header.html';
+            !window.location.pathname.includes('/html/');
+        const headerPath = isRootPage ? 'html/partials/header.html' : 'partials/header.html';
         const response = await fetch(headerPath);
 
         if (!response.ok) {
@@ -112,11 +112,11 @@ function setupVanillaHoverEffect() {
 }
 
 function loadFallbackHeader(isRootPage) {
-    const logoPath = isRootPage ? 'img/logos/original-logo.png' : '../img/logos/original-logo.png';
+    const logoPath = isRootPage ? 'img/logos/original-logo.png' : '../../img/logos/original-logo.png';
     const homePath = isRootPage ? 'index.html' : '../index.html';
-    const statsPath = isRootPage ? 'pages/statistics.html' : 'statistics.html';
-    const playersPath = isRootPage ? 'pages/players.html' : 'players.html';
-    const matchesPath = isRootPage ? 'pages/matches.html' : 'matches.html';
+    const statsPath = isRootPage ? 'html/statistics.html' : 'statistics.html';
+    const playersPath = isRootPage ? 'html/players.html' : 'players.html';
+    const matchesPath = isRootPage ? 'html/matches.html' : 'matches.html';
 
     const fallbackHeader = `
         <header class="header">
@@ -175,18 +175,18 @@ function configureHeader(isRootPage) {
                     link.href = 'index.html';
                     break;
                 case 'statistics':
-                    link.href = 'pages/statistics.html';
+                    link.href = 'html/statistics.html';
                     break;
                 case 'players':
-                    link.href = 'pages/players.html';
+                    link.href = 'html/players.html';
                     break;
                 case 'matches':
-                    link.href = 'pages/matches.html';
+                    link.href = 'html/matches.html';
                     break;
             }
         });
     } else {
-        clubLogo.src = '../img/logos/original-logo.png';
+        clubLogo.src = '../../img/logos/original-logo.png';
         navLinks.forEach(link => {
             const page = link.getAttribute('data-page');
             switch(page) {

@@ -3,7 +3,7 @@ document.addEventListener('DOMContentLoaded', () => {
     initializePlayerCards();
     initializeFilters();
     addSearchFunctionality();
-    animateOnScroll();
+    animatePlayerCards();
     initializePositionAwareHover();
     setTimeout(checkInitialHash, 100);
 });
@@ -142,7 +142,7 @@ document.addEventListener('keydown', (e) => {
 });
 
 // Scroll animation observer
-function animateOnScroll() {
+function animatePlayerCards() {
     const observer = new IntersectionObserver((entries, observer) => {
         entries.forEach(entry => {
             if (entry.isIntersecting) {

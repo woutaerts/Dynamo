@@ -15,9 +15,6 @@
     padding: 2rem;
     border-radius: 15px;
     box-shadow: var(--shadow-medium);
-    transition: opacity 0.6s ease-out, transform 0.6s ease-out, box-shadow 0.3s ease;
-    opacity: 0;
-    transform: translateY(100px);
     border: 2px solid transparent;
 }
 
@@ -25,11 +22,6 @@
     box-shadow: var(--shadow-hover);
     transform: translateY(-5px) !important;
     transition: transform 0.3s ease !important;
-}
-
-.stat-card.card-animate-in {
-    opacity: 1;
-    transform: translateY(0);
 }
 
 .stat-number {
@@ -67,20 +59,12 @@
     padding: 1.5rem;
     border-radius: 15px;
     box-shadow: var(--shadow-medium);
-    transition: opacity 0.6s ease-out, transform 0.6s ease-out, box-shadow 0.3s ease;
-    opacity: 0;
-    transform: translateY(100px);
 }
 
 .stat-category:hover {
     box-shadow: var(--shadow-hover);
     transform: translateY(-5px) !important;
     transition: transform 0.3s ease !important;
-}
-
-.stat-category.card-animate-in {
-    opacity: 1;
-    transform: translateY(0);
 }
 
 .stat-category h3 {
@@ -94,6 +78,7 @@
 }
 
 .stat-item {
+    background: var(--nested-box);
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -102,7 +87,6 @@
     margin-bottom: 0.8rem;
     font-family: 'Poppins', sans-serif;
     transition: opacity 0.6s ease-out, transform 0.6s ease-out, box-shadow 0.3s ease;
-    border-left: 3px solid transparent;
 }
 
 .stat-item .stat-name {

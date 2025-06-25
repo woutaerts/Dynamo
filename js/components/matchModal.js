@@ -1,3 +1,5 @@
+/* matchmodal.js */
+
 /* Match Modal Component */
 class MatchModal {
     constructor() {
@@ -10,7 +12,7 @@ class MatchModal {
         if (this.isInitialized) return;
 
         try {
-            const response = await fetch('../../pages/components/matchModal.html');
+            const response = await fetch('../../html/components/matchModal.html');
             const modalHTML = await response.text();
 
             const placeholder = document.getElementById('match-modal-placeholder');
@@ -67,11 +69,28 @@ class MatchModal {
         const modalContent = this.modal.querySelector('.modal-content');
         if (modalContent) {
             modalContent.scrollTop = 0;
+            const sections = modalContent.querySelectorAll('.modal-match-score, .goalscorers-section, .date-time-section, .stadium-section');
+            sections.forEach(section => section.classList.remove('animate-in'));
+            sections.forEach((section, index) => {
+                if (section.matches('.modal-match-score') && !score) {
+                    section.style.visibility = 'hidden'; // Hide but keep layout
+                } else {
+                    section.style.visibility = 'visible';
+                    setTimeout(() => section.classList.add('animate-in'), index * 100);
+                }
+            });
+        } else {
+            console.warn('Modal content not found');
         }
     }
 
     close() {
         if (!this.modal) return;
+        const modalContent = this.modal.querySelector('.modal-content');
+        if (modalContent) {
+            const sections = modalContent.querySelectorAll('.modal-match-score, .goalscorers-section, .date-time-section, .stadium-section');
+            sections.forEach(section => section.classList.remove('animate-in'));
+        }
         document.body.classList.remove('modal-open');
         this.modal.style.display = 'none';
     }
@@ -84,12 +103,13 @@ class MatchModal {
         const scoreEl = this.modal.querySelector('#modalMatchScore');
         const scoreDisplayEl = this.modal.querySelector('.score-display');
         if (scoreEl && scoreDisplayEl) {
+            scoreEl.style.display = 'flex'; // Keep flex for layout
+            scoreEl.style.visibility = score ? 'visible' : 'hidden'; // Control visibility
             if (score) {
                 scoreDisplayEl.textContent = score;
-                scoreEl.style.display = 'flex';
-            } else {
-                scoreEl.style.display = 'none';
             }
+        } else {
+            console.warn('Score elements not found:', { scoreEl, scoreDisplayEl });
         }
 
         const dateEl = this.modal.querySelector('#matchDate');
@@ -152,10 +172,9 @@ class MatchModal {
             });
         }
 
-        Object.entries(scorerCounts).forEach(([player, goals], index) => {
+        Object.entries(scorerCounts).forEach(([player, goals]) => {
             const li = document.createElement('li');
             li.className = 'goalscorer-item';
-            li.style.animationDelay = `${(index + 1) * 0.1}s`;
 
             let footballIcons = '';
             for (let i = 0; i < goals; i++) {
@@ -165,6 +184,53 @@ class MatchModal {
             li.innerHTML = `${footballIcons}${player}`;
             goalscorersList.appendChild(li);
         });
+    }
+}
+
+/* Animation Function */
+function animateOnScroll() {
+    const elements = [
+        { selector: '.modal-match-score', containerSelector: null },
+        { selector: '.goalscorers-section', containerSelector: null },
+        { selector: '.date-time-section', containerSelector: null },
+        { selector: '.stadium-section', containerSelector: null }
+    ];
+
+    const observer = new IntersectionObserver((entries, observer) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                const elementType = elements.find(el => entry.target.matches(el.selector));
+                if (elementType) {
+                    const container = getContainer(entry.target, elementType.containerSelector);
+                    const itemsInContainer = container.querySelectorAll(elementType.selector);
+                    const itemIndex = Array.from(itemsInContainer).indexOf(entry.target);
+                    setTimeout(() => {
+                        entry.target.classList.add('animate-in');
+                        console.log(`Animating ${elementType.selector}, index: ${itemIndex}`);
+                    }, itemIndex * 100);
+                    observer.unobserve(entry.target);
+                }
+            }
+        });
+    }, { root: null, rootMargin: '50px', threshold: 0.01 });
+
+    elements.forEach(el => {
+        const items = document.querySelectorAll(el.selector);
+        if (items.length === 0) {
+            console.warn(`No elements found for selector: ${el.selector}`);
+        }
+        items.forEach(item => observer.observe(item));
+    });
+
+    function getContainer(target, containerSelector) {
+        if (!containerSelector) return document;
+        if (Array.isArray(containerSelector)) {
+            for (const selector of containerSelector) {
+                const container = target.closest(selector);
+                if (container) return container;
+            }
+        }
+        return target.closest(containerSelector);
     }
 }
 

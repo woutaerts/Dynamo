@@ -18,7 +18,6 @@ body.modal-open {
     justify-content: center;
     align-items: center;
     z-index: 9999;
-    animation: fadeIn 0.4s ease-out;
     backdrop-filter: blur(3px);
 }
 
@@ -39,7 +38,6 @@ body.modal-open {
     position: relative;
     color: var(--dark-gray);
     font-family: 'Poppins', sans-serif;
-    animation: slideUp 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     border: 1px solid rgba(0, 0, 0, 0.05);
 }
 
@@ -131,7 +129,6 @@ body.modal-open {
     justify-content: center;
     align-items: center;
     margin: 0 0 1.5rem 0;
-    animation: scoreSlideIn 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
 .score-display {
@@ -144,9 +141,9 @@ body.modal-open {
     font-family: 'Poppins', sans-serif;
     border: 2px solid transparent;
     box-shadow: var(--shadow-medium);
-    transition: all 0.3s ease;
     text-align: center;
     min-width: 110px;
+    transition: none;
 }
 
 /* Modal Sections */
@@ -203,7 +200,10 @@ body.modal-open {
     margin: 0 0.5rem;
 }
 
-.match-details-container .modal-section p {
+.match-details-container .modal-section p,
+.date-box p,
+.time-box p,
+.goalscorer-item{
     text-align: center;
     font-size: 1rem;
     color: var(--dark-gray);
@@ -212,10 +212,14 @@ body.modal-open {
     line-height: 1.4;
     margin: 0;
     padding: 0.8rem;
-    background: var(--off-white);
+    background: var(--nested-box);
     border-radius: 10px;
     border: 1px solid transparent;
     box-shadow: var(--shadow-medium);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
 }
 
 /* Date and Time Section */
@@ -236,21 +240,6 @@ body.modal-open {
     text-align: center;
 }
 
-.date-box p,
-.time-box p {
-    font-size: 1rem;
-    color: var(--dark-gray);
-    font-weight: 600;
-    font-family: 'Poppins', sans-serif;
-    line-height: 1.4;
-    margin: 0;
-    padding: 0.8rem;
-    background: var(--off-white);
-    border-radius: 10px;
-    border: 1px solid transparent;
-    box-shadow: var(--shadow-medium);
-}
-
 /* Goalscorers */
 .goalscorers-list {
     list-style: none;
@@ -260,49 +249,18 @@ body.modal-open {
     gap: 0.6rem;
 }
 
-.goalscorer-item {
-    padding: 0.8rem 1.2rem;
-    font-size: 0.95rem;
-    color: var(--dark-gray);
-    font-weight: 500;
-    font-family: 'Poppins', sans-serif;
-    background: var(--off-white);
-    border-radius: 10px;
-    border: 1px solid transparent;
-    transition: all 0.3s ease;
-    text-align: center;
-    box-shadow: var(--shadow-medium);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-    animation: slideInFromLeft 0.5s ease-out;
-    animation-fill-mode: both;
-}
-
-.goalscorer-item:hover {
-    transform: translateY(-2px);
-    box-shadow: var(--shadow-hover);
-}
-
-.goalscorer-item:nth-child(1) { animation-delay: 0.1s; }
-.goalscorer-item:nth-child(2) { animation-delay: 0.2s; }
-.goalscorer-item:nth-child(3) { animation-delay: 0.3s; }
-.goalscorer-item:nth-child(4) { animation-delay: 0.4s; }
-.goalscorer-item:nth-child(5) { animation-delay: 0.5s; }
-
 /* Icons */
 #stadiumName .fas.fa-map-marker-alt,
 #matchDate .fas.fa-calendar,
-#matchTime .fas.fa-clock {
+#matchTime .fas.fa-clock,
+.goalscorer-item .fas.fa-futbol{
     color: var(--medium-gray);
     margin-right: 8px;
     font-size: 1rem;
 }
 
 .goalscorer-item .fas.fa-futbol {
-    color: var(--medium-gray);
-    font-size: 0.9rem;
+    color: black;
 }
 
 /* Scrollbar */
@@ -310,27 +268,6 @@ body.modal-open {
 .timeline-wrapper::-webkit-scrollbar-track { background: var(--silver-mist); border-radius: 10px; }
 .timeline-wrapper::-webkit-scrollbar-thumb { background: var(--light-gray); border-radius: 10px; }
 .timeline-wrapper::-webkit-scrollbar-thumb:hover { background: var(--medium-gray); }
-
-/* Animations */
-@keyframes fadeIn {
-    from { opacity: 0; backdrop-filter: blur(0px); }
-    to { opacity: 1; backdrop-filter: blur(3px); }
-}
-
-@keyframes slideUp {
-    from { transform: translateY(60px) scale(0.95); opacity: 0; }
-    to { transform: translateY(0) scale(1); opacity: 1; }
-}
-
-@keyframes scoreSlideIn {
-    from { opacity: 0; transform: translateY(-30px) scale(0.8); }
-    to { opacity: 1; transform: translateY(0) scale(1); }
-}
-
-@keyframes slideInFromLeft {
-    from { opacity: 0; transform: translateX(-20px); }
-    to { opacity: 1; transform: translateX(0); }
-}
 
 /* Responsive Design */
 @media (max-width: 768px) {

@@ -141,7 +141,7 @@ body {
 .nav-link {
     background: white;
     border: none;
-    color: var(--medium-gray);
+    color: var(--dark-gray);
     padding: 0.75rem 1.5rem;
     border-radius: 25px;
     font-family: 'Poppins', sans-serif;
