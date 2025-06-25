@@ -87,6 +87,15 @@ function initToggle() {
             }
         });
 
+        // Force reanimation for page-hero h1
+        const pageHeroH1 = document.querySelector('.page-hero h1');
+        if (pageHeroH1) {
+            pageHeroH1.classList.remove('animate-in');
+            setTimeout(() => {
+                pageHeroH1.classList.add('animate-in');
+            }, 100);
+        }
+
         // Re-observe elements for animation
         animateOnScroll(animationElements);
     };
