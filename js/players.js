@@ -1,9 +1,19 @@
+// players.js
+import { animateOnScroll } from './general.js';
+
+// Define animation elements
+const animationElements = [
+    { selector: '.player-card', containerSelector: '.players-grid' },
+    { selector: '.section-title', containerSelector: 'section' },
+    { selector: '.section-subtitle', containerSelector: 'section' }
+];
+
 // Player page initialization and functionality
 document.addEventListener('DOMContentLoaded', () => {
     initializePlayerCards();
     initializeFilters();
     addSearchFunctionality();
-    animatePlayerCards();
+    animateOnScroll(animationElements); // Use animateOnScroll instead of animatePlayerCards
     initializePositionAwareHover();
     setTimeout(checkInitialHash, 100);
 });
@@ -140,22 +150,3 @@ document.addEventListener('keydown', (e) => {
         filterButtons[newIndex].click();
     }
 });
-
-// Scroll animation observer
-function animatePlayerCards() {
-    const observer = new IntersectionObserver((entries, observer) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                const container = entry.target.closest('.players-grid');
-                const itemsInContainer = container.querySelectorAll('.player-card');
-                const itemIndex = Array.from(itemsInContainer).indexOf(entry.target);
-
-                entry.target.style.setProperty('--animation-delay', itemIndex);
-                entry.target.classList.add('animate-in');
-                observer.unobserve(entry.target);
-            }
-        });
-    }, { root: null, rootMargin: '0px', threshold: 0.1 });
-
-    document.querySelectorAll('.player-card').forEach(item => observer.observe(item));
-}

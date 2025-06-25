@@ -1,6 +1,17 @@
 // statistics.js
 import { animateOnScroll } from './general.js';
 
+// Define animation elements
+const animationElements = [
+    { selector: '.stat-card', containerSelector: 'section' },
+    { selector: '.record-category', containerSelector: 'section' },
+    { selector: '.scorer-card', containerSelector: 'section' },
+    { selector: '.player-card', containerSelector: 'section' },
+    { selector: '.stat-category', containerSelector: 'section' },
+    { selector: '.section-title', containerSelector: 'section' },
+    { selector: '.section-subtitle', containerSelector: 'section' }
+];
+
 // DOM initialization
 document.addEventListener('DOMContentLoaded', () => {
     initToggle();
@@ -45,7 +56,14 @@ function initToggle() {
         // Remove theme classes
         document.body.classList.remove('team-alltime', 'player-season', 'player-alltime');
 
-        // Show appropriate sections and trigger animations
+        // Reset animations for all relevant elements
+        animationElements.forEach(({ selector }) => {
+            document.querySelectorAll(selector).forEach(element => {
+                element.classList.remove('animate-in');
+            });
+        });
+
+        // Show appropriate sections
         let sectionsToShow;
         if (!isPlayer && !isAlltime) {
             sectionsToShow = [sections.teamSeason, sections.teamSeasonDetailed];
@@ -61,18 +79,15 @@ function initToggle() {
             document.body.classList.add('player-alltime');
         }
 
-        // Show sections and animate
+        // Show sections
         sectionsToShow.forEach(section => {
             if (section) {
                 section.classList.remove('hidden');
-                // Reset and re-observe elements in the section
-                const elements = section.querySelectorAll('.stat-card, .stat-category, .player-card, .scorer-card, .record-category');
-                elements.forEach(element => {
-                    element.classList.remove('animate-in'); // Reset animation
-                    animateOnScroll(animationElements); // Re-observe elements
-                });
             }
         });
+
+        // Re-observe elements for animation
+        animateOnScroll(animationElements);
     };
 
     // Initial view setup
@@ -80,12 +95,3 @@ function initToggle() {
     toggles.teamPlayer?.addEventListener('change', updateView);
     toggles.seasonAlltime?.addEventListener('change', updateView);
 }
-
-// Define animation elements
-const animationElements = [
-    { selector: '.stat-card', containerSelector: 'section' },
-    { selector: '.record-category', containerSelector: 'section' },
-    { selector: '.scorer-card', containerSelector: 'section' },
-    { selector: '.player-card', containerSelector: 'section' },
-    { selector: '.stat-category', containerSelector: 'section' }
-];
