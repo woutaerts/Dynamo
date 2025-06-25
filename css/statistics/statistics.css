@@ -182,6 +182,7 @@ body.player-alltime {
 }
 
 /* Section Title Underline Override */
+.page-hero h1::after,
 .section-title::after,
 .section-subtitle::after {
     background: var(--underline-color) !important;

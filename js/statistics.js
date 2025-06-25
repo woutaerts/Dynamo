@@ -9,7 +9,8 @@ const animationElements = [
     { selector: '.player-card', containerSelector: 'section' },
     { selector: '.stat-category', containerSelector: 'section' },
     { selector: '.section-title', containerSelector: 'section' },
-    { selector: '.section-subtitle', containerSelector: 'section' }
+    { selector: '.section-subtitle', containerSelector: 'section' },
+    { selector: '.page-hero h1', containerSelector: 'section' }
 ];
 
 // DOM initialization

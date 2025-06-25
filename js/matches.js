@@ -4,11 +4,13 @@ import { initializeCountdown, animateOnScroll } from './general.js';
 // Define animation elements
 const animationElements = [
     { selector: '.match-card', containerSelector: 'section' },
+    { selector: '.timeline', containerSelector: 'section' },
     { selector: '.timeline-item', containerSelector: ['section', '.container'] },
     { selector: '.countdown-block', containerSelector: null },
     { selector: '.form-result', containerSelector: null },
     { selector: '.section-title', containerSelector: 'section' },
-    { selector: '.section-subtitle', containerSelector: 'section' }
+    { selector: '.section-subtitle', containerSelector: 'section' },
+    { selector: '.page-hero h1', containerSelector: 'section' }
 ];
 
 // Matches page initialization and functionality

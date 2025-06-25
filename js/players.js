@@ -5,7 +5,8 @@ import { animateOnScroll } from './general.js';
 const animationElements = [
     { selector: '.player-card', containerSelector: '.players-grid' },
     { selector: '.section-title', containerSelector: 'section' },
-    { selector: '.section-subtitle', containerSelector: 'section' }
+    { selector: '.section-subtitle', containerSelector: 'section' },
+    { selector: '.page-hero h1', containerSelector: 'section' }
 ];
 
 // Player page initialization and functionality
