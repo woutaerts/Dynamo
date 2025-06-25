@@ -42,7 +42,6 @@ async function loadHeader() {
 }
 
 function setupPositionAwareHoverEffect() {
-    // Check if jQuery is available, if not, use vanilla JavaScript
     if (typeof jQuery !== 'undefined') {
         setupJQueryHoverEffect();
     } else {
@@ -53,7 +52,6 @@ function setupPositionAwareHoverEffect() {
 function setupJQueryHoverEffect() {
     $(function() {
         $('.nav-link').each(function() {
-            // Ensure all nav-links have a span element
             if ($(this).find('span').length === 0) {
                 $(this).append('<span></span>');
             }
@@ -81,7 +79,6 @@ function setupVanillaHoverEffect() {
     const navLinks = document.querySelectorAll('.nav-link');
 
     navLinks.forEach(function(link) {
-        // Ensure all nav-links have a span element
         if (!link.querySelector('span')) {
             const span = document.createElement('span');
             link.appendChild(span);
@@ -112,7 +109,6 @@ function setupVanillaHoverEffect() {
 }
 
 function loadFallbackHeader(isRootPage) {
-    const logoPath = isRootPage ? 'img/logos/original-logo.png' : '../../img/logos/original-logo.png';
     const homePath = isRootPage ? 'index.html' : '../index.html';
     const statsPath = isRootPage ? 'html/statistics.html' : 'statistics.html';
     const playersPath = isRootPage ? 'html/players.html' : 'players.html';
@@ -124,10 +120,6 @@ function loadFallbackHeader(isRootPage) {
                 <div class="scroll-progress-bar"></div>
             </div>
             <nav class="nav-container">
-                <div class="logo-section">
-                    <img src="${logoPath}" alt="Logo Dynamo Beirs" class="club-logo">
-                    <span class="club-name">Dynamo Beirs</span>
-                </div>
                 <ul class="nav-links">
                     <li><a href="${homePath}" class="nav-link" data-page="home">Home<span></span></a></li>
                     <li><a href="${statsPath}" class="nav-link" data-page="statistics">Statistics<span></span></a></li>
@@ -158,18 +150,11 @@ function loadFallbackHeader(isRootPage) {
 }
 
 function configureHeader(isRootPage) {
-    const clubLogo = document.getElementById('club-logo');
     const navLinks = document.querySelectorAll('.nav-link');
 
-    if (!clubLogo) {
-        console.warn('Club logo element not found');
-        return;
-    }
-
-    if (isRootPage) {
-        clubLogo.src = 'img/logos/original-logo.png';
-        navLinks.forEach(link => {
-            const page = link.getAttribute('data-page');
+    navLinks.forEach(link => {
+        const page = link.getAttribute('data-page');
+        if (isRootPage) {
             switch(page) {
                 case 'home':
                     link.href = 'index.html';
@@ -184,11 +169,7 @@ function configureHeader(isRootPage) {
                     link.href = 'html/matches.html';
                     break;
             }
-        });
-    } else {
-        clubLogo.src = '../../img/logos/original-logo.png';
-        navLinks.forEach(link => {
-            const page = link.getAttribute('data-page');
+        } else {
             switch(page) {
                 case 'home':
                     link.href = '../index.html';
@@ -203,8 +184,8 @@ function configureHeader(isRootPage) {
                     link.href = 'matches.html';
                     break;
             }
-        });
-    }
+        }
+    });
 
     highlightCurrentPage();
     initializeMobileMenu();
@@ -216,7 +197,6 @@ function highlightCurrentPage() {
 
     navLinks.forEach(link => {
         link.classList.remove('active');
-
         if ((currentPath === '/' || currentPath.endsWith('/index.html')) && link.getAttribute('data-page') === 'home') {
             link.classList.add('active');
         } else if (currentPath.includes(link.getAttribute('data-page'))) {
