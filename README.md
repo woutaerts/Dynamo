@@ -1,32 +1,84 @@
 # Dynamo Beirs – Official Club Website
 
-Welcome to the official website of **Dynamo Beirs**, a fictional football club showcasing modern design, team stats, match history, and player information in a responsive, modular structure.
+Welcome to the official website of **Dynamo Beirs**, a football club showcasing modern design, team stats, match history, and player information in a responsive, modular structure.
 
 ## 🌐 Project Structure
 
 ```
-project-root/
-├── index.html
-├── pages/
-│   ├── players.html
-│   ├── matches.html
-│   ├── statistics.html
-├── public/
-│   ├── css/
-│   │   ├── home.css
-│   │   ├── players.css
-│   │   ├── matches.css
-│   │   ├── statistics.css
-│   │   ├── header.css
-│   │   └── footer.css
-│   ├── js/
-│   │   ├── index.js
-│   │   ├── players.js
-│   │   ├── matches.js
-│   │   ├── statistics.js
-│   │   └── header.js
-│   └── img/
-│       └── logos/
+C:.
+│   Dynamo.iml
+│   index.html
+│   README.md
+│   
+├───.idea
+│       .gitignore
+│       jsLibraryMappings.xml
+│       misc.xml
+│       modules.xml
+│       vcs.xml
+│       workspace.xml
+│       
+├───css
+│   │   general.css
+│   │   index.css
+│   │   matches.css
+│   │   players.css
+│   │
+│   ├───components
+│   │       matchModal.css
+│   │
+│   ├───partials
+│   │       footer.css
+│   │       header.css
+│   │
+│   └───statistics
+│           player-all-time.css
+│           player-season.css
+│           statistics.css
+│           team-all-time.css
+│           team-season.css
+│
+├───html
+│   │   matches.html
+│   │   players.html
+│   │   statistics.html
+│   │
+│   ├───components
+│   │       matchModal.html
+│   │
+│   └───partials
+│           footer.html
+│           header.html
+│
+├───img
+│   ├───icons
+│   │   │   red-football-icon.png
+│   │   │   white-football-icon.png
+│   │   │
+│   │   └───flags
+│   │           belgium.svg
+│   │           netherlands.svg
+│   │
+│   └───logos
+│           gray-outlined-logo.png
+│           original-logo.png
+│           red-outlined-logo.png
+│           white-outlined-black-filled-logo.png
+│           white-outlined-logo.png
+│
+└───js
+    │   general.js
+    │   index.js
+    │   matches.js
+    │   players.js
+    │   statistics.js
+    │
+    ├───components
+    │       matchModal.js
+    │
+    └───partials
+            footer.js
+            header.js
 ```
 
 ## 📄 Pages
