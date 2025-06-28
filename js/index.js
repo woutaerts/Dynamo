@@ -11,7 +11,9 @@ const animationElements = [
     { selector: '.form-result', containerSelector: null },
     { selector: '.map-container', containerSelector: null },
     { selector: '.section-title', containerSelector: 'section' },
-    { selector: '.section-subtitle', containerSelector: 'section' }
+    { selector: '.section-subtitle', containerSelector: 'section' },
+    { selector: '.upcoming-match-name', containerSelector: null }, // Added
+    { selector: '.form-description', containerSelector: null } // Added
 ];
 
 // Scroll-triggered animation system for index page
@@ -28,13 +30,18 @@ function isElementInViewport(el, threshold = 0.1) {
 
 function animateIndexElements() {
     // Elements that should animate when scrolling starts
-    const scrollElements = document.querySelectorAll('.overview-card, .stat-card, .contact-card, .countdown-block, .form-result, .map-container, .section-title, .section-subtitle');
+    const scrollElements = document.querySelectorAll(
+        '.overview-card, .stat-card, .contact-card, .countdown-block, .form-result, .map-container, .section-title, .section-subtitle, .upcoming-match-name, .form-description'
+    );
 
     scrollElements.forEach((element, index) => {
         if (isElementInViewport(element) && !element.classList.contains('animate-in')) {
-            // Add staggered delay for elements in the same section
             const section = element.closest('section');
-            const sectionElements = section ? section.querySelectorAll('.overview-card, .stat-card, .contact-card, .countdown-block, .form-result, .map-container, .section-title, .section-subtitle') : [element];
+            const sectionElements = section
+                ? section.querySelectorAll(
+                    '.overview-card, .stat-card, .contact-card, .countdown-block, .form-result, .map-container, .section-title, .section-subtitle, .upcoming-match-name, .form-description'
+                )
+                : [element];
             const elementIndex = Array.from(sectionElements).indexOf(element);
 
             setTimeout(() => {
@@ -45,7 +52,6 @@ function animateIndexElements() {
 }
 
 function handleIndexScroll() {
-    // Check if user has started scrolling
     if (window.scrollY > 50) {
         hasStartedScrolling = true;
     }
@@ -56,13 +62,13 @@ function handleIndexScroll() {
 }
 
 function setupIndexAnimations() {
-    // Animate hero immediately on page load
-    const hero = document.querySelector('.hero');
-    if (hero) {
+    // Animate only hero on page load
+    const immediateElements = document.querySelectorAll('.hero');
+    immediateElements.forEach((element) => {
         setTimeout(() => {
-            hero.classList.add('animate-in');
+            element.classList.add('animate-in');
         }, 300);
-    }
+    });
 
     // Throttled scroll handler
     let isThrottled = false;
@@ -76,7 +82,7 @@ function setupIndexAnimations() {
         }
     });
 
-    // Also check on page load in case elements are already in viewport
+    // Check on page load for elements already in viewport
     setTimeout(() => {
         if (hasStartedScrolling) {
             animateIndexElements();
@@ -89,7 +95,5 @@ document.addEventListener('DOMContentLoaded', () => {
     initializeCountdown();
     setupSmoothScrolling();
     setupPageLoadAnimation();
-
-    // Use index-specific animations instead of general ones
     setupIndexAnimations();
 });

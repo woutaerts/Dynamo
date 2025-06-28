@@ -10,7 +10,9 @@ const animationElements = [
     { selector: '.form-result', containerSelector: null },
     { selector: '.section-title', containerSelector: 'section' },
     { selector: '.section-subtitle', containerSelector: 'section' },
-    { selector: '.page-hero h1', containerSelector: 'section' }
+    { selector: '.page-hero h1', containerSelector: 'section' },
+    { selector: '.upcoming-match-name', containerSelector: null }, // Added
+    { selector: '.form-description', containerSelector: null } // Added
 ];
 
 // Matches page initialization and functionality
@@ -23,12 +25,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
 // Match interactions
 function setupMatchInteractions() {
-    document.querySelectorAll('.match-card.modern').forEach(card => {
+    // Handle upcoming match cards
+    document.querySelectorAll('.match-card.modern:not(.result)').forEach(card => {
         card.style.cursor = 'pointer';
         card.addEventListener('click', () => {
             const matchData = {
                 title: card.getAttribute('data-match-title') || 'Match Details',
                 stadium: card.getAttribute('data-venue') || 'Home Stadium',
+                isUpcoming: true,
                 ...getMatchData(card)
             };
             if (window.matchModal) {
@@ -37,18 +41,43 @@ function setupMatchInteractions() {
                 console.error('MatchModal not initialized');
             }
         });
-
         card.addEventListener('mouseenter', () => {
             card.style.transform = 'translateY(-5px)';
             card.style.boxShadow = '0 10px 25px rgba(0, 0, 0, 0.15)';
         });
-
         card.addEventListener('mouseleave', () => {
             card.style.transform = 'translateY(0)';
             card.style.boxShadow = '';
         });
     });
 
+    // Handle past match cards (results)
+    document.querySelectorAll('.match-card.modern.result').forEach(card => {
+        card.style.cursor = 'pointer';
+        card.addEventListener('click', () => {
+            const matchData = {
+                title: card.getAttribute('data-match-title') || 'Match Details',
+                stadium: card.getAttribute('data-venue') || 'Home Stadium',
+                isUpcoming: false,
+                ...getMatchData(card)
+            };
+            if (window.matchModal) {
+                window.matchModal.show(matchData);
+            } else {
+                console.error('MatchModal not initialized');
+            }
+        });
+        card.addEventListener('mouseenter', () => {
+            card.style.transform = 'translateY(-5px)';
+            card.style.boxShadow = '0 10px 25px rgba(0, 0, 0, 0.15)';
+        });
+        card.addEventListener('mouseleave', () => {
+            card.style.transform = 'translateY(0)';
+            card.style.boxShadow = '';
+        });
+    });
+
+    // Timeline item interactions
     document.querySelectorAll('.timeline-item').forEach((item, index) => {
         item.style.cursor = 'pointer';
         item.addEventListener('click', () => {
@@ -102,7 +131,6 @@ function setupMatchInteractions() {
                     goalscorers: [{ player: 'Lukaku', goals: 2 }, { player: 'De Bruyne', goals: 1 }]
                 }
             ];
-
             const matchIndex = timelineMatches.length - 1 - index;
             const matchData = matchIndex >= 0 && matchIndex < timelineMatches.length
                 ? timelineMatches[matchIndex]
@@ -114,7 +142,6 @@ function setupMatchInteractions() {
                     score: null,
                     goalscorers: []
                 };
-
             if (window.matchModal) {
                 window.matchModal.show(matchData);
             } else {
@@ -130,7 +157,6 @@ function getMatchData(card) {
     const matchTime = card.getAttribute('data-match-time') || 'TBD';
     const season = card.getAttribute('data-match-season') || '2024-25';
     const score = card.getAttribute('data-score') || null;
-
     let goalscorers = [];
     const goalscorersData = card.getAttribute('data-goalscorers');
     if (goalscorersData) {
@@ -140,7 +166,6 @@ function getMatchData(card) {
             console.warn('Failed to parse goalscorers data:', error);
         }
     }
-
     return {
         dateTime: { date: matchDate, time: matchTime },
         season,

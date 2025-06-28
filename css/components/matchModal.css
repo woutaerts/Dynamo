@@ -148,7 +148,8 @@ body.modal-open {
 
 /* Modal Sections */
 .modal-section,
-.goalscorers-section {
+.goalscorers-section,
+.add-to-calendar-section {
     margin-bottom: 1.5rem;
     padding: 1.2rem;
     background: white;
@@ -159,13 +160,15 @@ body.modal-open {
 }
 
 .modal-section:hover,
-.goalscorers-section:hover {
+.goalscorers-section:hover,
+.add-to-calendar-section:hover {
     transform: translateY(-2px);
     box-shadow: var(--shadow-hover);
 }
 
 .modal-section h3,
-.goalscorers-section h3 {
+.goalscorers-section h3,
+.add-to-calendar-section h3 {
     margin-bottom: 0.8rem;
     color: var(--dark-gray);
     font-size: 1.2rem;
@@ -176,7 +179,8 @@ body.modal-open {
 }
 
 .modal-section h3::after,
-.goalscorers-section h3::after {
+.goalscorers-section h3::after,
+.add-to-calendar-section h3::after {
     content: '';
     position: absolute;
     bottom: -4px;
@@ -261,6 +265,40 @@ body.modal-open {
 
 .goalscorer-item .fas.fa-futbol {
     color: black;
+}
+
+/* Add to calendar button */
+#addToCalendarBtn.cta-button {
+    margin: 0.5rem auto 1rem;
+    display: block;
+    text-align: center;
+    font-family: 'Poppins', sans-serif;
+    border: none;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+}
+
+#addToCalendarBtn.cta-button.animate-in {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Ensure consistent font and icon styling */
+#addToCalendarBtn.cta-button i {
+    margin-right: 8px;
+    font-size: 1rem;
+    color: var(--dark-gray);
+}
+
+#addToCalendarBtn.cta-button:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-hover);
+}
+
+#addToCalendarBtn.cta-button:hover,
+#addToCalendarBtn.cta-button:hover i {
+    color: var(--dynamo-red);
 }
 
 /* Scrollbar */

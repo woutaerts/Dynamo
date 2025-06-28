@@ -5,7 +5,9 @@ import { animateOnScroll } from './general.js';
 const animationElements = [
     { selector: '.section-title', containerSelector: 'section' },
     { selector: '.section-subtitle', containerSelector: 'section' },
-    { selector: '.page-hero h1', containerSelector: 'section' }
+    { selector: '.page-hero h1', containerSelector: 'section' },
+    { selector: '.filter-section', containerSelector: null },
+    { selector: '.search-container', containerSelector: null }
 ];
 
 // Player page initialization and functionality
@@ -13,8 +15,8 @@ document.addEventListener('DOMContentLoaded', () => {
     initializePlayerCards();
     initializeFilters();
     addSearchFunctionality();
-    animatePlayerCards(); // Use animatePlayerCards for player cards
-    animateOnScroll(animationElements); // Use animateOnScroll for section titles and page hero
+    animatePlayerCards();
+    animateOnScroll(animationElements);
     initializePositionAwareHover();
     setTimeout(checkInitialHash, 100);
 });
@@ -40,7 +42,6 @@ function initializeFilters() {
             filterButtons.forEach(btn => btn.classList.remove('active'));
             button.classList.add('active');
 
-            // ✅ ADD THIS LINE
             document.body.className = `filter-${targetPosition}`;
 
             filterPlayers(targetPosition, playerCards);
