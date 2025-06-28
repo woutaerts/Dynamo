@@ -100,6 +100,35 @@ function initToggle() {
         animateOnScroll(animationElements);
     };
 
+    // Add click event listeners to labels
+    labels.team?.addEventListener('click', () => {
+        if (toggles.teamPlayer.checked) {
+            toggles.teamPlayer.checked = false;
+            toggles.teamPlayer.dispatchEvent(new Event('change'));
+        }
+    });
+
+    labels.player?.addEventListener('click', () => {
+        if (!toggles.teamPlayer.checked) {
+            toggles.teamPlayer.checked = true;
+            toggles.teamPlayer.dispatchEvent(new Event('change'));
+        }
+    });
+
+    labels.season?.addEventListener('click', () => {
+        if (toggles.seasonAlltime.checked) {
+            toggles.seasonAlltime.checked = false;
+            toggles.seasonAlltime.dispatchEvent(new Event('change'));
+        }
+    });
+
+    labels.alltime?.addEventListener('click', () => {
+        if (!toggles.seasonAlltime.checked) {
+            toggles.seasonAlltime.checked = true;
+            toggles.seasonAlltime.dispatchEvent(new Event('change'));
+        }
+    });
+
     // Initial view setup
     updateView();
     toggles.teamPlayer?.addEventListener('change', updateView);

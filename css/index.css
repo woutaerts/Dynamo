@@ -88,10 +88,23 @@
     padding: 2rem;
     border-radius: 20px;
     box-shadow: var(--shadow-medium);
+    /* Index-specific: Start hidden */
+    opacity: 0;
+    transform: translateY(100px);
+    transition: opacity 0.6s ease-out, transform 0.6s ease-out, box-shadow 0.3s ease;
 }
 
 .overview-card:hover {
     box-shadow: var(--shadow-hover);
+    transform: translateY(-5px);
+}
+
+.overview-card.animate-in {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.overview-card.animate-in:hover {
     transform: translateY(-5px);
 }
 
@@ -142,10 +155,23 @@
     padding: 2rem;
     border-radius: 15px;
     box-shadow: var(--shadow-medium);
+    /* Index-specific: Start hidden */
+    opacity: 0;
+    transform: translateY(100px);
+    transition: opacity 0.6s ease-out, transform 0.6s ease-out, box-shadow 0.3s ease;
 }
 
 .stat-card:hover {
     box-shadow: var(--shadow-hover);
+    transform: translateY(-5px);
+}
+
+.stat-card.animate-in {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.stat-card.animate-in:hover {
     transform: translateY(-5px);
 }
 
@@ -182,10 +208,23 @@
     text-decoration: none;
     color: inherit;
     display: block;
+    /* Index-specific: Start hidden */
+    opacity: 0;
+    transform: translateY(100px);
+    transition: opacity 0.6s ease-out, transform 0.6s ease-out, box-shadow 0.3s ease;
 }
 
 .contact-card:hover {
     box-shadow: var(--shadow-hover);
+    transform: translateY(-5px);
+}
+
+.contact-card.animate-in {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.contact-card.animate-in:hover {
     transform: translateY(-5px);
 }
 
@@ -219,6 +258,15 @@
     box-shadow: var(--shadow-medium);
     height: 400px;
     position: relative;
+    /* Index-specific: Start hidden */
+    opacity: 0;
+    transform: translateY(100px);
+    transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+}
+
+.map-container.animate-in {
+    opacity: 1;
+    transform: translateY(0);
 }
 
 .map-container iframe {
@@ -242,6 +290,46 @@
 .stadium-info p {
     color: var(--medium-gray);
     font-size: 1.1rem;
+}
+
+/* Index-specific section titles and subtitles */
+.section-title,
+.section-subtitle {
+    /* Override general.css for index page - start hidden */
+    opacity: 0;
+    transform: translateY(100px);
+    transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+}
+
+.section-title.animate-in,
+.section-subtitle.animate-in {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Index-specific countdown and form elements */
+.countdown-block {
+    /* Override general.css for index page - start hidden */
+    opacity: 0;
+    transform: translateY(100px);
+    transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+}
+
+.countdown-block.animate-in {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.form-result {
+    /* Override general.css for index page - start hidden */
+    opacity: 0;
+    transform: translateY(100px);
+    transition: opacity 0.6s ease-out, transform 0.6s ease-out, box-shadow 0.3s ease;
+}
+
+.form-result.animate-in {
+    opacity: 1;
+    transform: translateY(0);
 }
 
 /* Responsive Design */

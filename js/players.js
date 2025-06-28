@@ -40,7 +40,11 @@ function initializeFilters() {
             filterButtons.forEach(btn => btn.classList.remove('active'));
             button.classList.add('active');
 
+            // ✅ ADD THIS LINE
+            document.body.className = `filter-${targetPosition}`;
+
             filterPlayers(targetPosition, playerCards);
+            updateHeroAccentColor(targetPosition); // optional, can remove if unused
 
             const searchInput = document.querySelector('.player-search');
             if (searchInput) searchInput.value = '';

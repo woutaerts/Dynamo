@@ -1,3 +1,35 @@
+/* Dynamic Theme Colors for Page Hero */
+body {
+    --hero-accent-color: var(--medium-gray);
+}
+
+body.filter-goalkeeper {
+    --hero-accent-color: var(--dark-blue);
+}
+
+body.filter-defender {
+    --hero-accent-color: var(--dark-green);
+}
+
+body.filter-midfielder {
+    --hero-accent-color: var(--dark-yellow);
+}
+
+body.filter-attacker {
+    --hero-accent-color: var(--dynamo-red);
+}
+
+body.filter-all {
+    --hero-accent-color: var(--medium-gray);
+}
+
+/* Page Hero Color Override */
+.page-hero h1::after,
+.page-hero h1::before {
+    color: var(--hero-accent-color) !important;
+    transition: opacity 0.6s ease-out 0.3s, transform 0.6s ease-out 0.3s, color 0.6s ease !important;
+}
+
 /* Filter Section */
 .filter-section {
     padding: 2rem 0 1rem 0;
