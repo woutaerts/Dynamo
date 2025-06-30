@@ -1,0 +1,337 @@
+/* playerModal.css */
+
+/* Import Poppins font */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&display=swap');
+
+/* Body and Overlay */
+body.modal-open {
+    overflow: hidden;
+    position: fixed;
+    width: 100%;
+}
+
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.5);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+    backdrop-filter: blur(3px);
+}
+
+.modal-overlay.show {
+    display: flex;
+}
+
+/* Modal Content */
+.modal-content {
+    background: var(--off-white);
+    border-radius: 16px;
+    box-shadow: var(--shadow-medium);
+    padding: 1.5rem;
+    width: 90%;
+    max-width: 500px;
+    max-height: 90vh;
+    overflow-y: auto;
+    position: relative;
+    color: var(--dark-gray);
+    font-family: 'Poppins', sans-serif;
+    border: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.modal-content::-webkit-scrollbar {
+    width: 6px;
+}
+
+.modal-content::-webkit-scrollbar-track {
+    background: transparent;
+    border-radius: 10px;
+    margin: 16px 0;
+}
+
+.modal-content::-webkit-scrollbar-thumb {
+    background: var(--light-gray);
+    border-radius: 10px;
+}
+
+.modal-content::-webkit-scrollbar-thumb:hover {
+    background: var(--medium-gray);
+}
+
+/* Close Button */
+.close-modal {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    font-size: 1.3rem;
+    color: var(--medium-gray);
+    background: white;
+    border: 1px solid transparent;
+    cursor: pointer;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 300;
+    box-shadow: var(--shadow-medium);
+}
+
+.close-modal:hover {
+    color: var(--dark-gray);
+    box-shadow: var(--shadow-hover);
+    border-color: var(--dark-gray);
+}
+
+/* Player Header (Name, Position, Flag) */
+.player-header {
+    text-align: center;
+    margin-bottom: 1.5rem;
+}
+
+.player-header .flag-icon {
+    display: block;
+    margin: 0.5rem auto 0 auto;
+    width: 40px;
+    height: auto;
+}
+
+#modalPlayerName {
+    margin: 0.5rem 0 0.5rem 0;
+    font-size: 2rem;
+    font-weight: 800;
+    color: var(--dark-gray);
+    font-family: 'Poppins', sans-serif;
+    position: relative;
+}
+
+#modalPlayerName::after {
+    content: '';
+    position: absolute;
+    bottom: -6px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 50px;
+    height: 3px;
+    border-radius: 2px;
+}
+
+.modal-content.goalkeeper #modalPlayerName::after {
+    background: var(--dark-blue);
+}
+
+.modal-content.defender #modalPlayerName::after {
+    background: var(--dark-green);
+}
+
+.modal-content.midfielder #modalPlayerName::after {
+    background: var(--dark-yellow);
+}
+
+.modal-content.attacker #modalPlayerName::after {
+    background: var(--dynamo-red);
+}
+
+#playerPosition {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 600;
+    font-size: 1rem;
+    text-align: center;
+    margin: 0 0 0.5rem 0;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.modal-content.goalkeeper #playerPosition {
+    color: var(--dark-blue);
+}
+
+.modal-content.defender #playerPosition {
+    color: var(--dark-green);
+}
+
+.modal-content.midfielder #playerPosition {
+    color: var(--dark-yellow);
+}
+
+.modal-content.attacker #playerPosition {
+    color: var(--dynamo-red);
+}
+
+/* Stats Sections */
+.season-stats-section,
+.all-time-stats-section {
+    margin-bottom: 1.5rem;
+    padding: 1.2rem;
+    background: white;
+    border-radius: 12px;
+    border: 1px solid transparent;
+    transition: all 0.3s ease;
+    box-shadow: var(--shadow-medium);
+    opacity: 0;
+    transform: translateY(20px);
+}
+
+.season-stats-section:hover,
+.all-time-stats-section:hover {
+    transform: translateY(-2px) !important;
+    box-shadow: var(--shadow-hover) !important;
+}
+
+.season-stats-section.animate-in,
+.all-time-stats-section.animate-in {
+    opacity: 1;
+    transform: translateY(0);
+    transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+}
+
+.season-stats-section h3,
+.all-time-stats-section h3 {
+    margin-bottom: 0.8rem;
+    color: var(--dark-gray);
+    font-size: 1.2rem;
+    text-align: center;
+    font-weight: 700;
+    font-family: 'Poppins', sans-serif;
+    position: relative;
+}
+
+.season-stats-section h3::after,
+.all-time-stats-section h3::after {
+    content: '';
+    position: absolute;
+    bottom: -4px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 35px;
+    height: 2px;
+    border-radius: 1px;
+}
+
+.modal-content.goalkeeper h3::after {
+    background: var(--dark-blue);
+}
+
+.modal-content.defender h3::after {
+    background: var(--dark-green);
+}
+
+.modal-content.midfielder h3::after {
+    background: var(--dark-yellow);
+}
+
+.modal-content.attacker h3::after {
+    background: var(--dynamo-red);
+}
+
+/* Stats Containers */
+.stats-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 0.5rem;
+}
+
+.stat-box {
+    flex: 1;
+    min-width: 120px;
+    text-align: center;
+}
+
+.stat-box p {
+    text-align: center;
+    font-size: 1rem;
+    color: var(--dark-gray);
+    font-weight: 600;
+    font-family: 'Poppins', sans-serif;
+    line-height: 1.4;
+    margin: 0;
+    padding: 0.8rem;
+    background: var(--nested-box);
+    border-radius: 10px;
+    border: 1px solid transparent;
+    box-shadow: var(--shadow-medium);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+}
+
+/* Icons */
+.stat-box i {
+    color: var(--medium-gray);
+    margin-right: 8px;
+    font-size: 1rem;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .modal-content {
+        width: 95%;
+        padding: 1.2rem;
+        max-height: 85vh;
+    }
+
+    .player-header .flag-icon {
+        width: 35px;
+    }
+
+    #modalPlayerName {
+        font-size: 1.7rem;
+        margin-bottom: 1.2rem;
+    }
+
+    .season-stats-section,
+    .all-time-stats-section {
+        padding: 1rem;
+        margin-bottom: 1.2rem;
+    }
+
+    .season-stats-section h3,
+    .all-time-stats-section h3 {
+        font-size: 1.1rem;
+    }
+
+    .close-modal {
+        width: 32px;
+        height: 32px;
+        font-size: 1.1rem;
+        top: 10px;
+        right: 10px;
+    }
+
+    .stats-container {
+        flex-direction: column;
+    }
+
+    .stat-box {
+        width: 100%;
+    }
+}
+
+@media (max-width: 480px) {
+    .modal-content {
+        padding: 1rem;
+    }
+
+    .player-header .flag-icon {
+        width: 30px;
+    }
+
+    #modalPlayerName {
+        font-size: 1.4rem;
+    }
+
+    .stat-box p {
+        font-size: 0.85rem;
+        padding: 0.6rem 0.8rem;
+    }
+}

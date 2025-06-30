@@ -217,7 +217,7 @@ body.filter-all {
     border-radius: 16px;
     padding: 2rem;
     box-shadow: var(--shadow-medium);
-    cursor: default;
+    cursor: pointer;
     border: 2px solid transparent;
     opacity: 0;
     transform: translateY(100px);

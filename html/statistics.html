@@ -264,120 +264,24 @@
     <section class="stats-section hidden" id="player-season-stats">
         <div class="container">
             <h2 class="section-title">Player Statistics 2024-2025</h2>
-            <div class="player-stats-grid">
-                <div class="player-card">
-                    <div class="player-name">Kevin De Bruyne</div>
-                    <div class="player-position">Midfielder</div>
-                    <div class="player-stats">
-                        <div class="player-stat">
-                            <div class="player-stat-number">12</div>
-                            <div class="player-stat-label">Goals</div>
-                        </div>
-                        <div class="player-stat">
-                            <div class="player-stat-number">18</div>
-                            <div class="player-stat-label">Assists</div>
-                        </div>
-                        <div class="player-stat">
-                            <div class="player-stat-number">26</div>
-                            <div class="player-stat-label">Matches</div>
-                        </div>
-                    </div>
+            <div class="sort-controls">
+                <label for="season-sort-by">Sort by:</label>
+                <select id="season-sort-by" class="sort-dropdown">
+                    <option value="goals">Total Goals</option>
+                    <option value="matches">Matches Played</option>
+                    <option value="avg-goals">Average Goals per Match</option>
+                </select>
+            </div>
+            <div class="player-stats-table">
+                <div class="table-header">
+                    <div class="table-cell">Rank</div>
+                    <div class="table-cell">Position</div>
+                    <div class="table-cell">Player</div>
+                    <div class="table-cell">Goals</div>
+                    <div class="table-cell">Matches</div>
+                    <div class="table-cell">Avg Goals/Match</div>
                 </div>
-
-                <div class="player-card">
-                    <div class="player-name">Romelu Lukaku</div>
-                    <div class="player-position">Forward</div>
-                    <div class="player-stats">
-                        <div class="player-stat">
-                            <div class="player-stat-number">23</div>
-                            <div class="player-stat-label">Goals</div>
-                        </div>
-                        <div class="player-stat">
-                            <div class="player-stat-number">7</div>
-                            <div class="player-stat-label">Assists</div>
-                        </div>
-                        <div class="player-stat">
-                            <div class="player-stat-number">25</div>
-                            <div class="player-stat-label">Matches</div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="player-card">
-                    <div class="player-name">Thibaut Courtois</div>
-                    <div class="player-position">Goalkeeper</div>
-                    <div class="player-stats">
-                        <div class="player-stat">
-                            <div class="player-stat-number">15</div>
-                            <div class="player-stat-label">Clean Sheets</div>
-                        </div>
-                        <div class="player-stat">
-                            <div class="player-stat-number">89</div>
-                            <div class="player-stat-label">Saves</div>
-                        </div>
-                        <div class="player-stat">
-                            <div class="player-stat-number">28</div>
-                            <div class="player-stat-label">Matches</div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="player-card">
-                    <div class="player-name">Axel Witsel</div>
-                    <div class="player-position">Defender</div>
-                    <div class="player-stats">
-                        <div class="player-stat">
-                            <div class="player-stat-number">3</div>
-                            <div class="player-stat-label">Goals</div>
-                        </div>
-                        <div class="player-stat">
-                            <div class="player-stat-number">156</div>
-                            <div class="player-stat-label">Tackles</div>
-                        </div>
-                        <div class="player-stat">
-                            <div class="player-stat-number">27</div>
-                            <div class="player-stat-label">Matches</div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="player-card">
-                    <div class="player-name">Jeremy Doku</div>
-                    <div class="player-position">Winger</div>
-                    <div class="player-stats">
-                        <div class="player-stat">
-                            <div class="player-stat-number">8</div>
-                            <div class="player-stat-label">Goals</div>
-                        </div>
-                        <div class="player-stat">
-                            <div class="player-stat-number">11</div>
-                            <div class="player-stat-label">Assists</div>
-                        </div>
-                        <div class="player-stat">
-                            <div class="player-stat-number">24</div>
-                            <div class="player-stat-label">Matches</div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="player-card">
-                    <div class="player-name">Youri Tielemans</div>
-                    <div class="player-position">Midfielder</div>
-                    <div class="player-stats">
-                        <div class="player-stat">
-                            <div class="player-stat-number">6</div>
-                            <div class="player-stat-label">Goals</div>
-                        </div>
-                        <div class="player-stat">
-                            <div class="player-stat-number">9</div>
-                            <div class="player-stat-label">Assists</div>
-                        </div>
-                        <div class="player-stat">
-                            <div class="player-stat-number">23</div>
-                            <div class="player-stat-label">Matches</div>
-                        </div>
-                    </div>
-                </div>
+                <div class="player-stats-list"></div>
             </div>
         </div>
     </section>
@@ -385,84 +289,25 @@
     <!-- Player All-Time Statistics -->
     <section class="all-time-stats hidden" id="player-alltime-stats">
         <div class="container">
-            <h2 class="section-title">All-Time Top Performers</h2>
-            <div class="top-scorers-grid">
-                <div class="scorer-card">
-                    <div class="scorer-rank">1</div>
-                    <div class="scorer-name">Marc Degryse</div>
-                    <div class="scorer-period">2009-2018</div>
-                    <div class="scorer-goals">127</div>
-                    <div class="scorer-goals-label">Goals</div>
-                </div>
-
-                <div class="scorer-card">
-                    <div class="scorer-rank">2</div>
-                    <div class="scorer-name">Luc Nilis</div>
-                    <div class="scorer-period">2010-2019</div>
-                    <div class="scorer-goals">98</div>
-                    <div class="scorer-goals-label">Goals</div>
-                </div>
-
-                <div class="scorer-card">
-                    <div class="scorer-rank">3</div>
-                    <div class="scorer-name">Gert Verheyen</div>
-                    <div class="scorer-period">2015-2023</div>
-                    <div class="scorer-goals">87</div>
-                    <div class="scorer-goals-label">Goals</div>
-                </div>
-
-                <div class="scorer-card">
-                    <div class="scorer-rank">4</div>
-                    <div class="scorer-name">Wesley Sonck</div>
-                    <div class="scorer-period">2012-2020</div>
-                    <div class="scorer-goals">73</div>
-                    <div class="scorer-goals-label">Goals</div>
-                </div>
-
-                <div class="scorer-card">
-                    <div class="scorer-rank">5</div>
-                    <div class="scorer-name">Jan Ceulemans</div>
-                    <div class="scorer-period">2011-2018</div>
-                    <div class="scorer-goals">69</div>
-                    <div class="scorer-goals-label">Goals</div>
-                </div>
-
-                <div class="scorer-card">
-                    <div class="scorer-rank">6</div>
-                    <div class="scorer-name">Daniel Van Buyten</div>
-                    <div class="scorer-period">2013-2021</div>
-                    <div class="scorer-goals">54</div>
-                    <div class="scorer-goals-label">Goals</div>
-                </div>
+            <h2 class="section-title">All-Time Top Scorers</h2>
+            <div class="sort-controls">
+                <label for="sort-by">Sort by:</label>
+                <select id="sort-by" class="sort-dropdown">
+                    <option value="goals">Total Goals</option>
+                    <option value="matches">Matches Played</option>
+                    <option value="avg-goals">Average Goals per Match</option>
+                </select>
             </div>
-
-            <div class="all-time-assists-section">
-                <h3 class="section-subtitle">All-Time Top Assists</h3>
-                <div class="top-scorers-grid">
-                    <div class="scorer-card">
-                        <div class="scorer-rank">1</div>
-                        <div class="scorer-name">Jan Ceulemans</div>
-                        <div class="scorer-period">2011-2018</div>
-                        <div class="scorer-goals">89</div>
-                        <div class="scorer-goals-label">Assists</div>
-                    </div>
-
-                    <div class="scorer-card">
-                        <div class="scorer-rank">2</div>
-                        <div class="scorer-name">Marc Degryse</div>
-                        <div class="scorer-period">2009-2018</div>
-                        <div class="scorer-goals">76</div>
-                        <div class="scorer-goals-label">Assists</div>
-                    </div>
-
-                    <div class="scorer-card">
-                        <div class="scorer-rank">3</div>
-                        <div class="scorer-name">Franky Van der Elst</div>
-                        <div class="scorer-period">2014-2022</div>
-                        <div class="scorer-goals">61</div>
-                        <div class="scorer-goals-label">Assists</div>
-                    </div>
+            <div class="top-scorers-table">
+                <div class="table-header">
+                    <div class="table-cell">Rank</div>
+                    <div class="table-cell">Position</div>
+                    <div class="table-cell">Player</div>
+                    <div class="table-cell">Goals</div>
+                    <div class="table-cell">Matches</div>
+                    <div class="table-cell">Avg Goals/Match</div>
                 </div>
+                <div class="top-scorers-list"></div>
             </div>
         </div>
     </section>

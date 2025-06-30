@@ -1,13 +1,14 @@
 // players.js
 import { animateOnScroll } from './general.js';
 
-// Define animation elements for animateOnScroll (excluding player-card)
+// Define animation elements for animateOnScroll
 const animationElements = [
     { selector: '.section-title', containerSelector: 'section' },
     { selector: '.section-subtitle', containerSelector: 'section' },
     { selector: '.page-hero h1', containerSelector: 'section' },
     { selector: '.filter-section', containerSelector: null },
-    { selector: '.search-container', containerSelector: null }
+    { selector: '.search-container', containerSelector: null },
+    { selector: '.player-card', containerSelector: 'section' } // Add player-card for animation
 ];
 
 // Player page initialization and functionality
@@ -24,7 +25,24 @@ document.addEventListener('DOMContentLoaded', () => {
 // Player card setup and hover effects
 function initializePlayerCards() {
     document.querySelectorAll('.player-card').forEach(card => {
-        card.style.cursor = 'default';
+        card.style.cursor = 'pointer'; // Change to pointer for clickability
+        card.addEventListener('click', () => {
+            const playerData = {
+                name: card.getAttribute('data-name') || 'Player Name',
+                position: card.getAttribute('data-position') || 'Unknown',
+                nationality: card.getAttribute('data-nationality') || 'Unknown',
+                flagSrc: card.getAttribute('data-flag-src') || '../img/icons/flags/belgium.svg',
+                gamesThisSeason: parseInt(card.getAttribute('data-games-season')) || 0,
+                gamesTotal: parseInt(card.getAttribute('data-games-total')) || 0,
+                goalsThisSeason: parseInt(card.getAttribute('data-goals-season')) || 0,
+                goalsTotal: parseInt(card.getAttribute('data-goals-total')) || 0
+            };
+            if (window.playerModal) {
+                window.playerModal.show(playerData);
+            } else {
+                console.error('PlayerModal not initialized');
+            }
+        });
         card.addEventListener('mouseenter', () => card.style.transform = 'translateY(-8px) scale(1.02)');
         card.addEventListener('mouseleave', () => card.style.transform = 'translateY(0) scale(1)');
     });
