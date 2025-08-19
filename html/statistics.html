@@ -265,12 +265,15 @@
         <div class="container">
             <h2 class="section-title">Player Statistics 2024-2025</h2>
             <div class="sort-controls">
-                <label for="season-sort-by">Sort by:</label>
-                <select id="season-sort-by" class="sort-dropdown">
-                    <option value="goals">Total Goals</option>
-                    <option value="matches">Matches Played</option>
-                    <option value="avg-goals">Average Goals per Match</option>
-                </select>
+                <span>Sort by:</span>
+                <div class="custom-dropdown" id="season-sort">
+                    <div class="selected" data-value="goals">Total Goals</div>
+                    <ul class="options">
+                        <li data-value="goals">Total Goals</li>
+                        <li data-value="matches">Matches Played</li>
+                        <li data-value="avg-goals">Average Goals per Match</li>
+                    </ul>
+                </div>
             </div>
             <div class="player-stats-table">
                 <div class="table-header">
@@ -279,7 +282,7 @@
                     <div class="table-cell">Player</div>
                     <div class="table-cell">Goals</div>
                     <div class="table-cell">Matches</div>
-                    <div class="table-cell">Avg Goals/Match</div>
+                    <div class="table-cell">Avg G/M</div>
                 </div>
                 <div class="player-stats-list"></div>
             </div>
@@ -291,12 +294,15 @@
         <div class="container">
             <h2 class="section-title">All-Time Top Scorers</h2>
             <div class="sort-controls">
-                <label for="sort-by">Sort by:</label>
-                <select id="sort-by" class="sort-dropdown">
-                    <option value="goals">Total Goals</option>
-                    <option value="matches">Matches Played</option>
-                    <option value="avg-goals">Average Goals per Match</option>
-                </select>
+                <span>Sort by:</span>
+                <div class="custom-dropdown" id="alltime-sort">
+                    <div class="selected" data-value="goals">Total Goals</div>
+                    <ul class="options">
+                        <li data-value="goals">Total Goals</li>
+                        <li data-value="matches">Matches Played</li>
+                        <li data-value="avg-goals">Average Goals per Match</li>
+                    </ul>
+                </div>
             </div>
             <div class="top-scorers-table">
                 <div class="table-header">
@@ -305,7 +311,7 @@
                     <div class="table-cell">Player</div>
                     <div class="table-cell">Goals</div>
                     <div class="table-cell">Matches</div>
-                    <div class="table-cell">Avg Goals/Match</div>
+                    <div class="table-cell">Avg G/M</div>
                 </div>
                 <div class="top-scorers-list"></div>
             </div>

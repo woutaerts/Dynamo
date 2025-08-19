@@ -85,7 +85,7 @@ const positionIcons = {
     goalkeeper: '<i class="fas fa-hand-paper"></i>',
     defender: '<i class="fas fa-shield-alt"></i>',
     midfielder: '<i class="fas fa-person-running"></i>',
-    attacker: '<i class="fas fa-futbol"></i>'
+    attacker: '<i class="fas fa-crosshairs"></i>'
 };
 
 // Define animation elements
@@ -105,26 +105,19 @@ const animationElements = [
 document.addEventListener('DOMContentLoaded', () => {
     initToggle();
     initPlayerStats();
+    initSortableHeaders();
+    initCustomDropdowns();
     animateOnScroll(animationElements);
 });
 
-// Initialize player stats for both season and all-time
+// Initialize player stats (using custom dropdowns instead of <select>)
 function initPlayerStats() {
-    const seasonSortDropdown = document.getElementById('season-sort-by');
-    const allTimeSortDropdown = document.getElementById('sort-by');
-    if (seasonSortDropdown) {
-        seasonSortDropdown.addEventListener('change', updateSeasonPlayerStats);
-        updateSeasonPlayerStats();
-    }
-    if (allTimeSortDropdown) {
-        allTimeSortDropdown.addEventListener('change', updateAllTimePlayerStats);
-        updateAllTimePlayerStats();
-    }
+    updateSeasonPlayerStats();
+    updateAllTimePlayerStats();
 }
 
 // Update season player stats display
-function updateSeasonPlayerStats() {
-    const sortBy = document.getElementById('season-sort-by').value;
+function updateSeasonPlayerStats(sortBy = document.querySelector('#season-sort .selected')?.dataset.value || 'goals') {
     const playerStatsList = document.querySelector('.player-stats-list');
 
     // Sort players
@@ -157,13 +150,11 @@ function updateSeasonPlayerStats() {
         playerStatsList.appendChild(row);
     });
 
-    // Re-apply animations
     animateOnScroll([{ selector: '.player-row', containerSelector: 'section' }]);
 }
 
 // Update all-time player stats display
-function updateAllTimePlayerStats() {
-    const sortBy = document.getElementById('sort-by').value;
+function updateAllTimePlayerStats(sortBy = document.querySelector('#alltime-sort .selected')?.dataset.value || 'goals') {
     const topScorersList = document.querySelector('.top-scorers-list');
 
     // Sort players
@@ -196,8 +187,108 @@ function updateAllTimePlayerStats() {
         topScorersList.appendChild(row);
     });
 
-    // Re-apply animations
     animateOnScroll([{ selector: '.scorer-row', containerSelector: 'section' }]);
+}
+
+// Custom dropdown initializer
+function initCustomDropdowns() {
+    document.querySelectorAll('.custom-dropdown').forEach(dropdown => {
+        const selected = dropdown.querySelector('.selected');
+        const options = dropdown.querySelector('.options');
+
+        selected.addEventListener('click', () => {
+            // Toggle active class on the clicked dropdown
+            dropdown.classList.toggle('active');
+            // Show/hide options
+            options.style.display = options.style.display === 'block' ? 'none' : 'block';
+            // Close other dropdowns
+            document.querySelectorAll('.custom-dropdown').forEach(otherDropdown => {
+                if (otherDropdown !== dropdown) {
+                    otherDropdown.classList.remove('active');
+                    otherDropdown.querySelector('.options').style.display = 'none';
+                }
+            });
+        });
+
+        options.querySelectorAll('li').forEach(option => {
+            option.addEventListener('click', () => {
+                selected.textContent = option.textContent;
+                selected.dataset.value = option.dataset.value;
+                dropdown.classList.remove('active'); // Close dropdown after selection
+                options.style.display = 'none';
+
+                if (dropdown.id === 'season-sort') {
+                    updateSeasonPlayerStats(selected.dataset.value);
+                } else if (dropdown.id === 'alltime-sort') {
+                    updateAllTimePlayerStats(selected.dataset.value);
+                }
+            });
+        });
+    });
+
+    // Close dropdowns when clicking outside
+    document.addEventListener('click', (e) => {
+        if (!e.target.closest('.custom-dropdown')) {
+            document.querySelectorAll('.custom-dropdown').forEach(dropdown => {
+                dropdown.classList.remove('active');
+                dropdown.querySelector('.options').style.display = 'none';
+            });
+        }
+    });
+}
+
+// Keep sortable headers but hook them to custom dropdowns
+function initSortableHeaders() {
+    const seasonHeaderCells = document.querySelectorAll('#player-season-stats .table-header .table-cell');
+    const allTimeHeaderCells = document.querySelectorAll('#player-alltime-stats .table-header .table-cell');
+
+    seasonHeaderCells.forEach((cell, index) => {
+        const key = getSortKeyFromIndex(index);
+        if (key) {
+            cell.style.cursor = 'pointer';
+            cell.addEventListener('click', () => {
+                const selected = document.querySelector('#season-sort .selected');
+                if (selected) {
+                    selected.dataset.value = key;
+                    selected.textContent = getLabelFromKey(key);
+                }
+                updateSeasonPlayerStats(key);
+            });
+        }
+    });
+
+    allTimeHeaderCells.forEach((cell, index) => {
+        const key = getSortKeyFromIndex(index);
+        if (key) {
+            cell.style.cursor = 'pointer';
+            cell.addEventListener('click', () => {
+                const selected = document.querySelector('#alltime-sort .selected');
+                if (selected) {
+                    selected.dataset.value = key;
+                    selected.textContent = getLabelFromKey(key);
+                }
+                updateAllTimePlayerStats(key);
+            });
+        }
+    });
+}
+
+function getSortKeyFromIndex(index) {
+    switch (index) {
+        case 3: return 'goals';
+        case 4: return 'matches';
+        case 5: return 'avg-goals';
+        default: return null;
+    }
+}
+
+function getLabelFromKey(key) {
+    switch (key) {
+        case 'goals': return 'Total Goals';
+        case 'matches': return 'Matches Played';
+        case 'avg-goals': return 'Average Goals per Match';
+        default: return '';
+    }
 }
 
 // Toggle system for team/player and season/all-time views
