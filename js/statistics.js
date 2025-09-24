@@ -308,6 +308,7 @@ function initToggle() {
     const sections = {
         teamSeason: document.getElementById('team-season-stats'),
         teamSeasonDetailed: document.getElementById('team-season-detailed'),
+        teamAlltimePerformance: document.getElementById('team-alltime-performance'),
         teamAlltime: document.getElementById('team-alltime-stats'),
         playerSeason: document.getElementById('player-season-stats'),
         playerAlltime: document.getElementById('player-alltime-stats')
@@ -342,7 +343,10 @@ function initToggle() {
             sectionsToShow = [sections.teamSeason, sections.teamSeasonDetailed];
             document.body.classList.add('team-season');
         } else if (!isPlayer && isAlltime) {
-            sectionsToShow = [sections.teamAlltime];
+            sectionsToShow = [
+                sections.teamAlltimePerformance,
+                sections.teamAlltime
+            ];
             document.body.classList.add('team-alltime');
         } else if (isPlayer && !isAlltime) {
             sectionsToShow = [sections.playerSeason];
