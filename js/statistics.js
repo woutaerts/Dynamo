@@ -1,83 +1,149 @@
 // statistics.js
 import { animateOnScroll } from './general.js';
 
-// Season player data (2024-2025, 35 players)
-const seasonPlayers = [
-    { name: "Romelu Lukaku", position: "attacker", goals: 23, matches: 25 },
-    { name: "Kevin De Bruyne", position: "midfielder", goals: 12, matches: 26 },
-    { name: "Jeremy Doku", position: "attacker", goals: 8, matches: 24 },
-    { name: "Youri Tielemans", position: "midfielder", goals: 6, matches: 23 },
-    { name: "Axel Witsel", position: "defender", goals: 3, matches: 27 },
-    { name: "Thibaut Courtois", position: "goalkeeper", goals: 0, matches: 28 },
-    { name: "Eden Hazard", position: "attacker", goals: 7, matches: 22 },
-    { name: "Dries Mertens", position: "attacker", goals: 6, matches: 20 },
-    { name: "Toby Alderweireld", position: "defender", goals: 2, matches: 26 },
-    { name: "Thomas Vermaelen", position: "defender", goals: 1, matches: 24 },
-    { name: "Christian Benteke", position: "attacker", goals: 5, matches: 21 },
-    { name: "Yannick Carrasco", position: "midfielder", goals: 4, matches: 23 },
-    { name: "Radja Nainggolan", position: "midfielder", goals: 3, matches: 22 },
-    { name: "Marouane Fellaini", position: "midfielder", goals: 2, matches: 20 },
-    { name: "Simon Mignolet", position: "goalkeeper", goals: 0, matches: 25 },
-    { name: "Mousa Dembele", position: "midfielder", goals: 2, matches: 24 },
-    { name: "Nacer Chadli", position: "midfielder", goals: 3, matches: 22 },
-    { name: "Divock Origi", position: "attacker", goals: 4, matches: 19 },
-    { name: "Leander Dendoncker", position: "midfielder", goals: 2, matches: 23 },
-    { name: "Michy Batshuayi", position: "attacker", goals: 5, matches: 20 },
-    { name: "Thomas Meunier", position: "defender", goals: 1, matches: 25 },
-    { name: "Adnan Januzaj", position: "attacker", goals: 3, matches: 21 },
-    { name: "Steven Defour", position: "midfielder", goals: 1, matches: 22 },
-    { name: "Laurent Ciman", position: "defender", goals: 1, matches: 23 },
-    { name: "Dennis Praet", position: "midfielder", goals: 2, matches: 20 },
-    { name: "Timothy Castagne", position: "defender", goals: 1, matches: 24 },
-    { name: "Hans Vanaken", position: "midfielder", goals: 3, matches: 22 },
-    { name: "Leandro Trossard", position: "attacker", goals: 4, matches: 21 },
-    { name: "Jason Denayer", position: "defender", goals: 0, matches: 22 },
-    { name: "Matz Sels", position: "goalkeeper", goals: 0, matches: 20 },
-    { name: "Charles De Ketelaere", position: "midfielder", goals: 3, matches: 19 },
-    { name: "Amadou Onana", position: "midfielder", goals: 1, matches: 21 },
-    { name: "Lois Openda", position: "attacker", goals: 5, matches: 18 },
-    { name: "Johan Bakayoko", position: "attacker", goals: 3, matches: 20 },
-    { name: "Wout Faes", position: "defender", goals: 1, matches: 23 }
-];
+// Season player data (loaded dynamically from CSV)
+let seasonPlayers = [];
 
-// All-time player data (unchanged from previous)
-const allTimePlayers = [
-    { name: "Marc Degryse", position: "attacker", goals: 127, matches: 320, period: "2009-2018" },
-    { name: "Luc Nilis", position: "attacker", goals: 98, matches: 280, period: "2010-2019" },
-    { name: "Gert Verheyen", position: "attacker", goals: 87, matches: 300, period: "2015-2023" },
-    { name: "Wesley Sonck", position: "attacker", goals: 73, matches: 260, period: "2012-2020" },
-    { name: "Jan Ceulemans", position: "midfielder", goals: 69, matches: 290, period: "2011-2018" },
-    { name: "Daniel Van Buyten", position: "defender", goals: 54, matches: 310, period: "2013-2021" },
-    { name: "Franky Van der Elst", position: "midfielder", goals: 45, matches: 340, period: "2014-2022" },
-    { name: "Kevin De Bruyne", position: "midfielder", goals: 42, matches: 200, period: "2018-2025" },
-    { name: "Romelu Lukaku", position: "attacker", goals: 40, matches: 180, period: "2019-2025" },
-    { name: "Eden Hazard", position: "attacker", goals: 38, matches: 220, period: "2017-2023" },
-    { name: "Thibaut Courtois", position: "goalkeeper", goals: 0, matches: 350, period: "2015-2025" },
-    { name: "Axel Witsel", position: "defender", goals: 15, matches: 300, period: "2016-2025" },
-    { name: "Jeremy Doku", position: "attacker", goals: 35, matches: 190, period: "2020-2025" },
-    { name: "Youri Tielemans", position: "midfielder", goals: 30, matches: 210, period: "2019-2025" },
-    { name: "Vincent Kompany", position: "defender", goals: 20, matches: 280, period: "2014-2022" },
-    { name: "Dries Mertens", position: "attacker", goals: 36, matches: 230, period: "2018-2024" },
-    { name: "Toby Alderweireld", position: "defender", goals: 18, matches: 290, period: "2016-2024" },
-    { name: "Thomas Vermaelen", position: "defender", goals: 12, matches: 260, period: "2015-2023" },
-    { name: "Christian Benteke", position: "attacker", goals: 33, matches: 200, period: "2018-2024" },
-    { name: "Yannick Carrasco", position: "midfielder", goals: 25, matches: 220, period: "2019-2025" },
-    { name: "Radja Nainggolan", position: "midfielder", goals: 28, matches: 240, period: "2017-2023" },
-    { name: "Marouane Fellaini", position: "midfielder", goals: 22, matches: 250, period: "2016-2022" },
-    { name: "Simon Mignolet", position: "goalkeeper", goals: 0, matches: 300, period: "2015-2023" },
-    { name: "Mousa Dembele", position: "midfielder", goals: 15, matches: 270, period: "2016-2022" },
-    { name: "Nacer Chadli", position: "midfielder", goals: 20, matches: 200, period: "2018-2024" },
-    { name: "Divock Origi", position: "attacker", goals: 30, matches: 180, period: "2019-2025" },
-    { name: "Leander Dendoncker", position: "midfielder", goals: 18, matches: 230, period: "2018-2024" },
-    { name: "Michy Batshuayi", position: "attacker", goals: 28, matches: 190, period: "2019-2025" },
-    { name: "Thomas Meunier", position: "defender", goals: 10, matches: 260, period: "2017-2023" },
-    { name: "Adnan Januzaj", position: "attacker", goals: 22, matches: 200, period: "2018-2024" },
-    { name: "Steven Defour", position: "midfielder", goals: 15, matches: 220, period: "2016-2022" },
-    { name: "Laurent Ciman", position: "defender", goals: 8, matches: 250, period: "2015-2021" },
-    { name: "Dennis Praet", position: "midfielder", goals: 12, matches: 200, period: "2019-2025" },
-    { name: "Timothy Castagne", position: "defender", goals: 10, matches: 210, period: "2019-2025" },
-    { name: "Hans Vanaken", position: "midfielder", goals: 25, matches: 230, period: "2018-2025" }
-];
+// All-time player data (loaded dynamically from CSV)
+let allTimePlayers = [];
+
+// Function to load and parse season players from the Google Sheet CSV
+async function loadSeasonPlayers() {
+    try {
+        const response = await fetch('https://docs.google.com/spreadsheets/d/e/2PACX-1vQRCgon0xh9NuQ87NgqQzBNPCEmmZWcC_jrulRhLwmrudf5UQ2QBRA28F1qmWB9L5xP9uZ8-ct2aqfR/pub?gid=300017481&single=true&output=csv');
+        if (!response.ok) {
+            throw new Error('Failed to fetch season players CSV');
+        }
+        const csvText = await response.text();
+        const rows = csvText.split('\n').map(row => row.split(',').map(cell => cell.trim().replace(/"/g, '')));
+
+        // Position translation map
+        const positionMap = {
+            'GK': 'goalkeeper',
+            'VER': 'defender',
+            'MID': 'midfielder',
+            'AAN': 'attacker'
+        };
+
+        // Title rows to skip
+        const titleRows = ['keeper', 'verdedigers', 'middenvelders', 'aanvallers'];
+
+        const players = [];
+        for (let i = 0; i < Math.min(rows.length, 50); i++) { // Up to row 49 (0-indexed, skip extern from 50+)
+            const row = rows[i];
+            if (row.length < 11) continue;
+
+            const name = row[1];      // Column B
+            const positionDutch = row[2];  // Column C
+            const goalsStr = row[8];  // Column I
+            const matchesStr = row[9]; // Column J
+            const ratioStr = row[10];  // Column K
+
+            // Skip if any required field is empty
+            if (!name || !positionDutch || !goalsStr || !matchesStr || !ratioStr) continue;
+
+            // Skip title rows
+            if (titleRows.includes(name.toLowerCase())) continue;
+
+            const goals = parseInt(goalsStr, 10);
+            const matches = parseInt(matchesStr, 10);
+
+            // Validate numbers
+            if (isNaN(goals) || isNaN(matches)) continue;
+
+            const position = positionMap[positionDutch];
+            if (!position) continue; // Skip invalid positions
+
+            players.push({
+                name,
+                position,
+                goals,
+                matches
+            });
+        }
+
+        // Sort by goals descending (initial sort for consistency)
+        seasonPlayers = players.sort((a, b) => b.goals - a.goals);
+
+        // Update the display after loading
+        updateSeasonPlayerStats();
+
+        console.log(`Loaded ${seasonPlayers.length} season players from CSV.`);
+    } catch (error) {
+        console.error('Error loading season players:', error);
+        seasonPlayers = []; // Empty array on failure
+        updateSeasonPlayerStats();
+    }
+}
+
+// Function to load and parse all-time players from the Google Sheet CSV
+async function loadAllTimePlayers() {
+    try {
+        const response = await fetch('https://docs.google.com/spreadsheets/d/e/2PACX-1vQRCgon0xh9NuQ87NgqQzBNPCEmmZWcC_jrulRhLwmrudf5UQ2QBRA28F1qmWB9L5xP9uZ8-ct2aqfR/pub?gid=1401992067&single=true&output=csv');
+        if (!response.ok) {
+            throw new Error('Failed to fetch all-time players CSV');
+        }
+        const csvText = await response.text();
+        const rows = csvText.split('\n').map(row => row.split(',').map(cell => cell.trim().replace(/"/g, '')));
+
+        // Position translation map
+        const positionMap = {
+            'GK': 'goalkeeper',
+            'VER': 'defender',
+            'MID': 'midfielder',
+            'AAN': 'attacker'
+        };
+
+        // Title rows to skip
+        const titleRows = ['keeper', 'verdedigers', 'middenvelders', 'aanvallers'];
+
+        const players = [];
+        for (let i = 0; i < Math.min(rows.length, 57); i++) {  // Up to row 56 (0-indexed, skip extern from 57+)
+            const row = rows[i];
+            if (row.length < 7) continue;
+
+            const name = row[1];      // Column B
+            const positionDutch = row[2];  // Column C
+            const goalsStr = row[4];  // Column E
+            const matchesStr = row[5]; // Column F
+            const ratioStr = row[6];  // Column G
+
+            // Skip if any required field is empty
+            if (!name || !positionDutch || !goalsStr || !matchesStr || !ratioStr) continue;
+
+            // Skip title rows
+            if (titleRows.includes(name.toLowerCase())) continue;
+
+            const goals = parseInt(goalsStr, 10);
+            const matches = parseInt(matchesStr, 10);
+
+            // Validate numbers
+            if (isNaN(goals) || isNaN(matches) || matches <= 0) continue;
+
+            const position = positionMap[positionDutch];
+            if (!position) continue;  // Skip invalid positions
+
+            players.push({
+                name,
+                position,
+                goals,
+                matches
+            });
+        }
+
+        // Sort by goals descending (initial sort for consistency)
+        allTimePlayers = players.sort((a, b) => b.goals - a.goals);
+
+        // Update the display after loading
+        updateAllTimePlayerStats();
+
+        console.log(`Loaded ${allTimePlayers.length} all-time players from CSV.`);
+    } catch (error) {
+        console.error('Error loading all-time players:', error);
+        allTimePlayers = []; // Empty array on failure
+        updateAllTimePlayerStats();
+    }
+}
 
 // Position icons mapping
 const positionIcons = {
@@ -112,8 +178,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
 // Initialize player stats (using custom dropdowns instead of <select>)
 function initPlayerStats() {
-    updateSeasonPlayerStats();
-    updateAllTimePlayerStats();
+    loadSeasonPlayers(); // Load dynamic season data
+    loadAllTimePlayers(); // Load dynamic all-time data
 }
 
 // Update season player stats display
@@ -122,12 +188,36 @@ function updateSeasonPlayerStats(sortBy = document.querySelector('#season-sort .
 
     // Sort players
     const sortedPlayers = [...seasonPlayers].sort((a, b) => {
+        const aRatio = a.matches === 0 ? 0 : a.goals / a.matches;
+        const bRatio = b.matches === 0 ? 0 : b.goals / b.matches;
+
         if (sortBy === 'goals') {
-            return b.goals - a.goals || (b.goals / b.matches) - (a.goals / a.matches);
+            // 1. Most goals (descending)
+            if (a.goals !== b.goals) return b.goals - a.goals;
+            // 2. Highest ratio (descending)
+            if (aRatio !== bRatio) return bRatio - aRatio;
+            // 3. Matches played (descending)
+            if (a.matches !== b.matches) return b.matches - a.matches;
+            // 4. Name (alphabetically, ascending)
+            return a.name.localeCompare(b.name);
         } else if (sortBy === 'matches') {
-            return b.matches - a.matches || (b.goals / b.matches) - (a.goals / a.matches);
-        } else {
-            return (b.goals / b.matches) - (a.goals / a.matches) || b.goals - a.goals;
+            // 1. Matches played (descending)
+            if (a.matches !== b.matches) return b.matches - a.matches;
+            // 2. Goals scored (descending)
+            if (a.goals !== b.goals) return b.goals - a.goals;
+            // 3. Highest ratio (descending)
+            if (aRatio !== bRatio) return bRatio - aRatio;
+            // 4. Name (alphabetically, ascending)
+            return a.name.localeCompare(b.name);
+        } else { // sortBy === 'avg-goals'
+            // 1. Highest ratio (descending)
+            if (aRatio !== bRatio) return bRatio - aRatio;
+            // 2. Goals scored (descending)
+            if (a.goals !== b.goals) return b.goals - a.goals;
+            // 3. Matches played (descending)
+            if (a.matches !== b.matches) return b.matches - a.matches;
+            // 4. Name (alphabetically, ascending)
+            return a.name.localeCompare(b.name);
         }
     });
 
@@ -136,7 +226,7 @@ function updateSeasonPlayerStats(sortBy = document.querySelector('#season-sort .
 
     // Render sorted players
     sortedPlayers.forEach((player, index) => {
-        const avgGoals = (player.goals / player.matches).toFixed(2);
+        const avgGoals = player.matches === 0 ? '0.00' : (player.goals / player.matches).toFixed(2);
         const row = document.createElement('div');
         row.className = 'player-row';
         row.innerHTML = `
@@ -159,12 +249,36 @@ function updateAllTimePlayerStats(sortBy = document.querySelector('#alltime-sort
 
     // Sort players
     const sortedPlayers = [...allTimePlayers].sort((a, b) => {
+        const aRatio = a.goals / a.matches; // All-time players have matches > 0
+        const bRatio = b.goals / b.matches;
+
         if (sortBy === 'goals') {
-            return b.goals - a.goals || (b.goals / b.matches) - (a.goals / a.matches);
+            // 1. Most goals (descending)
+            if (a.goals !== b.goals) return b.goals - a.goals;
+            // 2. Highest ratio (descending)
+            if (aRatio !== bRatio) return bRatio - aRatio;
+            // 3. Matches played (descending)
+            if (a.matches !== b.matches) return b.matches - a.matches;
+            // 4. Name (alphabetically, ascending)
+            return a.name.localeCompare(b.name);
         } else if (sortBy === 'matches') {
-            return b.matches - a.matches || (b.goals / b.matches) - (a.goals / a.matches);
-        } else {
-            return (b.goals / b.matches) - (a.goals / a.matches) || b.goals - a.goals;
+            // 1. Matches played (descending)
+            if (a.matches !== b.matches) return b.matches - a.matches;
+            // 2. Goals scored (descending)
+            if (a.goals !== b.goals) return b.goals - a.goals;
+            // 3. Highest ratio (descending)
+            if (aRatio !== bRatio) return bRatio - aRatio;
+            // 4. Name (alphabetically, ascending)
+            return a.name.localeCompare(b.name);
+        } else { // sortBy === 'avg-goals'
+            // 1. Highest ratio (descending)
+            if (aRatio !== bRatio) return bRatio - aRatio;
+            // 2. Goals scored (descending)
+            if (a.goals !== b.goals) return b.goals - a.goals;
+            // 3. Matches played (descending)
+            if (a.matches !== b.matches) return b.matches - a.matches;
+            // 4. Name (alphabetically, ascending)
+            return a.name.localeCompare(b.name);
         }
     });
 
