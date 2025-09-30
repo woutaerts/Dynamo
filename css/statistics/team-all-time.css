@@ -66,3 +66,9 @@
     color: var(--medium-gray);
     margin-left: 1rem;
 }
+
+.record-item small {
+    font-size: 0.8em;
+    color: var(--line-gray);
+    margin-left: 5px;
+}

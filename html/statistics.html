@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Statistics - Dynamo Beirs</title>
     <meta name="description" content="Season statistics for Dynamo Beirs - wins, goals, and performance data">
-
     <!-- Stylesheets -->
     <link rel="stylesheet" href="../css/general.css">
     <link rel="stylesheet" href="../css/partials/header.css">
@@ -16,17 +15,14 @@
     <link rel="stylesheet" href="../css/statistics/player-season.css">
     <link rel="stylesheet" href="../css/statistics/player-all-time.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-
     <!-- Scripts -->
     <script type="module" src="../js/statistics.js"></script>
     <script type="module" src="../js/partials/header.js"></script>
     <script type="module" src="../js/partials/footer.js"></script>
 </head>
 <body>
-
 <!-- Header -->
 <div id="header-placeholder"></div>
-
 <main>
     <!-- Page-Header Section -->
     <section class="page-hero">
@@ -34,7 +30,6 @@
             <h1>Season Statistics</h1>
         </div>
     </section>
-
     <!-- Toggle Buttons Section -->
     <section class="toggle-section">
         <div class="container">
@@ -53,7 +48,6 @@
                     </div>
                     <span class="toggle-label" id="label-player">Speler</span>
                 </div>
-
                 <!-- Season/All-time Toggle -->
                 <div class="toggle-wrapper">
                     <span class="toggle-label active" id="label-season">Seizoen</span>
@@ -71,126 +65,122 @@
             </div>
         </div>
     </section>
-
     <!-- Team Season Statistics -->
     <section class="stats-section" id="team-season-stats">
         <div class="container">
             <h2 class="section-title">Team Performance 2024-2025</h2>
-            <div class="stats-grid">
+            <div class="stats-grid" id="team-season-grid">
                 <div class="stat-card">
-                    <div class="stat-number" >28</div>
+                    <div class="stat-number" id="team-matches-played">0</div>
                     <div class="stat-label">Matches Played</div>
                 </div>
                 <div class="stat-card">
-                    <div class="stat-number" >21</div>
+                    <div class="stat-number" id="team-wins">0</div>
                     <div class="stat-label">Wins</div>
                 </div>
                 <div class="stat-card">
-                    <div class="stat-number" >4</div>
+                    <div class="stat-number" id="team-draws">0</div>
                     <div class="stat-label">Draws</div>
                 </div>
                 <div class="stat-card">
-                    <div class="stat-number" >3</div>
+                    <div class="stat-number" id="team-losses">0</div>
                     <div class="stat-label">Losses</div>
                 </div>
                 <div class="stat-card">
-                    <div class="stat-number" >67</div>
+                    <div class="stat-number" id="team-goals-scored">0</div>
                     <div class="stat-label">Goals Scored</div>
                 </div>
                 <div class="stat-card">
-                    <div class="stat-number" >23</div>
+                    <div class="stat-number" id="team-goals-conceded">0</div>
                     <div class="stat-label">Goals Conceded</div>
                 </div>
             </div>
         </div>
     </section>
-
     <section class="detailed-stats" id="team-season-detailed">
         <div class="container">
             <h2 class="section-title">Detailed Team Statistics 2024-2025</h2>
-            <div class="stats-categories">
+            <div class="stats-categories" id="team-season-detailed-stats">
                 <div class="stat-category">
                     <h3>Offensive Stats</h3>
                     <div class="stat-item">
-                        <span class="stat-name">Goals per Match</span>
-                        <span class="stat-value">2.39</span>
+                        <span class="stat-name">Goals Scored</span>
+                        <span class="stat-value" id="team-goals-scored-detailed">0</span>
                     </div>
                     <div class="stat-item">
-                        <span class="stat-name">Shots on Target</span>
-                        <span class="stat-value">156</span>
+                        <span class="stat-name">Goals Scored per Match</span>
+                        <span class="stat-value" id="team-goals-per-match">0.00</span>
                     </div>
                     <div class="stat-item">
-                        <span class="stat-name">Conversion Rate</span>
-                        <span class="stat-value">43%</span>
+                        <span class="stat-name">Largest Win</span>
+                        <span class="stat-value" id="team-largest-win">0-0</span>
                     </div>
                 </div>
                 <div class="stat-category">
                     <h3>Defensive Stats</h3>
                     <div class="stat-item">
+                        <span class="stat-name">Goals Conceded</span>
+                        <span class="stat-value" id="team-goals-conceded-detailed">0</span>
+                    </div>
+                    <div class="stat-item">
                         <span class="stat-name">Goals Conceded per Match</span>
-                        <span class="stat-value">0.82</span>
+                        <span class="stat-value" id="team-goals-conceded-per-match">0.00</span>
                     </div>
                     <div class="stat-item">
                         <span class="stat-name">Clean Sheets</span>
-                        <span class="stat-value">15</span>
-                    </div>
-                    <div class="stat-item">
-                        <span class="stat-name">Tackles Won</span>
-                        <span class="stat-value">312</span>
+                        <span class="stat-value" id="team-clean-sheets">0</span>
                     </div>
                 </div>
                 <div class="stat-category">
                     <h3>Overall Performance</h3>
                     <div class="stat-item">
-                        <span class="stat-name">Win Rate</span>
-                        <span class="stat-value">75%</span>
+                        <span class="stat-name">Goal Difference</span>
+                        <span class="stat-value" id="team-goal-difference">0</span>
                     </div>
                     <div class="stat-item">
-                        <span class="stat-name">Goal Difference</span>
-                        <span class="stat-value">+44</span>
+                        <span class="stat-name">Win Rate</span>
+                        <span class="stat-value" id="team-win-rate">0%</span>
                     </div>
                     <div class="stat-item">
                         <span class="stat-name">Points</span>
-                        <span class="stat-value">67</span>
+                        <span class="stat-value" id="team-points">0</span>
                     </div>
                 </div>
             </div>
         </div>
     </section>
-
     <!-- Team All-Time Statistics -->
     <section class="stats-section hidden" id="team-alltime-performance">
         <div class="container">
             <h2 class="section-title">All-Time Team Performance</h2>
             <div class="stats-grid">
                 <div class="stat-card">
-                    <div class="stat-number">456</div>
+                    <div class="stat-number" id="team-alltime-matches-played">0</div>
                     <div class="stat-label">Matches Played</div>
                 </div>
                 <div class="stat-card">
-                    <div class="stat-number">312</div>
+                    <div class="stat-number" id="team-alltime-wins">0</div>
                     <div class="stat-label">Wins</div>
                 </div>
                 <div class="stat-card">
-                    <div class="stat-number">78</div>
+                    <div class="stat-number" id="team-alltime-draws">0</div>
                     <div class="stat-label">Draws</div>
                 </div>
                 <div class="stat-card">
-                    <div class="stat-number">66</div>
+                    <div class="stat-number" id="team-alltime-losses">0</div>
                     <div class="stat-label">Losses</div>
                 </div>
                 <div class="stat-card">
-                    <div class="stat-number">1024</div>
+                    <div class="stat-number" id="team-alltime-goals-scored">0</div>
                     <div class="stat-label">Goals Scored</div>
                 </div>
                 <div class="stat-card">
-                    <div class="stat-number">534</div>
+                    <div class="stat-number" id="team-alltime-goals-conceded">0</div>
                     <div class="stat-label">Goals Conceded</div>
                 </div>
             </div>
         </div>
     </section>
-
     <section class="all-time-stats hidden" id="team-alltime-stats">
         <div class="container">
             <h2 class="section-title">All-Time Team Records</h2>
@@ -200,98 +190,58 @@
                     <div class="record-item">
                         <span class="record-description">Most Wins in a Season</span>
                         <div>
-                            <span class="record-value">24</span>
-                            <span class="record-season">2019-20</span>
+                            <span class="record-value" id="alltime-most-wins">0</span>
                         </div>
                     </div>
                     <div class="record-item">
                         <span class="record-description">Most Goals in a Season</span>
                         <div>
-                            <span class="record-value">89</span>
-                            <span class="record-season">2018-19</span>
-                        </div>
-                    </div>
-                    <div class="record-item">
-                        <span class="record-description">Longest Winning Streak</span>
-                        <div>
-                            <span class="record-value">12</span>
-                            <span class="record-season">2020-21</span>
+                            <span class="record-value" id="alltime-most-goals">0</span>
                         </div>
                     </div>
                     <div class="record-item">
                         <span class="record-description">Best Goal Difference</span>
                         <div>
-                            <span class="record-value">+52</span>
-                            <span class="record-season">2019-20</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="record-category">
-                    <h3>Match Records</h3>
-                    <div class="record-item">
-                        <span class="record-description">Biggest Victory</span>
-                        <div>
-                            <span class="record-value">8-0</span>
-                            <span class="record-season">vs Lokeren FC</span>
+                            <span class="record-value" id="alltime-best-goal-difference">0</span>
                         </div>
                     </div>
                     <div class="record-item">
-                        <span class="record-description">Most Goals in a Match</span>
+                        <span class="record-description">Most Clean Sheets in a Season</span>
                         <div>
-                            <span class="record-value">8</span>
-                            <span class="record-season">2018</span>
-                        </div>
-                    </div>
-                    <div class="record-item">
-                        <span class="record-description">Longest Unbeaten Run</span>
-                        <div>
-                            <span class="record-value">18</span>
-                            <span class="record-season">2019-20</span>
-                        </div>
-                    </div>
-                    <div class="record-item">
-                        <span class="record-description">Most Clean Sheets</span>
-                        <div>
-                            <span class="record-value">19</span>
-                            <span class="record-season">2020-21</span>
+                            <span class="record-value" id="alltime-most-clean-sheets">0</span>
                         </div>
                     </div>
                 </div>
                 <div class="record-category">
                     <h3>Club Achievements</h3>
                     <div class="record-item">
-                        <span class="record-description">League Titles</span>
+                        <span class="record-description">Longest Winning Streak</span>
                         <div>
-                            <span class="record-value">3</span>
-                            <span class="record-season">Total</span>
+                            <span class="record-value" id="alltime-longest-win-streak">0</span>
                         </div>
                     </div>
                     <div class="record-item">
-                        <span class="record-description">Cup Victories</span>
+                        <span class="record-description">Longest Unbeaten Run</span>
                         <div>
-                            <span class="record-value">2</span>
-                            <span class="record-season">Total</span>
-                        </div>
-                    </div>
-                    <div class="record-item">
-                        <span class="record-description">Years in Top Division</span>
-                        <div>
-                            <span class="record-value">15</span>
-                            <span class="record-season">Since 2009</span>
+                            <span class="record-value" id="alltime-longest-unbeaten">0</span>
                         </div>
                     </div>
                     <div class="record-item">
                         <span class="record-description">Total Matches Played</span>
                         <div>
-                            <span class="record-value">456</span>
-                            <span class="record-season">All Time</span>
+                            <span class="record-value" id="alltime-total-matches">0</span>
+                        </div>
+                    </div>
+                    <div class="record-item">
+                        <span class="record-description">Number of Different Goalscorers</span>
+                        <div>
+                            <span class="record-value" id="alltime-different-goalscorers">0</span>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </section>
-
     <!-- Player Season Statistics -->
     <section class="stats-section hidden" id="player-season-stats">
         <div class="container">
@@ -320,7 +270,6 @@
             </div>
         </div>
     </section>
-
     <!-- Player All-Time Statistics -->
     <section class="all-time-stats hidden" id="player-alltime-stats">
         <div class="container">
@@ -350,8 +299,6 @@
         </div>
     </section>
 </main>
-
 <div id="footer-placeholder"></div>
-
 </body>
 </html>
