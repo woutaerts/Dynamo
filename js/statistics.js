@@ -35,9 +35,9 @@ async function loadSeasonPlayers() {
 
             const name = row[1];      // Column B
             const positionDutch = row[2];  // Column C
-            const goalsStr = row[8];  // Column I
-            const matchesStr = row[9]; // Column J
-            const ratioStr = row[10];  // Column K
+            const goalsStr = row[28];  // Column AC
+            const matchesStr = row[29]; // Column AD
+            const ratioStr = row[30];  // Column AE
 
             // Skip if any required field is empty
             if (!name || !positionDutch || !goalsStr || !matchesStr || !ratioStr) continue;
