@@ -8,12 +8,12 @@ const animationElements = [
     { selector: '.page-hero h1', containerSelector: 'section' },
     { selector: '.filter-section', containerSelector: null },
     { selector: '.search-container', containerSelector: null },
-    { selector: '.player-card', containerSelector: 'section' } // Add player-card for animation
+    { selector: '.player-card', containerSelector: 'section' }
 ];
 
 // Player page initialization and functionality
-document.addEventListener('DOMContentLoaded', () => {
-    initializePlayerCards();
+document.addEventListener('DOMContentLoaded', async () => {
+    await fetchAndRenderPlayers();
     initializeFilters();
     addSearchFunctionality();
     animatePlayerCards();
@@ -22,10 +22,114 @@ document.addEventListener('DOMContentLoaded', () => {
     setTimeout(checkInitialHash, 100);
 });
 
+// Fetch and render players from CSV
+async function fetchAndRenderPlayers() {
+    const url = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQRCgon0xh9NuQ87NgqQzBNPCEmmZWcC_jrulRhLwmrudf5UQ2QBRA28F1qmWB9L5xP9uZ8-ct2aqfR/pub?gid=300017481&single=true&output=csv';
+    try {
+        const response = await fetch(url);
+        const csvText = await response.text();
+        const players = parseCSV(csvText);
+        console.log('Parsed players:', players); // Debug: Log parsed players
+        renderPlayerCards(players);
+        initializePlayerCards();
+    } catch (error) {
+        console.error('Error fetching or rendering players:', error);
+    }
+}
+
+// Parse CSV data
+function parseCSV(csvText) {
+    const rows = csvText.split('\n').map(row => row.split(','));
+    const players = [];
+    const positionMap = {
+        'GK': 'goalkeeper',
+        'VER': 'defender',
+        'MID': 'midfielder',
+        'AAN': 'attacker'
+    };
+    const nationalityMap = {
+        'BEL': { name: 'Belgium', flagSrc: '../img/icons/flags/belgium.svg' },
+        'NLD': { name: 'Netherlands', flagSrc: '../img/icons/flags/netherlands.svg' }
+    };
+
+    // Assuming headers are in row 1, data starts from row 5 (index 4)
+    for (let i = 4; i < rows.length; i++) {
+        const row = rows[i];
+        const name = row[1]?.trim(); // Column B
+        const nationalityCode = row[2]?.trim(); // Column C
+        const positionCode = row[3]?.trim(); // Column D
+        const goalsThisSeason = row[29]?.trim(); // Column AD
+        const gamesThisSeason = row[30]?.trim(); // Column AE
+        const goalsTotal = row[39]?.trim(); // Column AN
+        const gamesTotal = row[40]?.trim(); // Column AO
+
+        // Debug: Log each row to inspect data
+        console.log(`Row ${i + 1}:`, {
+            name,
+            nationalityCode,
+            positionCode,
+            goalsThisSeason,
+            gamesThisSeason,
+            goalsTotal,
+            gamesTotal
+        });
+
+        // Check if required fields (name, nationality, position) are present
+        if (name && nationalityCode && positionCode) {
+            const position = positionMap[positionCode.toUpperCase()] || 'unknown';
+            const nationality = nationalityMap[nationalityCode.toUpperCase()] || { name: 'Unknown', flagSrc: '../img/icons/flags/belgium.svg' };
+            players.push({
+                name,
+                position,
+                nationality: nationality.name,
+                flagSrc: nationality.flagSrc,
+                gamesThisSeason: parseInt(gamesThisSeason) || 0,
+                gamesTotal: parseInt(gamesTotal) || 0,
+                goalsThisSeason: parseInt(goalsThisSeason) || 0,
+                goalsTotal: parseInt(gamesTotal) || 0
+            });
+        } else {
+            console.log(`Row ${i + 1} skipped: Missing required fields (name, nationality, or position)`);
+        }
+    }
+    return players;
+}
+
+// Render player cards dynamically
+function renderPlayerCards(players) {
+    const playersGrid = document.querySelector('.players-grid');
+    if (!playersGrid) return;
+
+    playersGrid.innerHTML = ''; // Clear existing cards
+    players.forEach(player => {
+        const card = document.createElement('div');
+        card.className = 'player-card';
+        card.setAttribute('data-position', player.position);
+        card.setAttribute('data-name', player.name);
+        card.setAttribute('data-nationality', player.nationality);
+        card.setAttribute('data-flag-src', player.flagSrc);
+        card.setAttribute('data-games-season', player.gamesThisSeason);
+        card.setAttribute('data-games-total', player.gamesTotal);
+        card.setAttribute('data-goals-season', player.goalsThisSeason);
+        card.setAttribute('data-goals-total', player.goalsTotal);
+
+        card.innerHTML = `
+            <div class="player-info">
+                <div class="player-name">${player.name}</div>
+                <div class="player-position">${player.position.charAt(0).toUpperCase() + player.position.slice(1)}</div>
+                <div class="player-nationality">
+                    <img src="${player.flagSrc}" alt="${player.nationality} Flag" class="flag-icon">
+                </div>
+            </div>
+        `;
+        playersGrid.appendChild(card);
+    });
+}
+
 // Player card setup and hover effects
 function initializePlayerCards() {
     document.querySelectorAll('.player-card').forEach(card => {
-        card.style.cursor = 'pointer'; // Change to pointer for clickability
+        card.style.cursor = 'pointer';
         card.addEventListener('click', () => {
             const playerData = {
                 name: card.getAttribute('data-name') || 'Player Name',
@@ -63,7 +167,7 @@ function initializeFilters() {
             document.body.className = `filter-${targetPosition}`;
 
             filterPlayers(targetPosition, playerCards);
-            updateHeroAccentColor(targetPosition); // optional, can remove if unused
+            updateHeroAccentColor(targetPosition);
 
             const searchInput = document.querySelector('.player-search');
             if (searchInput) searchInput.value = '';
@@ -78,12 +182,10 @@ function initializePositionAwareHover() {
     const filterButtons = document.querySelectorAll('.filter-btn');
 
     filterButtons.forEach(button => {
-        // Add hover effect span to each button
         const hoverSpan = document.createElement('span');
         hoverSpan.className = 'hover-effect';
         button.appendChild(hoverSpan);
 
-        // Mouse enter event
         button.addEventListener('mouseenter', (e) => {
             const rect = button.getBoundingClientRect();
             const relX = e.clientX - rect.left;
@@ -93,7 +195,6 @@ function initializePositionAwareHover() {
             hoverSpan.style.left = relX + 'px';
         });
 
-        // Mouse leave event
         button.addEventListener('mouseleave', (e) => {
             const rect = button.getBoundingClientRect();
             const relX = e.clientX - rect.left;
@@ -192,4 +293,9 @@ function animatePlayerCards() {
     }, { root: null, rootMargin: '0px', threshold: 0.1 });
 
     document.querySelectorAll('.player-card').forEach(item => observer.observe(item));
+}
+
+// Update hero accent color (optional, keep if used in CSS)
+function updateHeroAccentColor(position) {
+    // This function can be removed if not needed, as it's already handled by CSS
 }
