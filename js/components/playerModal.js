@@ -5,6 +5,7 @@ class PlayerModal {
     constructor() {
         this.modal = null;
         this.isInitialized = false;
+        this.scrollPosition = 0; // Store scroll position
     }
 
     /* Initialization */
@@ -53,6 +54,9 @@ class PlayerModal {
     show(playerData = {}) {
         if (!this.modal) return;
 
+        // Save current scroll position
+        this.scrollPosition = window.scrollY || document.documentElement.scrollTop;
+
         const {
             name = 'Player Name',
             position = 'Unknown',
@@ -64,6 +68,9 @@ class PlayerModal {
         } = playerData;
 
         document.body.classList.add('modal-open');
+        // Prevent body scrolling
+        document.body.style.overflow = 'hidden';
+
         const modalContent = this.modal.querySelector('.modal-content');
         if (modalContent) {
             modalContent.classList.remove('goalkeeper', 'defender', 'midfielder', 'attacker');
@@ -94,7 +101,11 @@ class PlayerModal {
             sections.forEach(section => section.classList.remove('animate-in'));
         }
         document.body.classList.remove('modal-open');
+        // Restore body scrolling
+        document.body.style.overflow = '';
         this.modal.style.display = 'none';
+        // Restore scroll position
+        window.scrollTo({ top: this.scrollPosition, behavior: 'auto' });
     }
 
     /* Content Updates */

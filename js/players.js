@@ -86,7 +86,7 @@ function parseCSV(csvText) {
                 gamesThisSeason: parseInt(gamesThisSeason) || 0,
                 gamesTotal: parseInt(gamesTotal) || 0,
                 goalsThisSeason: parseInt(goalsThisSeason) || 0,
-                goalsTotal: parseInt(gamesTotal) || 0
+                goalsTotal: parseInt(goalsTotal) || 0
             });
         } else {
             console.log(`Row ${i + 1} skipped: Missing required fields (name, nationality, or position)`);
@@ -130,7 +130,8 @@ function renderPlayerCards(players) {
 function initializePlayerCards() {
     document.querySelectorAll('.player-card').forEach(card => {
         card.style.cursor = 'pointer';
-        card.addEventListener('click', () => {
+        card.addEventListener('click', (e) => {
+            e.preventDefault(); // Prevent default behavior that might cause scrolling
             const playerData = {
                 name: card.getAttribute('data-name') || 'Player Name',
                 position: card.getAttribute('data-position') || 'Unknown',
