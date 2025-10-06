@@ -227,10 +227,10 @@ async function loadSeasonPlayers() {
             const row = rows[i];
             if (row.length < 31) continue;
             const name = row[1];
-            const positionDutch = row[2];
-            const goalsStr = row[28];
-            const matchesStr = row[29];
-            const ratioStr = row[30];
+            const positionDutch = row[3];
+            const goalsStr = row[29];
+            const matchesStr = row[30];
+            const ratioStr = row[31];
             if (!name || !positionDutch || !goalsStr || !matchesStr || !ratioStr) continue;
             if (titleRows.includes(name.toLowerCase())) continue;
             const goals = parseInt(goalsStr, 10);
