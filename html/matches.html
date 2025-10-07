@@ -18,6 +18,7 @@
     <script type="module" src="../js/partials/header.js"></script>
     <script type="module" src="../js/partials/footer.js"></script>
     <script type="module" src="../js/components/matchModal.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
 </head>
 <body>
 
@@ -37,7 +38,7 @@
         <div class="container">
             <h2 class="section-title">Next Match Countdown</h2>
             <div class="upcoming-match-name">
-                <h3>Dynamo Beirs vs Thunder United</h3>
+                <h3 id="next-match-title">Loading...</h3>
             </div>
             <div class="countdown" id="countdown">
                 <div class="countdown-block">
@@ -66,12 +67,8 @@
             <div class="form-display">
                 <h3 class="section-subtitle">Form</h3>
                 <p class="form-description">Last 5 Matches</p>
-                <div class="form-results">
-                    <span class="form-result win"><i class="fas fa-check"></i></span>
-                    <span class="form-result win"><i class="fas fa-check"></i></span>
-                    <span class="form-result win"><i class="fas fa-check"></i></span>
-                    <span class="form-result draw"><i class="fas fa-minus"></i></span>
-                    <span class="form-result win"><i class="fas fa-check"></i></span>
+                <div class="form-results" id="form-results">
+                    <!-- Form results will be populated dynamically -->
                 </div>
             </div>
         </div>
@@ -81,58 +78,8 @@
     <section class="upcoming-matches" style="margin-top: 4rem;">
         <div class="container">
             <h2 class="section-title">Upcoming Fixtures</h2>
-            <div class="matches-grid">
-                <div class="match-card modern" data-venue="Home Stadium" data-match-title="Dynamo Beirs vs Thunder United" data-match-date="12 juni" data-match-time="15:00" data-match-season="2024-25">
-                    <span class="result-icon"><i class="fas fa-hourglass-half"></i></span>
-                    <div class="match-body">
-                        <div class="match-teams">
-                            <div class="home-team">Dynamo Beirs</div>
-                            <div class="vs-divider">vs</div>
-                            <div class="away-team">Thunder United</div>
-                        </div>
-                        <div class="match-score">12 Jun<br>15:00</div>
-                        <div class="match-details">
-                            <div class="match-venue">
-                                <i class="fas fa-map-marker-alt"></i>
-                                Home Stadium
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="match-card modern" data-venue="City Arena" data-match-title="City Rovers vs Dynamo Beirs" data-match-date="19 juni" data-match-time="19:30" data-match-season="2024-25">
-                    <span class="result-icon"><i class="fas fa-hourglass-half"></i></span>
-                    <div class="match-body">
-                        <div class="match-teams">
-                            <div class="home-team">City Rovers</div>
-                            <div class="vs-divider">vs</div>
-                            <div class="away-team">Dynamo Beirs</div>
-                        </div>
-                        <div class="match-score">19 Jun<br>19:30</div>
-                        <div class="match-details">
-                            <div class="match-venue">
-                                <i class="fas fa-map-marker-alt"></i>
-                                City Arena
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="match-card modern" data-venue="Home Stadium" data-match-title="Dynamo Beirs vs Steel Warriors FC" data-match-date="26 juni" data-match-time="16:00" data-match-season="2024-25">
-                    <span class="result-icon"><i class="fas fa-hourglass-half"></i></span>
-                    <div class="match-body">
-                        <div class="match-teams">
-                            <div class="home-team">Dynamo Beirs</div>
-                            <div class="vs-divider">vs</div>
-                            <div class="away-team">Steel Warriors FC</div>
-                        </div>
-                        <div class="match-score">26 Jun<br>16:00</div>
-                        <div class="match-details">
-                            <div class="match-venue">
-                                <i class="fas fa-map-marker-alt"></i>
-                                Home Stadium
-                            </div>
-                        </div>
-                    </div>
-                </div>
+            <div class="matches-grid" id="upcoming-matches-grid">
+                <!-- Upcoming matches will be populated dynamically -->
             </div>
         </div>
     </section>
@@ -141,91 +88,8 @@
     <section class="matches-section" id="matches">
         <div class="container">
             <h2 class="section-title">Recent Results</h2>
-            <div class="matches-grid">
-                <div class="match-card modern result" data-venue="KFC Lentezon" data-match-title="Dynamo Beirs vs Red Hawks FC" data-score="2-1" data-match-date="21 mei" data-match-time="19:00" data-match-season="2024-25" data-goalscorers='[{"player":"Lukaku", "goals":1}, {"player":"De Bruyne", "goals":1}]'>
-                    <div class="result-icon win"><span><i class="fas fa-check"></i></span></div>
-                    <div class="match-body">
-                        <div class="match-teams">
-                            <div class="home-team">Dynamo Beirs</div>
-                            <div class="vs-divider">vs</div>
-                            <div class="away-team">Red Hawks FC</div>
-                        </div>
-                        <div class="match-score">2-1</div>
-                        <div class="match-details">
-                            <span class="match-date"><i class="fas fa-calendar"></i> 21 mei</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="match-card modern result" data-venue="KFC Lentezon" data-match-title="Dynamo Beirs vs Greenfield United" data-score="3-0" data-match-date="18 mei" data-match-time="19:00" data-match-season="2024-25" data-goalscorers='[{"player":"Lukaku", "goals":2}, {"player":"Hazard", "goals":1}]'>
-                    <div class="result-icon win"><span><i class="fas fa-check"></i></span></div>
-                    <div class="match-body">
-                        <div class="match-teams">
-                            <div class="home-team">Dynamo Beirs</div>
-                            <div class="vs-divider">vs</div>
-                            <div class="away-team">Greenfield United</div>
-                        </div>
-                        <div class="match-score">3-0</div>
-                        <div class="match-details">
-                            <span class="match-date"><i class="fas fa-calendar"></i> 18 mei</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="match-card modern result" data-venue="Bluewave Stadium" data-match-title="Bluewave FC vs Dynamo Beirs" data-score="2-1" data-match-date="14 mei" data-match-time="19:00" data-match-season="2024-25" data-goalscorers='[{"player":"De Bruyne", "goals":1}]'>
-                    <div class="result-icon loss"><span><i class="fas fa-times"></i></span></div>
-                    <div class="match-body">
-                        <div class="match-teams">
-                            <div class="home-team">Bluewave FC</div>
-                            <div class="vs-divider">vs</div>
-                            <div class="away-team">Dynamo Beirs</div>
-                        </div>
-                        <div class="match-score">2-1</div>
-                        <div class="match-details">
-                            <span class="match-date"><i class="fas fa-calendar"></i> 14 mei</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="match-card modern result" data-venue="KFC Lentezon" data-match-title="Dynamo Beirs vs Ironclad SC" data-score="2-0" data-match-date="10 mei" data-match-time="19:00" data-match-season="2024-25" data-goalscorers='[{"player":"Lukaku", "goals":1}, {"player":"Hazard", "goals":1}]'>
-                    <div class="result-icon win"><span><i class="fas fa-check"></i></span></div>
-                    <div class="match-body">
-                        <div class="match-teams">
-                            <div class="home-team">Dynamo Beirs</div>
-                            <div class="vs-divider">vs</div>
-                            <div class="away-team">Ironclad SC</div>
-                        </div>
-                        <div class="match-score">2-0</div>
-                        <div class="match-details">
-                            <span class="match-date"><i class="fas fa-calendar"></i> 10 mei</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="match-card modern result" data-venue="Victory Arena" data-match-title="Werk Der Toekomst vs Dynamo Beirs" data-score="1-1" data-match-date="6 mei" data-match-time="19:00" data-match-season="2024-25" data-goalscorers='[{"player":"De Bruyne", "goals":1}]'>
-                    <div class="result-icon draw"><span><i class="fas fa-minus"></i></span></div>
-                    <div class="match-body">
-                        <div class="match-teams">
-                            <div class="home-team">Werk Der Toekomst</div>
-                            <div class="vs-divider">vs</div>
-                            <div class="away-team">Dynamo Beirs</div>
-                        </div>
-                        <div class="match-score">1-1</div>
-                        <div class="match-details">
-                            <span class="match-date"><i class="fas fa-calendar"></i> 6 mei</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="match-card modern result" data-venue="KFC Lentezon" data-match-title="Dynamo Beirs vs Den Hout Athletic Club" data-score="3-2" data-match-date="2 mei" data-match-time="19:00" data-match-season="2024-25" data-goalscorers='[{"player":"Lukaku", "goals":2}, {"player":"De Bruyne", "goals":1}]'>
-                    <div class="result-icon win"><span><i class="fas fa-check"></i></span></div>
-                    <div class="match-body">
-                        <div class="match-teams">
-                            <div class="home-team">Dynamo Beirs</div>
-                            <div class="vs-divider">vs</div>
-                            <div class="away-team">Den Hout Athletic Club</div>
-                        </div>
-                        <div class="match-score">3-2</div>
-                        <div class="match-details">
-                            <span class="match-date"><i class="fas fa-calendar"></i> 2 mei</span>
-                        </div>
-                    </div>
-                </div>
+            <div class="matches-grid" id="recent-matches-grid">
+                <!-- Recent matches will be populated dynamically -->
             </div>
         </div>
     </section>
@@ -236,63 +100,8 @@
             <h2 class="section-title">Season Timeline</h2>
             <div class="timeline-wrapper">
                 <div class="timeline-start-knob"></div>
-                <div class="timeline">
-                    <div class="timeline-item loss" data-match="match14">
-                        <span class="result-icon"><i class="fas fa-times"></i></span>
-                        <small>Feb 16</small>
-                    </div>
-                    <div class="timeline-item win" data-match="match13">
-                        <span class="result-icon"><i class="fas fa-check"></i></span>
-                        <small>Feb 23</small>
-                    </div>
-                    <div class="timeline-item draw" data-match="match12">
-                        <span class="result-icon"><i class="fas fa-minus"></i></span>
-                        <small>Feb 30</small>
-                    </div>
-                    <div class="timeline-item win" data-match="match11">
-                        <span class="result-icon"><i class="fas fa-check"></i></span>
-                        <small>Mar 1</small>
-                    </div>
-                    <div class="timeline-item loss" data-match="match10">
-                        <span class="result-icon"><i class="fas fa-times"></i></span>
-                        <small>Mar 7</small>
-                    </div>
-                    <div class="timeline-item win" data-match="match9">
-                        <span class="result-icon"><i class="fas fa-check"></i></span>
-                        <small>Mar 16</small>
-                    </div>
-                    <div class="timeline-item draw" data-match="match8">
-                        <span class="result-icon"><i class="fas fa-minus"></i></span>
-                        <small>Mar 23</small>
-                    </div>
-                    <div class="timeline-item win" data-match="match7">
-                        <span class="result-icon"><i class="fas fa-check"></i></span>
-                        <small>Mar 30</small>
-                    </div>
-                    <div class="timeline-item loss" data-match="match6">
-                        <span class="result-icon"><i class="fas fa-times"></i></span>
-                        <small>Apr 16</small>
-                    </div>
-                    <div class="timeline-item win" data-match="match5">
-                        <span class="result-icon"><i class="fas fa-check"></i></span>
-                        <small>Apr 23</small>
-                    </div>
-                    <div class="timeline-item draw" data-match="match4">
-                        <span class="result-icon"><i class="fas fa-minus"></i></span>
-                        <small>Apr 30</small>
-                    </div>
-                    <div class="timeline-item win" data-match="match3">
-                        <span class="result-icon"><i class="fas fa-check"></i></span>
-                        <small>May 7</small>
-                    </div>
-                    <div class="timeline-item win" data-match="match2">
-                        <span class="result-icon"><i class="fas fa-check"></i></span>
-                        <small>May 14</small>
-                    </div>
-                    <div class="timeline-item win" data-match="match1">
-                        <span class="result-icon"><i class="fas fa-check"></i></span>
-                        <small>May 21</small>
-                    </div>
+                <div class="timeline" id="season-timeline">
+                    <!-- Timeline items will be populated dynamically -->
                 </div>
             </div>
         </div>

@@ -7,11 +7,15 @@
 <div id="matchCenterModal" class="modal-overlay">
     <div class="modal-content">
         <!-- Close Button -->
-        <span class="close-modal">&times;</span>
+        <button class="close-modal"><i class="fas fa-times"></i></button>
 
         <!-- Title and Season -->
-        <h2 id="modalMatchTitle">Match Details</h2>
-        <div class="season" id="matchSeason">2024-25</div>
+        <div id="modalMatchTitle" class="match-title-container">
+            <div class="team-name home-team">Home Team</div>
+            <div class="vs-text">vs</div>
+            <div class="team-name away-team">Away Team</div>
+        </div>
+        <div class="season" id="matchSeason">2025-26</div>
 
         <!-- Score Display -->
         <div class="modal-match-score" id="modalMatchScore" style="display: none;">

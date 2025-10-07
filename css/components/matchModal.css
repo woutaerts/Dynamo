@@ -25,6 +25,67 @@ body.modal-open {
     display: flex;
 }
 
+/* Title Container */
+.match-title-container {
+    text-align: center;
+    margin-bottom: 1.5rem;
+    font-family: 'Poppins', sans-serif;
+    position: relative;
+}
+
+.team-name {
+    font-size: 1.8rem; /* Slightly smaller than original 2rem for balance */
+    font-weight: 800;
+    color: var(--dark-gray);
+    line-height: 1.2;
+}
+
+.home-team {
+    margin-bottom: 0.3rem; /* Space between home team and vs */
+}
+
+.vs-text {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: var(--medium-gray);
+    margin-bottom: 0.3rem; /* Space between vs and away team */
+}
+
+.away-team {
+    margin-bottom: 0.5rem; /* Space for the underline */
+}
+
+.match-title-container::after {
+    content: '';
+    position: absolute;
+    bottom: -6px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 50px;
+    height: 3px;
+    background: var(--dynamo-red);
+    border-radius: 2px;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .team-name {
+        font-size: 1.5rem;
+    }
+    .vs-text {
+        font-size: 1.1rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .team-name {
+        font-size: 1.3rem;
+    }
+    .vs-text {
+        font-size: 1rem;
+    }
+}
+
 /* Modal Content */
 .modal-content {
     background: var(--off-white);
@@ -65,8 +126,6 @@ body.modal-open {
     position: absolute;
     top: 12px;
     right: 12px;
-    font-size: 1.3rem;
-    color: var(--medium-gray);
     background: white;
     border: 1px solid transparent;
     cursor: pointer;
@@ -77,15 +136,26 @@ body.modal-open {
     align-items: center;
     justify-content: center;
     transition: all 0.3s ease;
-    font-family: 'Poppins', sans-serif;
-    font-weight: 300;
     box-shadow: var(--shadow-medium);
+    line-height: 1;
+    padding: 0;
+}
+
+.close-modal i {
+    font-size: 1.3rem;
+    line-height: 1;
+    color: var(--medium-gray);
+    transform: translate(0.5px, 0.5px);
 }
 
 .close-modal:hover {
     color: var(--dark-gray);
     box-shadow: var(--shadow-hover);
     border-color: var(--dark-gray);
+}
+
+.close-modal:hover i {
+    color: var(--dark-gray);
 }
 
 /* Title and Season */
@@ -143,7 +213,7 @@ body.modal-open {
     box-shadow: var(--shadow-medium);
     text-align: center;
     min-width: 110px;
-    transition: none;
+    transition: all 0.3s ease;
 }
 
 /* Modal Sections */
@@ -161,7 +231,8 @@ body.modal-open {
 
 .modal-section:hover,
 .goalscorers-section:hover,
-.add-to-calendar-section:hover {
+.add-to-calendar-section:hover,
+.score-display:hover{
     transform: translateY(-2px);
     box-shadow: var(--shadow-hover);
 }

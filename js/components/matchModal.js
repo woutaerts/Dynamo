@@ -63,19 +63,20 @@ class MatchModal {
 
         const {
             title = 'Match Details',
-            dateTime = { date: 'TBD', time: 'TBD' },
+            dateTime = { date: 'TBD', time: 'TBD', displayDate: 'TBD' },
             season = 'Current Season',
             stadium = 'Home Stadium',
             goalscorers = [],
             score = null,
-            isUpcoming = false
+            isUpcoming = false,
+            isHome = true
         } = matchData;
 
         document.body.classList.add('modal-open');
         const modalContent = this.modal.querySelector('.modal-content');
         if (modalContent) {
             modalContent.classList.toggle('upcoming-match', isUpcoming);
-            this.updateContent(title, dateTime, season, stadium, goalscorers, score, isUpcoming);
+            this.updateContent(title, dateTime, season, stadium, goalscorers, score, isUpcoming, isHome);
         }
 
         this.modal.style.display = 'flex';
@@ -112,14 +113,23 @@ class MatchModal {
     }
 
     /* Content Updates */
-    updateContent(title, dateTime, season, stadium, goalscorers, score, isUpcoming) {
+    updateContent(title, dateTime, season, stadium, goalscorers, score, isUpcoming, isHome) {
         const titleEl = this.modal.querySelector('#modalMatchTitle');
-        if (titleEl) titleEl.textContent = title;
+        if (titleEl) {
+            // Split title into home and away teams
+            const [homeTeam, awayTeam] = title.split(' vs ').map(team => team.trim());
+            const homeTeamEl = titleEl.querySelector('.home-team');
+            const awayTeamEl = titleEl.querySelector('.away-team');
+            if (homeTeamEl && awayTeamEl) {
+                homeTeamEl.textContent = homeTeam || 'Home Team';
+                awayTeamEl.textContent = awayTeam || 'Away Team';
+            }
+        }
 
         const scoreEl = this.modal.querySelector('#modalMatchScore');
         const scoreDisplayEl = this.modal.querySelector('.score-display');
         if (scoreEl && scoreDisplayEl) {
-            scoreEl.style.display = isUpcoming ? 'none' : 'flex'; // Hide score for upcoming matches
+            scoreEl.style.display = isUpcoming ? 'none' : 'flex';
             if (score && !isUpcoming) {
                 scoreDisplayEl.textContent = score;
             }
@@ -130,20 +140,17 @@ class MatchModal {
         const dateEl = this.modal.querySelector('#matchDate');
         const timeEl = this.modal.querySelector('#matchTime');
         if (dateEl && timeEl) {
-            let dateValue = 'TBD';
-            let timeValue = 'TBD';
+            let dateValue = dateTime.displayDate || 'TBD';
+            let timeValue = dateTime.time || 'TBD';
 
-            if (typeof dateTime === 'object' && dateTime.date && dateTime.time) {
-                dateValue = dateTime.date;
-                timeValue = dateTime.time;
-            } else if (typeof dateTime === 'string') {
+            if (typeof dateTime === 'string') {
                 if (dateTime.includes(' — ')) {
                     const [datePart, timePart] = dateTime.split(' — ');
-                    dateValue = datePart;
+                    dateValue = datePart.split(' ').slice(0, 2).join(' ');
                     const timeMatch = timePart.match(/\d{2}:\d{2}/);
                     timeValue = timeMatch ? timeMatch[0] : 'TBD';
                 } else {
-                    dateValue = dateTime;
+                    dateValue = dateTime.split(' ').slice(0, 2).join(' ');
                 }
             }
 
@@ -159,7 +166,6 @@ class MatchModal {
             stadiumEl.innerHTML = `<i class="fas fa-map-marker-alt"></i> ${stadium}`;
         }
 
-        // Update goalscorers only for past matches
         const goalscorersSection = this.modal.querySelector('.goalscorers-section');
         if (goalscorersSection) {
             goalscorersSection.style.display = isUpcoming ? 'none' : 'block';
@@ -168,7 +174,6 @@ class MatchModal {
             }
         }
 
-        // Show add to calendar button only for upcoming matches
         const addToCalendarBtn = this.modal.querySelector('#addToCalendarBtn');
         if (addToCalendarBtn) {
             addToCalendarBtn.style.display = isUpcoming ? 'block' : 'none';
@@ -231,18 +236,18 @@ class MatchModal {
         const timeText = timeEl.textContent.replace(/<[^>]+>/g, '').trim();
         const stadium = stadiumEl.textContent.replace(/<[^>]+>/g, '').trim();
 
-        // Parse date and time (assuming format like "12 juni" and "15:00")
+        // Parse date in "DD MMM" format, assume season year
         const [day, month] = dateText.split(' ');
         const monthMap = {
             'jan': '01', 'feb': '02', 'mrt': '03', 'apr': '04', 'mei': '05', 'jun': '06',
             'jul': '07', 'aug': '08', 'sep': '09', 'okt': '10', 'nov': '11', 'dec': '12'
         };
         const monthNum = monthMap[month.toLowerCase().substring(0, 3)] || '06';
-        const year = new Date().getFullYear(); // Assume current year
+        const currentYear = new Date().getMonth() < 6 ? 2026 : 2025;
         const [hours, minutes] = timeText.split(':');
 
-        const startDate = new Date(`${year}-${monthNum}-${day}T${hours}:${minutes}:00`);
-        const endDate = new Date(startDate.getTime() + 2 * 60 * 60 * 1000); // Assume 2-hour match
+        const startDate = new Date(`${currentYear}-${monthNum}-${day.padStart(2, '0')}T${hours}:${minutes}:00`);
+        const endDate = new Date(startDate.getTime() + 2 * 60 * 60 * 1000);
 
         const event = {
             title: matchTitle,
@@ -252,7 +257,6 @@ class MatchModal {
             description: `Football match: ${matchTitle} at ${stadium}`
         };
 
-        // Generate ICS file for calendar
         const icsContent = [
             'BEGIN:VCALENDAR',
             'VERSION:2.0',
@@ -287,7 +291,6 @@ function animateOnScroll() {
         { selector: '.goalscorers-section', containerSelector: null },
         { selector: '.date-time-section', containerSelector: null },
         { selector: '.stadium-section', containerSelector: null },
-        { selector: '#addToCalendarBtn', containerSelector: null },
         { selector: '#addToCalendarBtn', containerSelector: null }
     ];
 

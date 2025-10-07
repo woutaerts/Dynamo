@@ -18,13 +18,13 @@
     <script type="module" src="js/index.js"></script>
     <script type="module" src="js/partials/header.js"></script>
     <script type="module" src="js/partials/footer.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.0/papaparse.min.js"></script>
 </head>
 <body>
-
 <div id="header-placeholder"></div>
 
 <main>
-    <!-- Hero Section -->
+    <!-- Hero Section (Unchanged) -->
     <section class="hero" id="home">
         <div class="container">
             <div class="hero-content">
@@ -33,7 +33,7 @@
         </div>
     </section>
 
-    <!-- Club Overview -->
+    <!-- Club Overview (Unchanged) -->
     <section class="overview-section">
         <div class="container">
             <h2 class="section-title">Club Overview</h2>
@@ -41,7 +41,7 @@
                 <div class="overview-card">
                     <i class="fas fa-chart-line"></i>
                     <h3>Championship Success</h3>
-                    <p>21 wins out of 28 matches this season</p>
+                    <p id="overview-stats">Loading statistics...</p>
                     <a href="html/statistics.html" class="cta-button">View Full Stats</a>
                 </div>
                 <div class="overview-card">
@@ -60,13 +60,12 @@
         </div>
     </section>
 
-
     <!-- Next Match Countdown -->
     <section class="countdown-section">
         <div class="container">
             <h2 class="section-title">Next Match Countdown</h2>
             <div class="upcoming-match-name">
-                <h3>Dynamo Beirs vs Thunder United</h3>
+                <h3 id="next-match-title">Loading next match...</h3>
             </div>
             <div class="countdown" id="countdown">
                 <div class="countdown-block">
@@ -95,12 +94,8 @@
             <div class="form-display">
                 <h3 class="section-subtitle">Form</h3>
                 <p class="form-description">Last 5 Matches</p>
-                <div class="form-results">
-                    <span class="form-result win"><i class="fas fa-check"></i></span>
-                    <span class="form-result win"><i class="fas fa-check"></i></span>
-                    <span class="form-result win"><i class="fas fa-check"></i></span>
-                    <span class="form-result draw"><i class="fas fa-minus"></i></span>
-                    <span class="form-result win"><i class="fas fa-check"></i></span>
+                <div class="form-results" id="form-results">
+                    <!-- Dynamically populated -->
                 </div>
             </div>
         </div>
@@ -112,26 +107,26 @@
             <h2 class="section-title">Statistics Overview</h2>
             <div class="stats-grid">
                 <div class="stat-card">
-                    <div class="stat-number">28</div>
+                    <div class="stat-number" id="team-matches-played">0</div>
                     <div class="stat-label">Matches</div>
                 </div>
                 <div class="stat-card">
-                    <div class="stat-number">21</div>
+                    <div class="stat-number" id="team-wins">0</div>
                     <div class="stat-label">Wins</div>
                 </div>
                 <div class="stat-card">
-                    <div class="stat-number">45</div>
+                    <div class="stat-number" id="team-goals-scored">0</div>
                     <div class="stat-label">Goals</div>
                 </div>
                 <div class="stat-card">
-                    <div class="stat-number">10</div>
-                    <div class="stat-label">Clean Sheets</div>
+                    <div class="stat-number" id="team-clean-sheets">0</div>
+                    <div class="stat-label">Clean Sheet</div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Contact Information -->
+    <!-- Contact Information (Unchanged) -->
     <section class="contact-section">
         <div class="container">
             <h2 class="section-title">Contact Us</h2>
@@ -155,7 +150,7 @@
         </div>
     </section>
 
-    <!-- Location Map -->
+    <!-- Location Map (Unchanged) -->
     <section class="map-section">
         <div class="container">
             <div class="map-container">
@@ -172,6 +167,5 @@
 </main>
 
 <div id="footer-placeholder"></div>
-
 </body>
 </html>

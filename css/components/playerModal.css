@@ -68,8 +68,6 @@ body.modal-open {
     position: absolute;
     top: 12px;
     right: 12px;
-    font-size: 1.3rem;
-    color: var(--medium-gray);
     background: white;
     border: 1px solid transparent;
     cursor: pointer;
@@ -80,15 +78,26 @@ body.modal-open {
     align-items: center;
     justify-content: center;
     transition: all 0.3s ease;
-    font-family: 'Poppins', sans-serif;
-    font-weight: 300;
     box-shadow: var(--shadow-medium);
+    line-height: 1;
+    padding: 0;
+}
+
+.close-modal i {
+    font-size: 1.3rem;
+    line-height: 1;
+    color: var(--medium-gray);
+    transform: translate(0.5px, 0.5px);
 }
 
 .close-modal:hover {
     color: var(--dark-gray);
     box-shadow: var(--shadow-hover);
     border-color: var(--dark-gray);
+}
+
+.close-modal:hover i {
+    color: var(--dark-gray);
 }
 
 /* Player Header (Name, Position, Flag) */

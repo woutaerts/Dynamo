@@ -107,7 +107,7 @@ function configureFooter(isRootPage) {
         logoGrey.src = 'img/logos/gray-outlined-logo.png';
         logoRed.src = 'img/logos/red-outlined-logo.png';
     } else {
-        logoLink.href = '../../index.html';
+        logoLink.href = '../index.html';
         logoGrey.src = '../../img/logos/gray-outlined-logo.png';
         logoRed.src = '../../img/logos/red-outlined-logo.png';
     }

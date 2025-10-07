@@ -1,10 +1,29 @@
 // general.js
 
 // Countdown timer initialization
-export function initializeCountdown(targetDateString = "2025-06-30T15:00:00") {
-    const targetDate = new Date(targetDateString).getTime();
+export function initializeCountdown() {
     const countdownElement = document.getElementById("countdown");
-    if (!countdownElement) return;
+    const titleEl = document.getElementById("next-match-title");
+    if (!countdownElement || !titleEl) return;
+
+    if (!window.nextMatchDateTime) {
+        titleEl.textContent = "No games planned in the near future";
+        countdownElement.style.display = "none";
+        return;
+    }
+
+    const monthMap = {
+        'jan': 0, 'feb': 1, 'mar': 2, 'apr': 3, 'may': 4, 'jun': 5,
+        'jul': 6, 'aug': 7, 'sep': 8, 'oct': 9, 'nov': 10, 'dec': 11
+    };
+
+    const parseDateTime = (dateTimeStr) => {
+        const [day, month, year, time] = dateTimeStr.split(' ');
+        const [hours, minutes] = time.split(':');
+        return new Date(year, monthMap[month.toLowerCase()], day, hours, minutes).getTime();
+    };
+
+    const targetDate = parseDateTime(window.nextMatchDateTime);
 
     const countdown = setInterval(() => {
         const now = new Date().getTime();
@@ -12,7 +31,8 @@ export function initializeCountdown(targetDateString = "2025-06-30T15:00:00") {
 
         if (distance < 0) {
             clearInterval(countdown);
-            countdownElement.innerHTML = "<div style='text-align: center; font-size: 1.5rem; color: #B90A0A; font-weight: bold;'>Match Started!</div>";
+            titleEl.textContent = "No games planned in the near future";
+            countdownElement.style.display = "none";
             return;
         }
 
@@ -29,7 +49,7 @@ export function initializeCountdown(targetDateString = "2025-06-30T15:00:00") {
     }, 1000);
 }
 
-// Scroll-based animation for player cards (restored from original players.js)
+// Scroll-based animation for player cards
 export function animatePlayerCards() {
     // Function to check if an element is in the viewport
     function isElementInViewport(el) {
@@ -49,7 +69,7 @@ export function animatePlayerCards() {
     initialItems.forEach(item => {
         if (isElementInViewport(item)) {
             const itemIndex = Array.from(itemsInContainer).indexOf(item);
-            item.style.setProperty('--animation-delay', Math.min(itemIndex * 0.2, 2)); // Cap delay at 200ms
+            item.style.setProperty('--animation-delay', Math.min(itemIndex * 0.2, 2));
             item.classList.add('animate-in');
         }
     });
@@ -82,7 +102,7 @@ export function animatePlayerCards() {
                 item.classList.add('animate-in');
             }
         });
-    }, { once: true }); // Run once to avoid multiple listeners
+    }, { once: true });
 }
 
 // Scroll-based animation for other elements

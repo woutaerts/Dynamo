@@ -12,11 +12,11 @@ const animationElements = [
     { selector: '.map-container', containerSelector: null },
     { selector: '.section-title', containerSelector: 'section' },
     { selector: '.section-subtitle', containerSelector: 'section' },
-    { selector: '.upcoming-match-name', containerSelector: null }, // Added
-    { selector: '.form-description', containerSelector: null } // Added
+    { selector: '.upcoming-match-name', containerSelector: null },
+    { selector: '.form-description', containerSelector: null }
 ];
 
-// Scroll-triggered animation system for index page
+// Scroll-triggered animation system
 let hasStartedScrolling = false;
 
 function isElementInViewport(el, threshold = 0.1) {
@@ -29,7 +29,6 @@ function isElementInViewport(el, threshold = 0.1) {
 }
 
 function animateIndexElements() {
-    // Elements that should animate when scrolling starts
     const scrollElements = document.querySelectorAll(
         '.overview-card, .stat-card, .contact-card, .countdown-block, .form-result, .map-container, .section-title, .section-subtitle, .upcoming-match-name, .form-description'
     );
@@ -62,15 +61,13 @@ function handleIndexScroll() {
 }
 
 function setupIndexAnimations() {
-    // Animate only hero on page load
+    // Animate hero immediately on page load
     const immediateElements = document.querySelectorAll('.hero');
     immediateElements.forEach((element) => {
-        setTimeout(() => {
-            element.classList.add('animate-in');
-        }, 300);
+        element.classList.add('animate-in');
     });
 
-    // Throttled scroll handler
+    // Throttled scroll handler for other elements
     let isThrottled = false;
     window.addEventListener('scroll', () => {
         if (!isThrottled) {
@@ -81,19 +78,202 @@ function setupIndexAnimations() {
             }, 100);
         }
     });
-
-    // Check on page load for elements already in viewport
-    setTimeout(() => {
-        if (hasStartedScrolling) {
-            animateIndexElements();
-        }
-    }, 500);
 }
 
-// DOM ready initialization
-document.addEventListener('DOMContentLoaded', () => {
+// Initialize the homepage
+document.addEventListener('DOMContentLoaded', async () => {
+    await fetchAndRenderData();
     initializeCountdown();
     setupSmoothScrolling();
     setupPageLoadAnimation();
     setupIndexAnimations();
 });
+
+// Fetch and render all necessary data
+async function fetchAndRenderData() {
+    try {
+        await Promise.all([
+            fetchAndRenderMatches(),
+            fetchAndRenderTeamStats()
+        ]);
+    } catch (error) {
+        console.error('Error fetching data:', error);
+        handleErrorStates();
+    }
+}
+
+// Fetch and parse match data from Google Spreadsheet
+async function fetchAndRenderMatches() {
+    const spreadsheetUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQRCgon0xh9NuQ87NgqQzBNPCEmmZWcC_jrulRhLwmrudf5UQ2QBRA28F1qmWB9L5xP9uZ8-ct2aqfR/pub?gid=300017481&single=true&output=csv';
+
+    try {
+        const response = await fetch(spreadsheetUrl);
+        const csvText = await response.text();
+        const matches = parseCsvData(csvText);
+
+        renderForm(matches.form);
+        updateCountdown(matches.upcoming);
+        updateOverviewStats(matches.past);
+    } catch (error) {
+        console.error('Error fetching matches:', error);
+        handleErrorStates();
+    }
+}
+
+// Parse CSV data for matches
+function parseCsvData(csvText) {
+    const parsed = Papa.parse(csvText, {
+        skipEmptyLines: true,
+        delimiter: ','
+    });
+
+    const rows = parsed.data;
+    const matches = { upcoming: [], past: [], all: [], form: [] };
+
+    const columns = ['F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', 'AA'];
+    const colIndexMap = columns.reduce((map, col, idx) => {
+        map[col] = idx + 5;
+        return map;
+    }, {});
+
+    for (const col of columns) {
+        const colIdx = colIndexMap[col];
+        const opponent = rows[1]?.[colIdx]?.trim();
+        const date = rows[2]?.[colIdx]?.trim();
+        const time = rows[3]?.[colIdx]?.trim();
+        const stadium = rows[4]?.[colIdx]?.trim();
+        const homeAway = rows[5]?.[colIdx]?.trim().toLowerCase();
+        const result = rows[60]?.[colIdx]?.trim().toLowerCase();
+
+        if (opponent && date && time && stadium && homeAway) {
+            const isHome = homeAway === 'thuis';
+            const title = isHome ? `Dynamo Beirs vs ${opponent}` : `${opponent} vs Dynamo Beirs`;
+            const match = {
+                title,
+                dateTime: { date, time, displayDate: date.split(' ').slice(0, 2).join(' ') },
+                stadium,
+                isHome,
+                result
+            };
+
+            if (result) {
+                matches.past.push(match);
+            } else {
+                matches.upcoming.push(match);
+            }
+            matches.all.push(match);
+        }
+    }
+
+    const parseDate = (dateStr) => {
+        const [day, month, year] = dateStr.split(' ');
+        const monthMap = {
+            'jan': 0, 'feb': 1, 'mrt': 2, 'apr': 3, 'mei': 4, 'jun': 5,
+            'jul': 6, 'aug': 7, 'sep': 8, 'okt': 9, 'nov': 10, 'dec': 11
+        };
+        return new Date(year, monthMap[month.toLowerCase()], day);
+    };
+
+    matches.all.sort((a, b) => parseDate(a.dateTime.date) - parseDate(b.dateTime.date));
+    matches.past.sort((a, b) => parseDate(a.dateTime.date) - parseDate(b.dateTime.date));
+    matches.upcoming.sort((a, b) => parseDate(a.dateTime.date) - parseDate(b.dateTime.date));
+
+    const formStartCol = 28;
+    const resultMap = {
+        'w': 'winst',
+        'd': 'gelijk',
+        'l': 'verlies'
+    };
+    for (let i = 0; i < 5; i++) {
+        const cell = rows[69]?.[formStartCol + i]?.trim().toLowerCase();
+        if (cell && resultMap[cell]) {
+            matches.form.push(resultMap[cell]);
+        }
+    }
+    matches.form = matches.form.reverse();
+
+    return matches;
+}
+
+// Fetch and parse team season stats
+async function fetchAndRenderTeamStats() {
+    const spreadsheetUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQRCgon0xh9NuQ87NgqQzBNPCEmmZWcC_jrulRhLwmrudf5UQ2QBRA28F1qmWB9L5xP9uZ8-ct2aqfR/pub?gid=241725037&single=true&output=csv';
+
+    try {
+        const response = await fetch(spreadsheetUrl);
+        const csvText = await response.text();
+        const rows = csvText.split('\n').map(row => row.split(',').map(cell => cell.trim().replace(/"/g, '')));
+
+        if (rows.length < 67) {
+            throw new Error('Insufficient rows in team season stats CSV');
+        }
+
+        const teamSeasonStats = {
+            matchesPlayed: parseInt(rows[50][3]) || 0,
+            wins: parseInt(rows[51][3]) || 0,
+            cleanSheets: parseInt(rows[61][3]) || 0,
+            goalsScored: parseInt(rows[54][3]) || 0
+        };
+
+        updateTeamStats(teamSeasonStats);
+    } catch (error) {
+        console.error('Error loading team season stats:', error);
+        updateTeamStats({});
+    }
+}
+
+// Update team stats in the statistics overview section
+function updateTeamStats(stats) {
+    document.getElementById('team-matches-played').textContent = stats.matchesPlayed || 0;
+    document.getElementById('team-wins').textContent = stats.wins || 0;
+    document.getElementById('team-goals-scored').textContent = stats.goalsScored || 0;
+    document.getElementById('team-clean-sheets').textContent = stats.cleanSheets || 0;
+}
+
+// Update overview stats in the club overview section
+function updateOverviewStats(pastMatches) {
+    const wins = pastMatches.filter(match => match.result === 'winst').length;
+    const totalMatches = pastMatches.length;
+    const overviewText = totalMatches > 0 ? `${wins} wins out of ${totalMatches} matches this season` : 'No matches played yet';
+    document.getElementById('overview-stats').textContent = overviewText;
+}
+
+// Render recent form
+function renderForm(form) {
+    const formResults = document.getElementById('form-results');
+    formResults.innerHTML = '';
+
+    form.forEach(result => {
+        const span = document.createElement('span');
+        const resultClass = result === 'winst' ? 'win' : result === 'gelijk' ? 'draw' : 'loss';
+        span.className = `form-result ${resultClass}`;
+        span.innerHTML = `<i class="fas fa-${resultClass === 'win' ? 'check' : resultClass === 'draw' ? 'minus' : 'times'}"></i>`;
+        formResults.appendChild(span);
+    });
+}
+
+// Update countdown for the next match
+function updateCountdown(upcomingMatches) {
+    const titleEl = document.getElementById('next-match-title');
+    const countdownEl = document.getElementById('countdown');
+
+    if (upcomingMatches.length === 0) {
+        titleEl.textContent = 'No games planned in the near future';
+        countdownEl.style.display = 'none';
+        window.nextMatchDateTime = null;
+        return;
+    }
+
+    const nextMatch = upcomingMatches[0];
+    titleEl.textContent = nextMatch.title;
+    window.nextMatchDateTime = `${nextMatch.dateTime.date} ${nextMatch.dateTime.time}`;
+}
+
+// Handle error states
+function handleErrorStates() {
+    document.getElementById('next-match-title').textContent = 'No games planned in the near future';
+    document.getElementById('countdown').style.display = 'none';
+    document.getElementById('overview-stats').textContent = 'No matches played yet';
+    document.getElementById('form-results').innerHTML = '<p>No recent form available</p>';
+    updateTeamStats({});
+}
