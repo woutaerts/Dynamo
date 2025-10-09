@@ -44,7 +44,7 @@ body.modal-open {
 }
 
 .modal-content::-webkit-scrollbar {
-    width: 6px;
+    width: Guilleminot 6px;
 }
 
 .modal-content::-webkit-scrollbar-track {
@@ -377,70 +377,12 @@ body.modal-open {
 /* Responsive Design */
 @media (max-width: 768px) {
     .modal-content {
-        width: 95%;
-        padding: 1.2rem;
-        max-height: 85vh;
-    }
-
-    .team-name {
-        font-size: 1.5rem;
-    }
-
-    .vs-text {
-        font-size: 1.1rem;
-    }
-
-    .score-display {
-        font-size: 1.5rem;
-        padding: 8px 14px;
-        min-width: 100px;
-    }
-
-    #modalMatchTitle {
-        font-size: 1.7rem;
-        margin-bottom: 1.2rem;
-    }
-
-    .modal-section,
-    .goalscorers-section {
+        width: 92%;
         padding: 1rem;
-        margin-bottom: 1.2rem;
-    }
-
-    .modal-section h3,
-    .goalscorers-section h3 {
-        font-size: 1.1rem;
-    }
-
-    .date-box p,
-    .time-box p,
-    .stadium-name {
-        font-size: 0.9rem !important; /* Reduced font size for date and time */
-    }
-
-    .close-modal {
-        width: 32px;
-        height: 32px;
-        font-size: 1.1rem;
-        top: 10px;
-        right: 10px;
-    }
-
-    .date-time-container {
-        flex-direction: row;
-        gap: 0.5rem;
-    }
-
-    .date-box,
-    .time-box {
-        flex: 1;
-        min-width: 0;
-    }
-}
-
-@media (max-width: 480px) {
-    .modal-content {
-        padding: 1rem;
+        max-height: 80vh;
+        border-radius: 14px;
+        box-shadow: var(--shadow-small);
+        background: linear-gradient(145deg, var(--off-white), var(--nested-box));
     }
 
     .team-name {
@@ -451,18 +393,193 @@ body.modal-open {
         font-size: 1rem;
     }
 
-    #modalMatchTitle {
-        font-size: 1.4rem;
-    }
-
     .score-display {
         font-size: 1.3rem;
-        padding: 0.6rem 1rem;
-        min-width: 85px;
+        padding: 7px 12px;
+        min-width: 90px;
+        border-radius: 18px;
+        box-shadow: var(--shadow-small);
+    }
+
+    #modalMatchTitle {
+        font-size: 1.4rem;
+        margin-bottom: 1rem;
+    }
+
+    #modalMatchTitle::after {
+        width: 40px;
+        height: 2px;
+    }
+
+    .season {
+        font-size: 0.9rem;
+        margin-bottom: 0.8rem;
+    }
+
+    .modal-section,
+    .goalscorers-section,
+    .add-to-calendar-section {
+        padding: 0.9rem;
+        margin-bottom: 1rem;
+        border-radius: 10px;
+        box-shadow: var(--shadow-small);
+    }
+
+    .modal-section h3,
+    .goalscorers-section h3,
+    .add-to-calendar-section h3 {
+        font-size: 1rem;
+    }
+
+    .modal-section h3::after,
+    .goalscorers-section h3::after,
+    .add-to-calendar-section h3::after {
+        width: 30px;
+        height: 2px;
+    }
+
+    .date-box p,
+    .time-box p,
+    .stadium-name {
+        font-size: 0.85rem !important;
+        padding: 0.6rem;
     }
 
     .goalscorer-item {
         font-size: 0.85rem;
-        padding: 0.6rem 0.8rem;
+        padding: 0.6rem;
+    }
+
+    .close-modal {
+        width: 30px;
+        height: 30px;
+        top: 8px;
+        right: 8px;
+        box-shadow: var(--shadow-small);
+    }
+
+    .close-modal i {
+        font-size: 1rem;
+    }
+
+    .date-time-container {
+        flex-direction: row;
+        gap: 0.4rem;
+    }
+
+    .date-box,
+    .time-box {
+        flex: 1;
+        min-width: 0;
+    }
+
+    #addToCalendarBtn.cta-button {
+        padding: 0.6rem 1.2rem;
+        font-size: 0.85rem;
+        min-height: 40px;
+    }
+}
+
+@media (max-width: 400px) and (min-width: 360px) {
+    .modal-content {
+        width: 70%;
+        padding: 0.8rem;
+        max-height: 82vh;
+        border-radius: 12px;
+        box-shadow: var(--shadow-small);
+        background: linear-gradient(145deg, var(--off-white), var(--nested-box));
+    }
+
+    .team-name {
+        font-size: 1.2rem;
+    }
+
+    .vs-text {
+        font-size: 0.9rem;
+    }
+
+    .score-display {
+        font-size: 1.2rem;
+        padding: 6px 10px;
+        min-width: 80px;
+        border-radius: 16px;
+    }
+
+    #modalMatchTitle {
+        font-size: 1.3rem;
+        margin-bottom: 0.8rem;
+    }
+
+    #modalMatchTitle::after {
+        width: 35px;
+        height: 2px;
+    }
+
+    .season {
+        font-size: 0.85rem;
+        margin-bottom: 0.6rem;
+    }
+
+    .modal-section,
+    .goalscorers-section,
+    .add-to-calendar-section {
+        padding: 0.8rem;
+        margin-bottom: 0.8rem;
+        border-radius: 8px;
+    }
+
+    .modal-section h3,
+    .goalscorers-section h3,
+    .add-to-calendar-section h3 {
+        font-size: 0.9rem;
+    }
+
+    .modal-section h3::after,
+    .goalscorers-section h3::after,
+    .add-to-calendar-section h3::after {
+        width: 25px;
+        height: 1.5px;
+    }
+
+    .date-box p,
+    .time-box p,
+    .stadium-name {
+        font-size: 0.8rem !important;
+        padding: 0.5rem;
+    }
+
+    .goalscorer-item {
+        font-size: 0.8rem;
+        padding: 0.5rem;
+    }
+
+    .close-modal {
+        width: 28px;
+        height: 28px;
+        top: 6px;
+        right: 6px;
+    }
+
+    .close-modal i {
+        font-size: 0.9rem;
+    }
+
+    .date-time-container {
+        gap: 0.3rem;
+    }
+
+    #addToCalendarBtn.cta-button {
+        padding: 0.5rem 1rem;
+        font-size: 0.8rem;
+        min-height: 40px;
+    }
+
+    .match-details-container {
+        flex-direction: column;
+        gap: 0.8rem;
+    }
+
+    .match-details-container .modal-section {
+        margin: 0;
     }
 }

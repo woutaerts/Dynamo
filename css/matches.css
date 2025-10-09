@@ -11,7 +11,7 @@
     box-shadow: var(--shadow-medium);
     transition: opacity 0.6s ease-out, transform 0.6s ease-out, box-shadow 0.3s ease;
     position: relative;
-    z-index: 2;
+    z-index: 3; /* Increased to ensure visibility above card */
 }
 
 .result-icon.win { background: var(--light-green); }
@@ -30,7 +30,7 @@
 .match-card.modern {
     background: white;
     border-radius: 16px;
-    overflow: hidden;
+    /* Removed overflow: hidden to allow icon to protrude */
     box-shadow: var(--shadow-medium);
     cursor: pointer;
     border: 1px solid rgba(0, 0, 0, 0.05);
@@ -49,7 +49,7 @@
     justify-content: center;
     align-items: center;
     position: absolute;
-    top: 16px;
+    top: 16px; /* Adjusted to move icon above card */
     right: 16px;
 }
 
@@ -59,7 +59,7 @@
     transform: translateY(1px);
 }
 
-/* Match card content */
+/* Match card content (unchanged) */
 .match-body {
     padding: 20px 24px 24px;
     display: flex;
@@ -68,6 +68,7 @@
     text-align: center;
 }
 
+/* Rest of base styles (unchanged) */
 .match-teams {
     margin: 0 0 20px;
     width: 100%;
@@ -107,7 +108,6 @@
     font-size: 1.3rem;
 }
 
-/* Match details */
 .match-details {
     display: flex;
     flex-direction: column;
@@ -131,7 +131,7 @@
     opacity: 0.8;
 }
 
-/* Timeline layout */
+/* Timeline layout (unchanged) */
 .timeline-wrapper {
     overflow-x: auto;
     overflow-y: hidden;
@@ -160,7 +160,6 @@
     min-width: 100%;
 }
 
-/* Timeline visual elements */
 .timeline-start-knob {
     position: absolute;
     top: 50%;
@@ -192,7 +191,7 @@
 }
 
 .timeline.animate-in::before {
-    transform: translateY(-2px) scaleX(1); /* Scale to full width */
+    transform: translateY(-2px) scaleX(1);
 }
 
 .timeline::after {
@@ -210,7 +209,6 @@
     z-index: 3;
 }
 
-/* Timeline items */
 .timeline-item {
     display: flex;
     flex-direction: column;
@@ -285,53 +283,245 @@
     margin-top: 1.5rem;
 }
 
-/* Responsive design */
+/* Responsive Design */
 @media (max-width: 768px) {
     .matches-grid {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-        gap: 1.5rem;
-        padding: 0;
-        max-width: 90%;
+        grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+        gap: 1rem;
+        padding: 0 0.5rem;
+        max-width: 100%;
         margin: 0 auto;
     }
 
+    .match-card.modern {
+        border-radius: 20px;
+        background: linear-gradient(145deg, white, var(--nested-box));
+        box-shadow: var(--shadow-small);
+        border: none; /* Remove border for cleaner look */
+        /* Removed overflow: hidden to allow icon to protrude */
+    }
+
+    .match-card.modern:hover {
+        box-shadow: var(--shadow-medium);
+        transform: translateY(-3px);
+    }
+
     .match-body {
-        padding: 20px;
+        padding: 16px;
     }
 
-    .match-body h3 {
-        font-size: 1.1rem;
-        padding-right: 45px;
+    .match-teams {
+        margin-bottom: 12px;
     }
 
-    .match-card.modern .result-icon {
-        width: 40px;
-        height: 40px;
-        font-size: 1rem;
-        top: 14px;
-        right: 14px;
+    .home-team, .away-team {
+        font-size: 0.95rem;
+        font-weight: 600;
+    }
+
+    .vs-divider {
+        font-size: 0.85rem;
+        margin: 6px 0;
     }
 
     .match-score {
-        font-size: 1.5rem;
-        padding: 10px 16px;
+        font-size: 1.2rem;
+        padding: 8px 14px;
+        border-radius: 20px;
+        border: 1px solid var(--silver-mist);
+        box-shadow: var(--shadow-small);
+        margin: 8px 0 12px;
     }
 
-    .match-date,
-    .match-time,
-    .match-venue {
+    .match-card.modern:not(.result) .match-score {
+        font-size: 1rem;
+    }
+
+    .match-card.modern .result-icon {
+        width: 36px;
+        height: 36px;
         font-size: 0.9rem;
+        top: 8px; /* Moved further above card (was 8px) */
+        right: 8px;
+        box-shadow: var(--shadow-small);
     }
 
-    .match-venue i {
+    .match-date, .match-venue {
         font-size: 0.85rem;
+        gap: 5px;
+    }
+
+    .match-date i, .match-venue i {
+        font-size: 0.8rem;
+    }
+
+    .timeline-wrapper {
+        min-height: 160px;
+        margin: 0.8rem 0;
+        border-radius: 12px;
+    }
+
+    .timeline {
+        min-height: 160px;
+        padding: 0 2rem;
+    }
+
+    .timeline-start-knob {
+        width: 10px;
+        height: 10px;
+        left: 2rem;
+    }
+
+    .timeline::before {
+        height: 3px;
+        left: 2rem;
+        right: 0.8rem;
+    }
+
+    .timeline::after {
+        font-size: 20px;
+        right: 0.8rem;
+        top: 50.8%;
+    }
+
+    .timeline-item {
+        min-width: 100px;
+        padding: 0 8px;
     }
 
     .timeline-item .result-icon {
-        margin-bottom: 1.5rem;
+        width: 32px;
+        height: 32px;
+        font-size: 0.8rem;
+        margin-bottom: 1rem;
+    }
+
+    .timeline-item small {
+        font-size: 0.7rem;
+        padding: 0.25rem 0.5rem;
+        border-radius: 10px;
+    }
+
+    .timeline-item::before {
+        width: 16px;
+        height: 16px;
     }
 
     .upcoming-matches {
-        margin-top: 1rem !important;
+        margin-top: 0.8rem !important;
+    }
+
+    .upcoming-match-name h3 {
+        font-size: 1.1rem;
+        margin: 0.5rem 0;
+    }
+}
+
+@media (max-width: 400px) and (min-width: 360px) {
+    .matches-grid {
+        grid-template-columns: repeat(2, minmax(160px, 1fr));
+        gap: 0.8rem;
+        padding: 0 0.75rem;
+    }
+
+    .match-card.modern {
+        border-radius: 18px;
+        background: linear-gradient(145deg, white, var(--off-white));
+        box-shadow: var(--shadow-medium);
+    }
+
+    .match-body {
+        padding: 14px;
+    }
+
+    .home-team, .away-team {
+        font-size: 0.9rem;
+    }
+
+    .vs-divider {
+        font-size: 0.8rem;
+        margin: 5px 0;
+    }
+
+    .match-score {
+        font-size: 1.1rem;
+        padding: 7px 12px;
+        border-radius: 18px;
+    }
+
+    .match-card.modern:not(.result) .match-score {
+        font-size: 0.9rem;
+    }
+
+    .match-card.modern .result-icon {
+        width: 34px;
+        height: 34px;
+        font-size: 0.85rem;
+        top: -10px;
+        right: -10px;
+        box-shadow: var(--shadow-medium);
+        z-index: 3; /* Ensure icon is above card */
+    }
+
+    .match-date, .match-venue {
+        font-size: 0.8rem;
+    }
+
+    .match-date i, .match-venue i {
+        font-size: 0.75rem;
+    }
+
+    .timeline-wrapper {
+        min-height: 140px;
+        margin: 0.6rem 0;
+    }
+
+    .timeline {
+        min-height: 140px;
+        padding: 0 1.5rem;
+    }
+
+    .timeline-start-knob {
+        width: 8px;
+        height: 8px;
+        left: 1.5rem;
+    }
+
+    .timeline::before {
+        height: 2px;
+        left: 1.5rem;
+        right: 0.6rem;
+    }
+
+    .timeline::after {
+        font-size: 18px;
+        right: 0.6rem;
+    }
+
+    .timeline-item {
+        min-width: 90px;
+        padding: 0 6px;
+    }
+
+    .timeline-item .result-icon {
+        width: 30px;
+        height: 30px;
+        font-size: 0.75rem;
+        margin-bottom: 0.8rem;
+    }
+
+    .timeline-item small {
+        font-size: 0.65rem;
+        padding: 0.2rem 0.4rem;
+    }
+
+    .timeline-item::before {
+        width: 14px;
+        height: 14px;
+    }
+
+    .upcoming-match-name h3 {
+        font-size: 0.9rem;
+        margin: 0.4rem 0;
     }
 }

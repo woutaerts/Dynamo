@@ -319,30 +319,142 @@ body.filter-all { --hero-accent-color: var(--medium-gray); }
     }
 }
 
+/* Replace the existing @media (max-width: 480px) */
 @media (max-width: 480px) {
-    .players-grid {
-        grid-template-columns: 1fr;
-        max-width: 90%; /* Maintain 90% width */
-        margin: 0 auto; /* Center the grid */
+    .filter-section {
+        padding: 0.8rem 0 0.4rem 0;
     }
 
-    .player-card {
-        padding: 1rem;
+    .filter-controls {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr); /* Two columns for buttons */
+        row-gap: 0.5rem; /* Vertical gap between rows */
+        column-gap: 0.3rem; /* Reduced horizontal gap between paired buttons */
+        justify-items: center; /* Center buttons horizontally */
+        padding: 0 0.5rem;
     }
 
-    .player-name {
-        font-size: 1rem;
+    .filter-btn {
+        padding: 0.5rem 0.9rem;
+        font-size: 0.75rem;
+        max-width: 140px;
+        min-height: 40px; /* WCAG-compliant */
+        width: 100%; /* Fill grid cell */
+        box-sizing: border-box;
     }
 
-    .player-position {
-        font-size: 0.7rem;
+    .filter-btn:first-child {
+        grid-column: 1 / -1; /* "All Players" spans both columns */
+        max-width: 160px; /* Significantly smaller width */
     }
 
-    .player-nationality {
+    .filter-btn i {
         font-size: 0.75rem;
     }
 
+    .search-wrapper {
+        width: 90%;
+        max-width: 240px;
+    }
+
+    .player-search {
+        padding: 0.5rem 0.7rem 0.5rem 2rem;
+        font-size: 0.75rem;
+        min-height: 40px;
+    }
+
+    .search-icon {
+        font-size: 0.75rem;
+        left: 0.7rem;
+    }
+
+    .players-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 0.8rem;
+        max-width: 100%;
+        margin: 0 auto;
+        padding: 0 0.5rem;
+    }
+
+    .player-card {
+        padding: 0.8rem;
+        border-radius: 10px;
+        box-shadow: var(--shadow-light, 0 2px 4px rgba(0, 0, 0, 0.1));
+    }
+
+    .player-name {
+        font-size: 0.95rem;
+        margin-bottom: 0.3rem;
+    }
+
+    .player-position {
+        font-size: 0.65rem;
+        margin-bottom: 0.6rem;
+    }
+
+    .player-nationality {
+        font-size: 0.7rem;
+        padding: 0.25rem 0.5rem;
+    }
+
     .flag-icon {
-        width: 28px;
+        width: 26px;
+    }
+}
+
+/* Replace the iPhone 15-specific media query */
+@media (max-width: 400px) and (min-width: 360px) {
+    .filter-controls {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr); /* Two columns for buttons */
+        row-gap: 0.5rem; /* Vertical gap between rows */
+        column-gap: 0.25rem; /* Further reduced horizontal gap for iPhone 15 */
+        justify-items: center;
+        padding: 0 0.75rem;
+    }
+
+    .filter-btn {
+        padding: 0.5rem 0.9rem;
+        font-size: 0.75rem;
+        max-width: 140px;
+        min-height: 40px;
+        width: 100%;
+        box-sizing: border-box;
+    }
+
+    .filter-btn:first-child {
+        grid-column: 1 / -1; /* "All Players" spans both columns */
+        max-width: 160px; /* Smaller width */
+    }
+
+    .filter-btn i {
+        font-size: 0.75rem;
+    }
+
+    .players-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 0.75rem;
+        padding: 0 0.75rem;
+    }
+
+    .player-card {
+        padding: 0.9rem;
+        box-shadow: var(--shadow-light, 0 2px 4px rgba(0, 0, 0, 0.1));
+    }
+
+    .player-name {
+        font-size: 0.9rem;
+    }
+
+    .player-position {
+        font-size: 0.6rem;
+    }
+
+    .player-nationality {
+        font-size: 0.65rem;
+    }
+
+    .flag-icon {
+        width: 24px;
     }
 }

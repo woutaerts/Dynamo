@@ -107,29 +107,119 @@
 
 /* Responsive */
 @media (max-width: 768px) {
+    .stats-section {
+        padding: 1.5rem 0; /* Reduced padding */
+    }
+
     .stats-grid {
-        grid-template-columns: repeat(3, 1fr); /* Maintain 3-3 layout */
+        grid-template-columns: repeat(2, 1fr); /* Switch to 2 columns for mobile */
         gap: 1rem;
-        width: 70%; /* Maintain 70% width */
-        margin: 0 auto; /* Center on mobile */
+        width: 70%; /* Increased to 90% for mobile */
+        margin: 0 auto;
     }
 
     .stat-card {
-        padding: 1.5rem;
+        padding: 1.2rem;
+        min-height: 44px; /* WCAG touch target */
     }
 
     .stat-number {
-        font-size: 2rem;
+        font-size: 1.8rem; /* Reduced for mobile */
+    }
+
+    .stat-label {
+        font-size: 0.8rem;
+    }
+
+    .detailed-stats {
+        padding: 1.5rem 0;
     }
 
     .stats-categories {
         flex-direction: column;
-        width: 70%; /* Maintain 70% width */
-        margin: 0 auto; /* Center on mobile */
-        gap: 1rem; /* Reduce gap for mobile */
+        gap: 1rem;
+        width: 70%; /* Increased to 90% */
+        margin: 0 auto;
     }
 
     .stat-category {
-        flex: 1 1 auto; /* Allow full width within 70% container */
+        padding: 1.2rem;
+        min-height: 44px; /* WCAG touch target */
+    }
+
+    .stat-category h3 {
+        font-size: 1.2rem;
+    }
+
+    .stat-item {
+        padding: 0.8rem;
+        margin-bottom: 0.6rem;
+        min-height: 44px; /* WCAG touch target */
+    }
+
+    .stat-item .stat-value {
+        font-size: 1rem;
+    }
+}
+
+@media (max-width: 400px) and (min-width: 360px) {
+    .stats-section {
+        padding: 1.2rem 0;
+    }
+
+    .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 0.8rem;
+        width: 90%;
+        margin: 0 auto;
+    }
+
+    .stat-card {
+        padding: 1rem;
+        border-radius: 12px;
+        box-shadow: var(--shadow-medium); /* Consistent with statistics.css */
+        min-height: 44px;
+    }
+
+    .stat-number {
+        font-size: 1.6rem; /* Further reduced for iPhone 15 */
+    }
+
+    .stat-label {
+        font-size: 0.75rem;
+    }
+
+    .detailed-stats {
+        padding: 1.2rem 0;
+    }
+
+    .stats-categories {
+        gap: 0.8rem;
+        width: 90%;
+        margin: 0 auto;
+    }
+
+    .stat-category {
+        flex:none;
+        height:auto;
+        padding: 1rem;
+        border-radius: 12px;
+        box-shadow: var(--shadow-medium);
+        min-height: 44px;
+    }
+
+    .stat-category h3 {
+        font-size: 1.1rem; /* Optimized for iPhone 15 */
+    }
+
+    .stat-item {
+        padding: 0.6rem;
+        margin-bottom: 0.5rem;
+        border-radius: 8px;
+        min-height: 44px;
+    }
+
+    .stat-item .stat-value {
+        font-size: 0.9rem;
     }
 }
