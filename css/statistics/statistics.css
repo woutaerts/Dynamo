@@ -369,71 +369,133 @@ body.team-alltime, body.player-alltime {
     font-weight: 500;
 }
 
+/* Desktop view - show text, hide icons */
+.desktop-only {
+    display: inline-block !important;
+}
+
+.mobile-only {
+    display: none !important;
+}
+
+.header-icon {
+    display: none;
+}
+
 @media (max-width: 768px) {
+    /* Existing mobile styles */
     .page-hero {
         padding: 2rem 1rem;
     }
-
     .page-hero h1 {
         font-size: 2.2rem;
     }
-
     .section-title {
         font-size: 2rem;
     }
-
     .toggles-container {
         gap: 1rem;
+        max-width: 100%;
+        padding: 0 1rem;
     }
-
     .toggle-wrapper {
         gap: 1rem;
-        height: 100px;
-        max-width: 300px;
+        height: auto;
+        max-width: 320px;
+        grid-template-columns: 1fr auto 1fr;
+        align-items: center;
+        justify-items: center;
     }
-
     .toggle-button-container {
-        width: 160px;
-        height: 100px;
+        width: 120px;
+        height: 80px;
+        margin: 0;
     }
-
+    .toggle-button {
+        height: 60px;
+        margin: 10px;
+    }
     .btn {
         width: 100px;
-        height: 40px;
-        margin: -20px auto 0;
+        height: 50px;
+        margin: -25px auto 0;
     }
-
     #button .knob:before, #button2 .knob:before {
-        width: 28px;
-        height: 32px;
-        font-size: 8px;
-        left: 3px;
+        width: 36px;
+        height: 40px;
+        font-size: 10px;
+        left: 6px;
     }
-
     #button .checkbox:checked + .knob:before, #button2 .checkbox:checked + .knob:before {
-        left: 57px;
+        left: 50px;
     }
-
+    #button .checkbox:active + .knob:before, #button2 .checkbox:active + .knob:before {
+        width: 48px;
+        border-radius: 200px;
+    }
+    #button .checkbox:checked:active + .knob:before, #button2 .checkbox:checked:active + .knob:before {
+        margin-left: -16px;
+    }
     .toggle-label {
         font-size: 1.2rem;
+        top: 0;
+    }
+    .toggle-label:first-child {
+        justify-self: end;
+        text-align: right;
+    }
+    .toggle-label:last-child {
+        justify-self: start;
+        text-align: left;
     }
 
+    .top-scorers-table, .player-stats-table {
+        max-width: 90%;
+        margin: 0 auto;
+    }
+
+    /* Updated grid layout to hide positions column and adjust column widths */
     .table-header, .scorer-row, .player-row {
-        grid-template-columns: 40px 60px 1fr 80px 80px 80px;
+        grid-template-columns: 40px 1fr 60px 60px 60px;
         font-size: 0.8rem;
     }
-
+    /* Hide positions column (header and data) */
+    .table-header .table-cell:nth-child(2),
+    .scorer-position,
+    .player-position {
+        display: none;
+    }
     .scorer-position i, .player-position i {
         font-size: 1rem;
     }
-
     .scorer-name, .player-name {
         font-size: 0.9rem;
     }
-
     .scorer-rank, .player-rank {
         width: 25px;
         height: 25px;
         font-size: 0.8rem;
+    }
+    /* Mobile view - hide text, show icons */
+    .desktop-only {
+        display: none !important;
+    }
+    .mobile-only {
+        display: inline-block !important;
+    }
+    .header-icon {
+        display: inline-block;
+        font-size: 1rem;
+        line-height: 1;
+    }
+    .table-header .table-cell {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .sort-controls {
+        flex-direction: column;
+        align-items: center;
     }
 }

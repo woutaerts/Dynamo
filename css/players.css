@@ -3,36 +3,22 @@ body {
     --hero-accent-color: var(--medium-gray);
 }
 
-body.filter-goalkeeper {
-    --hero-accent-color: var(--dark-blue);
-}
-
-body.filter-defender {
-    --hero-accent-color: var(--dark-green);
-}
-
-body.filter-midfielder {
-    --hero-accent-color: var(--dark-yellow);
-}
-
-body.filter-attacker {
-    --hero-accent-color: var(--dynamo-red);
-}
-
-body.filter-all {
-    --hero-accent-color: var(--medium-gray);
-}
+body.filter-goalkeeper { --hero-accent-color: var(--dark-blue); }
+body.filter-defender { --hero-accent-color: var(--dark-green); }
+body.filter-midfielder { --hero-accent-color: var(--dark-yellow); }
+body.filter-attacker { --hero-accent-color: var(--dynamo-red); }
+body.filter-all { --hero-accent-color: var(--medium-gray); }
 
 /* Page Hero Color Override */
 .page-hero h1::after,
 .page-hero h1::before {
-    color: var(--hero-accent-color) !important;
-    transition: opacity 0.6s ease-out 0.3s, transform 0.6s ease-out 0.3s, color 0.6s ease !important;
+    color: var(--hero-accent-color);
+    transition: opacity 0.6s ease-out 0.3s, transform 0.6s ease-out 0.3s, color 0.6s ease;
 }
 
 /* Filter Section */
 .filter-section {
-    padding: 2rem 0 1rem 0;
+    padding: 1.5rem 0 0.8rem 0;
     background: var(--off-white);
     opacity: 0;
     transform: translateY(20px);
@@ -47,7 +33,7 @@ body.filter-all {
 .filter-controls {
     display: flex;
     justify-content: center;
-    gap: 1rem;
+    gap: 0.8rem;
     flex-wrap: wrap;
 }
 
@@ -55,30 +41,30 @@ body.filter-all {
     background: white;
     border: none;
     color: var(--medium-gray);
-    padding: 0.75rem 1.5rem;
-    border-radius: 25px;
+    padding: 0.6rem 1.2rem;
+    border-radius: 20px;
     font-family: 'Poppins', sans-serif;
     font-weight: 700;
     letter-spacing: 1px;
-    font-size: 0.9rem;
+    font-size: 0.85rem;
     cursor: pointer;
     transition: all 0.3s ease;
     display: flex;
     align-items: center;
-    gap: 0.5rem;
+    gap: 0.4rem;
     box-shadow: var(--shadow-medium);
     position: relative;
     overflow: hidden;
     z-index: 1;
+    min-height: 44px; /* WCAG touch target */
 }
 
 .filter-btn i {
-    font-size: 1rem;
+    font-size: 0.9rem;
     z-index: 2;
     position: relative;
 }
 
-/* Position-aware hover effect span */
 .filter-btn .hover-effect {
     position: absolute;
     display: block;
@@ -90,66 +76,34 @@ body.filter-all {
     z-index: -1;
 }
 
-/* Position-specific hover effect backgrounds */
-.filter-btn[data-position="goalkeeper"] .hover-effect {
-    background-color: var(--dark-blue);
-}
+.filter-btn[data-position="goalkeeper"] .hover-effect { background-color: var(--dark-blue); }
+.filter-btn[data-position="defender"] .hover-effect { background-color: var(--dark-green); }
+.filter-btn[data-position="midfielder"] .hover-effect { background-color: var(--dark-yellow); }
+.filter-btn[data-position="attacker"] .hover-effect { background-color: var(--dynamo-red); }
+.filter-btn[data-position="all"] .hover-effect { background-color: var(--medium-gray); }
 
-.filter-btn[data-position="defender"] .hover-effect {
-    background-color: var(--dark-green);
-}
-
-.filter-btn[data-position="midfielder"] .hover-effect {
-    background-color: var(--dark-yellow);
-}
-
-.filter-btn[data-position="attacker"] .hover-effect {
-    background-color: var(--dynamo-red);
-}
-
-.filter-btn[data-position="all"] .hover-effect {
-    background-color: var(--medium-gray);
-}
-
-/* Hover state for text color */
 .filter-btn:hover {
     color: var(--off-white);
 }
 
-/* Active hover effect */
 .filter-btn:hover .hover-effect {
     width: 225%;
-    height: 200px;
+    height: 180px;
 }
 
-/* Active state styling */
 .filter-btn.active {
     color: var(--off-white);
 }
 
-.filter-btn.active[data-position="goalkeeper"] {
-    background: var(--dark-blue);
-}
-
-.filter-btn.active[data-position="defender"] {
-    background: var(--dark-green);
-}
-
-.filter-btn.active[data-position="midfielder"] {
-    background: var(--dark-yellow);
-}
-
-.filter-btn.active[data-position="attacker"] {
-    background: var(--dynamo-red);
-}
-
-.filter-btn.active[data-position="all"] {
-    background: var(--medium-gray);
-}
+.filter-btn.active[data-position="goalkeeper"] { background: var(--dark-blue); }
+.filter-btn.active[data-position="defender"] { background: var(--dark-green); }
+.filter-btn.active[data-position="midfielder"] { background: var(--dark-yellow); }
+.filter-btn.active[data-position="attacker"] { background: var(--dynamo-red); }
+.filter-btn.active[data-position="all"] { background: var(--medium-gray); }
 
 /* Search Section */
 .search-container {
-    margin-top: 1rem;
+    margin: 0.8rem 0;
     text-align: center;
     opacity: 0;
     transform: translateY(20px);
@@ -164,32 +118,33 @@ body.filter-all {
 .search-wrapper {
     position: relative;
     display: inline-block;
-    width: 300px;
-    max-width: 100%;
+    width: 90%;
+    max-width: 280px; /* Reduced from 300px */
 }
 
 .search-icon {
     position: absolute;
-    left: 1rem;
+    left: 0.8rem;
     top: 50%;
     transform: translateY(-50%);
     color: var(--medium-gray);
-    font-size: 1rem;
+    font-size: 0.9rem;
     pointer-events: none;
 }
 
 .player-search {
-    padding: 0.75rem 1rem 0.75rem 2.5rem;
+    padding: 0.6rem 0.8rem 0.6rem 2.2rem;
     border: 2px solid white;
-    border-radius: 25px;
+    border-radius: 20px;
     font-family: 'Poppins', sans-serif;
-    font-size: 0.9rem;
+    font-size: 0.85rem;
     width: 100%;
     box-sizing: border-box;
     text-align: center;
     transition: all 0.3s ease;
     outline: none;
     box-shadow: var(--shadow-medium);
+    min-height: 44px; /* WCAG touch target */
 }
 
 .player-search:focus {
@@ -203,24 +158,24 @@ body.filter-all {
 
 /* Players Section */
 .players-section {
-    padding: 3rem 0;
+    padding: 2rem 0;
 }
 
 .players-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-    gap: 2rem;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); /* Adjusted from 280px */
+    gap: 1.5rem;
 }
 
 .player-card {
     background: white;
-    border-radius: 16px;
-    padding: 2rem;
+    border-radius: 12px;
+    padding: 1.5rem;
     box-shadow: var(--shadow-medium);
     cursor: pointer;
     border: 2px solid transparent;
     opacity: 0;
-    transform: translateY(100px);
+    transform: translateY(50px);
     position: relative;
     overflow: hidden;
     transition: all 0.3s ease;
@@ -234,34 +189,15 @@ body.filter-all {
 .player-card.animate-in {
     opacity: 1;
     transform: translateY(0);
-    animation-delay: calc(var(--animation-delay) * 100ms);
 }
 
-/* Position-specific hover colors */
-.player-card[data-position="goalkeeper"]:hover {
-    border-color: var(--dark-blue);
-}
+.player-card[data-position="goalkeeper"]:hover { border-color: var(--dark-blue); }
+.player-card[data-position="defender"]:hover { border-color: var(--dark-green); }
+.player-card[data-position="midfielder"]:hover { border-color: var(--dark-yellow); }
+.player-card[data-position="attacker"]:hover { border-color: var(--dynamo-red); }
 
-.player-card[data-position="defender"]:hover {
-    border-color: var(--dark-green);
-}
-
-.player-card[data-position="midfielder"]:hover {
-    border-color: var(--dark-yellow);
-}
-
-.player-card[data-position="attacker"]:hover {
-    border-color: var(--dynamo-red);
-}
-
-/* Filter animations */
-.player-card.filter-hidden {
-    display: none;
-}
-
-.player-card.filter-visible {
-    display: block;
-}
+.player-card.filter-hidden { display: none; }
+.player-card.filter-visible { display: block; }
 
 /* Player info styling */
 .player-info {
@@ -269,108 +205,144 @@ body.filter-all {
 }
 
 .player-name {
-    font-size: 1.4rem;
+    font-size: 1.2rem; /* Reduced from 1.4rem */
     font-weight: 700;
     color: var(--dark-gray);
-    margin-bottom: 0.5rem;
+    margin-bottom: 0.4rem;
     font-family: 'Poppins', sans-serif;
 }
 
 .player-position {
     text-transform: uppercase;
     color: var(--dynamo-red);
-    font-size: 0.9rem;
+    font-size: 0.8rem; /* Reduced from 0.9rem */
     font-weight: 800;
-    margin-bottom: 1rem;
+    margin-bottom: 0.8rem;
 }
 
 .player-nationality {
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 0.5rem;
+    gap: 0.4rem;
     color: var(--medium-gray);
-    font-size: 0.95rem;
+    font-size: 0.85rem;
     font-weight: 500;
-    padding: 0.5rem 1rem;
-    border-radius: 20px;
+    padding: 0.4rem 0.8rem;
+    border-radius: 16px;
     margin: 0 auto;
     width: fit-content;
 }
 
 .player-nationality i {
     color: var(--dynamo-red);
-    font-size: 0.9rem;
+    font-size: 0.8rem;
 }
 
 .flag-icon {
-    width: 40px;
+    width: 35px; /* Reduced from 40px */
     height: auto;
     vertical-align: middle;
 }
 
-/* Position-specific text colors */
-.player-card[data-position="goalkeeper"] .player-position {
-    color: var(--dark-blue);
-}
-
-.player-card[data-position="defender"] .player-position {
-    color: var(--dark-green);
-}
-
-.player-card[data-position="midfielder"] .player-position {
-    color: var(--dark-yellow);
-}
-
-.player-card[data-position="attacker"] .player-position {
-    color: var(--dynamo-red);
-}
+.player-card[data-position="goalkeeper"] .player-position { color: var(--dark-blue); }
+.player-card[data-position="defender"] .player-position { color: var(--dark-green); }
+.player-card[data-position="midfielder"] .player-position { color: var(--dark-yellow); }
+.player-card[data-position="attacker"] .player-position { color: var(--dynamo-red); }
 
 /* Responsive Design */
 @media (max-width: 768px) {
+    .filter-section {
+        padding: 1rem 0 0.5rem 0;
+    }
+
     .filter-controls {
-        gap: 0.5rem;
+        gap: 0.6rem;
+        flex-direction: row; /* Changed to row for horizontal layout */
+        flex-wrap: wrap;
+        justify-content: center;
     }
 
     .filter-btn {
         padding: 0.5rem 1rem;
         font-size: 0.8rem;
+        width: auto; /* Changed from 90% to auto to allow natural sizing */
+        max-width: 150px; /* Reduced max-width for better fit */
+        justify-content: center;
+    }
+
+    .filter-btn i {
+        font-size: 0.8rem;
     }
 
     .search-wrapper {
-        width: 250px;
+        width: 95%;
+        max-width: 250px;
+    }
+
+    .player-search {
+        padding: 0.5rem 0.7rem 0.5rem 2rem;
+        font-size: 0.8rem;
+    }
+
+    .search-icon {
+        font-size: 0.8rem;
+        left: 0.7rem;
     }
 
     .players-grid {
-        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-        gap: 1.5rem;
+        grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+        gap: 1rem;
+        max-width: 90%; /* Added to limit grid width */
+        margin: 0 auto; /* Center the grid */
     }
 
     .player-card {
-        padding: 1.5rem;
+        padding: 1.2rem;
     }
 
     .player-name {
-        font-size: 1.2rem;
+        font-size: 1.1rem;
+    }
+
+    .player-position {
+        font-size: 0.75rem;
+    }
+
+    .player-nationality {
+        font-size: 0.8rem;
+        padding: 0.3rem 0.6rem;
+    }
+
+    .flag-icon {
+        width: 30px;
     }
 }
 
 @media (max-width: 480px) {
-    .filter-controls {
-        flex-direction: column;
-        align-items: center;
-    }
-
-    .filter-btn {
-        width: 200px;
-        justify-content: center;
-    }
-
-    .search-wrapper {
-        width: 200px;
-    }
-
     .players-grid {
         grid-template-columns: 1fr;
+        max-width: 90%; /* Maintain 90% width */
+        margin: 0 auto; /* Center the grid */
+    }
+
+    .player-card {
+        padding: 1rem;
+    }
+
+    .player-name {
+        font-size: 1rem;
+    }
+
+    .player-position {
+        font-size: 0.7rem;
+    }
+
+    .player-nationality {
+        font-size: 0.75rem;
+    }
+
+    .flag-icon {
+        width: 28px;
     }
 }

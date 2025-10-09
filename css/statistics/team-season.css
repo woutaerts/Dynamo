@@ -5,9 +5,11 @@
 
 .stats-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    grid-template-columns: repeat(3, 1fr); /* Enforce 3 columns for 3-3 layout */
     gap: 2rem;
     text-align: center;
+    width: 70%; /* Limit to 70% of page width */
+    margin: 0 auto; /* Center the grid */
 }
 
 .stat-card {
@@ -51,6 +53,8 @@
     flex-wrap: wrap;
     gap: 2rem;
     justify-content: space-between;
+    width: 70%; /* Limit to 70% of page width */
+    margin: 0 auto; /* Center the container */
 }
 
 .stat-category {
@@ -104,8 +108,10 @@
 /* Responsive */
 @media (max-width: 768px) {
     .stats-grid {
-        grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+        grid-template-columns: repeat(3, 1fr); /* Maintain 3-3 layout */
         gap: 1rem;
+        width: 70%; /* Maintain 70% width */
+        margin: 0 auto; /* Center on mobile */
     }
 
     .stat-card {
@@ -118,5 +124,12 @@
 
     .stats-categories {
         flex-direction: column;
+        width: 70%; /* Maintain 70% width */
+        margin: 0 auto; /* Center on mobile */
+        gap: 1rem; /* Reduce gap for mobile */
+    }
+
+    .stat-category {
+        flex: 1 1 auto; /* Allow full width within 70% container */
     }
 }

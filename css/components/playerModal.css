@@ -288,27 +288,22 @@ body.modal-open {
         padding: 1.2rem;
         max-height: 85vh;
     }
-
     .player-header .flag-icon {
         width: 35px;
     }
-
     #modalPlayerName {
         font-size: 1.7rem;
         margin-bottom: 1.2rem;
     }
-
     .season-stats-section,
     .all-time-stats-section {
         padding: 1rem;
         margin-bottom: 1.2rem;
     }
-
     .season-stats-section h3,
     .all-time-stats-section h3 {
         font-size: 1.1rem;
     }
-
     .close-modal {
         width: 32px;
         height: 32px;
@@ -316,15 +311,17 @@ body.modal-open {
         top: 10px;
         right: 10px;
     }
-
+    /* NEW: Stack games and goals horizontally, each 50% width */
     .stats-container {
-        flex-direction: column;
+        flex-direction: row;
+        flex-wrap: wrap;
     }
-
     .stat-box {
-        width: 100%;
+        flex: 1 1 calc(50% - 0.5rem);
+        min-width: calc(50% - 0.5rem);
     }
 }
+
 
 @media (max-width: 480px) {
     .modal-content {

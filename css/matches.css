@@ -288,9 +288,11 @@
 /* Responsive design */
 @media (max-width: 768px) {
     .matches-grid {
-        grid-template-columns: 1fr;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
         gap: 1.5rem;
-        padding: 0 0.5rem;
+        padding: 0;
+        max-width: 90%;
+        margin: 0 auto;
     }
 
     .match-body {
@@ -323,5 +325,13 @@
 
     .match-venue i {
         font-size: 0.85rem;
+    }
+
+    .timeline-item .result-icon {
+        margin-bottom: 1.5rem;
+    }
+
+    .upcoming-matches {
+        margin-top: 1rem !important;
     }
 }

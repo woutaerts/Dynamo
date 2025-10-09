@@ -1,12 +1,12 @@
 /* Hero Section */
 .hero {
-    height: 50vh;
+    height: 40vh; /* Reduced from 50vh */
     display: flex;
     align-items: center;
     position: relative;
     overflow: hidden;
     background-size: cover;
-    margin-bottom: -5rem;
+    margin-bottom: -3rem; /* Adjusted for mobile */
 }
 
 .hero-content {
@@ -27,18 +27,18 @@
 }
 
 .hero h1 {
-    font-size: 5rem;
+    font-size: 3.5rem; /* Reduced from 5rem */
     font-weight: 900;
     margin-bottom: 0.2rem;
     color: var(--dark-gray);
 }
 
 .hero p {
-    font-size: 1.3rem;
+    font-size: 1.1rem; /* Reduced from 1.3rem */
     color: var(--off-white);
-    margin-bottom: 2rem;
+    margin-bottom: 1.5rem;
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
-    max-width: 600px;
+    max-width: 500px;
     transition: opacity 0.6s ease-out 0.2s, transform 0.6s ease-out 0.2s;
 }
 
@@ -49,12 +49,12 @@
 .hero-content::after {
     content: '';
     position: absolute;
-    bottom: -5px;
+    bottom: -4px;
     left: 50%;
     transform: translateX(-50%) scaleX(0);
     transform-origin: left center;
     width: 100%;
-    height: 10px;
+    height: 8px;
     background: var(--dynamo-red);
     border-radius: 4px;
     transition: transform 0.6s ease-out 0.3s;
@@ -73,24 +73,23 @@
 
 /* Overview Section */
 .overview-section {
-    padding: 2rem 0;
+    padding: 1.5rem 0;
 }
 
 .overview-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 2rem;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); /* Adjusted from 250px */
+    gap: 1.5rem;
 }
 
 .overview-card {
     text-align: center;
     background: white;
-    padding: 2rem;
-    border-radius: 20px;
+    padding: 1.5rem;
+    border-radius: 16px;
     box-shadow: var(--shadow-medium);
-    /* Index-specific: Start hidden */
     opacity: 0;
-    transform: translateY(100px);
+    transform: translateY(50px);
     transition: opacity 0.6s ease-out, transform 0.6s ease-out, box-shadow 0.3s ease;
 }
 
@@ -104,60 +103,46 @@
     transform: translateY(0);
 }
 
-.overview-card.animate-in:hover {
-    transform: translateY(-5px);
-}
-
 .overview-card i {
-    font-size: 2rem;
+    font-size: 1.8rem; /* Reduced from 2rem */
     color: var(--dynamo-red);
-    margin-bottom: 1rem;
+    margin-bottom: 0.8rem;
 }
 
 .overview-card h3 {
-    font-size: 1.5rem;
+    font-size: 1.3rem; /* Reduced from 1.5rem */
     color: var(--dark-gray);
-    margin-bottom: 0.5rem;
+    margin-bottom: 0.4rem;
     font-weight: 600;
 }
 
 .overview-card p {
     color: var(--medium-gray);
-    font-size: 1rem;
+    font-size: 0.9rem; /* Reduced from 1rem */
     line-height: 1.6;
-    margin-bottom: 1rem;
-}
-
-.overview-link {
-    display: inline-block;
-    margin-top: 1rem;
-    color: var(--dynamo-red);
-    font-weight: bold;
-    text-decoration: none;
-    transition: color 0.3s ease;
+    margin-bottom: 0.8rem;
 }
 
 /* Statistics Section */
 .stats-overview-section {
-    padding: 2rem 0;
+    padding: 1.5rem 0;
 }
 
 .stats-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, 200px);
-    gap: 2rem;
+    grid-template-columns: repeat(auto-fit, 180px); /* Reduced from 200px */
+    gap: 1.5rem;
     justify-content: center;
     text-align: center;
 }
 
 .stat-card {
     background: white;
-    padding: 2rem;
-    border-radius: 15px;
+    padding: 1.5rem;
+    border-radius: 12px;
     box-shadow: var(--shadow-medium);
-    /* Index-specific: Start hidden */
     opacity: 0;
-    transform: translateY(100px);
+    transform: translateY(50px);
     transition: opacity 0.6s ease-out, transform 0.6s ease-out, box-shadow 0.3s ease;
 }
 
@@ -171,12 +156,8 @@
     transform: translateY(0);
 }
 
-.stat-card.animate-in:hover {
-    transform: translateY(-5px);
-}
-
 .stat-number {
-    font-size: 2.5rem;
+    font-size: 2rem; /* Reduced from 2.5rem */
     color: var(--dynamo-red);
     font-weight: 800;
 }
@@ -184,33 +165,33 @@
 .stat-label {
     color: var(--medium-gray);
     text-transform: uppercase;
-    margin-top: 0.5rem;
+    margin-top: 0.4rem;
     font-weight: 600;
+    font-size: 0.8rem; /* Added for mobile */
 }
 
 /* Contact Section */
 .contact-section {
-    padding: 2rem 0;
+    padding: 1.5rem 0;
 }
 
 .contact-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 2rem;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); /* Reduced from 250px */
+    gap: 1.5rem;
 }
 
 .contact-card {
     text-align: center;
     background: white;
-    padding: 2rem;
-    border-radius: 20px;
+    padding: 1.5rem;
+    border-radius: 16px;
     box-shadow: var(--shadow-medium);
     text-decoration: none;
     color: inherit;
     display: block;
-    /* Index-specific: Start hidden */
     opacity: 0;
-    transform: translateY(100px);
+    transform: translateY(50px);
     transition: opacity 0.6s ease-out, transform 0.6s ease-out, box-shadow 0.3s ease;
 }
 
@@ -224,43 +205,38 @@
     transform: translateY(0);
 }
 
-.contact-card.animate-in:hover {
-    transform: translateY(-5px);
-}
-
 .contact-card i {
-    font-size: 2rem;
+    font-size: 1.8rem; /* Reduced from 2rem */
     color: var(--dynamo-red);
-    margin-bottom: 1rem;
+    margin-bottom: 0.8rem;
 }
 
 .contact-card h3 {
-    font-size: 1.5rem;
+    font-size: 1.3rem; /* Reduced from 1.5rem */
     color: var(--dark-gray);
-    margin-bottom: 0.5rem;
+    margin-bottom: 0.4rem;
     font-weight: 600;
 }
 
 .contact-card p {
     color: var(--medium-gray);
-    font-size: 1rem;
+    font-size: 0.9rem; /* Reduced from 1rem */
     line-height: 1.6;
 }
 
 /* Map Section */
 .map-section {
-    padding: 2rem 0;
+    padding: 1.5rem 0;
 }
 
 .map-container {
-    border-radius: 15px;
+    border-radius: 12px;
     overflow: hidden;
     box-shadow: var(--shadow-medium);
-    height: 400px;
+    height: 350px; /* Reduced from 400px */
     position: relative;
-    /* Index-specific: Start hidden */
     opacity: 0;
-    transform: translateY(100px);
+    transform: translateY(50px);
     transition: opacity 0.6s ease-out, transform 0.6s ease-out;
 }
 
@@ -275,29 +251,11 @@
     border: none;
 }
 
-.stadium-info {
-    text-align: center;
-    margin-bottom: 2rem;
-}
-
-.stadium-info h3 {
-    font-size: 1.8rem;
-    color: var(--dark-gray);
-    margin-bottom: 0.5rem;
-    font-weight: 600;
-}
-
-.stadium-info p {
-    color: var(--medium-gray);
-    font-size: 1.1rem;
-}
-
 /* Index-specific section titles and subtitles */
 .section-title,
 .section-subtitle {
-    /* Override general.css for index page - start hidden */
     opacity: 0;
-    transform: translateY(100px);
+    transform: translateY(50px);
     transition: opacity 0.6s ease-out, transform 0.6s ease-out;
 }
 
@@ -309,9 +267,8 @@
 
 /* Index-specific countdown and form elements */
 .countdown-block {
-    /* Override general.css for index page - start hidden */
     opacity: 0;
-    transform: translateY(100px);
+    transform: translateY(50px);
     transition: opacity 0.6s ease-out, transform 0.6s ease-out;
 }
 
@@ -321,9 +278,8 @@
 }
 
 .form-result {
-    /* Override general.css for index page - start hidden */
     opacity: 0;
-    transform: translateY(100px);
+    transform: translateY(50px);
     transition: opacity 0.6s ease-out, transform 0.6s ease-out, box-shadow 0.3s ease;
 }
 
@@ -334,20 +290,98 @@
 
 /* Responsive Design */
 @media (max-width: 768px) {
+    .hero {
+        height: 35vh;
+        margin-bottom: -2rem;
+    }
+
     .hero h1 {
-        font-size: 2.5rem;
+        font-size: 2.2rem;
     }
 
     .hero p {
-        font-size: 1.1rem;
+        font-size: 1rem;
+        max-width: 90%;
+    }
+
+    .overview-grid {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+
+    .overview-card {
+        padding: 1.2rem;
+    }
+
+    .overview-card i {
+        font-size: 1.6rem;
+    }
+
+    .overview-card h3 {
+        font-size: 1.2rem;
+    }
+
+    .overview-card p {
+        font-size: 0.85rem;
+    }
+
+    .stats-grid {
+        grid-template-columns: repeat(auto-fit, 150px);
+        gap: 1rem;
+    }
+
+    .stat-card {
+        padding: 1.2rem;
+    }
+
+    .stat-number {
+        font-size: 1.8rem;
+    }
+
+    .stat-label {
+        font-size: 0.7rem;
     }
 
     .contact-grid {
         grid-template-columns: 1fr;
-        gap: 2rem;
+        gap: 1rem;
+    }
+
+    .contact-card {
+        padding: 1.2rem;
+    }
+
+    .contact-card i {
+        font-size: 1.6rem;
+    }
+
+    .contact-card h3 {
+        font-size: 1.2rem;
+    }
+
+    .contact-card p {
+        font-size: 0.85rem;
     }
 
     .map-container {
-        height: 300px;
+        height: 250px;
+    }
+}
+
+@media (max-width: 480px) {
+    .hero h1 {
+        font-size: 1.8rem;
+    }
+
+    .hero p {
+        font-size: 0.9rem;
+    }
+
+    .stats-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .map-container {
+        height: 200px;
     }
 }

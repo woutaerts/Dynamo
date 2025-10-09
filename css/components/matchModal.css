@@ -1,12 +1,14 @@
+/* Imports */
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&display=swap');
 
-/* Body and Overlay */
+/* Global Styles */
 body.modal-open {
     overflow: hidden;
     position: fixed;
     width: 100%;
 }
 
+/* Modal Overlay */
 .modal-overlay {
     position: fixed;
     top: 0;
@@ -23,67 +25,6 @@ body.modal-open {
 
 .modal-overlay.show {
     display: flex;
-}
-
-/* Title Container */
-.match-title-container {
-    text-align: center;
-    margin-bottom: 1.5rem;
-    font-family: 'Poppins', sans-serif;
-    position: relative;
-}
-
-.team-name {
-    font-size: 1.8rem; /* Slightly smaller than original 2rem for balance */
-    font-weight: 800;
-    color: var(--dark-gray);
-    line-height: 1.2;
-}
-
-.home-team {
-    margin-bottom: 0.3rem; /* Space between home team and vs */
-}
-
-.vs-text {
-    font-size: 1.2rem;
-    font-weight: 600;
-    color: var(--medium-gray);
-    margin-bottom: 0.3rem; /* Space between vs and away team */
-}
-
-.away-team {
-    margin-bottom: 0.5rem; /* Space for the underline */
-}
-
-.match-title-container::after {
-    content: '';
-    position: absolute;
-    bottom: -6px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 50px;
-    height: 3px;
-    background: var(--dynamo-red);
-    border-radius: 2px;
-}
-
-/* Responsive Design */
-@media (max-width: 768px) {
-    .team-name {
-        font-size: 1.5rem;
-    }
-    .vs-text {
-        font-size: 1.1rem;
-    }
-}
-
-@media (max-width: 480px) {
-    .team-name {
-        font-size: 1.3rem;
-    }
-    .vs-text {
-        font-size: 1rem;
-    }
 }
 
 /* Modal Content */
@@ -158,18 +99,49 @@ body.modal-open {
     color: var(--dark-gray);
 }
 
-/* Title and Season */
-.season {
-    font-family: 'Poppins', sans-serif;
-    font-weight: 600;
-    font-size: 1rem;
-    color: var(--medium-gray);
+/* Title Container */
+.match-title-container {
     text-align: center;
-    margin: 0 0 1rem 0;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
+    margin-bottom: 1.5rem;
+    font-family: 'Poppins', sans-serif;
+    position: relative;
 }
 
+.team-name {
+    font-size: 1.8rem;
+    font-weight: 800;
+    color: var(--dark-gray);
+    line-height: 1.2;
+}
+
+.home-team {
+    margin-bottom: 0.3rem;
+}
+
+.vs-text {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: var(--medium-gray);
+    margin-bottom: 0.3rem;
+}
+
+.away-team {
+    margin-bottom: 0.5rem;
+}
+
+.match-title-container::after {
+    content: '';
+    position: absolute;
+    bottom: -6px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 50px;
+    height: 3px;
+    background: var(--dynamo-red);
+    border-radius: 2px;
+}
+
+/* Title and Season */
 #modalMatchTitle {
     text-align: center;
     margin-bottom: 1.5rem;
@@ -191,6 +163,17 @@ body.modal-open {
     height: 3px;
     background: var(--dynamo-red);
     border-radius: 2px;
+}
+
+.season {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 600;
+    font-size: 1rem;
+    color: var(--medium-gray);
+    text-align: center;
+    margin: 0 0 1rem 0;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
 }
 
 /* Score Display */
@@ -232,7 +215,7 @@ body.modal-open {
 .modal-section:hover,
 .goalscorers-section:hover,
 .add-to-calendar-section:hover,
-.score-display:hover{
+.score-display:hover {
     transform: translateY(-2px);
     box-shadow: var(--shadow-hover);
 }
@@ -278,7 +261,7 @@ body.modal-open {
 .match-details-container .modal-section p,
 .date-box p,
 .time-box p,
-.goalscorer-item{
+.goalscorer-item {
     text-align: center;
     font-size: 1rem;
     color: var(--dark-gray);
@@ -301,6 +284,7 @@ body.modal-open {
 .date-time-section {
     flex: 1;
     margin: 0 0.5rem;
+    width: 100%;
 }
 
 .date-time-container {
@@ -328,7 +312,7 @@ body.modal-open {
 #stadiumName .fas.fa-map-marker-alt,
 #matchDate .fas.fa-calendar,
 #matchTime .fas.fa-clock,
-.goalscorer-item .fas.fa-futbol{
+.goalscorer-item .fas.fa-futbol {
     color: var(--medium-gray);
     margin-right: 8px;
     font-size: 1rem;
@@ -338,7 +322,7 @@ body.modal-open {
     color: black;
 }
 
-/* Add to calendar button */
+/* Add to Calendar Button */
 #addToCalendarBtn.cta-button {
     margin: 0.5rem auto 1rem;
     display: block;
@@ -355,7 +339,6 @@ body.modal-open {
     transform: translateY(0);
 }
 
-/* Ensure consistent font and icon styling */
 #addToCalendarBtn.cta-button i {
     margin-right: 8px;
     font-size: 1rem;
@@ -373,10 +356,23 @@ body.modal-open {
 }
 
 /* Scrollbar */
-.timeline-wrapper::-webkit-scrollbar { width: 8px; }
-.timeline-wrapper::-webkit-scrollbar-track { background: var(--silver-mist); border-radius: 10px; }
-.timeline-wrapper::-webkit-scrollbar-thumb { background: var(--light-gray); border-radius: 10px; }
-.timeline-wrapper::-webkit-scrollbar-thumb:hover { background: var(--medium-gray); }
+.timeline-wrapper::-webkit-scrollbar {
+    width: 8px;
+}
+
+.timeline-wrapper::-webkit-scrollbar-track {
+    background: var(--silver-mist);
+    border-radius: 10px;
+}
+
+.timeline-wrapper::-webkit-scrollbar-thumb {
+    background: var(--light-gray);
+    border-radius: 10px;
+}
+
+.timeline-wrapper::-webkit-scrollbar-thumb:hover {
+    background: var(--medium-gray);
+}
 
 /* Responsive Design */
 @media (max-width: 768px) {
@@ -384,6 +380,14 @@ body.modal-open {
         width: 95%;
         padding: 1.2rem;
         max-height: 85vh;
+    }
+
+    .team-name {
+        font-size: 1.5rem;
+    }
+
+    .vs-text {
+        font-size: 1.1rem;
     }
 
     .score-display {
@@ -397,13 +401,21 @@ body.modal-open {
         margin-bottom: 1.2rem;
     }
 
-    .modal-section, .goalscorers-section {
+    .modal-section,
+    .goalscorers-section {
         padding: 1rem;
         margin-bottom: 1.2rem;
     }
 
-    .modal-section h3, .goalscorers-section h3 {
+    .modal-section h3,
+    .goalscorers-section h3 {
         font-size: 1.1rem;
+    }
+
+    .date-box p,
+    .time-box p,
+    .stadium-name {
+        font-size: 0.9rem !important; /* Reduced font size for date and time */
     }
 
     .close-modal {
@@ -415,19 +427,28 @@ body.modal-open {
     }
 
     .date-time-container {
-        flex-direction: column;
-        gap: 0.8rem;
+        flex-direction: row;
+        gap: 0.5rem;
     }
 
     .date-box,
     .time-box {
-        width: 100%;
+        flex: 1;
+        min-width: 0;
     }
 }
 
 @media (max-width: 480px) {
     .modal-content {
         padding: 1rem;
+    }
+
+    .team-name {
+        font-size: 1.3rem;
+    }
+
+    .vs-text {
+        font-size: 1rem;
     }
 
     #modalMatchTitle {

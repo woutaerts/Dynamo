@@ -7,6 +7,8 @@
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
     gap: 2rem;
+    width: 70%; /* Limit to 70% of page width */
+    margin: 0 auto; /* Center the grid */
 }
 
 .record-category {
@@ -71,4 +73,22 @@
     font-size: 0.8em;
     color: var(--line-gray);
     margin-left: 5px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .team-records-grid {
+        grid-template-columns: 1fr; /* Stack categories vertically */
+        gap: 1rem;
+        width: 70%; /* Maintain 70% width */
+        margin: 0 auto; /* Center on mobile */
+    }
+
+    .record-category {
+        padding: 1.5rem; /* Slightly reduce padding for mobile */
+    }
+
+    .record-category h3 {
+        font-size: 1.3rem; /* Slightly smaller for mobile */
+    }
 }
