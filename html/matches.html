@@ -7,24 +7,31 @@
     <meta name="description" content="Recent matches and fixtures for Dynamo Beirs - stay updated with our latest games">
 
     <!-- Stylesheets -->
-    <link rel="stylesheet" href="../css/general.css">
-    <link rel="stylesheet" href="../css/partials/header.css">
-    <link rel="stylesheet" href="../css/partials/footer.css">
-    <link rel="stylesheet" href="../css/matches.css">
+    <link rel="stylesheet" href="/css/general.css">
+    <link rel="stylesheet" href="/css/partials/header.css">
+    <link rel="stylesheet" href="/css/partials/footer.css">
+    <link rel="stylesheet" href="/css/matches.css">
+    <link rel="stylesheet" href="/css/components/matchModal.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
     <!-- Scripts -->
-    <script type="module" src="../js/matches.js"></script>
-    <script type="module" src="../js/partials/header.js"></script>
-    <script type="module" src="../js/partials/footer.js"></script>
-    <script type="module" src="../js/components/matchModal.js"></script>
+    <script type="module" src="/js/matches.js"></script>
+    <script type="module" src="/js/partials/header.js"></script>
+    <script type="module" src="/js/partials/footer.js"></script>
+    <script type="module" src="/js/components/matchModal.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-8DRDBGPS6B"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-8DRDBGPS6B');
+    </script>
 </head>
 <body>
-
 <!-- Header -->
 <div id="header-placeholder"></div>
-
 <main>
     <!-- Page hero -->
     <section class="page-hero">
@@ -32,7 +39,6 @@
             <h1>Matches & Fixtures</h1>
         </div>
     </section>
-
     <!-- Next match countdown -->
     <section class="countdown-section">
         <div class="container">
@@ -60,7 +66,6 @@
             </div>
         </div>
     </section>
-
     <!-- Team form display -->
     <section class="match-form-section">
         <div class="container">
@@ -73,7 +78,6 @@
             </div>
         </div>
     </section>
-
     <!-- Upcoming fixtures -->
     <section class="upcoming-matches" style="margin-top: 4rem;">
         <div class="container">
@@ -83,7 +87,6 @@
             </div>
         </div>
     </section>
-
     <!-- Recent results -->
     <section class="matches-section" id="matches">
         <div class="container">
@@ -93,7 +96,6 @@
             </div>
         </div>
     </section>
-
     <!-- Season timeline -->
     <section class="match-timeline">
         <div class="container">
@@ -106,11 +108,9 @@
             </div>
         </div>
     </section>
-
     <!-- Match modal container -->
     <div id="match-modal-placeholder"></div>
 </main>
-
 <!-- Footer -->
 <div id="footer-placeholder"></div>
 </body>

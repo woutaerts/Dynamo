@@ -6,19 +6,27 @@
     <title>Statistics - Dynamo Beirs</title>
     <meta name="description" content="Season statistics for Dynamo Beirs - wins, goals, and performance data">
     <!-- Stylesheets -->
-    <link rel="stylesheet" href="../css/general.css">
-    <link rel="stylesheet" href="../css/partials/header.css">
-    <link rel="stylesheet" href="../css/partials/footer.css">
-    <link rel="stylesheet" href="../css/statistics/statistics.css">
-    <link rel="stylesheet" href="../css/statistics/team-season.css">
-    <link rel="stylesheet" href="../css/statistics/team-all-time.css">
-    <link rel="stylesheet" href="../css/statistics/player-season.css">
-    <link rel="stylesheet" href="../css/statistics/player-all-time.css">
+    <link rel="stylesheet" href="/css/general.css">
+    <link rel="stylesheet" href="/css/partials/header.css">
+    <link rel="stylesheet" href="/css/partials/footer.css">
+    <link rel="stylesheet" href="/css/statistics/statistics.css">
+    <link rel="stylesheet" href="/css/statistics/team-season.css">
+    <link rel="stylesheet" href="/css/statistics/team-all-time.css">
+    <link rel="stylesheet" href="/css/statistics/player-season.css">
+    <link rel="stylesheet" href="/css/statistics/player-all-time.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <!-- Scripts -->
-    <script type="module" src="../js/statistics.js"></script>
-    <script type="module" src="../js/partials/header.js"></script>
-    <script type="module" src="../js/partials/footer.js"></script>
+    <script type="module" src="/js/statistics.js"></script>
+    <script type="module" src="/js/partials/header.js"></script>
+    <script type="module" src="/js/partials/footer.js"></script>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-8DRDBGPS6B"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-8DRDBGPS6B');
+    </script>
 </head>
 <body>
 <!-- Header -->
@@ -279,7 +287,6 @@
             </div>
         </div>
     </section>
-
     <!-- Player All-Time Statistics -->
     <section class="all-time-stats hidden" id="player-alltime-stats">
         <div class="container">
