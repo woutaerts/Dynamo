@@ -75,7 +75,7 @@ body {
     transform: translateY(-50%);
     width: 14px;
     height: 14px;
-    background-image: url('../../img/icons/white-football-icon.png');
+    background-image: url('/img/icons/white-football-icon.png');
     background-size: contain;
     background-repeat: no-repeat;
     z-index: 1;

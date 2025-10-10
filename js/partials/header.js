@@ -4,15 +4,12 @@ document.addEventListener('DOMContentLoaded', function() {
 
 async function loadHeader() {
     try {
-        const isRootPage = window.location.pathname === '/' ||
-            window.location.pathname.endsWith('/index.html') ||
-            !window.location.pathname.includes('/html/');
-        const headerPath = isRootPage ? 'html/partials/header.html' : 'partials/header.html';
+        const headerPath = '/html/partials/header.html'; // Always use root-relative path
         const response = await fetch(headerPath);
 
         if (!response.ok) {
             console.error(`Failed to load header from ${headerPath}: ${response.status} ${response.statusText}`);
-            loadFallbackHeader(isRootPage);
+            loadFallbackHeader();
             return;
         }
 
@@ -20,7 +17,7 @@ async function loadHeader() {
 
         if (!headerHTML.trim()) {
             console.error('Header file is empty');
-            loadFallbackHeader(isRootPage);
+            loadFallbackHeader();
             return;
         }
 
@@ -31,89 +28,17 @@ async function loadHeader() {
             document.body.insertAdjacentHTML('afterbegin', headerHTML);
         }
 
-        configureHeader(isRootPage);
+        configureHeader();
         initializeScrollProgress();
         setupHeaderScrollEffect();
         setupPositionAwareHoverEffect();
     } catch (error) {
         console.error('Error loading header:', error);
-        loadFallbackHeader(isRootPage);
+        loadFallbackHeader();
     }
 }
 
-function setupPositionAwareHoverEffect() {
-    if (typeof jQuery !== 'undefined') {
-        setupJQueryHoverEffect();
-    } else {
-        setupVanillaHoverEffect();
-    }
-}
-
-function setupJQueryHoverEffect() {
-    $(function() {
-        $('.nav-link').each(function() {
-            if ($(this).find('span').length === 0) {
-                $(this).append('<span></span>');
-            }
-
-            $(this).on('mouseenter', function(e) {
-                if (!$(this).hasClass('active')) {
-                    const parentOffset = $(this).offset();
-                    const relX = e.pageX - parentOffset.left;
-                    const relY = e.pageY - parentOffset.top;
-                    $(this).find('span').css({ top: relY, left: relX });
-                }
-            }).on('mouseout', function(e) {
-                if (!$(this).hasClass('active')) {
-                    const parentOffset = $(this).offset();
-                    const relX = e.pageX - parentOffset.left;
-                    const relY = e.pageY - parentOffset.top;
-                    $(this).find('span').css({ top: relY, left: relX });
-                }
-            });
-        });
-    });
-}
-
-function setupVanillaHoverEffect() {
-    const navLinks = document.querySelectorAll('.nav-link');
-
-    navLinks.forEach(function(link) {
-        if (!link.querySelector('span')) {
-            const span = document.createElement('span');
-            link.appendChild(span);
-        }
-
-        link.addEventListener('mouseenter', function(e) {
-            if (!this.classList.contains('active')) {
-                const rect = this.getBoundingClientRect();
-                const relX = e.clientX - rect.left;
-                const relY = e.clientY - rect.top;
-                const span = this.querySelector('span');
-                span.style.top = relY + 'px';
-                span.style.left = relX + 'px';
-            }
-        });
-
-        link.addEventListener('mouseleave', function(e) {
-            if (!this.classList.contains('active')) {
-                const rect = this.getBoundingClientRect();
-                const relX = e.clientX - rect.left;
-                const relY = e.clientY - rect.top;
-                const span = this.querySelector('span');
-                span.style.top = relY + 'px';
-                span.style.left = relX + 'px';
-            }
-        });
-    });
-}
-
-function loadFallbackHeader(isRootPage) {
-    const homePath = isRootPage ? 'index.html' : '../index.html';
-    const statsPath = isRootPage ? 'html/statistics.html' : 'statistics.html';
-    const playersPath = isRootPage ? 'html/players.html' : 'players.html';
-    const matchesPath = isRootPage ? 'html/matches.html' : 'matches.html';
-
+function loadFallbackHeader() {
     const fallbackHeader = `
         <header class="header">
             <div class="scroll-progress-container">
@@ -121,10 +46,10 @@ function loadFallbackHeader(isRootPage) {
             </div>
             <nav class="nav-container">
                 <ul class="nav-links">
-                    <li><a href="${homePath}" class="nav-link" data-page="home">Home<span></span></a></li>
-                    <li><a href="${statsPath}" class="nav-link" data-page="statistics">Statistics<span></span></a></li>
-                    <li><a href="${playersPath}" class="nav-link" data-page="players">Players<span></span></a></li>
-                    <li><a href="${matchesPath}" class="nav-link" data-page="matches">Matches<span></span></a></li>
+                    <li><a href="/index.html" class="nav-link" data-page="home">Home<span></span></a></li>
+                    <li><a href="/html/statistics.html" class="nav-link" data-page="statistics">Statistics<span></span></a></li>
+                    <li><a href="/html/players.html" class="nav-link" data-page="players">Players<span></span></a></li>
+                    <li><a href="/html/matches.html" class="nav-link" data-page="matches">Matches<span></span></a></li>
                 </ul>
                 <div class="mobile-menu-toggle">
                     <span></span>
@@ -149,41 +74,24 @@ function loadFallbackHeader(isRootPage) {
     setupPositionAwareHoverEffect();
 }
 
-function configureHeader(isRootPage) {
+function configureHeader() {
     const navLinks = document.querySelectorAll('.nav-link');
 
     navLinks.forEach(link => {
         const page = link.getAttribute('data-page');
-        if (isRootPage) {
-            switch(page) {
-                case 'home':
-                    link.href = 'index.html';
-                    break;
-                case 'statistics':
-                    link.href = 'html/statistics.html';
-                    break;
-                case 'players':
-                    link.href = 'html/players.html';
-                    break;
-                case 'matches':
-                    link.href = 'html/matches.html';
-                    break;
-            }
-        } else {
-            switch(page) {
-                case 'home':
-                    link.href = '../index.html';
-                    break;
-                case 'statistics':
-                    link.href = 'statistics.html';
-                    break;
-                case 'players':
-                    link.href = 'players.html';
-                    break;
-                case 'matches':
-                    link.href = 'matches.html';
-                    break;
-            }
+        switch(page) {
+            case 'home':
+                link.href = '/index.html';
+                break;
+            case 'statistics':
+                link.href = '/html/statistics.html';
+                break;
+            case 'players':
+                link.href = '/html/players.html';
+                break;
+            case 'matches':
+                link.href = '/html/matches.html';
+                break;
         }
     });
 
