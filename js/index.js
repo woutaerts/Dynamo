@@ -4,7 +4,6 @@ import { initializeCountdown, animateOnScroll, setupSmoothScrolling, setupPageLo
 // Define animation elements
 const animationElements = [
     { selector: '.hero', containerSelector: null },
-    { selector: '.overview-card', containerSelector: 'section' },
     { selector: '.stat-card', containerSelector: 'section' },
     { selector: '.contact-card', containerSelector: 'section' },
     { selector: '.countdown-block', containerSelector: null },
@@ -30,7 +29,7 @@ function isElementInViewport(el, threshold = 0.1) {
 
 function animateIndexElements() {
     const scrollElements = document.querySelectorAll(
-        '.overview-card, .stat-card, .contact-card, .countdown-block, .form-result, .map-container, .section-title, .section-subtitle, .upcoming-match-name, .form-description'
+        '.stat-card, .contact-card, .countdown-block, .form-result, .map-container, .section-title, .section-subtitle, .upcoming-match-name, .form-description'
     );
 
     scrollElements.forEach((element, index) => {
@@ -38,7 +37,7 @@ function animateIndexElements() {
             const section = element.closest('section');
             const sectionElements = section
                 ? section.querySelectorAll(
-                    '.overview-card, .stat-card, .contact-card, .countdown-block, .form-result, .map-container, .section-title, .section-subtitle, .upcoming-match-name, .form-description'
+                    '.stat-card, .contact-card, .countdown-block, .form-result, .map-container, .section-title, .section-subtitle, .upcoming-match-name, .form-description'
                 )
                 : [element];
             const elementIndex = Array.from(sectionElements).indexOf(element);
@@ -113,7 +112,6 @@ async function fetchAndRenderMatches() {
 
         renderForm(matches.form);
         updateCountdown(matches.upcoming);
-        updateOverviewStats(matches.past);
     } catch (error) {
         console.error('Error fetching matches:', error);
         handleErrorStates();
@@ -230,14 +228,6 @@ function updateTeamStats(stats) {
     document.getElementById('team-clean-sheets').textContent = stats.cleanSheets || 0;
 }
 
-// Update overview stats in the club overview section
-function updateOverviewStats(pastMatches) {
-    const wins = pastMatches.filter(match => match.result === 'winst').length;
-    const totalMatches = pastMatches.length;
-    const overviewText = totalMatches > 0 ? `${wins} wins out of ${totalMatches} matches this season` : 'No matches played yet';
-    document.getElementById('overview-stats').textContent = overviewText;
-}
-
 // Render recent form
 function renderForm(form) {
     const formResults = document.getElementById('form-results');
@@ -273,7 +263,6 @@ function updateCountdown(upcomingMatches) {
 function handleErrorStates() {
     document.getElementById('next-match-title').textContent = 'No games planned in the near future';
     document.getElementById('countdown').style.display = 'none';
-    document.getElementById('overview-stats').textContent = 'No matches played yet';
     document.getElementById('form-results').innerHTML = '<p>No recent form available</p>';
     updateTeamStats({});
 }

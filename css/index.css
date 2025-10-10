@@ -1,12 +1,12 @@
 /* Hero Section */
 .hero {
-    height: 40vh; /* Reduced from 50vh */
+    height: 40vh;
     display: flex;
     align-items: center;
     position: relative;
     overflow: hidden;
     background-size: cover;
-    margin-bottom: -3rem; /* Adjusted for mobile */
+    margin-bottom: -3rem;
 }
 
 .hero-content {
@@ -27,14 +27,14 @@
 }
 
 .hero h1 {
-    font-size: 3.5rem; /* Reduced from 5rem */
+    font-size: 3.5rem;
     font-weight: 900;
     margin-bottom: 0.2rem;
     color: var(--dark-gray);
 }
 
 .hero p {
-    font-size: 1.1rem; /* Reduced from 1.3rem */
+    font-size: 1.1rem;
     color: var(--off-white);
     margin-bottom: 1.5rem;
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
@@ -71,60 +71,6 @@
     transform: translateX(-50%) scaleX(1);
 }
 
-/* Overview Section */
-.overview-section {
-    padding: 1.5rem 0;
-}
-
-.overview-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); /* Adjusted from 250px */
-    gap: 1.5rem;
-    width: 70%; /* Added to match other pages */
-    margin: 0 auto;
-}
-
-.overview-card {
-    text-align: center;
-    background: white;
-    padding: 1.5rem;
-    border-radius: 16px;
-    box-shadow: var(--shadow-medium);
-    opacity: 0;
-    transform: translateY(50px);
-    transition: opacity 0.6s ease-out, transform 0.6s ease-out, box-shadow 0.3s ease;
-}
-
-.overview-card:hover {
-    box-shadow: var(--shadow-hover);
-    transform: translateY(-5px);
-}
-
-.overview-card.animate-in {
-    opacity: 1;
-    transform: translateY(0);
-}
-
-.overview-card i {
-    font-size: 1.8rem; /* Reduced from 2rem */
-    color: var(--dynamo-red);
-    margin-bottom: 0.8rem;
-}
-
-.overview-card h3 {
-    font-size: 1.3rem; /* Reduced from 1.5rem */
-    color: var(--dark-gray);
-    margin-bottom: 0.4rem;
-    font-weight: 600;
-}
-
-.overview-card p {
-    color: var(--medium-gray);
-    font-size: 0.9rem; /* Reduced from 1rem */
-    line-height: 1.6;
-    margin-bottom: 0.8rem;
-}
-
 /* Statistics Section */
 .stats-overview-section {
     padding: 1.5rem 0;
@@ -132,11 +78,11 @@
 
 .stats-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, 180px); /* Reduced from 200px */
+    grid-template-columns: repeat(auto-fit, 180px);
     gap: 1.5rem;
     justify-content: center;
     text-align: center;
-    width: 70%; /* Added to match other pages */
+    width: 70%;
     margin: 0 auto;
 }
 
@@ -161,7 +107,7 @@
 }
 
 .stat-number {
-    font-size: 2rem; /* Reduced from 2.5rem */
+    font-size: 2rem;
     color: var(--dynamo-red);
     font-weight: 800;
 }
@@ -171,7 +117,7 @@
     text-transform: uppercase;
     margin-top: 0.4rem;
     font-weight: 600;
-    font-size: 0.8rem; /* Added for mobile */
+    font-size: 0.8rem;
 }
 
 /* Contact Section */
@@ -181,9 +127,9 @@
 
 .contact-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); /* Reduced from 250px */
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
     gap: 1.5rem;
-    width: 70%; /* Added to match other pages */
+    width: 70%;
     margin: 0 auto;
 }
 
@@ -212,13 +158,13 @@
 }
 
 .contact-card i {
-    font-size: 1.8rem; /* Reduced from 2rem */
+    font-size: 1.8rem;
     color: var(--dynamo-red);
     margin-bottom: 0.8rem;
 }
 
 .contact-card h3 {
-    font-size: 1.3rem; /* Reduced from 1.5rem */
+    font-size: 1.3rem;
     color: var(--dark-gray);
     margin-bottom: 0.4rem;
     font-weight: 600;
@@ -226,7 +172,7 @@
 
 .contact-card p {
     color: var(--medium-gray);
-    font-size: 0.9rem; /* Reduced from 1rem */
+    font-size: 0.9rem;
     line-height: 1.6;
 }
 
@@ -239,12 +185,12 @@
     border-radius: 12px;
     overflow: hidden;
     box-shadow: var(--shadow-medium);
-    height: 350px; /* Reduced from 400px */
+    height: 350px;
     position: relative;
     opacity: 0;
     transform: translateY(50px);
     transition: opacity 0.6s ease-out, transform 0.6s ease-out;
-    width: 70%; /* Added to match other pages */
+    width: 70%;
     margin: 0 auto;
 }
 
@@ -301,215 +247,187 @@
     .hero {
         height: 35vh;
         margin-bottom: -2rem;
-        padding: 1.2rem 0.6rem; /* Aligned with team-all-time.css, team-season.css */
+        padding: 1.2rem 0.6rem;
     }
 
     .hero-content {
-        width: 95%; /* Match general mobile width */
+        width: 95%;
         margin: 0 auto;
     }
 
     .hero h1 {
-        font-size: 2rem; /* Aligned with statistics.css */
+        font-size: 2rem;
     }
 
     .hero p {
-        font-size: 0.9rem; /* Aligned with statistics.css */
+        font-size: 0.9rem;
         max-width: 95%;
     }
 
     .hero-content::after {
-        height: 6px; /* Slightly smaller for mobile */
+        height: 6px;
         border-radius: 3px;
     }
 
-    .overview-section {
-        padding: 1.2rem 0; /* Aligned with other pages */
-    }
-
-    .overview-grid {
-        grid-template-columns: 1fr;
-        gap: 0.8rem; /* Aligned with team-all-time.css, team-season.css */
-        width: 95%; /* Match general mobile width */
-    }
-
-    .overview-card {
-        padding: 1rem; /* Aligned with other pages */
-        border-radius: 12px; /* Aligned with team-all-time.css, team-season.css */
-        box-shadow: var(--shadow-medium); /* Consistent with statistics.css */
-        min-height: 44px; /* WCAG touch target */
-    }
-
-    .overview-card i {
-        font-size: 1.5rem; /* Slightly smaller for mobile */
-    }
-
-    .overview-card h3 {
-        font-size: 1.1rem; /* Aligned with team-all-time.css, team-season.css */
-    }
-
-    .overview-card p {
-        font-size: 0.8rem; /* Aligned with other pages */
-    }
-
     .stats-overview-section {
-        padding: 1.2rem 0; /* Aligned with other pages */
+        padding: 1.2rem 0;
     }
 
     .stats-grid {
         grid-template-columns: repeat(auto-fit, 150px);
-        gap: 0.8rem; /* Aligned with team-all-time.css, team-season.css */
-        width: 95%; /* Match general mobile width */
+        gap: 0.8rem;
+        width: 95%;
     }
 
     .stat-card {
-        padding: 1rem; /* Aligned with other pages */
-        border-radius: 12px; /* Aligned with team-all-time.css, team-season.css */
-        box-shadow: var(--shadow-medium); /* Consistent with statistics.css */
-        min-height: 44px; /* WCAG touch target */
+        padding: 1rem;
+        border-radius: 12px;
+        box-shadow: var(--shadow-medium);
+        min-height: 44px;
     }
 
     .stat-number {
-        font-size: 1.6rem; /* Aligned with team-season.css */
+        font-size: 1.6rem;
     }
 
     .stat-label {
-        font-size: 0.7rem; /* Aligned with other pages */
+        font-size: 0.7rem;
     }
 
     .contact-section {
-        padding: 1.2rem 0; /* Aligned with other pages */
+        padding: 1.2rem 0;
     }
 
     .contact-grid {
         grid-template-columns: 1fr;
-        gap: 0.8rem; /* Aligned with team-all-time.css, team-season.css */
-        width: 95%; /* Match general mobile width */
+        gap: 0.8rem;
+        width: 95%;
     }
 
     .contact-card {
-        padding: 1rem; /* Aligned with other pages */
-        border-radius: 12px; /* Aligned with team-all-time.css, team-season.css */
-        box-shadow: var(--shadow-medium); /* Consistent with statistics.css */
-        min-height: 44px; /* WCAG touch target */
+        padding: 1rem;
+        border-radius: 12px;
+        box-shadow: var(--shadow-medium);
+        min-height: 44px;
     }
 
     .contact-card i {
-        font-size: 1.5rem; /* Slightly smaller for mobile */
+        font-size: 1.5rem;
     }
 
     .contact-card h3 {
-        font-size: 1.1rem; /* Aligned with team-all-time.css, team-season.css */
+        font-size: 1.1rem;
     }
 
     .contact-card p {
-        font-size: 0.8rem; /* Aligned with other pages */
+        font-size: 0.8rem;
     }
 
     .map-section {
-        padding: 1.2rem 0; /* Aligned with other pages */
+        padding: 1.2rem 0;
     }
 
     .map-container {
         height: 250px;
-        width: 95%; /* Match general mobile width */
-        border-radius: 10px; /* Aligned with team-all-time.css, team-season.css */
-        box-shadow: var(--shadow-medium); /* Consistent with statistics.css */
+        width: 95%;
+        border-radius: 10px;
+        box-shadow: var(--shadow-medium);
     }
 }
 
 @media (max-width: 400px) and (min-width: 360px) {
     .hero {
-        height: 30vh; /* Further reduced for iPhone 15 */
-        padding: 1rem 0.6rem; /* Aligned with statistics.css */
+        height: 30vh;
+        padding: 1rem 0.6rem;
         margin-bottom: -1.5rem;
     }
 
     .hero-content {
-        width: 90%; /* Match team-all-time.css, team-season.css */
+        width: 90%;
         margin: 0 auto;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
     }
 
     .hero h1 {
-        font-size: 1.8rem; /* Aligned with statistics.css */
+        font-size: 1.8rem;
+        display: flex;
+        flex-direction: row;
+        flex-wrap: nowrap;
+        justify-content: center;
+        align-items: center;
+        margin-bottom: 0;
+        position: relative;
+    }
+
+    .hero h1 .club-name-part {
+        display: inline-block;
+        margin: 0 0.2rem;
+    }
+
+    .hero h1::after {
+        content: '';
+        position: absolute;
+        bottom: -4px;
+        left: 50%;
+        transform: translateX(-50%) scaleX(0);
+        transform-origin: center;
+        width: 100%;
+        height: 6px;
+        background: var(--dynamo-red);
+        border-radius: 3px;
+        transition: transform 0.6s ease-out 0.3s;
+    }
+
+    .hero.animate-in h1::after {
+        transform: translateX(-50%) scaleX(1);
     }
 
     .hero p {
-        font-size: 0.8rem; /* Aligned with team-all-time.css, team-season.css */
+        font-size: 0.8rem;
         max-width: 90%;
     }
 
-    .hero-content::after {
-        height: 5px;
-        border-radius: 2px;
-    }
-
-    .overview-section {
-        padding: 1rem 0; /* Aligned with team-all-time.css, team-season.css */
-    }
-
-    .overview-grid {
-        grid-template-columns: 1fr;
-        gap: 0.6rem; /* Aligned with team-all-time.css, team-season.css */
-        width: 90%; /* Match team-all-time.css, team-season.css (~354px) */
-    }
-
-    .overview-card {
-        padding: 0.8rem;
-        border-radius: 10px; /* Aligned with team-all-time.css, team-season.css */
-        min-height: 44px;
-    }
-
-    .overview-card i {
-        font-size: 1.4rem;
-    }
-
-    .overview-card h3 {
-        font-size: 1rem; /* Aligned with team-all-time.css, team-season.css */
-    }
-
-    .overview-card p {
-        font-size: 0.75rem; /* Aligned with team-all-time.css, team-season.css */
-    }
-
     .stats-overview-section {
-        padding: 1rem 0; /* Aligned with team-all-time.css, team-season.css */
+        padding: 1rem 0;
     }
 
     .stats-grid {
-        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); /* Changed to horizontal stacking */
-        gap: 0.6rem; /* Aligned with team-all-time.css, team-season.css */
-        width: 90%; /* Match team-all-time.css, team-season.css (~354px) */
+        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+        gap: 0.6rem;
+        width: 90%;
     }
 
     .stat-card {
         padding: 0.8rem;
-        border-radius: 10px; /* Aligned with team-all-time.css, team-season.css */
-        min-height: 44px; /* WCAG touch target */
-        min-width: 150px; /* Ensure cards don’t shrink too small */
+        border-radius: 10px;
+        min-height: 44px;
+        min-width: 150px;
     }
 
     .stat-number {
-        font-size: 1.4rem; /* Slightly smaller than team-season.css for balance */
+        font-size: 1.4rem;
     }
 
     .stat-label {
-        font-size: 0.65rem; /* Aligned with team-all-time.css, team-season.css */
+        font-size: 0.65rem;
     }
 
     .contact-section {
-        padding: 1rem 0; /* Aligned with team-all-time.css, team-season.css */
+        padding: 1rem 0;
     }
 
     .contact-grid {
         grid-template-columns: 1fr;
-        gap: 0.6rem; /* Aligned with team-all-time.css, team-season.css */
-        width: 90%; /* Match team-all-time.css, team-season.css (~354px) */
+        gap: 0.6rem;
+        width: 90%;
     }
 
     .contact-card {
         padding: 0.8rem;
-        border-radius: 10px; /* Aligned with team-all-time.css, team-season.css */
+        border-radius: 10px;
         min-height: 44px;
     }
 
@@ -518,21 +436,21 @@
     }
 
     .contact-card h3 {
-        font-size: 1rem; /* Aligned with team-all-time.css, team-season.css */
+        font-size: 1rem;
     }
 
     .contact-card p {
-        font-size: 0.75rem; /* Aligned with team-all-time.css, team-season.css */
+        font-size: 0.75rem;
     }
 
     .map-section {
-        padding: 1rem 0; /* Aligned with team-all-time.css, team-season.css */
+        padding: 1rem 0;
     }
 
     .map-container {
-        height: 200px; /* Aligned with previous 480px query */
-        width: 90%; /* Match team-all-time.css, team-season.css (~354px) */
-        border-radius: 8px; /* Aligned with team-all-time.css, team-season.css */
-        box-shadow: var(--shadow-medium); /* Consistent with statistics.css */
+        height: 200px;
+        width: 90%;
+        border-radius: 8px;
+        box-shadow: var(--shadow-medium);
     }
 }
