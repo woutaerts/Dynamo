@@ -246,7 +246,7 @@ function updateCountdown(upcomingMatches) {
     const countdownEl = document.getElementById('countdown');
 
     if (upcomingMatches.length === 0) {
-        titleEl.textContent = 'No games planned in the near future';
+        titleEl.textContent = 'Geen wedstrijden gepland in de nabije toekomst';
         countdownEl.style.display = 'none';
         window.nextMatchDateTime = null;
         return;
@@ -259,8 +259,8 @@ function updateCountdown(upcomingMatches) {
 
 // Handle error states
 function handleErrorStates() {
-    document.getElementById('next-match-title').textContent = 'No games planned in the near future';
+    document.getElementById('next-match-title').textContent = 'Geen wedstrijden gepland in de nabije toekomst.';
     document.getElementById('countdown').style.display = 'none';
-    document.getElementById('form-results').innerHTML = '<p>No recent form available</p>';
+    document.getElementById('form-results').innerHTML = '<p>Geen vorm beschrikbaar</p>';
     updateTeamStats({});
 }

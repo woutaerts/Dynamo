@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="nl">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Statistics - Dynamo Beirs</title>
-    <meta name="description" content="Season statistics for Dynamo Beirs - wins, goals, and performance data">
+    <title>Statistieken - Dynamo Beirs</title>
+    <meta name="description" content="Statistieken voor Dynamo Beirs - overwinningen, doelpunten en prestatiedata">
     <!-- Stylesheets -->
     <link rel="stylesheet" href="../css/general.css">
     <link rel="stylesheet" href="../css/partials/header.css">
@@ -12,8 +12,6 @@
     <link rel="stylesheet" href="../css/statistics/statistics.css">
     <link rel="stylesheet" href="../css/statistics/team-season.css">
     <link rel="stylesheet" href="../css/statistics/team-all-time.css">
-    <link rel="stylesheet" href="../css/statistics/player-season.css">
-    <link rel="stylesheet" href="../css/statistics/player-all-time.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <!-- Scripts -->
     <script type="module" src="../js/statistics.js"></script>
@@ -27,7 +25,7 @@
     <!-- Page-Header Section -->
     <section class="page-hero">
         <div class="container">
-            <h1>Season Statistics</h1>
+            <h1>Statistieken</h1>
         </div>
     </section>
     <!-- Toggle Buttons Section -->
@@ -68,62 +66,62 @@
     <!-- Team Season Statistics -->
     <section class="stats-section" id="team-season-stats">
         <div class="container">
-            <h2 class="section-title">Team Performance 2025-2026</h2>
+            <h2 class="section-title">Teamprestaties 2025-2026</h2>
             <div class="stats-grid" id="team-season-grid">
                 <div class="stat-card">
                     <div class="stat-number" id="team-matches-played">0</div>
-                    <div class="stat-label">Matches Played</div>
+                    <div class="stat-label">Wedstrijden</div>
                 </div>
                 <div class="stat-card">
                     <div class="stat-number" id="team-wins">0</div>
-                    <div class="stat-label">Wins</div>
+                    <div class="stat-label">Overwinningen</div>
                 </div>
                 <div class="stat-card">
                     <div class="stat-number" id="team-draws">0</div>
-                    <div class="stat-label">Draws</div>
+                    <div class="stat-label">Gelijkspelen</div>
                 </div>
                 <div class="stat-card">
                     <div class="stat-number" id="team-losses">0</div>
-                    <div class="stat-label">Losses</div>
+                    <div class="stat-label">Verliezen</div>
                 </div>
                 <div class="stat-card">
                     <div class="stat-number" id="team-goals-scored">0</div>
-                    <div class="stat-label">Goals Scored</div>
+                    <div class="stat-label">Doelpunten</div>
                 </div>
                 <div class="stat-card">
                     <div class="stat-number" id="team-goals-conceded">0</div>
-                    <div class="stat-label">Goals Conceded</div>
+                    <div class="stat-label">Tegendoelpunten</div>
                 </div>
             </div>
         </div>
     </section>
     <section class="detailed-stats" id="team-season-detailed">
         <div class="container">
-            <h2 class="section-title">Detailed Team Statistics 2025-2026</h2>
+            <h2 class="section-title">Gedetailleerde Teamstatistieken 2025-2026</h2>
             <div class="stats-categories" id="team-season-detailed-stats">
                 <div class="stat-category">
-                    <h3>Offensive Stats</h3>
+                    <h3>Aanvalsstatistieken</h3>
                     <div class="stat-item">
-                        <span class="stat-name">Goals Scored</span>
+                        <span class="stat-name">Doelpunten</span>
                         <span class="stat-value" id="team-goals-scored-detailed">0</span>
                     </div>
                     <div class="stat-item">
-                        <span class="stat-name">Goals Scored per Match</span>
+                        <span class="stat-name">Doelpunten per Wedstrijd</span>
                         <span class="stat-value" id="team-goals-per-match">0.00</span>
                     </div>
                     <div class="stat-item">
-                        <span class="stat-name">Largest Win</span>
+                        <span class="stat-name">Grootste Overwinning</span>
                         <span class="stat-value" id="team-largest-win">0-0</span>
                     </div>
                 </div>
                 <div class="stat-category">
-                    <h3>Defensive Stats</h3>
+                    <h3>Verdedigingsstatistieken</h3>
                     <div class="stat-item">
-                        <span class="stat-name">Goals Conceded</span>
+                        <span class="stat-name">Tegendoelpunten</span>
                         <span class="stat-value" id="team-goals-conceded-detailed">0</span>
                     </div>
                     <div class="stat-item">
-                        <span class="stat-name">Goals Conceded per Match</span>
+                        <span class="stat-name">Tegendoelpunten per Wedstrijd</span>
                         <span class="stat-value" id="team-goals-conceded-per-match">0.00</span>
                     </div>
                     <div class="stat-item">
@@ -132,17 +130,17 @@
                     </div>
                 </div>
                 <div class="stat-category">
-                    <h3>Overall Performance</h3>
+                    <h3>Algemene Prestaties</h3>
                     <div class="stat-item">
-                        <span class="stat-name">Goal Difference</span>
+                        <span class="stat-name">Doelpuntensaldo</span>
                         <span class="stat-value" id="team-goal-difference">0</span>
                     </div>
                     <div class="stat-item">
-                        <span class="stat-name">Win Rate</span>
+                        <span class="stat-name">Winstpercentage</span>
                         <span class="stat-value" id="team-win-rate">0%</span>
                     </div>
                     <div class="stat-item">
-                        <span class="stat-name">Points</span>
+                        <span class="stat-name">Punten</span>
                         <span class="stat-value" id="team-points">0</span>
                     </div>
                 </div>
@@ -152,88 +150,88 @@
     <!-- Team All-Time Statistics -->
     <section class="stats-section hidden" id="team-alltime-performance">
         <div class="container">
-            <h2 class="section-title">All-Time Team Performance</h2>
+            <h2 class="section-title">All-Time Teamprestaties</h2>
             <div class="stats-grid">
                 <div class="stat-card">
                     <div class="stat-number" id="team-alltime-matches-played">0</div>
-                    <div class="stat-label">Matches Played</div>
+                    <div class="stat-label">Wedstrijden</div>
                 </div>
                 <div class="stat-card">
                     <div class="stat-number" id="team-alltime-wins">0</div>
-                    <div class="stat-label">Wins</div>
+                    <div class="stat-label">Overwinningen</div>
                 </div>
                 <div class="stat-card">
                     <div class="stat-number" id="team-alltime-draws">0</div>
-                    <div class="stat-label">Draws</div>
+                    <div class="stat-label">Gelijkspelen</div>
                 </div>
                 <div class="stat-card">
                     <div class="stat-number" id="team-alltime-losses">0</div>
-                    <div class="stat-label">Losses</div>
+                    <div class="stat-label">Verliezen</div>
                 </div>
                 <div class="stat-card">
                     <div class="stat-number" id="team-alltime-goals-scored">0</div>
-                    <div class="stat-label">Goals Scored</div>
+                    <div class="stat-label">Doelpunten</div>
                 </div>
                 <div class="stat-card">
                     <div class="stat-number" id="team-alltime-goals-conceded">0</div>
-                    <div class="stat-label">Goals Conceded</div>
+                    <div class="stat-label">Tegendoelpunten</div>
                 </div>
             </div>
         </div>
     </section>
     <section class="all-time-stats hidden" id="team-alltime-stats">
         <div class="container">
-            <h2 class="section-title">All-Time Team Records</h2>
+            <h2 class="section-title">All-Time Teamrecords</h2>
             <div class="team-records-grid">
                 <div class="record-category">
-                    <h3>Season Records</h3>
+                    <h3>Seizoensrecords</h3>
                     <div class="record-item">
-                        <span class="record-description">Most Wins in a Season</span>
+                        <span class="record-description">Meeste Overwinningen in een Seizoen</span>
                         <div>
                             <span class="record-value" id="alltime-most-wins">0</span>
                         </div>
                     </div>
                     <div class="record-item">
-                        <span class="record-description">Most Goals in a Season</span>
+                        <span class="record-description">Meeste Doelpunten in een Seizoen</span>
                         <div>
                             <span class="record-value" id="alltime-most-goals">0</span>
                         </div>
                     </div>
                     <div class="record-item">
-                        <span class="record-description">Best Goal Difference</span>
+                        <span class="record-description">Beste Doelpuntensaldo</span>
                         <div>
                             <span class="record-value" id="alltime-best-goal-difference">0</span>
                         </div>
                     </div>
                     <div class="record-item">
-                        <span class="record-description">Most Clean Sheets in a Season</span>
+                        <span class="record-description">Meeste Clean Sheets in een Seizoen</span>
                         <div>
                             <span class="record-value" id="alltime-most-clean-sheets">0</span>
                         </div>
                     </div>
                 </div>
                 <div class="record-category">
-                    <h3>Club Achievements</h3>
+                    <h3>Clubprestaties</h3>
                     <div class="record-item">
-                        <span class="record-description">Longest Winning Streak</span>
+                        <span class="record-description">Langste Winstreeks</span>
                         <div>
                             <span class="record-value" id="alltime-longest-win-streak">0</span>
                         </div>
                     </div>
                     <div class="record-item">
-                        <span class="record-description">Longest Unbeaten Run</span>
+                        <span class="record-description">Langste Onverslagen Reeks</span>
                         <div>
                             <span class="record-value" id="alltime-longest-unbeaten">0</span>
                         </div>
                     </div>
                     <div class="record-item">
-                        <span class="record-description">Total Matches Played</span>
+                        <span class="record-description">Totaal Aantal Wedstrijden</span>
                         <div>
                             <span class="record-value" id="alltime-total-matches">0</span>
                         </div>
                     </div>
                     <div class="record-item">
-                        <span class="record-description">Number of Different Goalscorers</span>
+                        <span class="record-description">Aantal Doelpuntenmakers</span>
                         <div>
                             <span class="record-value" id="alltime-different-goalscorers">0</span>
                         </div>
@@ -245,33 +243,33 @@
     <!-- Player Season Statistics -->
     <section class="stats-section hidden" id="player-season-stats">
         <div class="container">
-            <h2 class="section-title">Player Statistics 2025-2026</h2>
+            <h2 class="section-title">Spelerstatistieken 2025-2026</h2>
             <div class="sort-controls">
-                <span>Sort by:</span>
+                <span>Sorteren op:</span>
                 <div class="custom-dropdown" id="season-sort">
-                    <div class="selected" data-value="goals">Total Goals</div>
+                    <div class="selected" data-value="goals">Totaal Doelpunten</div>
                     <ul class="options">
-                        <li data-value="goals">Total Goals</li>
-                        <li data-value="matches">Matches Played</li>
-                        <li data-value="avg-goals">Average Goals per Match</li>
+                        <li data-value="goals">Totaal Doelpunten</li>
+                        <li data-value="matches">Gespeelde Wedstrijden</li>
+                        <li data-value="avg-goals">Gemiddelde Doelpunten per Wedstrijd</li>
                     </ul>
                 </div>
             </div>
             <div class="player-stats-table">
                 <div class="table-header">
-                    <div class="table-cell">Rank</div>
-                    <div class="table-cell">Position</div>
-                    <div class="table-cell">Player</div>
+                    <div class="table-cell">Rang</div>
+                    <div class="table-cell">Positie</div>
+                    <div class="table-cell">Speler</div>
                     <div class="table-cell">
-                        <span class="desktop-only">Goals</span>
+                        <span class="desktop-only">Doelpunten</span>
                         <i class="fas fa-futbol mobile-only"></i>
                     </div>
                     <div class="table-cell">
-                        <span class="desktop-only">Matches</span>
+                        <span class="desktop-only">Wedstrijden</span>
                         <i class="fas fa-shirt mobile-only"></i>
                     </div>
                     <div class="table-cell">
-                        <span class="desktop-only">Avg G/M</span>
+                        <span class="desktop-only">Gem. D/W</span>
                         <span class="mobile-only"><i class="fas fa-futbol"></i> / <i class="fas fa-shirt"></i></span>
                     </div>
                 </div>
@@ -283,33 +281,33 @@
     <!-- Player All-Time Statistics -->
     <section class="all-time-stats hidden" id="player-alltime-stats">
         <div class="container">
-            <h2 class="section-title">All-Time Top Scorers</h2>
+            <h2 class="section-title">All-Time Topscorers</h2>
             <div class="sort-controls">
-                <span>Sort by:</span>
+                <span>Sorteren op:</span>
                 <div class="custom-dropdown" id="alltime-sort">
-                    <div class="selected" data-value="goals">Total Goals</div>
+                    <div class="selected" data-value="goals">Totaal Doelpunten</div>
                     <ul class="options">
-                        <li data-value="goals">Total Goals</li>
-                        <li data-value="matches">Matches Played</li>
-                        <li data-value="avg-goals">Average Goals per Match</li>
+                        <li data-value="goals">Totaal Doelpunten</li>
+                        <li data-value="matches">Gespeelde Wedstrijden</li>
+                        <li data-value="avg-goals">Gemiddelde Doelpunten per Wedstrijd</li>
                     </ul>
                 </div>
             </div>
             <div class="top-scorers-table">
                 <div class="table-header">
-                    <div class="table-cell">Rank</div>
-                    <div class="table-cell">Position</div>
-                    <div class="table-cell">Player</div>
+                    <div class="table-cell">Rang</div>
+                    <div class="table-cell">Positie</div>
+                    <div class="table-cell">Speler</div>
                     <div class="table-cell">
-                        <span class="desktop-only">Goals</span>
+                        <span class="desktop-only">Doelpunten</span>
                         <i class="fas fa-futbol mobile-only"></i>
                     </div>
                     <div class="table-cell">
-                        <span class="desktop-only">Matches</span>
+                        <span class="desktop-only">Wedstrijden</span>
                         <i class="fas fa-shirt mobile-only"></i>
                     </div>
                     <div class="table-cell">
-                        <span class="desktop-only">Avg G/M</span>
+                        <span class="desktop-only">Gem. D/W</span>
                         <span class="mobile-only"><i class="fas fa-futbol"></i> / <i class="fas fa-shirt"></i></span>
                     </div>
                 </div>

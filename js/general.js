@@ -7,13 +7,13 @@ export function initializeCountdown() {
     if (!countdownElement || !titleEl) return;
 
     if (!window.nextMatchDateTime) {
-        titleEl.textContent = "No games planned in the near future";
+        titleEl.textContent = "Geen wedstrijden gepland in de nabije toekomst";
         countdownElement.style.display = "none";
         return;
     }
 
     const monthMap = {
-        'jan': 0, 'feb': 1, 'mar': 2, 'apr': 3, 'may': 4, 'jun': 5,
+        'jan': 0, 'feb': 1, 'mrt': 2, 'apr': 3, 'mei': 4, 'jun': 5,
         'jul': 6, 'aug': 7, 'sep': 8, 'oct': 9, 'nov': 10, 'dec': 11
     };
 
@@ -31,7 +31,7 @@ export function initializeCountdown() {
 
         if (distance < 0) {
             clearInterval(countdown);
-            titleEl.textContent = "No games planned in the near future";
+            titleEl.textContent = "Geen wedstrijden gepland in de nabije toekomst";
             countdownElement.style.display = "none";
             return;
         }

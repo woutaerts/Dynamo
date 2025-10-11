@@ -185,7 +185,7 @@ function renderUpcomingMatches(upcomingMatches) {
     grid.innerHTML = '';
 
     if (upcomingMatches.length === 0) {
-        grid.innerHTML = '<p>No upcoming matches scheduled.</p>';
+        grid.innerHTML = '<p>Geen komende wedstrijden gepland.</p>';
         return;
     }
 
@@ -228,7 +228,7 @@ function renderRecentMatches(pastMatches) {
     grid.innerHTML = '';
 
     if (pastMatches.length === 0) {
-        grid.innerHTML = '<p>No recent matches available.</p>';
+        grid.innerHTML = '<p>Geen recente wedstrijden beschikbaar.</p>';
         return;
     }
 
@@ -306,7 +306,7 @@ function updateCountdown(upcomingMatches) {
     const countdownEl = document.getElementById('countdown');
 
     if (upcomingMatches.length === 0) {
-        titleEl.textContent = 'No games planned in the near future';
+        titleEl.textContent = 'Geen wedstrijden gepland in de nabije toekomst';
         countdownEl.style.display = 'none';
         window.nextMatchDateTime = null;
         return;
@@ -323,8 +323,8 @@ function setupMatchInteractions() {
         card.style.cursor = 'pointer';
         card.addEventListener('click', () => {
             const matchData = {
-                title: card.getAttribute('data-match-title') || 'Match Details',
-                stadium: card.getAttribute('data-venue') || 'Home Stadium',
+                title: card.getAttribute('data-match-title') || 'Wedstrijddetails',
+                stadium: card.getAttribute('data-venue') || 'Thuisstadion',
                 isUpcoming: true,
                 ...getMatchData(card)
             };
@@ -382,7 +382,7 @@ function setupMatchInteractions() {
                     title: `Match ${item.dataset.match}`,
                     dateTime: { date: item.querySelector('small')?.textContent || 'TBD', time: 'TBD' },
                     season: '2025-26',
-                    stadium: 'Unknown Stadium',
+                    stadium: 'Onbekend Stadion',
                     score: null,
                     goalscorers: []
                 };
