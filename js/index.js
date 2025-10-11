@@ -188,8 +188,6 @@ function parseCsvData(csvText) {
             matches.form.push(resultMap[cell]);
         }
     }
-    matches.form = matches.form.reverse();
-
     return matches;
 }
 

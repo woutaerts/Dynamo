@@ -132,7 +132,7 @@ function parseCsvData(csvText) {
             formCells.push(resultMap[cell]); // Map W/D/L to winst/gelijk/verlies
         }
     }
-    matches.form = formCells.reverse(); // Most recent first (AG70 first)
+    matches.form = formCells; // Most recent first (AG70 first)
 
     return matches;
 }
