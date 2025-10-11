@@ -52,10 +52,10 @@ function loadFallbackFooter() {
                             </a>
                         </div>
                         <div class="footer-brand">
-                            <a href="/index.html" aria-label="Dynamo Beirs Homepage" class="logo-link">
+                            <a href="/Dynamo/index.html" aria-label="Dynamo Beirs Homepage" class="logo-link">
                                 <div class="logo-container">
-                                    <img src="/img/logos/gray-outlined-logo.png" alt="Gray Outlined Dynamo Beirs Logo" class="footer-logo footer-logo-grey">
-                                    <img src="/img/logos/red-outlined-logo.png" alt="Red Outlined Dynamo Beirs Logo" class="footer-logo footer-logo-red">
+                                    <img src="/Dynamo/img/logos/gray-outlined-logo.png" alt="Gray Outlined Dynamo Beirs Logo" class="footer-logo footer-logo-grey">
+                                    <img src="/Dynamo/img/logos/red-outlined-logo.png" alt="Red Outlined Dynamo Beirs Logo" class="footer-logo footer-logo-red">
                                 </div>
                             </a>
                         </div>
@@ -95,7 +95,7 @@ function configureFooter() {
         return;
     }
 
-    logoLink.href = '/index.html';
-    logoGrey.src = '/img/logos/gray-outlined-logo.png';
-    logoRed.src = '/img/logos/red-outlined-logo.png';
+    logoLink.href = '/Dynamo/index.html';
+    logoGrey.src = '/Dynamo/img/logos/gray-outlined-logo.png';
+    logoRed.src = '/Dynamo/img/logos/red-outlined-logo.png';
 }

@@ -46,10 +46,10 @@ function loadFallbackHeader() {
             </div>
             <nav class="nav-container">
                 <ul class="nav-links">
-                    <li><a href="/index.html" class="nav-link" data-page="home">Home<span></span></a></li>
-                    <li><a href="/html/statistics.html" class="nav-link" data-page="statistics">Statistics<span></span></a></li>
-                    <li><a href="/html/players.html" class="nav-link" data-page="players">Players<span></span></a></li>
-                    <li><a href="/html/matches.html" class="nav-link" data-page="matches">Matches<span></span></a></li>
+                    <li><a href="/Dynamo/index.html" class="nav-link" data-page="home">Home<span></span></a></li>
+                    <li><a href="/Dynamo/html/statistics.html" class="nav-link" data-page="statistics">Statistics<span></span></a></li>
+                    <li><a href="/Dynamo/html/players.html" class="nav-link" data-page="players">Players<span></span></a></li>
+                    <li><a href="/Dynamo/html/matches.html" class="nav-link" data-page="matches">Matches<span></span></a></li>
                 </ul>
                 <div class="mobile-menu-toggle">
                     <span></span>
@@ -81,16 +81,16 @@ function configureHeader() {
         const page = link.getAttribute('data-page');
         switch(page) {
             case 'home':
-                link.href = '/index.html';
+                link.href = '/Dynamo/index.html';
                 break;
             case 'statistics':
-                link.href = '/html/statistics.html';
+                link.href = '/Dynamo/html/statistics.html';
                 break;
             case 'players':
-                link.href = '/html/players.html';
+                link.href = '/Dynamo/html/players.html';
                 break;
             case 'matches':
-                link.href = '/html/matches.html';
+                link.href = '/Dynamo/html/matches.html';
                 break;
         }
     });
