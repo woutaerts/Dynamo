@@ -1,10 +1,11 @@
-/* matchmodal.js */
+/* matchModal.js */
 
 /* Match Modal Component */
 class MatchModal {
     constructor() {
         this.modal = null;
         this.isInitialized = false;
+        this.scrollPosition = 0; // Store scroll position
     }
 
     /* Initialization */
@@ -57,9 +58,27 @@ class MatchModal {
         }
     }
 
+    /* Scroll to Self */
+    scrollToSelf() {
+        if (this.modal) {
+            const rect = this.modal.getBoundingClientRect();
+            const scrollTop = window.scrollY || document.documentElement.scrollTop;
+            const targetPosition = rect.top + scrollTop - 50; // Adjust offset as needed
+            window.scrollTo({
+                top: targetPosition,
+                behavior: 'smooth'
+            });
+        } else {
+            console.warn('Match modal not found for autoscroll');
+        }
+    }
+
     /* Modal Control */
     show(matchData = {}) {
         if (!this.modal) return;
+
+        // Save current scroll position
+        this.scrollPosition = window.scrollY || document.documentElement.scrollTop;
 
         const {
             title = 'Match Details',
@@ -99,6 +118,9 @@ class MatchModal {
         } else {
             console.warn('Modal content not found');
         }
+
+        // Scroll to match modal after opening
+        setTimeout(() => this.scrollToSelf(), 300); // Delay to allow modal animation
     }
 
     close() {
@@ -110,7 +132,31 @@ class MatchModal {
         }
         document.body.classList.remove('modal-open');
         this.modal.style.display = 'none';
+
+        // Restore original scroll position
+        setTimeout(() => {
+            window.scrollTo({
+                top: this.scrollPosition,
+                behavior: 'smooth'
+            });
+        }, 300); // Delay to allow modal close animation
     }
+
+    /* Month mapping: English to Dutch */
+    monthMapEnglishToDutch = {
+        'jan': 'jan',
+        'feb': 'feb',
+        'mar': 'mrt',
+        'apr': 'apr',
+        'may': 'mei',
+        'jun': 'jun',
+        'jul': 'jul',
+        'aug': 'aug',
+        'sep': 'sep',
+        'oct': 'okt',
+        'nov': 'nov',
+        'dec': 'dec'
+    };
 
     /* Content Updates */
     updateContent(title, dateTime, season, stadium, goalscorers, score, isUpcoming, isHome) {
@@ -146,11 +192,19 @@ class MatchModal {
             if (typeof dateTime === 'string') {
                 if (dateTime.includes(' — ')) {
                     const [datePart, timePart] = dateTime.split(' — ');
-                    dateValue = datePart.split(' ').slice(0, 2).join(' ');
+                    const dateParts = datePart.split(' ');
+                    const day = dateParts[0];
+                    const monthEnglish = dateParts[1]?.toLowerCase();
+                    const monthDutch = this.monthMapEnglishToDutch[monthEnglish] || monthEnglish || 'TBD';
+                    dateValue = `${day} ${monthDutch}`;
                     const timeMatch = timePart.match(/\d{2}:\d{2}/);
                     timeValue = timeMatch ? timeMatch[0] : 'TBD';
                 } else {
-                    dateValue = dateTime.split(' ').slice(0, 2).join(' ');
+                    const dateParts = dateTime.split(' ');
+                    const day = dateParts[0];
+                    const monthEnglish = dateParts[1]?.toLowerCase();
+                    const monthDutch = this.monthMapEnglishToDutch[monthEnglish] || monthEnglish || 'TBD';
+                    dateValue = `${day} ${monthDutch}`;
                 }
             }
 
@@ -236,13 +290,23 @@ class MatchModal {
         const timeText = timeEl.textContent.replace(/<[^>]+>/g, '').trim();
         const stadium = stadiumEl.textContent.replace(/<[^>]+>/g, '').trim();
 
-        // Parse date in "DD MMM" format, assume season year
+        // Parse date in "DD MMM" format, where MMM is Dutch abbreviation
         const [day, month] = dateText.split(' ');
         const monthMap = {
-            'jan': '01', 'feb': '02', 'mrt': '03', 'apr': '04', 'mei': '05', 'jun': '06',
-            'jul': '07', 'aug': '08', 'sep': '09', 'okt': '10', 'nov': '11', 'dec': '12'
+            'jan': '01',
+            'feb': '02',
+            'mrt': '03',
+            'apr': '04',
+            'mei': '05',
+            'jun': '06',
+            'jul': '07',
+            'aug': '08',
+            'sep': '09',
+            'okt': '10',
+            'nov': '11',
+            'dec': '12'
         };
-        const monthNum = monthMap[month.toLowerCase().substring(0, 3)] || '06';
+        const monthNum = monthMap[month.toLowerCase()] || '06'; // Fallback to June if invalid
         const currentYear = new Date().getMonth() < 6 ? 2026 : 2025;
         const [hours, minutes] = timeText.split(':');
 

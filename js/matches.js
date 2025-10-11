@@ -49,6 +49,22 @@ async function fetchAndRenderMatches() {
     }
 }
 
+// Month mapping: English to Dutch
+const monthMapEnglishToDutch = {
+    'jan': 'jan',
+    'feb': 'feb',
+    'mar': 'mrt',
+    'apr': 'apr',
+    'may': 'mei',
+    'jun': 'jun',
+    'jul': 'jul',
+    'aug': 'aug',
+    'sep': 'sep',
+    'oct': 'okt',
+    'nov': 'nov',
+    'dec': 'dec'
+};
+
 // Parse CSV data using Papaparse
 function parseCsvData(csvText) {
     // Parse CSV properly handling quoted fields
@@ -82,9 +98,18 @@ function parseCsvData(csvText) {
         if (opponent && date && time && stadium && homeAway) {
             const isHome = homeAway === 'thuis';
             const title = isHome ? `Dynamo Beirs vs ${opponent}` : `${opponent} vs Dynamo Beirs`;
+
+            // Transform English month to Dutch
+            const dateParts = date.split(' ');
+            const day = dateParts[0];
+            const monthEnglish = dateParts[1]?.toLowerCase();
+            const year = dateParts[2];
+            const monthDutch = monthMapEnglishToDutch[monthEnglish] || monthEnglish; // Fallback to original if not found
+            const displayDate = `${day} ${monthDutch}`;
+
             const match = {
                 title,
-                dateTime: { date, time, displayDate: date.split(' ').slice(0, 2).join(' ') },
+                dateTime: { date, time, displayDate },
                 season: '2025-26',
                 stadium,
                 isHome
@@ -108,8 +133,8 @@ function parseCsvData(csvText) {
     const parseDate = (dateStr) => {
         const [day, month, year] = dateStr.split(' ');
         const monthMap = {
-            'jan': 0, 'feb': 1, 'mrt': 2, 'apr': 3, 'mei': 4, 'jun': 5,
-            'jul': 6, 'aug': 7, 'sep': 8, 'okt': 9, 'nov': 10, 'dec': 11
+            'jan': 0, 'feb': 1, 'mar': 2, 'apr': 3, 'may': 4, 'jun': 5,
+            'jul': 6, 'aug': 7, 'sep': 8, 'oct': 9, 'nov': 10, 'dec': 11
         };
         return new Date(year, monthMap[month.toLowerCase()], day);
     };
@@ -417,8 +442,15 @@ function getMatchData(card) {
             goalscorers = [];
         }
     }
+    // Transform English month to Dutch for displayDate
+    const dateParts = matchDate.split(' ');
+    const day = dateParts[0];
+    const monthEnglish = dateParts[1]?.toLowerCase();
+    const monthDutch = monthMapEnglishToDutch[monthEnglish] || monthEnglish; // Fallback to original
+    const displayDate = `${day} ${monthDutch}`;
+
     return {
-        dateTime: { date: matchDate, time: matchTime, displayDate: matchDate.split(' ').slice(0, 2).join(' ') },
+        dateTime: { date: matchDate, time: matchTime, displayDate },
         season,
         score,
         goalscorers
