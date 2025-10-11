@@ -12,7 +12,7 @@ class MatchModal {
         if (this.isInitialized) return;
 
         try {
-            const response = await fetch('/html/components/matchModal.html');
+            const response = await fetch('../../html/components/matchModal.html');
             const modalHTML = await response.text();
 
             const placeholder = document.getElementById('match-modal-placeholder');

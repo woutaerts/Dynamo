@@ -5,12 +5,15 @@ document.addEventListener('DOMContentLoaded', function() {
 
 async function loadFooter() {
     try {
-        const footerPath = '/html/partials/footer.html'; // Always use root-relative path
+        const isRootPage = window.location.pathname === '/' ||
+            window.location.pathname.endsWith('/index.html') ||
+            !window.location.pathname.includes('/html/');
+        const footerPath = isRootPage ? 'html/partials/footer.html' : 'partials/footer.html';
         const response = await fetch(footerPath);
 
         if (!response.ok) {
             console.error(`Failed to load footer from ${footerPath}: ${response.status} ${response.statusText}`);
-            loadFallbackFooter();
+            loadFallbackFooter(isRootPage);
             return;
         }
 
@@ -18,7 +21,7 @@ async function loadFooter() {
 
         if (!footerHTML.trim()) {
             console.error('Footer file is empty');
-            loadFallbackFooter();
+            loadFallbackFooter(isRootPage);
             return;
         }
 
@@ -29,14 +32,18 @@ async function loadFooter() {
             document.body.insertAdjacentHTML('beforeend', footerHTML);
         }
 
-        configureFooter();
+        configureFooter(isRootPage);
     } catch (error) {
         console.error('Error loading footer:', error);
-        loadFallbackFooter();
+        loadFallbackFooter(isRootPage);
     }
 }
 
-function loadFallbackFooter() {
+function loadFallbackFooter(isRootPage) {
+    const logoGreyPath = isRootPage ? 'img/logos/gray-outlined-logo.png' : '../../img/logos/gray-outlined-logo.png';
+    const logoRedPath = isRootPage ? 'img/logos/red-outlined-logo.png' : '../../img/logos/red-outlined-logo.png';
+    const homePath = isRootPage ? 'index.html' : '../index.html';
+
     const fallbackFooter = `
         <footer class="footer">
             <div class="footer-content">
@@ -52,10 +59,10 @@ function loadFallbackFooter() {
                             </a>
                         </div>
                         <div class="footer-brand">
-                            <a href="/Dynamo/index.html" aria-label="Dynamo Beirs Homepage" class="logo-link">
+                            <a href="${homePath}" aria-label="Dynamo Beirs Homepage" class="logo-link">
                                 <div class="logo-container">
-                                    <img src="/Dynamo/img/logos/gray-outlined-logo.png" alt="Gray Outlined Dynamo Beirs Logo" class="footer-logo footer-logo-grey">
-                                    <img src="/Dynamo/img/logos/red-outlined-logo.png" alt="Red Outlined Dynamo Beirs Logo" class="footer-logo footer-logo-red">
+                                    <img src="${logoGreyPath}" alt="Gray Outlined Dynamo Beirs Logo" class="footer-logo footer-logo-grey">
+                                    <img src="${logoRedPath}" alt="Red Outlined Dynamo Beirs Logo" class="footer-logo footer-logo-red">
                                 </div>
                             </a>
                         </div>
@@ -85,7 +92,7 @@ function loadFallbackFooter() {
     }
 }
 
-function configureFooter() {
+function configureFooter(isRootPage) {
     const logoLink = document.getElementById('footer-logo-link');
     const logoGrey = document.getElementById('footer-logo-grey');
     const logoRed = document.getElementById('footer-logo-red');
@@ -95,7 +102,13 @@ function configureFooter() {
         return;
     }
 
-    logoLink.href = '/Dynamo/index.html';
-    logoGrey.src = '/Dynamo/img/logos/gray-outlined-logo.png';
-    logoRed.src = '/Dynamo/img/logos/red-outlined-logo.png';
+    if (isRootPage) {
+        logoLink.href = 'index.html';
+        logoGrey.src = 'img/logos/gray-outlined-logo.png';
+        logoRed.src = 'img/logos/red-outlined-logo.png';
+    } else {
+        logoLink.href = '../index.html';
+        logoGrey.src = '../../img/logos/gray-outlined-logo.png';
+        logoRed.src = '../../img/logos/red-outlined-logo.png';
+    }
 }

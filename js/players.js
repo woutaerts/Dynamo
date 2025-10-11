@@ -48,8 +48,8 @@ function parseCSV(csvText) {
         'AAN': 'attacker'
     };
     const nationalityMap = {
-        'BEL': { name: 'Belgium', flagSrc: '/img/icons/flags/belgium.svg' },
-        'NLD': { name: 'Netherlands', flagSrc: '/img/icons/flags/netherlands.svg' }
+        'BEL': { name: 'Belgium', flagSrc: '../img/icons/flags/belgium.svg' },
+        'NLD': { name: 'Netherlands', flagSrc: '../img/icons/flags/netherlands.svg' }
     };
 
     // Assuming headers are in row 1, data starts from row 5 (index 4)
@@ -77,7 +77,7 @@ function parseCSV(csvText) {
         // Check if required fields (name, nationality, position) are present
         if (name && nationalityCode && positionCode) {
             const position = positionMap[positionCode.toUpperCase()] || 'unknown';
-            const nationality = nationalityMap[nationalityCode.toUpperCase()] || { name: 'Unknown', flagSrc: '/img/icons/flags/belgium.svg' };
+            const nationality = nationalityMap[nationalityCode.toUpperCase()] || { name: 'Unknown', flagSrc: '../img/icons/flags/belgium.svg' };
             players.push({
                 name,
                 position,
@@ -136,7 +136,7 @@ function initializePlayerCards() {
                 name: card.getAttribute('data-name') || 'Player Name',
                 position: card.getAttribute('data-position') || 'Unknown',
                 nationality: card.getAttribute('data-nationality') || 'Unknown',
-                flagSrc: card.getAttribute('data-flag-src') || '/img/icons/flags/belgium.svg',
+                flagSrc: card.getAttribute('data-flag-src') || '../img/icons/flags/belgium.svg',
                 gamesThisSeason: parseInt(card.getAttribute('data-games-season')) || 0,
                 gamesTotal: parseInt(card.getAttribute('data-games-total')) || 0,
                 goalsThisSeason: parseInt(card.getAttribute('data-goals-season')) || 0,

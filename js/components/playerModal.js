@@ -13,7 +13,7 @@ class PlayerModal {
         if (this.isInitialized) return;
 
         try {
-            const response = await fetch('/html/components/playerModal.html');
+            const response = await fetch('../../html/components/playerModal.html');
             const modalHTML = await response.text();
 
             const placeholder = document.getElementById('player-modal-placeholder');
@@ -60,7 +60,7 @@ class PlayerModal {
         const {
             name = 'Player Name',
             position = 'Unknown',
-            flagSrc = '/img/icons/flags/belgium.svg',
+            flagSrc = '../img/icons/flags/belgium.svg',
             gamesThisSeason = 0,
             gamesTotal = 0,
             goalsThisSeason = 0,
