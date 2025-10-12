@@ -406,11 +406,10 @@ body.filter-all { --hero-accent-color: var(--medium-gray); }
 @media (max-width: 400px) and (min-width: 360px) {
     .filter-controls {
         display: grid;
-        grid-template-columns: repeat(2, 1fr); /* Two columns for buttons */
-        row-gap: 0.5rem; /* Vertical gap between rows */
-        column-gap: 0.25rem; /* Further reduced horizontal gap for iPhone 15 */
+        grid-template-columns: repeat(2, 1fr);
+        row-gap: 0.75rem;
         justify-items: center;
-        padding: 0 0.75rem;
+        padding: 0 2.5rem;
     }
 
     .filter-btn {

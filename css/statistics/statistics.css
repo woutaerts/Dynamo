@@ -352,6 +352,9 @@ body.team-alltime, body.player-alltime {
     justify-content: center;
     font-weight: 700;
     margin: 0 auto;
+    padding: 0;
+    font-size: 1rem;
+    line-height: normal;
 }
 
 .scorer-position i, .player-position i {
@@ -385,14 +388,6 @@ body.team-alltime, body.player-alltime {
 @media (max-width: 768px) {
     .page-hero {
         padding: 1.5rem 0.8rem;
-    }
-
-    .page-hero h1 {
-        font-size: 1.6rem;
-    }
-
-    .section-title {
-        font-size: 1.5rem;
     }
 
     .toggles-container {
@@ -494,7 +489,7 @@ body.team-alltime, body.player-alltime {
     }
 
     .table-header, .scorer-row, .player-row {
-        grid-template-columns: 35px 1fr 50px 50px 50px;
+        grid-template-columns: 33px 1fr 50px 50px 50px;
         gap: 0.8rem;
         padding: 0.8rem;
         font-size: 0.75rem;
@@ -522,7 +517,12 @@ body.team-alltime, body.player-alltime {
         width: 22px;
         height: 22px;
         font-size: 0.75rem;
-        line-height: 1; /* Added to center vertically */
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto;
+        padding: 0;
+        line-height: normal;
     }
 
     .desktop-only {
@@ -581,14 +581,6 @@ body.team-alltime, body.player-alltime {
 @media (max-width: 400px) and (min-width: 360px) {
     .page-hero {
         padding: 1.2rem 0.6rem;
-    }
-
-    .page-hero h1 {
-        font-size: 1.4rem;
-    }
-
-    .section-title {
-        font-size: 1.3rem;
     }
 
     .toggles-container {
@@ -670,7 +662,7 @@ body.team-alltime, body.player-alltime {
     }
 
     .table-header, .scorer-row, .player-row {
-        grid-template-columns: 30px 1fr 45px 45px 45px;
+        grid-template-columns: 35px 1fr 45px 45px 45px;
         gap: 0.6rem;
         padding: 0.6rem;
         font-size: 0.7rem;
@@ -689,10 +681,15 @@ body.team-alltime, body.player-alltime {
     }
 
     .scorer-rank, .player-rank {
-        width: 20px;
-        height: 20px;
+        width: 22px;
+        height: 22px;
         font-size: 0.7rem;
-        line-height: 1; /* Updated to center vertically */
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto;
+        padding: 0;
+        line-height: 5;
     }
 
     .header-icon {

@@ -118,7 +118,7 @@
 
 @media (max-width: 400px) and (min-width: 360px) {
     .all-time-stats {
-        padding: 1.2rem 0; /* Further reduced for iPhone 15 */
+        padding: 1.2rem 0;
     }
 
     .team-records-grid {
@@ -131,12 +131,12 @@
     .record-category {
         padding: 1rem;
         border-radius: 12px;
-        box-shadow: var(--shadow-medium); /* Consistent with statistics.css */
+        box-shadow: var(--shadow-medium);
         min-height: 44px;
     }
 
     .record-category h3 {
-        font-size: 1.1rem; /* Optimized for iPhone 15 */
+        font-size: 1.2rem;
     }
 
     .record-item {
