@@ -206,6 +206,10 @@ body.team-alltime, body.player-alltime {
     --underline-color: var(--alltime-color);
 }
 
+.section-title {
+    white-space: normal;
+}
+
 .section-title::after, .section-subtitle::after {
     background: var(--underline-color);
     transition: background 0.3s ease, transform 0.6s ease-out 0.3s;
@@ -390,6 +394,10 @@ body.team-alltime, body.player-alltime {
         padding: 1.5rem 0.8rem;
     }
 
+    .section-title br {
+        display: block;
+    }
+
     .toggles-container {
         gap: 0.8rem;
         max-width: 100%;
@@ -417,7 +425,7 @@ body.team-alltime, body.player-alltime {
         margin: 5px;
         border-radius: 6px;
         background: transparent;
-        box-shadow: none; /* Remove shadow to eliminate box effect */
+        box-shadow: none;
     }
 
     .btn {
@@ -484,7 +492,7 @@ body.team-alltime, body.player-alltime {
         max-width: 95%;
         margin: 0 auto;
         border-radius: 12px;
-        box-shadow: var(--shadow-medium); /* Updated to medium shadow */
+        box-shadow: var(--shadow-medium);
         background: linear-gradient(145deg, white, var(--nested-box));
     }
 
@@ -603,7 +611,7 @@ body.team-alltime, body.player-alltime {
         margin: 4px;
         border-radius: 5px;
         background: transparent;
-        box-shadow: none; /* Remove shadow to eliminate box effect */
+        box-shadow: none;
     }
 
     .btn {
@@ -633,12 +641,12 @@ body.team-alltime, body.player-alltime {
         width: 25px;
         height: 31px;
         top: 40%;
-        transform: translateY(-39%); /* Adjust to fine-tune vertical position (e.g., -70% for higher) */
-        left: 2px; /* Change to adjust horizontal position (unchecked) */
+        transform: translateY(-39%);
+        left: 2px;
     }
 
     #button .checkbox:checked + .knob:before, #button2 .checkbox:checked + .knob:before {
-        left: 35px; /* Change to adjust horizontal position (checked) */
+        left: 35px;
     }
 
     #button .checkbox:active + .knob:before, #button2 .checkbox:active + .knob:before {
@@ -657,7 +665,7 @@ body.team-alltime, body.player-alltime {
     .top-scorers-table, .player-stats-table {
         max-width: 98%;
         border-radius: 10px;
-        box-shadow: var(--shadow-medium); /* Updated to medium shadow */
+        box-shadow: var(--shadow-medium);
         background: linear-gradient(145deg, white, var(--nested-box));
     }
 
@@ -717,5 +725,11 @@ body.team-alltime, body.player-alltime {
     .custom-dropdown .options li {
         padding: 0.4rem 0.7rem;
         font-size: 0.8rem;
+    }
+}
+
+@media (min-width: 769px) {
+    .section-title br {
+        display: none;
     }
 }

@@ -11,7 +11,7 @@
     box-shadow: var(--shadow-medium);
     transition: opacity 0.6s ease-out, transform 0.6s ease-out, box-shadow 0.3s ease;
     position: relative;
-    z-index: 3; /* Increased to ensure visibility above card */
+    z-index: 3;
 }
 
 .result-icon.win { background: var(--light-green); }
@@ -30,7 +30,6 @@
 .match-card.modern {
     background: white;
     border-radius: 16px;
-    /* Removed overflow: hidden to allow icon to protrude */
     box-shadow: var(--shadow-medium);
     cursor: pointer;
     border: 1px solid rgba(0, 0, 0, 0.05);
@@ -49,7 +48,7 @@
     justify-content: center;
     align-items: center;
     position: absolute;
-    top: 16px; /* Adjusted to move icon above card */
+    top: 16px;
     right: 16px;
 }
 
@@ -59,7 +58,7 @@
     transform: translateY(1px);
 }
 
-/* Match card content (unchanged) */
+/* Match card content */
 .match-body {
     padding: 20px 24px 24px;
     display: flex;
@@ -68,7 +67,7 @@
     text-align: center;
 }
 
-/* Rest of base styles (unchanged) */
+/* Rest of base styles */
 .match-teams {
     margin: 0 0 20px;
     width: 100%;
@@ -131,7 +130,7 @@
     opacity: 0.8;
 }
 
-/* Timeline layout (unchanged) */
+/* Timeline layout */
 .timeline-wrapper {
     overflow-x: auto;
     overflow-y: hidden;
@@ -297,8 +296,7 @@
         border-radius: 20px;
         background: linear-gradient(145deg, white, var(--nested-box));
         box-shadow: var(--shadow-small);
-        border: none; /* Remove border for cleaner look */
-        /* Removed overflow: hidden to allow icon to protrude */
+        border: none;
     }
 
     .match-card.modern:hover {
