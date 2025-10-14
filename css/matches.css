@@ -198,8 +198,8 @@
     font-family: "Font Awesome 6 Free", serif;
     font-weight: 900;
     position: absolute;
-    top: 50.6%;
-    right: 1.27rem;
+    top: 50%;
+    right: 1.29rem;
     transform: translate(50%, -50%);
     font-size: 26px;
     color: var(--light-gray);
@@ -287,8 +287,8 @@
     .matches-grid {
         grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
         gap: 1rem;
-        padding: 0 0.5rem;
-        max-width: 100%;
+        padding: 0;
+        width: 90%;
         margin: 0 auto;
     }
 
@@ -355,8 +355,9 @@
 
     .timeline-wrapper {
         min-height: 160px;
-        margin: 0.8rem 0;
+        margin: 0.8rem auto;
         border-radius: 12px;
+        width: 90%;
     }
 
     .timeline {
@@ -379,7 +380,7 @@
     .timeline::after {
         font-size: 20px;
         right: 0.8rem;
-        top: 50.8%;
+        top: 49.7%;
     }
 
     .timeline-item {
@@ -419,7 +420,9 @@
     .matches-grid {
         grid-template-columns: repeat(2, minmax(160px, 1fr));
         gap: 0.8rem;
-        padding: 0 0.75rem;
+        padding: 0;
+        width: 90%;
+        margin: 0 auto;
     }
 
     .match-card.modern {
@@ -458,7 +461,7 @@
         top: -8px;
         right: -8px;
         box-shadow: var(--shadow-medium);
-        z-index: 3; /* Ensure icon is above card */
+        z-index: 3;
     }
 
     .match-date, .match-venue {
@@ -471,7 +474,9 @@
 
     .timeline-wrapper {
         min-height: 140px;
-        margin: 0.6rem 0;
+        margin: 0.6rem auto;
+        border-radius: 12px;
+        width: 90%;
     }
 
     .timeline {
@@ -517,10 +522,5 @@
     .timeline-item::before {
         width: 14px;
         height: 14px;
-    }
-
-    .upcoming-match-name h3 {
-        font-size: 0.9rem;
-        margin: 0.4rem 0;
     }
 }
