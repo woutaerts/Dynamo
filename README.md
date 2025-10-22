@@ -23,17 +23,17 @@ C:.
 │   │   index.css
 │   │   matches.css
 │   │   players.css
+│   │   404.css
 │   │
 │   ├───components
 │   │       matchModal.css
+│   │       playerModal.css
 │   │
 │   ├───partials
 │   │       footer.css
 │   │       header.css
 │   │
 │   └───statistics
-│           player-all-time.css
-│           player-season.css
 │           statistics.css
 │           team-all-time.css
 │           team-season.css
@@ -42,29 +42,17 @@ C:.
 │   │   matches.html
 │   │   players.html
 │   │   statistics.html
+│   │   404.html
 │   │
 │   ├───components
 │   │       matchModal.html
+│   │       playerModal.html
 │   │
 │   └───partials
 │           footer.html
 │           header.html
 │
 ├───img
-│   ├───icons
-│   │   │   red-football-icon.png
-│   │   │   white-football-icon.png
-│   │   │
-│   │   └───flags
-│   │           belgium.svg
-│   │           netherlands.svg
-│   │
-│   └───logos
-│           gray-outlined-logo.png
-│           original-logo.png
-│           red-outlined-logo.png
-│           white-outlined-black-filled-logo.png
-│           white-outlined-logo.png
 │
 └───js
     │   general.js
@@ -72,9 +60,11 @@ C:.
     │   matches.js
     │   players.js
     │   statistics.js
+    │   404.js
     │
     ├───components
     │       matchModal.js
+    │       playerModal.js
     │
     └───partials
             footer.js
