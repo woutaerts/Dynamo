@@ -580,7 +580,8 @@
     .timeline::after {
         font-size: 18px;
         right: 0.8rem;
-        top: 49.7%;
+        top: 49.2%;
+        color: var(--dynamo-red);
     }
 
     .timeline-item {
