@@ -251,7 +251,7 @@ main .page-hero h1.animate-in::after {
 .players-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-    gap: 1.5rem;
+    gap: 1rem;
     max-width: 70%;
     margin: 0 auto;
 }
@@ -453,7 +453,6 @@ main .page-hero h1.animate-in::after {
 
     main .page-hero h1::before,
     main .page-hero h1::after {
-        top: 3px;
         font-size: 1em;
         margin: 6px;
     }
@@ -535,7 +534,7 @@ main .page-hero h1.animate-in::after {
     }
 }
 
-/* iPhone 15-Specific View */
+/* Mobile View */
 @media (max-width: 400px) and (min-width: 360px) {
     .filter-controls {
         display: grid;

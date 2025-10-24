@@ -59,7 +59,7 @@
 .stats-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-    gap: 1.5rem;
+    gap: 1rem;
     justify-content: center;
     text-align: center;
     width: 70%;
@@ -105,13 +105,13 @@
 
 /* Contact Section */
 .contact-section {
-    padding: 1.5rem 0;
+    padding: 0.5rem 0;
 }
 
 .contact-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-    gap: 1.5rem;
+    gap: 1rem;
     width: 70%;
     margin: 0 auto;
 }
@@ -156,7 +156,7 @@
 
 /* Map Section */
 .map-section {
-    padding: 1.5rem 0;
+    padding: 0.5rem 0;
 }
 
 .map-container {
@@ -225,7 +225,7 @@
 
     .stats-grid {
         grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-        gap: 1.2rem;
+        gap: 1rem;
         width: 80%;
     }
 
@@ -242,13 +242,9 @@
         font-size: 0.75rem;
     }
 
-    .contact-section {
-        padding: 1.3rem 0;
-    }
-
     .contact-grid {
         grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-        gap: 1.2rem;
+        gap: 1rem;
         width: 80%;
     }
 
@@ -267,10 +263,6 @@
 
     .contact-card p {
         font-size: 0.85rem;
-    }
-
-    .map-section {
-        padding: 1.3rem 0;
     }
 
     .map-container {
@@ -327,10 +319,6 @@
         font-size: 0.7rem;
     }
 
-    .contact-section {
-        padding: 1.2rem 0;
-    }
-
     .contact-grid {
         grid-template-columns: 1fr;
         gap: 0.8rem;
@@ -353,10 +341,6 @@
 
     .contact-card p {
         font-size: 0.8rem;
-    }
-
-    .map-section {
-        padding: 1.2rem 0;
     }
 
     .map-container {
@@ -444,7 +428,7 @@
     }
 
     .contact-section {
-        padding: 1rem 0;
+        padding: 0.4rem 0;
     }
 
     .contact-grid {
@@ -472,7 +456,7 @@
     }
 
     .map-section {
-        padding: 1rem 0;
+        padding: 0.4rem 0;
     }
 
     .map-container {
