@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&display=swap');
+
 /* Base Styles */
 html {
     scroll-behavior: smooth;
@@ -96,6 +98,7 @@ body {
     justify-content: center;
     padding: 0;
     margin: 0 auto;
+    position: relative;
 }
 /* Navigation Links */
 .nav-links {
@@ -128,7 +131,17 @@ body {
     z-index: 1;
     text-decoration: none;
 }
-.nav-link span {
+.nav-link i {
+    font-size: 1.5rem;
+    line-height: 1;
+}
+.nav-link.search-link {
+    padding: 8px 12px;
+}
+.nav-link span.nav-text {
+    margin-left: 8px;
+}
+.nav-link span.ripple {
     position: absolute;
     display: block;
     width: 0;
@@ -142,7 +155,7 @@ body {
 .nav-link:hover {
     color: var(--off-white);
 }
-.nav-link:hover span {
+.nav-link:hover span.ripple {
     width: 200%;
     height: 165px;
 }
@@ -154,9 +167,36 @@ body {
     color: var(--off-white);
     outline: none;
 }
-.nav-link:focus span {
+.nav-link:focus span.ripple {
     width: 200%;
     height: 165px;
+}
+/* Mobile Search Container */
+.mobile-search-container {
+    display: none;
+}
+.mobile-search-link {
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 9px;
+    padding: 8px 10px;
+    backdrop-filter: blur(10px);
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    color: var(--dark-gray);
+}
+.mobile-search-link:hover {
+    background: rgba(255, 255, 255, 0.5);
+    transform: scale(1.05);
+}
+.mobile-search-link i {
+    font-size: 1.5rem;
+}
+.nav-link i.fa-magnifying-glass,
+.mobile-search-link i.fa-magnifying-glass {
+    font-family: "Font Awesome 6 Free", serif;
+    font-weight: 900;
 }
 /* Mobile Menu Toggle */
 .mobile-menu-toggle {
@@ -276,7 +316,16 @@ body {
         width: 100%;
         justify-content: center;
     }
-    .nav-link span {
+    .nav-link.search-link {
+        display: none; /* Hide search link in mobile menu dropdown */
+    }
+    .nav-link span.nav-text {
+        margin-left: 0; /* Reset margin for mobile */
+    }
+    .nav-link i {
+        display: none; /* Hide icons in mobile menu dropdown */
+    }
+    .nav-link span.ripple {
         display: none;
     }
     .nav-link:hover,
@@ -284,8 +333,8 @@ body {
         color: var(--dark-gray);
         background: transparent;
     }
-    .nav-link:hover span,
-    .nav-link:focus span {
+    .nav-link:hover span.ripple,
+    .nav-link:focus span.ripple {
         width: 0;
         height: 0;
     }
@@ -333,8 +382,17 @@ body {
         transform: translateX(-50%);
         order: 2;
     }
-    .nav-links {
+    .mobile-search-container {
+        display: flex;
         order: 3;
+    }
+
+    .mobile-search-link i {
+        color: var(--dynamo-red);
+    }
+
+    .nav-links {
+        order: 4;
         left: 6px;
         right: 6px;
         top: calc(100% + 8px);
@@ -372,7 +430,13 @@ body {
         width: 100%;
         min-height: 44px;
     }
-    .nav-link span {
+    .nav-link i {
+        display: none; /* Hide icons in mobile menu dropdown */
+    }
+    .nav-link span.nav-text {
+        margin-left: 0; /* Reset margin for mobile */
+    }
+    .nav-link span.ripple {
         display: none;
     }
     .nav-link:hover,
@@ -380,14 +444,17 @@ body {
         color: var(--dark-gray);
         background: transparent;
     }
-    .nav-link:hover span,
-    .nav-link:focus span {
-        width: 0; /* Prevent span expansion */
+    .nav-link:hover span.ripple,
+    .nav-link:focus span.ripple {
+        width: 0;
         height: 0;
     }
     .nav-link.active {
         color: var(--off-white);
         background: var(--dynamo-red);
+    }
+    .nav-link.search-link {
+        display: none; /* Hide search link in mobile menu dropdown */
     }
 }
 /* Accessibility Enhancements */
@@ -403,7 +470,7 @@ body {
     .header {
         transition: transform 0.1s ease, opacity 0.1s ease;
     }
-    .nav-link span {
+    .nav-link span.ripple {
         transition: none;
     }
     .scroll-progress-bar {
@@ -415,6 +482,15 @@ body {
 @media (min-width: 481px) {
     .header-logo-container {
         display: none;
+    }
+    .nav-link i {
+        display: inline-block;
+    }
+    .nav-link span.nav-text {
+        display: none; /* Hide text for home in desktop/tablet */
+    }
+    .nav-link.search-link {
+        padding: 8px 12px;
     }
 }
 /* Performance Optimizations */

@@ -53,8 +53,8 @@ function setupPositionAwareHoverEffect() {
 function setupJQueryHoverEffect() {
     $(function() {
         $('.nav-link').each(function() {
-            if ($(this).find('span').length === 0) {
-                $(this).append('<span></span>');
+            if ($(this).find('span.ripple').length === 0) {
+                $(this).append('<span class="ripple"></span>');
             }
 
             $(this).on('mouseenter', function(e) {
@@ -62,14 +62,14 @@ function setupJQueryHoverEffect() {
                     const parentOffset = $(this).offset();
                     const relX = e.pageX - parentOffset.left;
                     const relY = e.pageY - parentOffset.top;
-                    $(this).find('span').css({ top: relY, left: relX });
+                    $(this).find('span.ripple').css({ top: relY, left: relX });
                 }
             }).on('mouseout', function(e) {
                 if (!$(this).hasClass('active')) {
                     const parentOffset = $(this).offset();
                     const relX = e.pageX - parentOffset.left;
                     const relY = e.pageY - parentOffset.top;
-                    $(this).find('span').css({ top: relY, left: relX });
+                    $(this).find('span.ripple').css({ top: relY, left: relX });
                 }
             });
         });
@@ -80,8 +80,9 @@ function setupVanillaHoverEffect() {
     const navLinks = document.querySelectorAll('.nav-link');
 
     navLinks.forEach(function(link) {
-        if (!link.querySelector('span')) {
+        if (!link.querySelector('span.ripple')) {
             const span = document.createElement('span');
+            span.className = 'ripple';
             link.appendChild(span);
         }
 
@@ -90,7 +91,7 @@ function setupVanillaHoverEffect() {
                 const rect = this.getBoundingClientRect();
                 const relX = e.clientX - rect.left;
                 const relY = e.clientY - rect.top;
-                const span = this.querySelector('span');
+                const span = this.querySelector('span.ripple');
                 span.style.top = relY + 'px';
                 span.style.left = relX + 'px';
             }
@@ -101,7 +102,7 @@ function setupVanillaHoverEffect() {
                 const rect = this.getBoundingClientRect();
                 const relX = e.clientX - rect.left;
                 const relY = e.clientY - rect.top;
-                const span = this.querySelector('span');
+                const span = this.querySelector('span.ripple');
                 span.style.top = relY + 'px';
                 span.style.left = relX + 'px';
             }
@@ -130,6 +131,9 @@ function configureHeader(isRootPage) {
             case 'matches':
                 link.href = '/Dynamo/html/matches.html';
                 break;
+            case 'search':
+                link.href = '/Dynamo/html/search.html';
+                break;
         }
     });
 
@@ -147,31 +151,37 @@ function configureHeader(isRootPage) {
 
 function loadFallbackHeader() {
     const fallbackHeader = `
-        <header class="header">
-            <div class="scroll-progress-container">
-                <div class="scroll-progress-bar"></div>
-            </div>
+        <header class="header" id="header">
             <nav class="nav-container">
-                <div class="mobile-menu-toggle">
+                <div class="mobile-menu-toggle" id="mobile-menu-toggle" tabindex="0" role="button" aria-label="Toggle mobile menu">
                     <span></span>
                     <span></span>
                     <span></span>
                 </div>
-                <div class="header-logo-container">
-                    <a href="/Dynamo/index.html" aria-label="Dynamo Beirs Homepage" class="header-logo-link">
+                <div class="header-logo-container" id="header-logo-container">
+                    <a href="/Dynamo/index.html" aria-label="Dynamo Beirs Homepage" class="header-logo-link" id="header-logo-link">
                         <div class="logo-container">
-                            <img src="/Dynamo/img/logos/red-outlined-logo.png" alt="Red Outlined Dynamo Beirs Logo" class="header-logo header-logo-red">
+                            <img src="/Dynamo/img/logos/red-outlined-logo.png" alt="Red Outlined Dynamo Beirs Logo" class="header-logo header-logo-red" id="header-logo-red">
                         </div>
                     </a>
                 </div>
-                <ul class="nav-links">
-                    <li><a href="/Dynamo/index.html" class="nav-link" data-page="home">Home<span></span></a></li>
-                    <li><a href="/Dynamo/html/statistics.html" class="nav-link" data-page="statistics">Statistics<span></span></a></li>
-                    <li><a href="/Dynamo/html/players.html" class="nav-link" data-page="players">Players<span></span></a></li>
-                    <li><a href="/Dynamo/html/matches.html" class="nav-link" data-page="matches">Matches<span></span></a></li>
+                <ul class="nav-links" id="nav-links">
+                    <li><a href="/Dynamo/index.html" class="nav-link" data-page="home"><i class="fa-solid fa-house"></i><span class="nav-text">Home</span><span class="ripple"></span></a></li>
+                    <li><a href="/Dynamo/html/players.html" class="nav-link" data-page="players">Spelers<span class="ripple"></span></a></li>
+                    <li><a href="/Dynamo/html/statistics.html" class="nav-link" data-page="statistics">Statistieken<span class="ripple"></span></a></li>
+                    <li><a href="/Dynamo/html/matches.html" class="nav-link" data-page="matches">Wedstrijden<span class="ripple"></span></a></li>
+                    <li><a href="/Dynamo/html/search.html" class="nav-link search-link" data-page="search"><i class="fa-solid fa-magnifying-glass"></i><span class="ripple"></span></a></li>
                 </ul>
+                <div class="mobile-search-container">
+                    <a href="/Dynamo/html/search.html" class="mobile-search-link" aria-label="Search">
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                    </a>
+                </div>
             </nav>
         </header>
+        <div class="scroll-progress-container">
+            <div class="scroll-progress-bar"></div>
+        </div>
     `;
 
     const headerPlaceholder = document.getElementById('header-placeholder');
