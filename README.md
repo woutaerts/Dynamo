@@ -2,127 +2,60 @@
 
 Welcome to the official website of **Dynamo Beirs**, a football club showcasing modern design, team stats, match history, and player information in a responsive, modular structure.
 
-## 🌐 Project Structure
+## 🌐 Github Pages Website
+
+https://dynamo-beirs.github.io/dynamo
+
+## 📁 Project Structure
 
 ```
 C:.
-│   Dynamo.iml
-│   index.html
-│   README.md
-│   
-├───.idea
-│       .gitignore
-│       jsLibraryMappings.xml
-│       misc.xml
-│       modules.xml
-│       vcs.xml
-│       workspace.xml
-│       
-├───css
-│   │   general.css
-│   │   index.css
-│   │   matches.css
-│   │   players.css
-│   │   404.css
-│   │
-│   ├───components
-│   │       matchModal.css
-│   │       playerModal.css
-│   │
-│   ├───partials
-│   │       footer.css
-│   │       header.css
-│   │
-│   └───statistics
-│           statistics.css
-│           team-all-time.css
-│           team-season.css
-│
-├───html
-│   │   matches.html
-│   │   players.html
-│   │   statistics.html
-│   │   404.html
-│   │
-│   ├───components
-│   │       matchModal.html
-│   │       playerModal.html
-│   │
-│   └───partials
-│           footer.html
-│           header.html
-│
-├───img
-│
-└───js
-    │   general.js
-    │   index.js
-    │   matches.js
-    │   players.js
-    │   statistics.js
-    │   404.js
-    │
-    ├───components
-    │       matchModal.js
-    │       playerModal.js
-    │
-    └───partials
-            footer.js
-            header.js
+├── css/                       # Stylesheets
+│   ├── components/            
+│   │   ├── matchModal.css
+│   │   └── playerModal.css
+│   ├── partials/              
+│   │   ├── footer.css
+│   │   └── header.css
+│   ├── statistics/           
+│   │   ├── statistics.css
+│   │   ├── team-all-time.css
+│   │   └── team-season.css
+│   ├── general.css            # Global styles
+│   ├── index.css              
+│   ├── matches.css            
+│   ├── players.css            
+│   ├── 404.css                
+│   └── search.css             
+├── html/                      # HTML
+│   ├── components/            
+│   │   ├── matchModal.html
+│   │   └── playerModal.html
+│   ├── partials/              
+│   │   ├── footer.css
+│   │   └── header.css
+│   ├── matches.html            
+│   ├── players.html            
+│   ├── search.html            
+│   └── statistics.html        
+├── js/                        # JavaScript files
+│   ├── components/            
+│   │   ├── matchModal.js
+│   │   └── playerModal.js
+│   ├── partials/             
+│   │   ├── footer.js
+│   │   └── header.js
+│   ├── 404.js
+│   ├── general.js             # Shared functionality (e.g., countdown, animations)
+│   ├── index.js          
+│   ├── matches.js        
+│   ├── players.js  
+│   ├── search.js     
+│   └── statistics.js 
+├── 404.html                   # 404 page 
+├── index.html                 # Homepage
+└── README.md                  # This file
 ```
 
-## 📄 Pages
-
-- **Home (`index.html`)**: Hero section, club highlights, quick navigation to other pages.
-- **Players (`players.html`)**: Detailed player stats, full squad by position.
-- **Matches (`matches.html`)**: Upcoming fixtures, recent results, performance overview.
-- **Statistics (`statistics.html`)**: Season stats including wins, goals, defensive and offensive breakdowns.
-
-## 🎨 Styling
-
-- Modular CSS:
-    - `home.css`: Homepage-specific styling
-    - `players.css`, `matches.css`, `statistics.css`: Styles for respective pages
-    - `header.css`, `footer.css`: Shared layout elements
-
-## ⚙️ JavaScript Behavior
-
-- Modular JS:
-    - `index.js`, `players.js`, `matches.js`, `statistics.js`: Page-specific animations and interactions
-    - `header.js`: Handles mobile nav toggle, header scroll effect, and active menu states
-
-## 📱 Responsive Design
-
-Built mobile-first with responsive layouts using:
-- CSS Flexbox/Grid
-- Media queries for breakpoints
-- Mobile navigation toggle system
-
-## 🚀 Getting Started
-
-To view or edit the website locally:
-
-1. **Clone this repository**:
-   ```bash
-   git clone https://github.com/woutaerts/Dynamo.git
-   cd Dynamo
-   ```
-
-2. **Open `index.html` in your browser** to explore the homepage.
-
-> ✅ No frameworks or bundlers required — this is a static site built with HTML, CSS, and vanilla JavaScript.
-
-## 📦 Dependencies
-
-- [Font Awesome 6.5.0](https://cdnjs.com/libraries/font-awesome) — for social and iconography
-
-## 🛠 Future Improvements
-
-- Add individual player profile pages
-- Integrate live match updates (e.g., via football-data.org API)
-- Admin dashboard for match and stat input
-
-## 📄 License
-
 This project is for educational and demonstrative purposes only.  
-© 2025 [Dynamo Beirs](https://github.com/woutaerts/Dynamo) – All rights reserved.
+© 2025 [Dynamo Beirs](https://github.com/dynamo-beirs/dynamo) – All rights reserved.

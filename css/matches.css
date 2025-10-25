@@ -360,7 +360,6 @@
 
     .match-card.modern {
         border-radius: 20px;
-        background: linear-gradient(145deg, white, var(--nested-box));
         box-shadow: var(--shadow-small);
         border: none;
     }
@@ -487,7 +486,7 @@
 }
 
 /* Mobile View */
-@media (max-width: 400px) and (min-width: 360px) {
+@media (max-width: 480px) {
     .matches-grid {
         grid-template-columns: repeat(2, minmax(160px, 1fr));
         gap: 0.8rem;
@@ -505,7 +504,6 @@
 
     .match-card.modern {
         border-radius: 18px;
-        background: linear-gradient(145deg, white, var(--off-white));
         box-shadow: var(--shadow-medium);
     }
 
