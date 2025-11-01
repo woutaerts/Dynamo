@@ -3,7 +3,6 @@ import { animateOnScroll } from './general.js';
 
 /* Animation Elements */
 const animationElements = [
-    { selector: '.match-card', containerSelector: 'section' },
     { selector: '.section-title', containerSelector: 'section' },
     { selector: '.page-hero h1', containerSelector: 'section' },
     { selector: '.search-container', containerSelector: 'section' }
@@ -14,11 +13,13 @@ document.addEventListener('DOMContentLoaded', async () => {
     await fetchAndRenderMatches();
     setupSearch();
     animateOnScroll(animationElements);
+    await window.matchModal?.init?.();
 });
 
 /* Fetch and Render Matches */
 async function fetchAndRenderMatches() {
-    const spreadsheetUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQRCgon0xh9NuQ87NgqQzBNPCEmmZWcC_jrulRhLwmrudf5UQ2QBRA28F1qmWB9L5xP9uZ8-ct2aqfR/pub?gid=890518549&single=true&output=csv';
+    const spreadsheetUrl =
+        'https://docs.google.com/spreadsheets/d/e/2PACX-1vQRCgon0xh9NuQ87NgqQzBNPCEmmZWcC_jrulRhLwmrudf5UQ2QBRA28F1qmWB9L5xP9uZ8-ct2aqfR/pub?gid=890518549&single=true&output=csv';
     try {
         const response = await fetch(spreadsheetUrl);
         const csvText = await response.text();
@@ -35,78 +36,96 @@ async function fetchAndRenderMatches() {
 
 /* Parse CSV Data */
 function parseCsvData(csvText) {
-    const parsed = Papa.parse(csvText, {
-        skipEmptyLines: true,
-        delimiter: ','
-    });
+    const parsed = Papa.parse(csvText, { skipEmptyLines: true, delimiter: ',' });
     const rows = parsed.data;
     const matches = [];
     const currentDate = new Date();
-    const monthNames = ['jan', 'feb', 'mrt', 'apr', 'mei', 'jun', 'jul', 'aug', 'sep', 'okt', 'nov', 'dec'];
+    const monthNames = ['jan','feb','mrt','apr','mei','jun','jul','aug','sep','okt','nov','dec'];
 
     for (let i = 2; i < rows.length; i++) {
-        const opponent = rows[i][1]?.trim();
-        const date = rows[i][4]?.trim();
-        const goalsScored = rows[i][5]?.trim();
-        const goalsConceded = rows[i][6]?.trim();
+        const opponent      = rows[i][1]?.trim();
+        const dateRaw       = rows[i][4]?.trim();
+        const time          = rows[i][5]?.trim();
+        const stadium       = rows[i][6]?.trim();
+        const homeAwayRaw   = rows[i][7]?.trim();
+        const goalsScored   = rows[i][8]?.trim();
+        const goalsConceded = rows[i][9]?.trim();
+        const goalscorersRaw= rows[i][10]?.trim();
 
-        if (!opponent || !date || goalsScored === undefined || goalsConceded === undefined) continue;
+        if (!opponent || !dateRaw || goalsScored === undefined || goalsConceded === undefined) continue;
 
-        let displayDate = '';
-        let matchDate;
-        let season = '';
+        let displayDate = '', matchDate, season = '';
         try {
-            const [day, month, year] = date.split('-').map(num => parseInt(num));
+            const [day, month, year] = dateRaw.split('-').map(Number);
             matchDate = new Date(year, month - 1, day);
             if (matchDate > currentDate) continue;
             displayDate = `${day} ${monthNames[month - 1]}`;
-            const seasonStartYear = month >= 8 ? year : year - 1;
-            const seasonEndYear = (seasonStartYear + 1) % 100;
-            season = `'${seasonStartYear % 100}-'${seasonEndYear < 10 ? '0' + seasonEndYear : seasonEndYear}`;
-        } catch (error) {
-            console.warn(`Invalid date format for match against ${opponent}: ${date}`);
+
+            const seasonStart = month >= 8 ? year : year - 1;
+            const seasonEnd = seasonStart + 1;
+
+            const startStr = (seasonStart % 100).toString().padStart(2, '0');
+            const endStr = (seasonEnd % 100).toString().padStart(2, '0');
+
+            season = `'${startStr}-'${endStr}`;
+        } catch (e) {
+            console.warn(`Bad date: ${dateRaw}`);
             continue;
         }
 
+        const isHome = homeAwayRaw?.toLowerCase() === 'thuis';
+        const goalscorers = parseGoalscorers(goalscorersRaw);
+
         const match = {
-            title: `Dynamo Beirs vs ${opponent}`,
-            opponent: opponent,
-            dateTime: { date, displayDate, season },
-            score: `${goalsScored}-${goalsConceded}`,
-            isHome: true,
-            result: determineResult(goalsScored, goalsConceded)
+            title: isHome ? `Dynamo Beirs vs ${opponent}` : `${opponent} vs Dynamo Beirs`,
+            opponent,
+            dateTime: { date: dateRaw, time: time || '??:??', displayDate, season },
+            stadium: stadium || 'Onbekend stadion',
+            isHome,
+            score: isHome
+                ? `${goalsScored}-${goalsConceded}`
+                : `${goalsConceded}-${goalsScored}`,
+            result: determineResult(goalsScored, goalsConceded),
+            goalscorers
         };
         matches.push(match);
     }
 
-    matches.sort((a, b) => {
-        const dateA = parseDate(a.dateTime.date);
-        const dateB = parseDate(b.dateTime.date);
-        return dateB - dateA;
-    });
-
+    matches.sort((a, b) => parseDate(b.dateTime.date) - parseDate(a.dateTime.date));
     return matches;
 }
 
-/* Determine Match Result */
-function determineResult(goalsScored, goalsConceded) {
-    const scored = parseInt(goalsScored);
-    const conceded = parseInt(goalsConceded);
-    if (isNaN(scored) || isNaN(conceded)) return 'gelijk';
-    if (scored > conceded) return 'winst';
-    if (scored === conceded) return 'gelijk';
-    return 'verlies';
+/* Parse Goalscorers */
+function parseGoalscorers(raw) {
+    if (!raw || raw.trim() === '' || raw.trim() === '/') return [];
+    const cleaned = raw.replace(/^["'\s]+|["'\s]+$/g, '').trim();
+    if (!cleaned) return [];
+
+    const entries = cleaned.split(';').map(s => s.trim()).filter(Boolean);
+    const out = [];
+
+    for (const e of entries) {
+        const m = e.match(/^(.+?)(?:\s*\(x(\d+)\))?$/i);
+        if (m) {
+            const player = m[1].trim();
+            const goals  = m[2] ? parseInt(m[2], 10) : 1;
+            if (player) out.push({ player, goals });
+        }
+    }
+    return out;
 }
 
-/* Parse Date for Sorting */
-function parseDate(dateStr) {
-    try {
-        const [day, month, year] = dateStr.split('-').map(num => parseInt(num));
-        return new Date(year, month - 1, day);
-    } catch (error) {
-        console.warn(`Failed to parse date: ${dateStr}`);
-        return new Date(0);
-    }
+/* Determine Result */
+function determineResult(scored, conceded) {
+    const s = parseInt(scored), c = parseInt(conceded);
+    if (isNaN(s) || isNaN(c)) return 'gelijk';
+    return s > c ? 'winst' : s === c ? 'gelijk' : 'verlies';
+}
+
+/* Parse Date */
+function parseDate(d) {
+    const [day, month, year] = d.split('-').map(Number);
+    return new Date(year, month - 1, day);
 }
 
 /* Render Search Results */
@@ -116,23 +135,30 @@ function renderSearchResults(matches) {
     grid.innerHTML = '';
 
     matches.forEach(match => {
+        const resCls = match.result === 'winst' ? 'win' : match.result === 'gelijk' ? 'draw' : 'loss';
         const card = document.createElement('div');
-        const resultClass = match.result === 'winst' ? 'win' : match.result === 'gelijk' ? 'draw' : 'loss';
-        card.className = `match-card modern result animate-in`;
-        card.setAttribute('data-match-title', match.title);
-        card.setAttribute('data-score', match.score);
-        card.setAttribute('data-match-date', match.dateTime.date);
+        card.className = `match-card modern result`;
+        card.style.cursor = 'pointer';
 
-        const [homeTeam, awayTeam] = match.title.split(' vs ');
+        card.dataset.matchTitle   = match.title;
+        card.dataset.score        = match.score;
+        card.dataset.matchDate    = match.dateTime.date;
+        card.dataset.matchTime    = match.dateTime.time;
+        card.dataset.venue        = match.stadium;
+        card.dataset.season       = match.dateTime.season;
+        card.dataset.isHome       = match.isHome;
+        card.dataset.goalscorers  = JSON.stringify(match.goalscorers);
+
+        const [home, away] = match.title.split(' vs ');
         card.innerHTML = `
-            <div class="result-icon ${resultClass}">
-                <span><i class="fas fa-${resultClass === 'win' ? 'check' : resultClass === 'draw' ? 'minus' : 'times'}"></i></span>
+            <div class="result-icon ${resCls}">
+                <span><i class="fas fa-${resCls === 'win' ? 'check' : resCls === 'draw' ? 'minus' : 'times'}"></i></span>
             </div>
             <div class="match-body">
                 <div class="match-teams">
-                    <div class="home-team">${homeTeam}</div>
+                    <div class="home-team">${home}</div>
                     <div class="vs-divider">vs</div>
-                    <div class="away-team">${awayTeam}</div>
+                    <div class="away-team">${away}</div>
                 </div>
                 <div class="match-score">${match.score}</div>
                 <div class="match-details">
@@ -145,14 +171,56 @@ function renderSearchResults(matches) {
     });
 
     searchMessage.classList.add('hidden');
+    setupCardClicks();
+    animateMatchCards();
+}
 
-    setTimeout(() => {
-        document.querySelectorAll('.match-card').forEach(card => {
-            card.classList.add('animate-in');
-            card.style.opacity = '1';
-            card.style.transform = 'translateY(0)';
+/* Make Match Cards Clickable */
+function setupCardClicks() {
+    document.querySelectorAll('#search-results-grid .match-card.modern.result').forEach(card => {
+        card.addEventListener('mouseenter', () => card.classList.add('hover'));
+        card.addEventListener('mouseleave', () => card.classList.remove('hover'));
+
+        card.addEventListener('click', () => {
+            const data = {
+                title:      card.dataset.matchTitle,
+                stadium:    card.dataset.venue,
+                season:     card.dataset.season,
+                dateTime: {
+                    date: card.dataset.matchDate,
+                    time: card.dataset.matchTime,
+                    displayDate: card.querySelector('.match-date')?.textContent.replace(/^\s*<i.*<\/i>\s*/, '').trim() || ''
+                },
+                score:      card.dataset.score,
+                goalscorers: JSON.parse(card.dataset.goalscorers || '[]'),
+                isUpcoming: false,
+                isHome:     card.dataset.isHome === 'true'
+            };
+
+            if (window.matchModal) {
+                window.matchModal.show(data);
+            } else {
+                console.error('matchModal not ready');
+            }
         });
-    }, 0);
+    });
+}
+
+/* Match Card Animations */
+function animateMatchCards() {
+    const observer = new IntersectionObserver((entries, observer) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                const container = entry.target.closest('.matches-grid') || document;
+                const itemsInContainer = container.querySelectorAll('.match-card');
+                const itemIndex = Array.from(itemsInContainer).indexOf(entry.target);
+                entry.target.classList.add('animate-in');
+                observer.unobserve(entry.target);
+            }
+        });
+    }, { root: null, rootMargin: '0px', threshold: 0.1 });
+
+    document.querySelectorAll('.match-card').forEach(card => observer.observe(card));
 }
 
 /* Search and Autocomplete */
@@ -231,17 +299,5 @@ function setupSearch() {
 
     document.querySelector('.search-wrapper').addEventListener('click', () => {
         searchInput.focus();
-    });
-}
-
-/* Match Interactions */
-function setupMatchInteractions() {
-    document.querySelectorAll('.match-card.modern.result').forEach(card => {
-        card.addEventListener('mouseenter', () => {
-            card.classList.add('hover');
-        });
-        card.addEventListener('mouseleave', () => {
-            card.classList.remove('hover');
-        });
     });
 }

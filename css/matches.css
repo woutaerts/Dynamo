@@ -225,10 +225,10 @@
     font-family: "Font Awesome 6 Free", serif;
     font-weight: 900;
     position: absolute;
-    top: 50%;
-    right: 1.29rem;
-    transform: translate(50%, -50%);
-    font-size: 26px;
+    top: 50.4%;
+    right: 1.35rem;
+    transform: translate(50%, -49%);
+    font-size: 32px;
     color: var(--light-gray);
     pointer-events: none;
     user-select: none;
@@ -560,6 +560,7 @@
     .timeline {
         min-height: 140px;
         padding: 0;
+        transform: translateY(10px);
     }
 
     .timeline-start-knob {
@@ -569,16 +570,16 @@
     }
 
     .timeline::before {
+        top: 50.5%;
         height: 2px;
         left: 0;
         right: 0.6rem;
-        transform: translateY(-1px);
     }
 
     .timeline::after {
+        top: 49.5%;
         font-size: 18px;
         right: 0.8rem;
-        top: 49.0%;
     }
 
     .timeline-item {

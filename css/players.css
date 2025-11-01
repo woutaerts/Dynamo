@@ -24,6 +24,15 @@ body.filter-all {
 }
 
 /* Page Hero */
+main .page-hero {
+    padding: 1.5rem 1rem;
+    text-align: center;
+    background: transparent;
+    color: var(--dynamo-red);
+    margin-top: 20px;
+    width: 100%;
+}
+
 main .page-hero h1 {
     position: relative;
     font-family: 'Poppins', sans-serif;
@@ -31,8 +40,9 @@ main .page-hero h1 {
     font-weight: 900;
     color: var(--dark-gray, #343a40);
     text-align: center;
-    margin: 0;
-    padding: 1rem 0;
+    margin: 0 auto;
+    max-width: 100%;
+    padding: 0;
     display: inline-block;
     opacity: 0;
     transform: translateY(20px);
@@ -73,7 +83,6 @@ main .page-hero h1.animate-in::after {
     opacity: 1;
     transform: scaleY(1);
 }
-
 
 /* Filter Section */
 .filter-section {
@@ -266,7 +275,7 @@ main .page-hero h1.animate-in::after {
     opacity: 0;
     transform: translateY(50px);
     position: relative;
-    overflow: hidden;
+    overflow: visible;
     transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
     will-change: transform, box-shadow, border-color;
 }
@@ -367,8 +376,82 @@ main .page-hero h1.animate-in::after {
     color: var(--dynamo-red);
 }
 
+/* Birthday Card */
+.player-card.birthday > .player-info {
+    position: relative;
+    z-index: 10;
+}
+
+.confetti-bg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: url('/Dynamo/img/icons/confetti.png');
+    background-repeat: repeat;
+    background-size: 60px 60px;
+    opacity: 0.1;
+    pointer-events: none;
+    z-index: 0;
+    border-radius: 12px;
+}
+/* Garland – top-left */
+.garland-left {
+    position: absolute;
+    top: -8px;
+    left: 0px;
+    width: 70px;
+    height: 70px;
+    background: url('/Dynamo/img/icons/garland.png') no-repeat center / contain;
+    pointer-events: none;
+    z-index: 2;
+    transform: rotate(-30deg);
+    opacity: 0.5;
+}
+/* Garland – top-right */
+.garland-right {
+    position: absolute;
+    top: -8px;
+    right: 0px;
+    width: 70px;
+    height: 70px;
+    background: url('/Dynamo/img/icons/garland.png') no-repeat center / contain;
+    transform: scaleX(-1) rotate(-30deg);
+    pointer-events: none;
+    z-index: 2;
+    opacity: 0.5;
+}
+/* Crown */
+.player-card.birthday .player-name::before {
+    content: "";
+    position: absolute;
+    top: -25px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 30px;
+    height: 30px;
+    background: url('/Dynamo/img/icons/crown.png') no-repeat center / contain;
+    pointer-events: none;
+    z-index: 3;
+}
+
 /* Tablet View */
 @media (max-width: 768px) {
+    main .page-hero {
+        padding: 1rem 0.5rem;
+    }
+
+    main .page-hero h1 {
+        font-size: 2rem;
+    }
+
+    main .page-hero h1::before,
+    main .page-hero h1::after {
+        font-size: 1em;
+        margin: 6px;
+    }
+
     .filter-section {
         padding: 1rem 0 0.5rem 0;
     }
@@ -434,16 +517,35 @@ main .page-hero h1.animate-in::after {
     .flag-icon {
         width: 30px;
     }
+
+    .garland-left,
+    .garland-right {
+        width:50px;
+        height:50px;
+        top:-6px;
+    }
+
+    .player-card.birthday .player-name::before {
+        width:22px;
+        height:22px;
+        top:-18px;
+    }
 }
 
 /* Mobile View */
 @media (max-width: 480px) {
+    .filter-section {
+        padding: 0.8rem 0 0.4rem 0;
+    }
+
     .filter-controls {
         display: grid;
         grid-template-columns: repeat(2, 1fr);
         row-gap: 0.75rem;
+        column-gap: 0.3rem;
         justify-items: center;
         padding: 0 2.5rem;
+        margin-bottom: 0.75rem;
     }
 
     .filter-btn {
@@ -464,12 +566,59 @@ main .page-hero h1.animate-in::after {
         font-size: 0.75rem;
     }
 
+    .search-wrapper {
+        width: 100%;
+        max-width: 291px;
+        margin: 0 auto;
+    }
+
+    .player-search {
+        padding: 0.5rem 0.7rem 0.5rem 2rem;
+        font-size: 0.75rem;
+        min-height: 40px;
+    }
+
+    .search-icon {
+        font-size: 0.75rem;
+        left: 0.7rem;
+    }
+
     .players-grid {
         grid-template-columns: repeat(2, 1fr);
-        gap: 0.75rem;
+        gap: 0.8rem;
         max-width: 90%;
         margin: 0 auto;
         padding: 0;
+    }
+
+    .player-card {
+        padding: 0.8rem;
+        border-radius: 10px;
+        box-shadow: var(--shadow-medium, 0 2px 4px rgba(0, 0, 0, 0.1));
+    }
+
+    .player-name {
+        font-size: 0.95rem;
+        margin-bottom: 0.3rem;
+    }
+
+    .player-position {
+        font-size: 0.65rem;
+        margin-bottom: 0.6rem;
+    }
+
+    .player-nationality {
+        font-size: 0.7rem;
+        padding: 0.25rem 0.5rem;
+    }
+
+    .flag-icon {
+        width: 26px;
+    }
+
+    .filter-controls {
+        row-gap: 0.75rem;
+        padding: 0 2.5rem;
     }
 
     .player-card {
@@ -490,5 +639,18 @@ main .page-hero h1.animate-in::after {
 
     .flag-icon {
         width: 24px;
+    }
+
+    .garland-left,
+    .garland-right {
+        width:40px;
+        height:40px;
+        top:-5px;
+    }
+
+    .player-card.birthday .player-name::before {
+        width:18px;
+        height:18px;
+        top:-15px;
     }
 }

@@ -4,7 +4,7 @@ Welcome to the official website of **Dynamo Beirs**, a football club showcasing 
 
 ## 🌐 Github Pages Website
 
-https://dynamo-beirs.github.io/dynamo
+https://Dynamo-beirs.github.io/Dynamo
 
 ## 📁 Project Structure
 
@@ -58,4 +58,4 @@ C:.
 ```
 
 This project is for educational and demonstrative purposes only.  
-© 2025 [Dynamo Beirs](https://github.com/dynamo-beirs/dynamo) – All rights reserved.
+© 2025 [Dynamo Beirs](https://github.com/Dynamo-beirs/Dynamo) – All rights reserved.
