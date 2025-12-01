@@ -330,7 +330,7 @@ function parseCsvData(csvText) {
         const time = rows[3]?.[colIdx]?.trim();
         const stadium = rows[4]?.[colIdx]?.trim();
         const homeAway = rows[5]?.[colIdx]?.trim().toLowerCase();
-        const result = rows[61]?.[colIdx]?.trim().toLowerCase();
+        const result = rows[73]?.[colIdx]?.trim().toLowerCase();
 
         if (opponent && date && time && stadium && homeAway) {
             const isHome = homeAway === 'thuis';
@@ -372,7 +372,7 @@ function parseCsvData(csvText) {
         'l': 'verlies'
     };
     for (let i = 0; i < 5; i++) {
-        const cell = rows[70]?.[formStartCol + i]?.trim().toLowerCase();
+        const cell = rows[82]?.[formStartCol + i]?.trim().toLowerCase();
         if (cell && resultMap[cell]) {
             matches.form.push(resultMap[cell]);
         }
@@ -450,6 +450,6 @@ function updateCountdown(upcomingMatches) {
 function handleErrorStates() {
     document.getElementById('next-match-title').textContent = 'Geen wedstrijden gepland in de nabije toekomst.';
     document.getElementById('countdown').style.display = 'none';
-    document.getElementById('form-results').innerHTML = '<p>Geen vorm beschrikbaar</p>';
+    document.getElementById('form-results').innerHTML = '<p>Geen vorm beschikbaar</p>';
     updateTeamStats({});
 }

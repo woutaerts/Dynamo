@@ -12,16 +12,24 @@ class MatchModal {
     async init() {
         if (this.isInitialized) return;
 
+        const placeholder = document.getElementById('match-modal-placeholder');
+        if (!placeholder) return;
+
+        placeholder.style.opacity = '0';
+        placeholder.style.visibility = 'hidden';
+
         try {
             const response = await fetch('/Dynamo/html/components/matchModal.html');
-            const modalHTML = await response.text();
+            placeholder.innerHTML = await response.text();
 
-            const placeholder = document.getElementById('match-modal-placeholder');
-            if (placeholder) {
-                placeholder.innerHTML = modalHTML;
-                this.modal = document.getElementById('matchCenterModal');
+            this.modal = document.getElementById('matchCenterModal');
+            if (this.modal) {
+                this.modal.style.display = 'none';
                 this.setupEventListeners();
                 this.isInitialized = true;
+
+                placeholder.style.opacity = '1';
+                placeholder.style.visibility = 'visible';
             }
         } catch (error) {
             console.error('Failed to load match modal:', error);
@@ -73,33 +81,27 @@ class MatchModal {
         }
     }
 
-    /* Modal Control */
     show(matchData = {}) {
         if (!this.modal) return;
 
-        // Save current scroll position
         this.scrollPosition = window.scrollY || document.documentElement.scrollTop;
 
-        const {
-            title = 'Match Details',
-            dateTime = { date: 'TBD', time: 'TBD', displayDate: 'TBD' },
-            season = 'Current Season',
-            stadium = 'Home Stadium',
-            goalscorers = [],
-            score = null,
-            isUpcoming = false,
-            isHome = true
-        } = matchData;
+        const { title = 'Match Details', dateTime = { date: 'TBD', time: 'TBD', displayDate: 'TBD' }, season = 'Current Season', stadium = 'Home Stadium', goalscorers = [], score = null, isUpcoming = false, isHome = true } = matchData;
 
         document.body.classList.add('modal-open');
+
+        // Update content first
         const modalContent = this.modal.querySelector('.modal-content');
         if (modalContent) {
             modalContent.classList.toggle('upcoming-match', isUpcoming);
             this.updateContent(title, dateTime, season, stadium, goalscorers, score, isUpcoming, isHome);
         }
 
+        // Now show modal
         this.modal.style.display = 'flex';
+        this.modal.classList.add('show');  // triggers fade-in
 
+        // Animation & scroll
         if (modalContent) {
             modalContent.scrollTop = 0;
             const sections = modalContent.querySelectorAll('.modal-match-score, .goalscorers-section, .date-time-section, .stadium-section, #addToCalendarBtn');
@@ -119,27 +121,22 @@ class MatchModal {
             console.warn('Modal content not found');
         }
 
-        // Scroll to match modal after opening
-        setTimeout(() => this.scrollToSelf(), 300); // Delay to allow modal animation
+        setTimeout(() => this.scrollToSelf(), 100);
     }
 
     close() {
         if (!this.modal) return;
-        const modalContent = this.modal.querySelector('.modal-content');
-        if (modalContent) {
-            const sections = modalContent.querySelectorAll('.modal-match-score, .goalscorers-section, .date-time-section, .stadium-section, #addToCalendarBtn');
-            sections.forEach(section => section.classList.remove('animate-in'));
-        }
-        document.body.classList.remove('modal-open');
-        this.modal.style.display = 'none';
 
-        // Restore original scroll position
+        this.modal.classList.remove('show');
+        document.body.classList.remove('modal-open');
+
         setTimeout(() => {
+            this.modal.style.display = 'none';
             window.scrollTo({
                 top: this.scrollPosition,
                 behavior: 'smooth'
             });
-        }, 300); // Delay to allow modal close animation
+        }, 300); // match CSS transition duration
     }
 
     /* Month mapping: English to Dutch */

@@ -67,7 +67,7 @@ function loadFallbackFooter() {
                             <a href="https://www.facebook.com/DynamoBeirs" target="_blank" aria-label="Facebook" class="social-icon">
                                 <i class="fab fa-facebook-f"></i>
                             </a>
-                            <a href="https://www.instagram.com/Dynamobeirs/" target="_blank" aria-label="Instagram" class="social-icon">
+                            <a href="https://www.instagram.com/dynamobeirs/" target="_blank" aria-label="Instagram" class="social-icon">
                                 <i class="fab fa-instagram"></i>
                             </a>
                         </div>

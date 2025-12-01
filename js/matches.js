@@ -22,12 +22,37 @@ document.addEventListener('DOMContentLoaded', async () => {
     scrollTimelineToEnd();
 });
 
-// Fetch and parse CSV data from Google Spreadsheet
+/* Fetch and Render Matches */
 async function fetchAndRenderMatches() {
+    const loader = document.getElementById('matches-global-loader');
+    const sections = [
+        document.querySelector('.countdown-section .container'),
+        document.querySelector('.match-form-section .container'),
+        document.querySelector('.upcoming-matches .container'),
+        document.querySelector('.matches-section .container'),
+        document.querySelector('.match-timeline .container')
+    ];
+
+    if (loader) {
+        loader.classList.remove('hidden');
+        const firstSection = sections.find(s => s);
+        if (firstSection) {
+            firstSection.style.position = 'relative';
+            firstSection.appendChild(loader);
+        }
+    }
+
+    document.querySelectorAll('.matches-grid, #form-results, #season-timeline').forEach(el => {
+        el.style.opacity = '0';
+        el.style.transition = 'opacity 0.4s ease';
+    });
+
     const spreadsheetUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQRCgon0xh9NuQ87NgqQzBNPCEmmZWcC_jrulRhLwmrudf5UQ2QBRA28F1qmWB9L5xP9uZ8-ct2aqfR/pub?gid=300017481&single=true&output=csv';
 
     try {
         const response = await fetch(spreadsheetUrl);
+        if (!response.ok) throw new Error('Network error');
+
         const csvText = await response.text();
         const matches = parseCsvData(csvText);
 
@@ -37,13 +62,27 @@ async function fetchAndRenderMatches() {
         renderForm(matches.form);
         updateCountdown(matches.upcoming);
         setupMatchInteractions();
+
+        if (loader) loader.classList.add('hidden');
+
+        document.querySelectorAll('.matches-grid, #form-results, #season-timeline').forEach(el => {
+            el.style.opacity = '1';
+        });
+
         initializeCountdown();
+        scrollTimelineToEnd();
+
     } catch (error) {
         console.error('Error fetching or parsing CSV:', error);
+
+        if (loader) {
+            loader.innerHTML = '<p style="color:var(--dynamo-red);font-weight:600;">Fout bij laden wedstrijden.</p>';
+        }
+
         const titleEl = document.getElementById('next-match-title');
         const countdownEl = document.getElementById('countdown');
         if (titleEl && countdownEl) {
-            titleEl.textContent = 'No games planned in the near future';
+            titleEl.textContent = 'Geen wedstrijden beschikbaar';
             countdownEl.style.display = 'none';
         }
     }
@@ -90,10 +129,10 @@ function parseCsvData(csvText) {
         const time = rows[3]?.[colIdx]?.trim(); // Row 4
         const stadium = rows[4]?.[colIdx]?.trim(); // Row 5
         const homeAway = rows[5]?.[colIdx]?.trim().toLowerCase(); // Row 6
-        const result = rows[61]?.[colIdx]?.trim().toLowerCase(); // Row 62
-        const goalsScoredRaw = rows[62]?.[colIdx]?.trim(); // Row 63
-        const goalsConcededRaw = rows[63]?.[colIdx]?.trim(); // Row 64
-        const goalscorersRaw = rows[65]?.[colIdx]?.trim(); // Row 66
+        const result = rows[73]?.[colIdx]?.trim().toLowerCase(); // Row 74
+        const goalsScoredRaw = rows[74]?.[colIdx]?.trim(); // Row 75
+        const goalsConcededRaw = rows[75]?.[colIdx]?.trim(); // Row 76
+        const goalscorersRaw = rows[77]?.[colIdx]?.trim(); // Row 78
 
         if (opponent && date && time && stadium && homeAway) {
             const isHome = homeAway === 'thuis';
@@ -152,7 +191,7 @@ function parseCsvData(csvText) {
         'l': 'verlies'
     };
     for (let i = 0; i < 5; i++) {
-        const cell = rows[70]?.[formStartCol + i]?.trim().toLowerCase(); // Row 71
+        const cell = rows[82]?.[formStartCol + i]?.trim().toLowerCase(); // Row 83
         if (cell && resultMap[cell]) {
             formCells.push(resultMap[cell]);
         }
