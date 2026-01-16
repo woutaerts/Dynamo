@@ -5,7 +5,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
 async function loadFooter() {
     try {
-        const footerPath = '/Dynamo/html/partials/footer.html';
+        const footerPath = '/dynamo/html/partials/footer.html';
         const response = await fetch(footerPath);
 
         if (!response.ok) {
@@ -37,9 +37,9 @@ async function loadFooter() {
 }
 
 function loadFallbackFooter() {
-    const logoGreyPath = '/Dynamo/img/logos/gray-outlined-logo.png';
-    const logoRedPath = '/Dynamo/img/logos/red-outlined-logo.png';
-    const homePath = '/Dynamo/index.html';
+    const logoGreyPath = '/dynamo/img/logos/gray-outlined-logo.png';
+    const logoRedPath = '/dynamo/img/logos/red-outlined-logo.png';
+    const homePath = '/dynamo/index.html';
 
     const fallbackFooter = `
         <footer class="footer">
@@ -75,7 +75,7 @@ function loadFallbackFooter() {
                     <span class="line-right"></span>
                 </div>
                 <div class="footer-copyright">
-                    <p>© 2025 Dynamo Beirs</p>
+                    <p>© <span id="year-fallback">${new Date().getFullYear()}</span> Dynamo Beirs</p>
                 </div>
             </div>
         </footer>
@@ -94,12 +94,17 @@ function configureFooter() {
     const logoGrey = document.getElementById('footer-logo-grey');
     const logoRed = document.getElementById('footer-logo-red');
 
+    const yearSpan = document.getElementById('year');
+    if (yearSpan) {
+        yearSpan.textContent = new Date().getFullYear();
+    }
+
     if (!logoLink || !logoGrey || !logoRed) {
         console.warn('Footer logo elements not found');
         return;
     }
 
-    logoLink.href = '/Dynamo/index.html';
-    logoGrey.src = '/Dynamo/img/logos/gray-outlined-logo.png';
-    logoRed.src = '/Dynamo/img/logos/red-outlined-logo.png';
+    logoLink.href = '/dynamo/index.html';
+    logoGrey.src = '/dynamo/img/logos/gray-outlined-logo.png';
+    logoRed.src = '/dynamo/img/logos/red-outlined-logo.png';
 }

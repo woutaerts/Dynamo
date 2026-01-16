@@ -19,7 +19,7 @@ class MatchModal {
         placeholder.style.visibility = 'hidden';
 
         try {
-            const response = await fetch('/Dynamo/html/components/matchModal.html');
+            const response = await fetch('/dynamo/html/components/matchModal.html');
             placeholder.innerHTML = await response.text();
 
             this.modal = document.getElementById('matchCenterModal');
@@ -86,7 +86,17 @@ class MatchModal {
 
         this.scrollPosition = window.scrollY || document.documentElement.scrollTop;
 
-        const { title = 'Match Details', dateTime = { date: 'TBD', time: 'TBD', displayDate: 'TBD' }, season = 'Current Season', stadium = 'Home Stadium', goalscorers = [], score = null, isUpcoming = false, isHome = true } = matchData;
+        const {
+            title = 'Match Details',
+            dateTime = {date: 'TBD', time: 'TBD', displayDate: 'TBD'},
+            season = 'Current Season',
+            stadium = 'Home Stadium',
+            goalscorers = [],
+            score = null,
+            isUpcoming = false,
+            isHome = true,
+            sponsor = null
+        } = matchData;
 
         document.body.classList.add('modal-open');
 
@@ -94,7 +104,7 @@ class MatchModal {
         const modalContent = this.modal.querySelector('.modal-content');
         if (modalContent) {
             modalContent.classList.toggle('upcoming-match', isUpcoming);
-            this.updateContent(title, dateTime, season, stadium, goalscorers, score, isUpcoming, isHome);
+            this.updateContent(title, dateTime, season, stadium, goalscorers, score, isUpcoming, isHome, sponsor);
         }
 
         // Now show modal
@@ -156,7 +166,7 @@ class MatchModal {
     };
 
     /* Content Updates */
-    updateContent(title, dateTime, season, stadium, goalscorers, score, isUpcoming, isHome) {
+    updateContent(title, dateTime, season, stadium, goalscorers, score, isUpcoming, isHome, sponsor) {
         const titleEl = this.modal.querySelector('#modalMatchTitle');
         if (titleEl) {
             // Split title into home and away teams
@@ -177,7 +187,7 @@ class MatchModal {
                 scoreDisplayEl.textContent = score;
             }
         } else {
-            console.warn('Score elements not found:', { scoreEl, scoreDisplayEl });
+            console.warn('Score elements not found:', {scoreEl, scoreDisplayEl});
         }
 
         const dateEl = this.modal.querySelector('#matchDate');
@@ -225,9 +235,31 @@ class MatchModal {
             }
         }
 
-        const addToCalendarBtn = this.modal.querySelector('#addToCalendarBtn');
-        if (addToCalendarBtn) {
-            addToCalendarBtn.style.display = isUpcoming ? 'block' : 'none';
+        const sponsorSection = this.modal.querySelector('#modalMatchSponsor');
+        const sponsorLogo = this.modal.querySelector('#modalSponsorLogo');
+        const sponsorLink = this.modal.querySelector('#modalSponsorLink');
+        const sponsorName = this.modal.querySelector('#modalSponsorName');
+
+        if (sponsorSection) {
+            if (sponsor && sponsor.name && sponsor.logo) {
+                sponsorSection.style.display = 'block';
+
+                if (sponsorLogo) {
+                    sponsorLogo.src = sponsor.logo;
+                    sponsorLogo.alt = `Sponsor: ${sponsor.name}`;
+                }
+
+                if (sponsorLink) {
+                    sponsorLink.href = sponsor.url || '#';
+                    sponsorLink.title = `Bezoek ${sponsor.name}`;
+                }
+
+                if (sponsorName) {
+                    sponsorName.textContent = sponsor.name;
+                }
+            } else {
+                sponsorSection.style.display = 'none';
+            }
         }
     }
 

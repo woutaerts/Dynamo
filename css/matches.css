@@ -71,6 +71,21 @@
     transform: translateY(1px);
 }
 
+.matches-grid.no-matches {
+    width: 100%;
+    max-width: 1200px;
+    padding: 0 15px;
+    margin: 0 auto;
+}
+
+.matches-grid.no-matches .upcoming-match-name {
+    grid-column: 1 / -1;
+    justify-self: center;
+    align-self: center;
+    margin: 4rem auto;
+    max-width: 600px;
+}
+
 /* Match Card Content */
 .match-body {
     padding: 20px 24px 24px;
@@ -225,9 +240,7 @@
     font-family: "Font Awesome 6 Free", serif;
     font-weight: 900;
     position: absolute;
-    top: 50.4%;
-    right: 1.35rem;
-    transform: translate(50%, -49%);
+    right: 0.85rem;
     font-size: 32px;
     color: var(--light-gray);
     pointer-events: none;
@@ -323,6 +336,75 @@
     position: relative;
     z-index: 4;
     margin-top: 1.5rem;
+}
+
+/* Sponsors Ticker Section */
+.sponsors-ticker-section {
+    padding: 1rem 0 1rem;
+    overflow: hidden;
+}
+
+.ticker-wrapper {
+    width: 70%;
+    margin: 0 auto;
+    overflow: hidden;
+    position: relative;
+    padding: 1rem 0;
+    mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
+    -webkit-mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
+}
+
+.ticker-track {
+    display: flex;
+    gap: 3rem;
+    width: max-content;
+    align-items: center;
+}
+
+.ticker-track.centered {
+    width: 100%;
+    justify-content: center;
+}
+
+.ticker-track.scrolling {
+    animation: scroll-ticker 30s linear infinite;
+}
+
+@keyframes scroll-ticker {
+    0% {
+        transform: translateX(0);
+    }
+    100% {
+        transform: translateX(-50%);
+    }
+}
+
+/* Sponsor Item Styling */
+.sponsor-item {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.3s ease;
+    flex-shrink: 0;
+}
+
+.sponsor-item:hover {
+    transform: scale(1.1);
+}
+
+.sponsor-logo {
+    height: 70px;
+    width: auto;
+    max-width: 180px;
+    object-fit: contain;
+    filter: grayscale(100%);
+    opacity: 0.7;
+    transition: filter 0.3s ease, opacity 0.3s ease;
+}
+
+.sponsor-item:hover .sponsor-logo {
+    filter: grayscale(0%);
+    opacity: 1;
 }
 
 /* Tooltips */
@@ -446,6 +528,7 @@
         font-size: 20px;
         right: 0.8rem;
         top: 49.7%;
+        transform: translate(50%, -49%);
     }
 
     .timeline-item {
@@ -482,6 +565,17 @@
 
     .player-position:hover::after, .scorer-position:hover::after {
         display: none;
+    }
+
+    .ticker-wrapper {
+        width: 80%;
+        padding: 1rem 0 0;
+    }
+    .ticker-track {
+        gap: 2rem;
+    }
+    .sponsor-logo {
+        height: 60px;
     }
 }
 
@@ -580,6 +674,7 @@
         top: 49.5%;
         font-size: 18px;
         right: 0.8rem;
+        transform: translate(50%, -49%);
     }
 
     .timeline-item {
@@ -602,5 +697,16 @@
     .timeline-item::before {
         width: 14px;
         height: 14px;
+    }
+
+    .ticker-wrapper {
+        width: 70%;
+        padding: 1rem 0 0;
+    }
+    .ticker-track {
+        gap: 2rem;
+    }
+    .sponsor-logo {
+        height: 50px;
     }
 }

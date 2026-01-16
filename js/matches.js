@@ -7,6 +7,8 @@ const animationElements = [
     { selector: '.timeline', containerSelector: 'section' },
     { selector: '.timeline-item', containerSelector: ['section', '.container'] },
     { selector: '.countdown-block', containerSelector: null },
+    { selector: '#home-match-sponsor', containerSelector: null },
+    { selector: '.sponsor-cta-section', containerSelector: null },
     { selector: '.form-result', containerSelector: null },
     { selector: '.section-title', containerSelector: 'section' },
     { selector: '.section-subtitle', containerSelector: 'section' },
@@ -60,6 +62,7 @@ async function fetchAndRenderMatches() {
         renderRecentMatches(matches.past);
         renderSeasonTimeline(matches.all);
         renderForm(matches.form);
+        renderSponsorsTicker(matches.all);
         updateCountdown(matches.upcoming);
         setupMatchInteractions();
 
@@ -82,7 +85,7 @@ async function fetchAndRenderMatches() {
         const titleEl = document.getElementById('next-match-title');
         const countdownEl = document.getElementById('countdown');
         if (titleEl && countdownEl) {
-            titleEl.textContent = 'Geen wedstrijden beschikbaar';
+            titleEl.textContent = 'Geen wedstrijden beschikbaar.';
             countdownEl.style.display = 'none';
         }
     }
@@ -134,6 +137,15 @@ function parseCsvData(csvText) {
         const goalsConcededRaw = rows[75]?.[colIdx]?.trim(); // Row 76
         const goalscorersRaw = rows[77]?.[colIdx]?.trim(); // Row 78
 
+        const sponsorName = rows[84]?.[colIdx]?.trim();     // Row 85 → sponsor name
+        const sponsorLogo = rows[85]?.[colIdx]?.trim();     // Row 86 → logo URL
+        const sponsorUrl  = rows[86]?.[colIdx]?.trim();     // Row 87 → website
+
+        const hasSponsor = sponsorName &&
+            !sponsorName.toLowerCase().includes('beschikbaar') &&
+            sponsorLogo &&
+            sponsorUrl;
+
         if (opponent && date && time && stadium && homeAway) {
             const isHome = homeAway === 'thuis';
             const title = isHome ? `Dynamo Beirs vs ${opponent}` : `${opponent} vs Dynamo Beirs`;
@@ -151,7 +163,8 @@ function parseCsvData(csvText) {
                 dateTime: { date, time, displayDate },
                 season: '2025-26',
                 stadium,
-                isHome
+                isHome,
+                sponsor: hasSponsor ? { name: sponsorName, logo: sponsorLogo, url: sponsorUrl } : null
             };
 
             if (result) {
@@ -250,9 +263,24 @@ function renderUpcomingMatches(upcomingMatches) {
     grid.innerHTML = '';
 
     if (upcomingMatches.length === 0) {
-        grid.innerHTML = '<p>Geen komende wedstrijden gepland.</p>';
+        grid.classList.add('no-matches');
+        const noMatchWrapper = document.createElement('div');
+        noMatchWrapper.className = 'upcoming-match-name';
+
+        const heading = document.createElement('h3');
+        heading.textContent = 'Geen wedstrijden gepland in de nabije toekomst.';
+
+        noMatchWrapper.appendChild(heading);
+        grid.appendChild(noMatchWrapper);
+
+        setTimeout(() => {
+            noMatchWrapper.classList.add('animate-in');
+        }, 100);
+
         return;
     }
+
+    grid.classList.remove('no-matches');
 
     const limitedMatches = upcomingMatches.slice(0, 6);
 
@@ -264,6 +292,7 @@ function renderUpcomingMatches(upcomingMatches) {
         card.setAttribute('data-match-date', match.dateTime.date);
         card.setAttribute('data-match-time', match.dateTime.time);
         card.setAttribute('data-match-season', match.season);
+        card.setAttribute('data-sponsor', JSON.stringify(match.sponsor || null));
 
         const [homeTeam, awayTeam] = match.title.split(' vs ');
         card.innerHTML = `
@@ -293,9 +322,24 @@ function renderRecentMatches(pastMatches) {
     grid.innerHTML = '';
 
     if (pastMatches.length === 0) {
-        grid.innerHTML = '<p>Geen recente wedstrijden beschikbaar.</p>';
+        grid.classList.add('no-matches');
+        const noMatchWrapper = document.createElement('div');
+        noMatchWrapper.className = 'upcoming-match-name';
+
+        const heading = document.createElement('h3');
+        heading.textContent = 'Geen recente wedstrijden beschikbaar.';
+
+        noMatchWrapper.appendChild(heading);
+        grid.appendChild(noMatchWrapper);
+
+        setTimeout(() => {
+            noMatchWrapper.classList.add('animate-in');
+        }, 100);
+
         return;
     }
+
+    grid.classList.remove('no-matches');
 
     const reversedPastMatches = [...pastMatches].reverse().slice(0, 6); // Limit to 6 recent matches
 
@@ -310,6 +354,7 @@ function renderRecentMatches(pastMatches) {
         card.setAttribute('data-match-time', match.dateTime.time);
         card.setAttribute('data-match-season', match.season);
         card.setAttribute('data-goalscorers', JSON.stringify(match.goalscorers));
+        card.setAttribute('data-sponsor', JSON.stringify(match.sponsor || null));
 
         const [homeTeam, awayTeam] = match.title.split(' vs ');
         card.innerHTML = `
@@ -365,14 +410,76 @@ function renderForm(form) {
     });
 }
 
+// Render Sponsors Ticker
+function renderSponsorsTicker(allMatches) {
+    const track = document.getElementById('sponsor-ticker-track');
+    const wrapper = document.getElementById('sponsor-ticker-wrapper');
+    if (!track || !wrapper) return;
+
+    track.innerHTML = '';
+
+    // Filter unique sponsors
+    const uniqueSponsors = new Map();
+
+    allMatches.forEach(match => {
+        if (match.sponsor && match.sponsor.name && match.sponsor.logo) {
+            if (!uniqueSponsors.has(match.sponsor.name)) {
+                uniqueSponsors.set(match.sponsor.name, match.sponsor);
+            }
+        }
+    });
+
+    if (uniqueSponsors.size === 0) {
+        const section = document.querySelector('.sponsors-ticker-section');
+        if (section) section.style.display = 'none';
+        return;
+    }
+
+    const createSponsorHTML = (sponsor) => `
+        <a href="${sponsor.url}" target="_blank" rel="noopener" class="sponsor-item" title="${sponsor.name}">
+            <img src="${sponsor.logo}" alt="${sponsor.name}" class="sponsor-logo" loading="lazy">
+        </a>
+    `;
+
+    let logosHTML = '';
+    uniqueSponsors.forEach(sponsor => {
+        logosHTML += createSponsorHTML(sponsor);
+    });
+
+    track.innerHTML = logosHTML;
+
+    requestAnimationFrame(() => {
+        const trackWidth = track.scrollWidth;
+        const wrapperWidth = wrapper.offsetWidth;
+        const threshold = wrapperWidth * 0.7;
+
+        track.classList.remove('centered', 'scrolling');
+
+        if (trackWidth > threshold) {
+            track.innerHTML += logosHTML;
+            track.classList.add('scrolling');
+
+            if (track.scrollWidth < wrapperWidth * 2) {
+                track.innerHTML += logosHTML;
+            }
+        } else {
+            track.classList.add('centered');
+        }
+    });
+}
+
 // Update countdown
 function updateCountdown(upcomingMatches) {
     const titleEl = document.getElementById('next-match-title');
     const countdownEl = document.getElementById('countdown');
+    const sponsorBlock = document.getElementById('home-match-sponsor');
+    const sponsorLink = document.getElementById('home-sponsor-link');
+    const sponsorLogo = document.getElementById('home-sponsor-logo');
 
     if (upcomingMatches.length === 0) {
-        titleEl.textContent = 'Geen wedstrijden gepland in de nabije toekomst';
+        titleEl.textContent = 'Geen wedstrijden gepland in de nabije toekomst.';
         countdownEl.style.display = 'none';
+        if (sponsorBlock) sponsorBlock.style.display = 'none';
         window.nextMatchDateTime = null;
         return;
     }
@@ -380,8 +487,18 @@ function updateCountdown(upcomingMatches) {
     const nextMatch = upcomingMatches[0];
     titleEl.textContent = nextMatch.title;
     window.nextMatchDateTime = `${nextMatch.dateTime.date} ${nextMatch.dateTime.time}`;
-}
 
+    // Handle sponsor
+    if (nextMatch.sponsor) {
+        sponsorLink.href = nextMatch.sponsor.url;
+        sponsorLogo.src = nextMatch.sponsor.logo;
+        sponsorLogo.alt = `Logo ${nextMatch.sponsor.name}`;
+        sponsorLink.title = `Bezoek website van ${nextMatch.sponsor.name} - Matchbalsponsor`;
+        sponsorBlock.style.display = 'block';
+    } else {
+        sponsorBlock.style.display = 'none';
+    }
+}
 // Match interactions
 function setupMatchInteractions() {
     document.querySelectorAll('.match-card.modern:not(.result)').forEach(card => {
@@ -482,6 +599,15 @@ function getMatchData(card) {
             goalscorers = [];
         }
     }
+    let sponsor = null;
+    const sponsorData = card.getAttribute('data-sponsor');
+    if (sponsorData) {
+        try {
+            sponsor = JSON.parse(sponsorData);
+        } catch (error) {
+            console.warn('Failed to parse sponsor data:', error);
+        }
+    }
     // Transform English month to Dutch for displayDate
     const dateParts = matchDate.split(' ');
     const day = dateParts[0];
@@ -493,7 +619,8 @@ function getMatchData(card) {
         dateTime: { date: matchDate, time: matchTime, displayDate },
         season,
         score,
-        goalscorers
+        goalscorers,
+        sponsor
     };
 }
 

@@ -240,6 +240,7 @@ body {
     border-radius: 9px;
     backdrop-filter: blur(10px);
     transition: all 0.3s ease;
+    isolation: isolate;
 }
 
 .mobile-menu-toggle:hover {
@@ -253,7 +254,9 @@ body {
     background: var(--dynamo-red);
     margin: 2px 0;
     border-radius: 2px;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    transform-origin: center center;
+    will-change: transform, opacity;
 }
 
 .mobile-menu-toggle.active span:nth-child(1) {
@@ -341,17 +344,22 @@ body {
         border-radius: 22px;
         padding: 18px;
         gap: 9px;
+        transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+        box-shadow: var(--shadow-medium);
         transform: translateY(-20px);
         opacity: 0;
         visibility: hidden;
-        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        box-shadow: var(--shadow-medium);
+        pointer-events: none;
+        max-height: 0;
+        overflow: hidden;
     }
 
     .nav-links.active {
         transform: translateY(0);
         opacity: 1;
         visibility: visible;
+        pointer-events: auto;
+        max-height: 500px;
     }
 
     .nav-link {
@@ -465,6 +473,8 @@ body {
         transform: translateY(0);
         opacity: 1;
         visibility: visible;
+        pointer-events: auto;
+        max-height: 500px;
         box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
     }
 

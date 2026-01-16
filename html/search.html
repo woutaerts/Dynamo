@@ -16,12 +16,12 @@
     <!-- Open Graph -->
     <meta property="og:title" content="Zoek Wedstrijden - Dynamo Beirs">
     <meta property="og:description" content="Zoek door alle wedstrijden van Dynamo Beirs.">
-    <meta property="og:image" content="https://dynamo-beirs.github.io/Dynamo/img/og/og-image-search.png">
+    <meta property="og:image" content="https://dynamo-beirs.github.io/dynamo/img/og/og-image-search.png">
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="630">
     <meta property="og:image:alt" content="Dynamo Beirs - Wedstrijdzoeker">
     <meta property="og:image:type" content="image/png">
-    <meta property="og:url" content="https://dynamo-beirs.github.io/Dynamo/html/search.html">
+    <meta property="og:url" content="https://dynamo-beirs.github.io/dynamo/html/search.html">
     <meta property="og:type" content="website">
     <meta property="og:locale" content="nl_BE">
 
@@ -29,10 +29,10 @@
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="Zoek Wedstrijden - Dynamo Beirs">
     <meta name="twitter:description" content="Vind elke gespeelde wedstrijd.">
-    <meta name="twitter:image" content="https://dynamo-beirs.github.io/Dynamo/img/og/og-image-search.png">
+    <meta name="twitter:image" content="https://dynamo-beirs.github.io/dynamo/img/og/og-image-search.png">
 
     <!-- Canonical -->
-    <link rel="canonical" href="https://dynamo-beirs.github.io/Dynamo/html/search.html">
+    <link rel="canonical" href="https://dynamo-beirs.github.io/dynamo/html/search.html">
 
     <!-- DNS Preconnect -->
     <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
@@ -40,24 +40,24 @@
     <link rel="preconnect" href="https://cdnjs.cloudflare.com">
 
     <!-- Preload header -->
-    <link rel="preload" href="/Dynamo/img/logos/red-outlined-logo.png" as="image" fetchpriority="high">
-    <link rel="preload" href="/Dynamo/css/partials/header.css" as="style">
+    <link rel="preload" href="/dynamo/img/logos/red-outlined-logo.png" as="image" fetchpriority="high">
+    <link rel="preload" href="/dynamo/css/partials/header.css" as="style">
 
     <!-- Favicon -->
-    <link rel="preload" href="/Dynamo/img/logos/favicon/favicon.svg" as="image">
-    <link rel="icon" href="/Dynamo/img/logos/favicon/favicon.svg">
-    <link rel="icon" href="/Dynamo/img/logos/favicon/favicon.ico" type="image/x-icon">
-    <link rel="apple-touch-icon" sizes="180x180" href="/Dynamo/img/logos/favicon/apple-touch-icon.png">
-    <link rel="manifest" href="/Dynamo/img/logos/favicon/site.webmanifest">
+    <link rel="preload" href="/dynamo/img/logos/favicon/favicon.svg" as="image">
+    <link rel="icon" href="/dynamo/img/logos/favicon/favicon.svg">
+    <link rel="icon" href="/dynamo/img/logos/favicon/favicon.ico" type="image/x-icon">
+    <link rel="apple-touch-icon" sizes="180x180" href="/dynamo/img/logos/favicon/apple-touch-icon.png">
+    <link rel="manifest" href="/dynamo/img/logos/favicon/site.webmanifest">
 
     <!-- Stylesheets -->
-    <link rel="stylesheet" href="/Dynamo/css/general.css">
-    <link rel="stylesheet" href="/Dynamo/css/components/loader.css">
-    <link rel="stylesheet" href="/Dynamo/css/partials/header.css">
-    <link rel="stylesheet" href="/Dynamo/css/partials/footer.css">
-    <link rel="stylesheet" href="/Dynamo/css/matches.css">
-    <link rel="stylesheet" href="/Dynamo/css/search.css">
-    <link rel="stylesheet" href="/Dynamo/css/statistics.css">
+    <link rel="stylesheet" href="/dynamo/css/general.css">
+    <link rel="stylesheet" href="/dynamo/css/components/loader.css">
+    <link rel="stylesheet" href="/dynamo/css/partials/header.css">
+    <link rel="stylesheet" href="/dynamo/css/partials/footer.css">
+    <link rel="stylesheet" href="/dynamo/css/matches.css">
+    <link rel="stylesheet" href="/dynamo/css/search.css">
+    <link rel="stylesheet" href="/dynamo/css/statistics.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" crossorigin>
 
@@ -71,10 +71,10 @@
     </script>
 
     <!-- Scripts -->
-    <script type="module" src="/Dynamo/js/search.js"></script>
-    <script type="module" src="/Dynamo/js/partials/header.js"></script>
-    <script type="module" src="/Dynamo/js/partials/footer.js"></script>
-    <script type="module" src="/Dynamo/js/components/matchModal.js"></script>
+    <script type="module" src="/dynamo/js/search.js"></script>
+    <script type="module" src="/dynamo/js/partials/header.js"></script>
+    <script type="module" src="/dynamo/js/partials/footer.js"></script>
+    <script type="module" src="/dynamo/js/components/matchModal.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
 
     <title>Zoek Wedstrijden - Dynamo Beirs</title>
@@ -113,7 +113,7 @@
                 <div class="sort-controls">
                     <span>Sorteren op:</span>
                     <div class="custom-dropdown" id="results-sort">
-                        <div class="selected" data-value="date-desc">Datum (nieuw to oud)</div>
+                        <div class="selected" data-value="date-desc">Datum (nieuw → oud)</div>
                         <ul class="options">
                             <li data-value="date-desc">Datum (nieuw → oud)</li>
                             <li data-value="date-asc">Datum (oud → nieuw)</li>
@@ -165,7 +165,7 @@
         "@context": "https://schema.org",
         "@type": "WebPage",
         "name": "Zoek Wedstrijden - Dynamo Beirs",
-        "url": "https://dynamo-beirs.github.io/Dynamo/html/search.html",
+        "url": "https://dynamo-beirs.github.io/dynamo/html/search.html",
         "description": "Zoek door alle gespeelde wedstrijden van Dynamo Beirs op tegenstander, datum, resultaat of score.",
         "breadcrumb": {
             "@type": "BreadcrumbList",
@@ -174,13 +174,13 @@
                     "@type": "ListItem",
                     "position": 1,
                     "name": "Home",
-                    "item": "https://dynamo-beirs.github.io/Dynamo/"
+                    "item": "https://dynamo-beirs.github.io/dynamo/"
                 },
                 {
                     "@type": "ListItem",
                     "position": 2,
                     "name": "Wedstrijden",
-                    "item": "https://dynamo-beirs.github.io/Dynamo/html/matches.html"
+                    "item": "https://dynamo-beirs.github.io/dynamo/html/matches.html"
                 },
                 {
                     "@type": "ListItem",
@@ -191,7 +191,7 @@
         },
         "isPartOf": {
             "@type": "WebSite",
-            "url": "https://dynamo-beirs.github.io/Dynamo/",
+            "url": "https://dynamo-beirs.github.io/dynamo/",
             "name": "Dynamo Beirs"
         }
     }

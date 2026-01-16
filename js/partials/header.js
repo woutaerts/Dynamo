@@ -6,7 +6,7 @@ document.addEventListener('DOMContentLoaded', () => {
 /* Load Header */
 async function loadHeader() {
     try {
-        const headerPath = '/Dynamo/html/partials/header.html';
+        const headerPath = '/dynamo/html/partials/header.html';
         const response = await fetch(headerPath);
         if (!response.ok) {
             console.error(`Failed to load header from ${headerPath}: ${response.status} ${response.statusText}`);
@@ -46,21 +46,21 @@ function loadFallbackHeader() {
                     <span></span>
                 </div>
                 <div class="header-logo-container" id="header-logo-container">
-                    <a href="/Dynamo/index.html" aria-label="Dynamo Beirs Homepage" class="header-logo-link" id="header-logo-link">
+                    <a href="/dynamo/index.html" aria-label="Dynamo Beirs Homepage" class="header-logo-link" id="header-logo-link">
                         <div class="logo-container">
-                            <img src="/Dynamo/img/logos/red-outlined-logo.png" alt="Red Outlined Dynamo Beirs Logo" class="header-logo header-logo-red" id="header-logo-red">
+                            <img src="/dynamo/img/logos/red-outlined-logo.png" alt="Red Outlined Dynamo Beirs Logo" class="header-logo header-logo-red" id="header-logo-red">
                         </div>
                     </a>
                 </div>
                 <ul class="nav-links" id="nav-links">
-                    <li><a href="/Dynamo/index.html" class="nav-link" data-page="home"><i class="fa-solid fa-house"></i><span class="nav-text">Home</span><span class="ripple"></span></a></li>
-                    <li><a href="/Dynamo/html/players.html" class="nav-link" data-page="players">Spelers<span class="ripple"></span></a></li>
-                    <li><a href="/Dynamo/html/statistics.html" class="nav-link" data-page="statistics">Statistieken<span class="ripple"></span></a></li>
-                    <li><a href="/Dynamo/html/matches.html" class="nav-link" data-page="matches">Wedstrijden<span class="ripple"></span></a></li>
-                    <li><a href="/Dynamo/html/search.html" class="nav-link search-link" data-page="search"><i class="fa-solid fa-magnifying-glass"></i><span class="ripple"></span></a></li>
+                    <li><a href="/dynamo/index.html" class="nav-link" data-page="home"><i class="fa-solid fa-house"></i><span class="nav-text">Home</span><span class="ripple"></span></a></li>
+                    <li><a href="/dynamo/html/players.html" class="nav-link" data-page="players">Spelers<span class="ripple"></span></a></li>
+                    <li><a href="/dynamo/html/statistics.html" class="nav-link" data-page="statistics">Statistieken<span class="ripple"></span></a></li>
+                    <li><a href="/dynamo/html/matches.html" class="nav-link" data-page="matches">Wedstrijden<span class="ripple"></span></a></li>
+                    <li><a href="/dynamo/html/search.html" class="nav-link search-link" data-page="search"><i class="fa-solid fa-magnifying-glass"></i><span class="ripple"></span></a></li>
                 </ul>
                 <div class="mobile-search-container">
-                    <a href="/Dynamo/html/search.html" class="mobile-search-link" aria-label="Search">
+                    <a href="/dynamo/html/search.html" class="mobile-search-link" aria-label="Search">
                         <i class="fa-solid fa-magnifying-glass"></i>
                     </a>
                 </div>
@@ -92,25 +92,25 @@ function configureHeader(isRootPage) {
         const page = link.getAttribute('data-page');
         switch (page) {
             case 'home':
-                link.href = '/Dynamo/index.html';
+                link.href = '/dynamo/index.html';
                 break;
             case 'statistics':
-                link.href = '/Dynamo/html/statistics.html';
+                link.href = '/dynamo/html/statistics.html';
                 break;
             case 'players':
-                link.href = '/Dynamo/html/players.html';
+                link.href = '/dynamo/html/players.html';
                 break;
             case 'matches':
-                link.href = '/Dynamo/html/matches.html';
+                link.href = '/dynamo/html/matches.html';
                 break;
             case 'search':
-                link.href = '/Dynamo/html/search.html';
+                link.href = '/dynamo/html/search.html';
                 break;
         }
     });
     if (headerLogoLink && headerLogoRed) {
-        headerLogoLink.href = '/Dynamo/index.html';
-        headerLogoRed.src = '/Dynamo/img/logos/red-outlined-logo.png';
+        headerLogoLink.href = '/dynamo/index.html';
+        headerLogoRed.src = '/dynamo/img/logos/red-outlined-logo.png';
     } else {
         console.warn('Header logo elements not found');
     }
@@ -125,7 +125,7 @@ function highlightCurrentPage() {
     navLinks.forEach(link => {
         link.classList.remove('active');
         const page = link.getAttribute('data-page');
-        if ((currentPath === '/Dynamo/' || currentPath === '/Dynamo/index.html') && page === 'home') {
+        if ((currentPath === '/dynamo/' || currentPath === '/dynamo/index.html') && page === 'home') {
             link.classList.add('active');
         } else if (currentPath.includes(page)) {
             link.classList.add('active');

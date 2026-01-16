@@ -1,8 +1,8 @@
 <!-- Match Center Modal Component -->
-<link rel="stylesheet" href="/Dynamo/css/general.css">
-<link rel="stylesheet" href="/Dynamo/css/components/matchModal.css"/>
+<link rel="stylesheet" href="/dynamo/css/general.css">
+<link rel="stylesheet" href="/dynamo/css/components/matchModal.css"/>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-<script src="/Dynamo/js/general.js" defer></script>
+<script src="/dynamo/js/general.js" defer></script>
 
 <div id="matchCenterModal" class="modal-overlay">
     <div class="modal-content">
@@ -16,6 +16,13 @@
             <div class="team-name away-team">Uitploeg</div>
         </div>
         <div class="season" id="matchSeason">2025-26</div>
+
+        <div id="modalMatchSponsor" class="modal-sponsor-container" style="display: none;">
+            <h3>Matchbalsponsor</h3>
+            <a id="modalSponsorLink" href="#" target="_blank" rel="noopener">
+                <img id="modalSponsorLogo" src="" alt="Sponsor Logo" loading="lazy">
+            </a>
+        </div>
 
         <!-- Score Display -->
         <div class="modal-match-score" id="modalMatchScore" style="display: none;">
