@@ -98,7 +98,6 @@ class PlayerModal {
         document.body.classList.remove('modal-open');
 
         setTimeout(() => {
-            // Na fade-out echt verbergen
             this.modal.style.display = 'none';
             window.scrollTo({ top: this.scrollPosition, behavior: 'smooth' });
         }, 300);

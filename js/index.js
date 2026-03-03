@@ -212,15 +212,12 @@ function initializeCarousel() {
 
     function touchMove(e) {
         if (!isDragging) return;
-
         const currentX = e.touches[0].clientX;
         const currentY = e.touches[0].clientY;
         const diffX = currentX - touchStartX;
         const diffY = currentY - touchStartY;
-
         const absDiffX = Math.abs(diffX);
         const absDiffY = Math.abs(diffY);
-
         if (absDiffX > absDiffY && absDiffX > 5) { // 5px threshold to avoid accidental blocks
             e.preventDefault();
             currentTranslate = prevTranslate + (diffX / carousel.offsetWidth) * 100;
@@ -473,6 +470,8 @@ function renderForm(form) {
 
 // Update Next Match Countdown
 function updateCountdown(upcomingMatches) {
+    window.upcomingMatchesData = upcomingMatches;
+
     const titleEl = document.getElementById('next-match-title');
     const countdownEl = document.getElementById('countdown');
     const sponsorBlock = document.getElementById('home-match-sponsor');
