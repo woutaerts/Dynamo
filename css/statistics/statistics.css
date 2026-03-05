@@ -311,6 +311,7 @@ body.player-alltime .player-rank {
     z-index: 1000;
     width: 240px;
     box-sizing: border-box;
+    overflow: hidden;
 }
 
 .custom-dropdown .options li {
