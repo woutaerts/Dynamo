@@ -4,7 +4,7 @@ Welcome to the official website of **Dynamo Beirs**, a football club showcasing 
 
 ## 🌐 Github Pages Website
 
-https://Dynamo-beirs.github.io/Dynamo
+https://dynamo-beirs.github.io/dynamo
 
 ## 📁 Project Structure
 
@@ -13,7 +13,9 @@ C:.
 ├── css/                       # Stylesheets
 │   ├── components/            
 │   │   ├── matchModal.css
-│   │   └── playerModal.css
+│   │   ├── playerModal.css
+│   │   ├── loader.css
+│   │   └── graph.css
 │   ├── partials/              
 │   │   ├── footer.css
 │   │   └── header.css
@@ -21,11 +23,12 @@ C:.
 │   │   ├── statistics.css
 │   │   ├── team-all-time.css
 │   │   └── team-season.css
+│   ├── 404.css                
+│   ├── archive.css                
 │   ├── general.css            # Global styles
 │   ├── index.css              
 │   ├── matches.css            
 │   ├── players.css            
-│   ├── 404.css                
 │   └── search.css             
 ├── html/                      # HTML
 │   ├── components/            
@@ -34,18 +37,21 @@ C:.
 │   ├── partials/              
 │   │   ├── footer.css
 │   │   └── header.css
+│   ├── archive.html            
 │   ├── matches.html            
 │   ├── players.html            
 │   ├── search.html            
 │   └── statistics.html        
 ├── js/                        # JavaScript files
-│   ├── components/            
+│   ├── components/    
+│   │   ├── lineGraph.js        
 │   │   ├── matchModal.js
 │   │   └── playerModal.js
 │   ├── partials/             
 │   │   ├── footer.js
 │   │   └── header.js
 │   ├── 404.js
+│   ├── archive.js
 │   ├── general.js             # Shared functionality (e.g., countdown, animations)
 │   ├── index.js          
 │   ├── matches.js        
@@ -58,4 +64,4 @@ C:.
 ```
 
 This project is for educational and demonstrative purposes only.  
-© 2025 [Dynamo Beirs](https://github.com/Dynamo-beirs/Dynamo) – All rights reserved.
+© 2026 [Dynamo Beirs](https://github.com/dynamo-beirs/dynamo) – All rights reserved.
