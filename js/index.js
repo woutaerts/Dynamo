@@ -1,5 +1,7 @@
 // Imports and Initialization
-import { initializeCountdown, animateOnScroll, setupSmoothScrolling, setupPageLoadAnimation } from './general.js';
+import { animateOnScroll, setupSmoothScrolling } from './utils/animations.js';
+import { initializeCountdown, updateCountdown } from './general.js';
+import { fetchCurrentSeasonMatches, fetchTeamSeasonStats } from './utils/dataService.js';
 
 // Animation Elements
 const animationElements = [
@@ -17,70 +19,6 @@ const animationElements = [
     { selector: '.upcoming-match-name', containerSelector: null },
     { selector: '.form-description', containerSelector: null }
 ];
-
-// Scroll Animation Handling
-let hasStartedScrolling = false;
-
-function isElementInViewport(el, threshold = 0.1) {
-    const rect = el.getBoundingClientRect();
-    const windowHeight = window.innerHeight || document.documentElement.clientHeight;
-    return (
-        rect.top <= windowHeight * (1 - threshold) &&
-        rect.bottom >= windowHeight * threshold
-    );
-}
-
-function animateIndexElements() {
-    const scrollElements = document.querySelectorAll(
-        '.stat-card, .contact-card, .countdown-block, .form-result, .map-container, ' +
-        '.section-title, .section-subtitle, .upcoming-match-name, .form-description, ' +
-        '#home-match-sponsor, .match-sponsor-block, .sponsor-cta-section, .sponsor-cta-section *'
-    );
-
-    scrollElements.forEach((element, index) => {
-        if (isElementInViewport(element) && !element.classList.contains('animate-in')) {
-            const section = element.closest('section');
-            const sectionElements = section
-                ? section.querySelectorAll(
-                    '.carousel-container, .stat-card, .contact-card, .countdown-block, .form-result, .map-container, .section-title, .section-subtitle, .upcoming-match-name, .form-description'
-                )
-                : [element];
-            const elementIndex = Array.from(sectionElements).indexOf(element);
-
-            setTimeout(() => {
-                element.classList.add('animate-in');
-            }, elementIndex * 100);
-        }
-    });
-}
-
-function handleIndexScroll() {
-    if (window.scrollY > 50) {
-        hasStartedScrolling = true;
-    }
-
-    if (hasStartedScrolling) {
-        animateIndexElements();
-    }
-}
-
-function setupIndexAnimations() {
-    const immediateElements = document.querySelectorAll('.hero');
-    immediateElements.forEach((element) => {
-        element.classList.add('animate-in');
-    });
-
-    let isThrottled = false;
-    window.addEventListener('scroll', () => {
-        if (!isThrottled) {
-            handleIndexScroll();
-            isThrottled = true;
-            setTimeout(() => {
-                isThrottled = false;
-            }, 100);
-        }
-    });
-}
 
 // Carousel Initialization
 function initializeCarousel() {
@@ -106,9 +44,6 @@ function initializeCarousel() {
     carousel.appendChild(firstClone);
     carousel.insertBefore(lastClone, carousel.firstChild);
 
-    const allSlides = document.querySelectorAll('.slide');
-    const totalWithClones = allSlides.length;
-
     // Start at the real first slide
     carousel.style.transform = `translateX(-${100}%)`;
 
@@ -117,7 +52,7 @@ function initializeCarousel() {
         const dot = document.createElement('div');
         dot.classList.add('dot');
         if (i === 0) dot.classList.add('active');
-        dot.addEventListener('click', () => goToRealSlide(i));
+        dot.addEventListener('click', () => goToSlide(i));
         dotsContainer.appendChild(dot);
     });
 
@@ -167,10 +102,6 @@ function initializeCarousel() {
         }
         isTransitioning = false;
     });
-
-    function goToRealSlide(idx) {
-        goToSlide(idx);
-    }
 
     // Auto play
     function startAutoPlay() {
@@ -256,8 +187,24 @@ function initializeCarousel() {
 
     // Keyboard
     document.addEventListener('keydown', e => {
-        if (e.key === 'ArrowRight') { nextSlide(); resetAutoPlay(); }
-        if (e.key === 'ArrowLeft') { prevSlide(); resetAutoPlay(); }
+        // 1. Guard: Don't trigger if the user is typing in an input (like search)
+        if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+
+        // 2. Guard: Only trigger if the carousel is the primary "active" component
+        // or if the mouse is currently over it (using container as a reference)
+        const isCarouselActive = document.activeElement.closest('.carousel-container') ||
+            container.matches(':hover');
+
+        if (!isCarouselActive) return;
+
+        if (e.key === 'ArrowRight') {
+            nextSlide();
+            resetAutoPlay();
+        }
+        if (e.key === 'ArrowLeft') {
+            prevSlide();
+            resetAutoPlay();
+        }
     });
 
     // Pause on hover
@@ -298,13 +245,23 @@ function initializePrimaryButtonHover() {
 
 // Page Initialization
 document.addEventListener('DOMContentLoaded', async () => {
+    // 1. Fetch data first so dynamic elements (like form-results) exist in DOM
     await fetchAndRenderData();
+
+    // 2. Initialize UI components
     initializeCountdown();
     initializeCarousel();
     initializePrimaryButtonHover();
     setupSmoothScrolling();
-    setupPageLoadAnimation();
-    setupIndexAnimations();
+
+    // 3. Handle Hero animation immediately
+    const hero = document.querySelector('.hero');
+    if (hero) {
+        hero.classList.add('animate-in');
+    }
+
+    // 4. Initialize the IntersectionObserver for everything else
+    animateOnScroll(animationElements);
 });
 
 // Data Fetching and Rendering
@@ -321,13 +278,8 @@ async function fetchAndRenderData() {
 }
 
 async function fetchAndRenderMatches() {
-    const spreadsheetUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQRCgon0xh9NuQ87NgqQzBNPCEmmZWcC_jrulRhLwmrudf5UQ2QBRA28F1qmWB9L5xP9uZ8-ct2aqfR/pub?gid=300017481&single=true&output=csv';
-
     try {
-        const response = await fetch(spreadsheetUrl);
-        const csvText = await response.text();
-        const matches = parseCsvData(csvText);
-
+        const matches = await fetchCurrentSeasonMatches();
         renderForm(matches.form);
         updateCountdown(matches.upcoming);
     } catch (error) {
@@ -336,109 +288,10 @@ async function fetchAndRenderMatches() {
     }
 }
 
-// CSV Parsing
-function parseCsvData(csvText) {
-    const parsed = Papa.parse(csvText, {
-        skipEmptyLines: true,
-        delimiter: ','
-    });
-
-    const rows = parsed.data;
-    const matches = { upcoming: [], past: [], all: [], form: [] };
-
-    const columns = ['F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', 'AA'];
-    const colIndexMap = columns.reduce((map, col, idx) => {
-        map[col] = idx + 5;
-        return map;
-    }, {});
-
-    const sponsorNameRow = 84;  // rij 85
-    const sponsorLogoRow = 85;  // rij 86
-    const sponsorUrlRow  = 86;  // rij 87
-
-    for (const col of columns) {
-        const colIdx = colIndexMap[col];
-        const opponent = rows[1]?.[colIdx]?.trim();
-        const date = rows[2]?.[colIdx]?.trim();
-        const time = rows[3]?.[colIdx]?.trim();
-        const stadium = rows[4]?.[colIdx]?.trim();
-        const homeAway = rows[5]?.[colIdx]?.trim().toLowerCase();
-        const result = rows[73]?.[colIdx]?.trim().toLowerCase();
-
-        const sponsorName = rows[sponsorNameRow]?.[colIdx]?.trim();
-        const sponsorLogo = rows[sponsorLogoRow]?.[colIdx]?.trim();
-        const sponsorUrl  = rows[sponsorUrlRow]?.[colIdx]?.trim();
-
-        const hasSponsor = sponsorName && !sponsorName.toLowerCase().includes('beschikbaar') && sponsorLogo && sponsorUrl;
-
-        if (opponent && date && time && stadium && homeAway) {
-            const isHome = homeAway === 'thuis';
-            const title = isHome ? `Dynamo Beirs vs ${opponent}` : `${opponent} vs Dynamo Beirs`;
-            const match = {
-                title,
-                dateTime: { date, time, displayDate: date.split(' ').slice(0, 2).join(' ') },
-                stadium,
-                isHome,
-                result,
-                sponsor: hasSponsor ? {
-                    name: sponsorName,
-                    logo: sponsorLogo,
-                    url: sponsorUrl
-                } : null
-            };
-
-            if (result) {
-                matches.past.push(match);
-            } else {
-                matches.upcoming.push(match);
-            }
-            matches.all.push(match);
-        }
-    }
-
-    const parseDate = (dateStr) => {
-        const [day, month, year] = dateStr.split(' ');
-        const monthMap = {
-            'jan': 0, 'feb': 1, 'mrt': 2, 'apr': 3, 'mei': 4, 'jun': 5,
-            'jul': 6, 'aug': 7, 'sep': 8, 'okt': 9, 'nov': 10, 'dec': 11
-        };
-        return new Date(year, monthMap[month.toLowerCase()], day);
-    };
-
-    matches.all.sort((a, b) => parseDate(a.dateTime.date) - parseDate(b.dateTime.date));
-    matches.past.sort((a, b) => parseDate(a.dateTime.date) - parseDate(b.dateTime.date));
-    matches.upcoming.sort((a, b) => parseDate(a.dateTime.date) - parseDate(b.dateTime.date));
-
-    const formStartCol = 28;
-    const resultMap = { 'w': 'winst', 'd': 'gelijk', 'l': 'verlies' };
-    for (let i = 0; i < 5; i++) {
-        const cell = rows[82]?.[formStartCol + i]?.trim().toLowerCase();
-        if (cell && resultMap[cell]) {
-            matches.form.push(resultMap[cell]);
-        }
-    }
-    return matches;
-}
 // Team Stats Fetching
 async function fetchAndRenderTeamStats() {
-    const spreadsheetUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQRCgon0xh9NuQ87NgqQzBNPCEmmZWcC_jrulRhLwmrudf5UQ2QBRA28F1qmWB9L5xP9uZ8-ct2aqfR/pub?gid=241725037&single=true&output=csv';
-
     try {
-        const response = await fetch(spreadsheetUrl);
-        const csvText = await response.text();
-        const rows = csvText.split('\n').map(row => row.split(',').map(cell => cell.trim().replace(/"/g, '')));
-
-        if (rows.length < 67) {
-            throw new Error('Insufficient rows in team season stats CSV');
-        }
-
-        const teamSeasonStats = {
-            matchesPlayed: parseInt(rows[50][3]) || 0,
-            wins: parseInt(rows[51][3]) || 0,
-            cleanSheets: parseInt(rows[61][3]) || 0,
-            goalsScored: parseInt(rows[54][3]) || 0
-        };
-
+        const teamSeasonStats = await fetchTeamSeasonStats();
         updateTeamStats(teamSeasonStats);
     } catch (error) {
         console.error('Error loading team season stats:', error);
@@ -466,39 +319,6 @@ function renderForm(form) {
         span.innerHTML = `<i class="fas fa-${resultClass === 'win' ? 'check' : resultClass === 'draw' ? 'minus' : 'times'}"></i>`;
         formResults.appendChild(span);
     });
-}
-
-// Update Next Match Countdown
-function updateCountdown(upcomingMatches) {
-    window.upcomingMatchesData = upcomingMatches;
-
-    const titleEl = document.getElementById('next-match-title');
-    const countdownEl = document.getElementById('countdown');
-    const sponsorBlock = document.getElementById('home-match-sponsor');
-    const sponsorLink = document.getElementById('home-sponsor-link');
-    const sponsorLogo = document.getElementById('home-sponsor-logo');
-
-    if (upcomingMatches.length === 0) {
-        titleEl.textContent = 'Geen wedstrijden gepland in de nabije toekomst.';
-        countdownEl.style.display = 'none';
-        sponsorBlock.style.display = 'none';
-        window.nextMatchDateTime = null;
-        return;
-    }
-
-    const nextMatch = upcomingMatches[0];
-    titleEl.textContent = nextMatch.title;
-    window.nextMatchDateTime = `${nextMatch.dateTime.date} ${nextMatch.dateTime.time}`;
-
-    if (nextMatch.sponsor) {
-        sponsorLink.href = nextMatch.sponsor.url;
-        sponsorLogo.src = nextMatch.sponsor.logo;
-        sponsorLogo.alt = `Logo ${nextMatch.sponsor.name}`;
-        sponsorLink.title = `Bezoek website van ${nextMatch.sponsor.name} - Matchbalsponsor`;
-        sponsorBlock.style.display = 'block';
-    } else {
-        sponsorBlock.style.display = 'none';
-    }
 }
 
 // Error Handling

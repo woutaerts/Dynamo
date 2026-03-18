@@ -19,7 +19,7 @@ export class LineGraph {
             xEnd: 750
         }, options);
 
-        this.uid = Math.random().toString(36).substr(2, 9);
+        this.uid = Math.random().toString(36).slice(2, 11);
         this.isMultiLine = !Array.isArray(this.options.data);
 
         this.calculateDomain();

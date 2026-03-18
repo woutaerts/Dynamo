@@ -15,12 +15,7 @@ async function loadFooter() {
         }
 
         const footerHTML = await response.text();
-
-        if (!footerHTML.trim()) {
-            console.error('Footer file is empty');
-            loadFallbackFooter();
-            return;
-        }
+        if (!footerHTML.trim()) { loadFallbackFooter(); return; }
 
         const footerPlaceholder = document.getElementById('footer-placeholder');
         if (footerPlaceholder) {
@@ -29,6 +24,7 @@ async function loadFooter() {
             document.body.insertAdjacentHTML('beforeend', footerHTML);
         }
 
+        // Only run configuration to set the dynamic year
         configureFooter();
     } catch (error) {
         console.error('Error loading footer:', error);
@@ -40,7 +36,9 @@ function loadFallbackFooter() {
     const logoGreyPath = '/dynamo/img/logos/gray-outlined-logo.png';
     const logoRedPath = '/dynamo/img/logos/red-outlined-logo.png';
     const homePath = '/dynamo/index.html';
+    const currentYear = new Date().getFullYear();
 
+    // Cleaned up the fallback template to include the year directly
     const fallbackFooter = `
         <footer class="footer">
             <div class="footer-content">
@@ -56,10 +54,10 @@ function loadFallbackFooter() {
                             </a>
                         </div>
                         <div class="footer-brand">
-                            <a href="${homePath}" aria-label="Dynamo Beirs Homepage" class="logo-link" id="footer-logo-link">
+                            <a href="${homePath}" aria-label="Dynamo Beirs Homepage" class="logo-link">
                                 <div class="logo-container">
-                                    <img src="${logoGreyPath}" alt="Gray Outlined Dynamo Beirs Logo" class="footer-logo footer-logo-grey" id="footer-logo-grey">
-                                    <img src="${logoRedPath}" alt="Red Outlined Dynamo Beirs Logo" class="footer-logo footer-logo-red" id="footer-logo-red">
+                                    <img src="${logoGreyPath}" alt="Gray" class="footer-logo footer-logo-grey">
+                                    <img src="${logoRedPath}" alt="Red" class="footer-logo footer-logo-red">
                                 </div>
                             </a>
                         </div>
@@ -75,7 +73,7 @@ function loadFallbackFooter() {
                     <span class="line-right"></span>
                 </div>
                 <div class="footer-copyright">
-                    <p>© <span id="year-fallback">${new Date().getFullYear()}</span> Dynamo Beirs</p>
+                    <p>© <span>${currentYear}</span> Dynamo Beirs</p>
                 </div>
             </div>
         </footer>
@@ -89,22 +87,13 @@ function loadFallbackFooter() {
     }
 }
 
+/**
+ * Optimized: Only handles dynamic content.
+ * All static paths should remain in the HTML files.
+ */
 function configureFooter() {
-    const logoLink = document.getElementById('footer-logo-link');
-    const logoGrey = document.getElementById('footer-logo-grey');
-    const logoRed = document.getElementById('footer-logo-red');
-
     const yearSpan = document.getElementById('year');
     if (yearSpan) {
         yearSpan.textContent = new Date().getFullYear();
     }
-
-    if (!logoLink || !logoGrey || !logoRed) {
-        console.warn('Footer logo elements not found');
-        return;
-    }
-
-    logoLink.href = '/dynamo/index.html';
-    logoGrey.src = '/dynamo/img/logos/gray-outlined-logo.png';
-    logoRed.src = '/dynamo/img/logos/red-outlined-logo.png';
 }

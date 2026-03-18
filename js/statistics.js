@@ -1,157 +1,16 @@
-import { animateOnScroll } from './general.js';
+import { animateOnScroll } from './utils/animations.js';
+import { positionIcons, positionDisplayMap } from './utils/helpers.js';
+import { fetchTeamSeasonStats, fetchTeamAllTimeStats, fetchSeasonRecords, fetchSeasonPlayers, fetchAllTimePlayers} from './utils/dataService.js';
 
-// Season player data (loaded dynamically from CSV)
+// Variables
 let seasonPlayers = [];
-// All-time player data (loaded dynamically from CSV)
 let allTimePlayers = [];
-// Team season data (loaded dynamically from CSV)
 let teamSeasonStats = {};
-// Team all-time data (loaded dynamically from CSV)
 let teamAllTimeStats = {};
-// Season records data (loaded dynamically from CSV)
 let seasonRecords = {};
-// Loading state
 let isLoading = false;
 
-// Utility function to fetch with retries
-async function fetchWithRetry(url, retries = 3, delay = 1000) {
-    for (let i = 0; i < retries; i++) {
-        try {
-            const response = await fetch(url);
-            if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
-            }
-            return await response.text();
-        } catch (error) {
-            if (i < retries - 1) {
-                console.warn(`Fetch attempt ${i + 1} failed for ${url}. Retrying in ${delay}ms...`);
-                await new Promise(resolve => setTimeout(resolve, delay));
-                continue;
-            }
-            throw error;
-        }
-    }
-}
 
-// Function to load and parse team season stats from the Google Sheet CSV
-async function loadTeamSeasonStats() {
-    try {
-        const csvText = await fetchWithRetry('https://docs.google.com/spreadsheets/d/e/2PACX-1vQRCgon0xh9NuQ87NgqQzBNPCEmmZWcC_jrulRhLwmrudf5UQ2QBRA28F1qmWB9L5xP9uZ8-ct2aqfR/pub?gid=241725037&single=true&output=csv');
-        const rows = csvText.split('\n').map(row => row.split(',').map(cell => cell.trim().replace(/"/g, '')));
-
-        if (rows.length < 67) {
-            throw new Error('Insufficient rows in team season stats CSV');
-        }
-
-        teamSeasonStats = {
-            matchesPlayed: parseInt(rows[50][3]) || 0,
-            wins: parseInt(rows[51][3]) || 0,
-            draws: parseInt(rows[52][3]) || 0,
-            losses: Math.abs(parseInt(rows[53][3])) || 0,
-            goalsScored: parseInt(rows[54][3]) || 0,
-            goalsConceded: Math.abs(parseInt(rows[55][3])) || 0,
-            goalDifference: parseInt(rows[56][3]) || 0,
-            points: parseInt(rows[57][3]) || 0,
-            winRate: parseFloat(rows[58][3]) || 0,
-            goalsPerMatch: parseFloat(rows[59][3]) || 0,
-            goalsConcededPerMatch: Math.abs(parseFloat(rows[60][3])) || 0,
-            cleanSheets: parseInt(rows[61][3]) || 0,
-            cleanSheetsPerMatch: parseFloat(rows[62][3]) || 0,
-            largestWinScore: rows[63][3] || '0-0',
-            largestWinOpponent: rows[64][3] || 'Unknown',
-            largestLossScore: rows[65][3] || '0-0',
-            largestLossOpponent: rows[66][3] || 'Unknown'
-        };
-
-        console.log('Loaded team season stats from CSV.');
-    } catch (error) {
-        console.error('Error loading team season stats:', error);
-        teamSeasonStats = {};
-    }
-}
-
-// Function to load and parse team all-time stats from the Google Sheet CSV
-async function loadTeamAllTimeStats() {
-    try {
-        const csvText = await fetchWithRetry('https://docs.google.com/spreadsheets/d/e/2PACX-1vQRCgon0xh9NuQ87NgqQzBNPCEmmZWcC_jrulRhLwmrudf5UQ2QBRA28F1qmWB9L5xP9uZ8-ct2aqfR/pub?gid=1146719775&single=true&output=csv');
-        const rows = csvText.split('\n').map(row => row.split(',').map(cell => cell.trim().replace(/"/g, '')));
-
-        if (rows.length < 68) {
-            throw new Error('Insufficient rows in team all-time stats CSV');
-        }
-
-        teamAllTimeStats = {
-            matchesPlayed: parseInt(rows[50][3]) || 0,
-            wins: parseInt(rows[51][3]) || 0,
-            draws: parseInt(rows[52][3]) || 0,
-            losses: Math.abs(parseInt(rows[53][3])) || 0,
-            goalsScored: parseInt(rows[54][3]) || 0,
-            goalsConceded: Math.abs(parseInt(rows[55][3])) || 0,
-            goalDifference: parseInt(rows[56][3]) || 0,
-            points: parseInt(rows[57][3]) || 0,
-            pointPercentage: parseFloat(rows[58][3]) || 0,
-            goalsPerMatch: parseFloat(rows[59][3]) || 0,
-            goalsConcededPerMatch: Math.abs(parseFloat(rows[60][3])) || 0,
-            cleanSheets: parseInt(rows[61][3]) || 0,
-            cleanSheetsPerMatch: parseFloat(rows[62][3]) || 0,
-            longestWinStreak: parseInt(rows[63][3]) || 0,
-            longestUnbeatenRun: parseInt(rows[64][3]) || 0,
-            differentGoalscorers: parseInt(rows[67][3]) || 0
-        };
-
-        console.log('Loaded team all-time stats from CSV.');
-    } catch (error) {
-        console.error('Error loading team all-time stats:', error);
-        teamAllTimeStats = {};
-    }
-}
-
-// Function to load and parse season records for all-time stats from the Google Sheet CSV
-async function loadSeasonRecords() {
-    try {
-        const csvText = await fetchWithRetry('https://docs.google.com/spreadsheets/d/e/2PACX-1vQRCgon0xh9NuQ87NgqQzBNPCEmmZWcC_jrulRhLwmrudf5UQ2QBRA28F1qmWB9L5xP9uZ8-ct2aqfR/pub?gid=39583142&single=true&output=csv');
-        const rows = csvText.split('\n').map(row => row.split(',').map(cell => cell.trim().replace(/"/g, '')));
-
-        if (rows.length < 18) {
-            throw new Error('Insufficient rows in season records CSV');
-        }
-
-        const recordRow = rows[15];
-        const seasonRow = rows[17];
-        if (recordRow.length < 16 || seasonRow.length < 16) {
-            throw new Error('Insufficient columns in season records CSV');
-        }
-
-        seasonRecords = {
-            mostWins: {
-                value: parseInt(recordRow[3]) || 0,
-                season: seasonRow[3] || 'Unknown'
-            },
-            mostGoals: {
-                value: parseInt(recordRow[6]) || 0,
-                season: seasonRow[6] || 'Unknown'
-            },
-            bestGoalDifference: {
-                value: parseInt(recordRow[8]) || 0,
-                season: seasonRow[8] || 'Unknown'
-            },
-            mostCleanSheets: {
-                value: parseInt(recordRow[13]) || 0,
-                season: seasonRow[13] || 'Unknown'
-            }
-        };
-
-        console.log('Loaded season records from CSV.');
-    } catch (error) {
-        console.error('Error loading season records:', error);
-        seasonRecords = {
-            mostWins: { value: 0, season: 'Unknown' },
-            mostGoals: { value: 0, season: 'Unknown' },
-            bestGoalDifference: { value: 0, season: 'Unknown' },
-            mostCleanSheets: { value: 0, season: 'Unknown' }
-        };
-    }
-}
 
 // Function to update team season stats display
 function updateTeamSeasonStats() {
@@ -206,98 +65,6 @@ function updateTeamAllTimeStats() {
     ]);
 }
 
-// Function to load and parse season players from the Google Sheet CSV
-async function loadSeasonPlayers() {
-    try {
-        const csvText = await fetchWithRetry('https://docs.google.com/spreadsheets/d/e/2PACX-1vQRCgon0xh9NuQ87NgqQzBNPCEmmZWcC_jrulRhLwmrudf5UQ2QBRA28F1qmWB9L5xP9uZ8-ct2aqfR/pub?gid=300017481&single=true&output=csv');
-        const rows = csvText.split('\n').map(row => row.split(',').map(cell => cell.trim().replace(/"/g, '')));
-        const positionMap = {
-            'GK': 'goalkeeper',
-            'VER': 'defender',
-            'MID': 'midfielder',
-            'AAN': 'attacker'
-        };
-        const titleRows = ['keeper', 'verdedigers', 'middenvelders', 'aanvallers'];
-        const players = [];
-        for (let i = 0; i < Math.min(rows.length, 50); i++) {
-            const row = rows[i];
-            if (row.length < 31) continue;
-            const name = row[1];
-            const positionDutch = row[3];
-            const goalsStr = row[29];
-            const matchesStr = row[30];
-            const ratioStr = row[31];
-            if (!name || !positionDutch || !goalsStr || !matchesStr || !ratioStr) continue;
-            if (titleRows.includes(name.toLowerCase())) continue;
-            const goals = parseInt(goalsStr, 10);
-            const matches = parseInt(matchesStr, 10);
-            if (isNaN(goals) || isNaN(matches)) continue;
-            const position = positionMap[positionDutch];
-            if (!position) continue;
-            players.push({ name, position, goals, matches });
-        }
-        seasonPlayers = players.sort((a, b) => b.goals - a.goals);
-        console.log(`Loaded ${seasonPlayers.length} season players from CSV.`);
-    } catch (error) {
-        console.error('Error loading season players:', error);
-        seasonPlayers = [];
-    }
-}
-
-// Function to load and parse all-time players from the Google Sheet CSV
-async function loadAllTimePlayers() {
-    try {
-        const csvText = await fetchWithRetry('https://docs.google.com/spreadsheets/d/e/2PACX-1vQRCgon0xh9NuQ87NgqQzBNPCEmmZWcC_jrulRhLwmrudf5UQ2QBRA28F1qmWB9L5xP9uZ8-ct2aqfR/pub?gid=1401992067&single=true&output=csv');
-        const rows = csvText.split('\n').map(row => row.split(',').map(cell => cell.trim().replace(/"/g, '')));
-        const positionMap = {
-            'GK': 'goalkeeper',
-            'VER': 'defender',
-            'MID': 'midfielder',
-            'AAN': 'attacker'
-        };
-        const titleRows = ['keeper', 'verdedigers', 'middenvelders', 'aanvallers'];
-        const players = [];
-        for (let i = 0; i < Math.min(rows.length, 57); i++) {
-            const row = rows[i];
-            if (row.length < 7) continue;
-            const name = row[1];
-            const positionDutch = row[2];
-            const goalsStr = row[4];
-            const matchesStr = row[5];
-            const ratioStr = row[6];
-            if (!name || !positionDutch || !goalsStr || !matchesStr || !ratioStr) continue;
-            if (titleRows.includes(name.toLowerCase())) continue;
-            const goals = parseInt(goalsStr, 10);
-            const matches = parseInt(matchesStr, 10);
-            if (isNaN(goals) || isNaN(matches) || matches <= 0) continue;
-            const position = positionMap[positionDutch];
-            if (!position) continue;
-            players.push({ name, position, goals, matches });
-        }
-        allTimePlayers = players.sort((a, b) => b.goals - a.goals);
-        console.log(`Loaded ${allTimePlayers.length} all-time players from CSV.`);
-    } catch (error) {
-        console.error('Error loading all-time players:', error);
-        allTimePlayers = [];
-    }
-}
-
-// Position icons and Dutch names mapping
-const positionIcons = {
-    all: '<i class="fas fa-users"></i>',
-    goalkeeper: '<i class="fas fa-hand-paper"></i>',
-    defender: '<i class="fas fa-shield-alt"></i>',
-    midfielder: '<i class="fas fa-person-running"></i>',
-    attacker: '<i class="fas fa-crosshairs"></i>'
-};
-
-const positionDutchNames = {
-    goalkeeper: 'Keeper',
-    defender: 'Verdediger',
-    midfielder: 'Middenvelder',
-    attacker: 'Aanvaller'
-};
-
 // Define animation elements
 const animationElements = [
     { selector: '.stat-card', containerSelector: 'section' },
@@ -317,263 +84,159 @@ document.addEventListener('DOMContentLoaded', () => {
     initPlayerStats();
     initSortableHeaders();
     initCustomDropdowns();
-    animateOnScroll(animationElements);
+
+    // Observe static elements (Hero, Titles, and the Toggle Container)
+    const staticElements = animationElements.filter(el =>
+        !['.player-row', '.scorer-row'].includes(el.selector)
+    );
+    animateOnScroll(staticElements);
+
+    // Initialize the specialized observer for dynamic table rows
+    initRowObserver();
 });
 
 // Initialize player stats and team stats
 async function initPlayerStats() {
-    isLoading = true; // Set loading state
-    // Disable toggles during loading
-    document.querySelectorAll('.toggle-label').forEach(label => {
-        label.style.pointerEvents = 'none';
-    });
+    isLoading = true;
     const teamPlayerToggle = document.getElementById('team-player-toggle');
     const seasonAlltimeToggle = document.getElementById('season-alltime-toggle');
-    if (teamPlayerToggle) teamPlayerToggle.disabled = true;
-    if (seasonAlltimeToggle) seasonAlltimeToggle.disabled = true;
+    [teamPlayerToggle, seasonAlltimeToggle].forEach(t => t && (t.disabled = true));
+    document.querySelectorAll('.toggle-label').forEach(l => l.style.pointerEvents = 'none');
 
-    // Team season stats
-    const teamSeasonLoading = document.getElementById('team-season-loading');
-    const teamSeasonError = document.getElementById('team-season-error');
-    const teamSeasonGrid = document.getElementById('team-season-grid');
-    const teamSeasonDetailedLoading = document.getElementById('team-season-detailed-loading');
-    const teamSeasonDetailedError = document.getElementById('team-season-detailed-error');
-    const teamSeasonDetailedStats = document.getElementById('team-season-detailed-stats');
-    // Team all-time stats
-    const teamAllTimePerformanceLoading = document.getElementById('team-alltime-performance-loading');
-    const teamAllTimePerformanceError = document.getElementById('team-alltime-performance-error');
-    const teamAllTimePerformanceGrid = document.getElementById('team-alltime-performance-grid');
-    const teamAllTimeLoading = document.getElementById('team-alltime-loading');
-    const teamAllTimeError = document.getElementById('team-alltime-error');
-    const teamAllTimeRecords = document.getElementById('team-alltime-records');
-    // Player season stats
-    const playerSeasonLoading = document.getElementById('player-season-loading');
-    const playerSeasonError = document.getElementById('player-season-error');
-    const playerSeasonContent = document.getElementById('player-season-content');
-    // Player all-time stats
-    const playerAllTimeLoading = document.getElementById('player-alltime-loading');
-    const playerAllTimeError = document.getElementById('player-alltime-error');
-    const playerAllTimeContent = document.getElementById('player-alltime-content');
-
-    // Show loading states
-    if (teamSeasonLoading && teamSeasonError && teamSeasonGrid) {
-        teamSeasonLoading.classList.remove('hidden');
-        teamSeasonError.classList.add('hidden');
-        teamSeasonGrid.classList.add('hidden');
-    }
-    if (teamSeasonDetailedLoading && teamSeasonDetailedError && teamSeasonDetailedStats) {
-        teamSeasonDetailedLoading.classList.remove('hidden');
-        teamSeasonDetailedError.classList.add('hidden');
-        teamSeasonDetailedStats.classList.add('hidden');
-    }
-    if (teamAllTimePerformanceLoading && teamAllTimePerformanceError && teamAllTimePerformanceGrid) {
-        teamAllTimePerformanceLoading.classList.remove('hidden');
-        teamAllTimePerformanceError.classList.add('hidden');
-        teamAllTimePerformanceGrid.classList.add('hidden');
-    }
-    if (teamAllTimeLoading && teamAllTimeError && teamAllTimeRecords) {
-        teamAllTimeLoading.classList.remove('hidden');
-        teamAllTimeError.classList.add('hidden');
-        teamAllTimeRecords.classList.add('hidden');
-    }
-    if (playerSeasonLoading && playerSeasonError && playerSeasonContent) {
-        playerSeasonLoading.classList.remove('hidden');
-        playerSeasonError.classList.add('hidden');
-        playerSeasonContent.classList.add('hidden');
-    }
-    if (playerAllTimeLoading && playerAllTimeError && playerAllTimeContent) {
-        playerAllTimeLoading.classList.remove('hidden');
-        playerAllTimeError.classList.add('hidden');
-        playerAllTimeContent.classList.add('hidden');
-    }
+    const uiGroups = [
+        {
+            l: document.getElementById('team-season-loading'),
+            e: document.getElementById('team-season-error'),
+            c: document.getElementById('team-season-grid')
+        },
+        {
+            l: document.getElementById('team-season-detailed-loading'),
+            e: document.getElementById('team-season-detailed-error'),
+            c: document.getElementById('team-season-detailed-stats')
+        },
+        {
+            l: document.getElementById('team-alltime-performance-loading'),
+            e: document.getElementById('team-alltime-performance-error'),
+            c: document.getElementById('team-alltime-performance-grid')
+        },
+        {
+            l: document.getElementById('team-alltime-loading'),
+            e: document.getElementById('team-alltime-error'),
+            c: document.getElementById('team-alltime-records')
+        },
+        {
+            l: document.getElementById('player-season-loading'),
+            e: document.getElementById('player-season-error'),
+            c: document.getElementById('player-season-content')
+        },
+        {
+            l: document.getElementById('player-alltime-loading'),
+            e: document.getElementById('player-alltime-error'),
+            c: document.getElementById('player-alltime-content')
+        }
+    ];
+    uiGroups.forEach(group => setElementState(group.l, group.e, group.c, 'loading'));
 
     try {
-        await Promise.all([
-            loadTeamSeasonStats(),
-            loadTeamAllTimeStats(),
-            loadSeasonRecords(),
-            loadSeasonPlayers(),
-            loadAllTimePlayers()
+        // Fetch everything via the data service in parallel!
+        const [seasonStats, allTimeStats, records, sPlayers, aPlayers] = await Promise.all([
+            fetchTeamSeasonStats(),
+            fetchTeamAllTimeStats(),
+            fetchSeasonRecords(),
+            fetchSeasonPlayers(),
+            fetchAllTimePlayers()
         ]);
+
+        // Assign the returned data to your global variables
+        teamSeasonStats = seasonStats;
+        teamAllTimeStats = allTimeStats;
+        seasonRecords = records;
+        seasonPlayers = sPlayers;
+        allTimePlayers = aPlayers;
+
         updateTeamSeasonStats();
         updateTeamAllTimeStats();
         updateSeasonPlayerStats();
         updateAllTimePlayerStats();
-        // Hide loading states and show content
-        if (teamSeasonLoading && teamSeasonError && teamSeasonGrid) {
-            teamSeasonLoading.classList.add('hidden');
-            teamSeasonError.classList.add('hidden');
-            teamSeasonGrid.classList.remove('hidden');
-        }
-        if (teamSeasonDetailedLoading && teamSeasonDetailedError && teamSeasonDetailedStats) {
-            teamSeasonDetailedLoading.classList.add('hidden');
-            teamSeasonDetailedError.classList.add('hidden');
-            teamSeasonDetailedStats.classList.remove('hidden');
-        }
-        if (teamAllTimePerformanceLoading && teamAllTimePerformanceError && teamAllTimePerformanceGrid) {
-            teamAllTimePerformanceLoading.classList.add('hidden');
-            teamAllTimePerformanceError.classList.add('hidden');
-            teamAllTimePerformanceGrid.classList.remove('hidden');
-        }
-        if (teamAllTimeLoading && teamAllTimeError && teamAllTimeRecords) {
-            teamAllTimeLoading.classList.add('hidden');
-            teamAllTimeError.classList.add('hidden');
-            teamAllTimeRecords.classList.remove('hidden');
-        }
-        if (playerSeasonLoading && playerSeasonError && playerSeasonContent) {
-            playerSeasonLoading.classList.add('hidden');
-            playerSeasonError.classList.add('hidden');
-            playerSeasonContent.classList.remove('hidden');
-        }
-        if (playerAllTimeLoading && playerAllTimeError && playerAllTimeContent) {
-            playerAllTimeLoading.classList.add('hidden');
-            playerAllTimeError.classList.add('hidden');
-            playerAllTimeContent.classList.remove('hidden');
-        }
+
+        uiGroups.forEach(group => setElementState(group.l, group.e, group.c, 'success'));
     } catch (error) {
         console.error('Error initializing player stats:', error);
-        teamSeasonStats = teamSeasonStats || {};
-        teamAllTimeStats = teamAllTimeStats || {};
-        seasonRecords = seasonRecords || {
-            mostWins: { value: 0, season: 'Unknown' },
-            mostGoals: { value: 0, season: 'Unknown' },
-            bestGoalDifference: { value: 0, season: 'Unknown' },
-            mostCleanSheets: { value: 0, season: 'Unknown' }
-        };
-        seasonPlayers = seasonPlayers || [];
-        allTimePlayers = allTimePlayers || [];
-        updateTeamSeasonStats();
-        updateTeamAllTimeStats();
-        updateSeasonPlayerStats();
-        updateAllTimePlayerStats();
-        // Show error states
-        if (teamSeasonLoading && teamSeasonError && teamSeasonGrid) {
-            teamSeasonLoading.classList.add('hidden');
-            teamSeasonError.classList.remove('hidden');
-            teamSeasonGrid.classList.add('hidden');
-        }
-        if (teamSeasonDetailedLoading && teamSeasonDetailedError && teamSeasonDetailedStats) {
-            teamSeasonDetailedLoading.classList.add('hidden');
-            teamSeasonDetailedError.classList.remove('hidden');
-            teamSeasonDetailedStats.classList.add('hidden');
-        }
-        if (teamAllTimePerformanceLoading && teamAllTimePerformanceError && teamAllTimePerformanceGrid) {
-            teamAllTimePerformanceLoading.classList.add('hidden');
-            teamAllTimePerformanceError.classList.remove('hidden');
-            teamAllTimePerformanceGrid.classList.add('hidden');
-        }
-        if (teamAllTimeLoading && teamAllTimeError && teamAllTimeRecords) {
-            teamAllTimeLoading.classList.add('hidden');
-            teamAllTimeError.classList.remove('hidden');
-            teamAllTimeRecords.classList.add('hidden');
-        }
-        if (playerSeasonLoading && playerSeasonError && playerSeasonContent) {
-            playerSeasonLoading.classList.add('hidden');
-            playerSeasonError.classList.remove('hidden');
-            playerSeasonContent.classList.add('hidden');
-        }
-        if (playerAllTimeLoading && playerAllTimeError && playerAllTimeContent) {
-            playerAllTimeLoading.classList.add('hidden');
-            playerAllTimeError.classList.remove('hidden');
-            playerAllTimeContent.classList.add('hidden');
-        }
+        uiGroups.forEach(group => setElementState(group.l, group.e, group.c, 'error'));
     } finally {
         isLoading = false;
         if (teamPlayerToggle) teamPlayerToggle.disabled = false;
         if (seasonAlltimeToggle) seasonAlltimeToggle.disabled = false;
-
-        document.querySelectorAll('.toggle-label').forEach(label => {
-            label.style.pointerEvents = '';
-        });
+        document.querySelectorAll('.toggle-label').forEach(label => label.style.pointerEvents = '');
     }
+}
+
+/**
+ * Shared sorting logic for player arrays
+ */
+function sortPlayers(players, sortBy) {
+    return [...players].sort((a, b) => {
+        const aRatio = a.matches === 0 ? 0 : a.goals / a.matches;
+        const bRatio = b.matches === 0 ? 0 : b.goals / b.matches;
+
+        if (sortBy === 'goals') {
+            if (a.goals !== b.goals) return b.goals - a.goals;
+            if (aRatio !== bRatio) return bRatio - aRatio;
+            return a.matches !== b.matches ? b.matches - a.matches : a.name.localeCompare(b.name);
+        } else if (sortBy === 'matches') {
+            if (a.matches !== b.matches) return b.matches - a.matches;
+            if (a.goals !== b.goals) return b.goals - a.goals;
+            return aRatio !== bRatio ? bRatio - aRatio : a.name.localeCompare(b.name);
+        } else {
+            if (aRatio !== bRatio) return bRatio - aRatio;
+            if (a.goals !== b.goals) return b.goals - a.goals;
+            return a.matches !== b.matches ? b.matches - a.matches : a.name.localeCompare(b.name);
+        }
+    });
+}
+
+/**
+ * Shared renderer for player tables
+ */
+function renderPlayerTable(players, listSelector, rowClass, sortBy) {
+    const list = document.querySelector(listSelector);
+    if (!list) return;
+
+    // COMPUTE ONCE: 'player-row' becomes 'player', 'scorer-row' becomes 'scorer'
+    const prefix = rowClass.split('-')[0];
+
+    const sortedPlayers = sortPlayers(players, sortBy);
+    list.innerHTML = '';
+
+    sortedPlayers.forEach((player, index) => {
+        const avgGoals = player.matches === 0 ? '0.00' : (player.goals / player.matches).toFixed(2);
+        const row = document.createElement('div');
+        row.className = rowClass;
+
+        // Use the cached 'prefix' variable for all cell classes
+        row.innerHTML = `
+            <div class="table-cell ${prefix}-rank">${index + 1}</div>
+            <div class="table-cell ${prefix}-position" data-position="${positionDisplayMap[player.position]}">
+                ${positionIcons[player.position]}
+                <span class="tooltip">${positionDisplayMap[player.position]}</span>
+            </div>
+            <div class="table-cell ${prefix}-name">${player.name}</div>
+            <div class="table-cell ${prefix}-goals">${player.goals}</div>
+            <div class="table-cell ${prefix}-matches">${player.matches}</div>
+            <div class="table-cell ${prefix}-avg-goals">${avgGoals}</div>
+        `;
+        list.appendChild(row);
+    });
 }
 
 // Update season player stats display
 function updateSeasonPlayerStats(sortBy = document.querySelector('#season-sort .selected')?.dataset.value || 'goals') {
-    const playerStatsList = document.querySelector('.player-stats-list');
-    const sortedPlayers = [...seasonPlayers].sort((a, b) => {
-        const aRatio = a.matches === 0 ? 0 : a.goals / a.matches;
-        const bRatio = b.matches === 0 ? 0 : b.goals / b.matches;
-        if (sortBy === 'goals') {
-            if (a.goals !== b.goals) return b.goals - a.goals;
-            if (aRatio !== bRatio) return bRatio - aRatio;
-            if (a.matches !== b.matches) return b.matches - a.matches;
-            return a.name.localeCompare(b.name);
-        } else if (sortBy === 'matches') {
-            if (a.matches !== b.matches) return b.matches - a.matches;
-            if (a.goals !== b.goals) return b.goals - a.goals;
-            if (aRatio !== bRatio) return bRatio - aRatio;
-            return a.name.localeCompare(b.name);
-        } else {
-            if (aRatio !== bRatio) return bRatio - aRatio;
-            if (a.goals !== b.goals) return b.goals - a.goals;
-            if (a.matches !== b.matches) return b.matches - a.matches;
-            return a.name.localeCompare(b.name);
-        }
-    });
-    playerStatsList.innerHTML = '';
-    sortedPlayers.forEach((player, index) => {
-        const avgGoals = player.matches === 0 ? '0.00' : (player.goals / player.matches).toFixed(2);
-        const row = document.createElement('div');
-        row.className = 'player-row';
-        row.innerHTML = `
-            <div class="table-cell player-rank">${index + 1}</div>
-            <div class="table-cell player-position" data-position="${positionDutchNames[player.position]}">
-                ${positionIcons[player.position]}
-                <span class="tooltip">${positionDutchNames[player.position]}</span>
-            </div>
-            <div class="table-cell player-name">${player.name}</div>
-            <div class="table-cell player-goals">${player.goals}</div>
-            <div class="table-cell player-matches">${player.matches}</div>
-            <div class="table-cell player-avg-goals">${avgGoals}</div>
-        `;
-        playerStatsList.appendChild(row);
-    });
-    animateOnScroll([{ selector: '.player-row', containerSelector: 'section' }]);
+    renderPlayerTable(seasonPlayers, '.player-stats-list', 'player-row', sortBy);
 }
 
 // Update all-time player stats display
 function updateAllTimePlayerStats(sortBy = document.querySelector('#alltime-sort .selected')?.dataset.value || 'goals') {
-    const topScorersList = document.querySelector('.top-scorers-list');
-    const sortedPlayers = [...allTimePlayers].sort((a, b) => {
-        const aRatio = a.matches === 0 ? 0 : a.goals / a.matches;
-        const bRatio = b.matches === 0 ? 0 : b.goals / b.matches;
-        if (sortBy === 'goals') {
-            if (a.goals !== b.goals) return b.goals - a.goals;
-            if (aRatio !== bRatio) return bRatio - aRatio;
-            if (a.matches !== b.matches) return b.matches - a.matches;
-            return a.name.localeCompare(b.name);
-        } else if (sortBy === 'matches') {
-            if (a.matches !== b.matches) return b.matches - a.matches;
-            if (a.goals !== b.goals) return b.goals - a.goals;
-            if (aRatio !== bRatio) return bRatio - aRatio;
-            return a.name.localeCompare(b.name);
-        } else {
-            if (aRatio !== bRatio) return bRatio - aRatio;
-            if (a.goals !== b.goals) return b.goals - a.goals;
-            if (a.matches !== b.matches) return b.matches - a.matches;
-            return a.name.localeCompare(b.name);
-        }
-    });
-    topScorersList.innerHTML = '';
-    sortedPlayers.forEach((player, index) => {
-        const avgGoals = player.matches === 0 ? '0.00' : (player.goals / player.matches).toFixed(2);
-        const row = document.createElement('div');
-        row.className = 'scorer-row';
-        row.innerHTML = `
-            <div class="table-cell scorer-rank">${index + 1}</div>
-            <div class="table-cell scorer-position" data-position="${positionDutchNames[player.position]}">
-                ${positionIcons[player.position]}
-                <span class="tooltip">${positionDutchNames[player.position]}</span>
-            </div>
-            <div class="table-cell scorer-name">${player.name}</div>
-            <div class="table-cell scorer-goals">${player.goals}</div>
-            <div class="table-cell scorer-matches">${player.matches}</div>
-            <div class="table-cell scorer-avg-goals">${avgGoals}</div>
-        `;
-        topScorersList.appendChild(row);
-    });
-    animateOnScroll([{ selector: '.scorer-row', containerSelector: 'section' }]);
+    renderPlayerTable(allTimePlayers, '.top-scorers-list', 'scorer-row', sortBy);
 }
 
 // Custom dropdown initializer
@@ -680,6 +343,21 @@ function debounce(func, wait) {
     };
 }
 
+/**
+ * Manages visibility for loading, error, and content element groups
+ * @param {HTMLElement} loading - The loading spinner/text element
+ * @param {HTMLElement} error - The error message element
+ * @param {HTMLElement} content - The main data container
+ * @param {string} state - 'loading' | 'success' | 'error'
+ */
+function setElementState(loading, error, content, state) {
+    if (!loading || !error || !content) return;
+
+    loading.classList.toggle('hidden', state !== 'loading');
+    error.classList.toggle('hidden', state !== 'error');
+    content.classList.toggle('hidden', state !== 'success');
+}
+
 // Toggle system for team/player and season/all-time views
 function initToggle() {
     const toggles = {
@@ -702,10 +380,7 @@ function initToggle() {
     };
 
     const updateView = debounce(() => {
-        if (isLoading) {
-            console.log('Data is still loading, blocking view update.');
-            return;
-        }
+        if (isLoading) return;
 
         const isPlayer = toggles.teamPlayer?.checked;
         const isAlltime = toggles.seasonAlltime?.checked;
@@ -719,10 +394,8 @@ function initToggle() {
         document.body.classList.remove('team-season', 'team-alltime', 'player-season', 'player-alltime');
 
         // Reset animations
-        animationElements.forEach(({ selector }) => {
-            document.querySelectorAll(selector).forEach(element => {
-                element.classList.remove('animate-in');
-            });
+        document.querySelectorAll('.section-title, .section-subtitle, .stat-card, .record-category').forEach(el => {
+            el.classList.remove('animate-in');
         });
 
         let sectionsToShow;
@@ -750,6 +423,11 @@ function initToggle() {
             }
         });
 
+        // Re-trigger the animation observer for the newly visible section titles/cards
+        animateOnScroll(animationElements.filter(el =>
+            ['.section-title', '.section-subtitle', '.stat-card', '.record-category'].includes(el.selector)
+        ));
+
         const pageHeroH1 = document.querySelector('.page-hero h1');
         if (pageHeroH1) {
             pageHeroH1.classList.remove('animate-in');
@@ -757,17 +435,12 @@ function initToggle() {
                 pageHeroH1.classList.add('animate-in');
             }, 100);
         }
-
-        animateOnScroll(animationElements);
-    }, 300); // Debounce for 300ms
+    }, 300);
 
     // Helper to safely toggle via label
     const createLabelHandler = (toggle, desiredState) => {
         return () => {
-            if (isLoading) {
-                console.log('Label click blocked: page is loading.');
-                return; // Block during loading
-            }
+            if (isLoading) return;
             if (toggle.checked !== desiredState) {
                 toggle.checked = desiredState;
                 toggle.dispatchEvent(new Event('change'));
@@ -785,24 +458,39 @@ function initToggle() {
     updateView();
     toggles.teamPlayer?.addEventListener('change', updateView);
     toggles.seasonAlltime?.addEventListener('change', updateView);
+}
 
-    // Optional: Add visual feedback (disable pointer events on labels during load)
-    const disableLabels = () => {
-        Object.values(labels).forEach(label => {
-            if (label) label.style.pointerEvents = 'none';
+/**
+ * Creates one single observer for dynamic table rows
+ */
+function initRowObserver() {
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('animate-in');
+                observer.unobserve(entry.target); // Stop watching once animated
+            }
         });
-    };
-    const enableLabels = () => {
-        Object.values(labels).forEach(label => {
-            if (label) label.style.pointerEvents = '';
-        });
-    };
+    }, { threshold: 0.1 });
 
-    // Hook into initPlayerStats loading cycle
-    const originalInit = initPlayerStats;
-    initPlayerStats = async function() {
-        disableLabels();
-        await originalInit.call(this);
-        enableLabels();
-    };
+    // We watch the parent containers. When content changes,
+    // we observe the new children.
+    const config = { childList: true };
+    const tables = ['.player-stats-list', '.top-scorers-list'];
+
+    tables.forEach(selector => {
+        const container = document.querySelector(selector);
+        if (!container) return;
+
+        // Watch for new rows being added via re-sort or view change
+        const mutationObserver = new MutationObserver((mutations) => {
+            mutations.forEach(mutation => {
+                mutation.addedNodes.forEach(node => {
+                    if (node.nodeType === 1) observer.observe(node);
+                });
+            });
+        });
+
+        mutationObserver.observe(container, config);
+    });
 }

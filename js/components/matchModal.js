@@ -1,5 +1,3 @@
-/* matchModal.js */
-
 /* Match Modal Component */
 class MatchModal {
     constructor() {
@@ -52,18 +50,10 @@ class MatchModal {
         });
 
         document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape' && this.modal.style.display === 'flex') {
+            if (e.key === 'Escape' && this.modal.classList.contains('show')) {
                 this.close();
             }
         });
-
-        // Add to Calendar button listener
-        const addToCalendarBtn = this.modal.querySelector('#addToCalendarBtn');
-        if (addToCalendarBtn) {
-            addToCalendarBtn.addEventListener('click', () => {
-                this.addToCalendar();
-            });
-        }
     }
 
     /* Scroll to Self */
@@ -114,13 +104,11 @@ class MatchModal {
         // Animation & scroll
         if (modalContent) {
             modalContent.scrollTop = 0;
-            const sections = modalContent.querySelectorAll('.modal-match-score, .goalscorers-section, .date-time-section, .stadium-section, #addToCalendarBtn');
+            const sections = modalContent.querySelectorAll('.modal-match-score, .goalscorers-section, .date-time-section, .stadium-section');
             sections.forEach(section => section.classList.remove('animate-in'));
             sections.forEach((section, index) => {
-                if ((section.matches('.modal-match-score') && isUpcoming) ||
-                    (section.matches('.goalscorers-section') && isUpcoming) ||
-                    (section.matches('.modal-match-score') && !score && !isUpcoming) ||
-                    (section.matches('#addToCalendarBtn') && !isUpcoming)) {
+                if ((section.matches('.modal-match-score') && (isUpcoming || !score)) ||
+                    (section.matches('.goalscorers-section') && isUpcoming)) {
                     section.style.display = 'none';
                 } else {
                     section.style.display = section.matches('.modal-match-score') ? 'flex' : 'block';
@@ -149,27 +137,10 @@ class MatchModal {
         }, 300); // match CSS transition duration
     }
 
-    /* Month mapping: English to Dutch */
-    monthMapEnglishToDutch = {
-        'jan': 'jan',
-        'feb': 'feb',
-        'mar': 'mrt',
-        'apr': 'apr',
-        'may': 'mei',
-        'jun': 'jun',
-        'jul': 'jul',
-        'aug': 'aug',
-        'sep': 'sep',
-        'oct': 'okt',
-        'nov': 'nov',
-        'dec': 'dec'
-    };
-
     /* Content Updates */
     updateContent(title, dateTime, season, stadium, goalscorers, score, isUpcoming, isHome, sponsor) {
         const titleEl = this.modal.querySelector('#modalMatchTitle');
         if (titleEl) {
-            // Split title into home and away teams
             const [homeTeam, awayTeam] = title.split(' vs ').map(team => team.trim());
             const homeTeamEl = titleEl.querySelector('.home-team');
             const awayTeamEl = titleEl.querySelector('.away-team');
@@ -186,34 +157,14 @@ class MatchModal {
             if (score && !isUpcoming) {
                 scoreDisplayEl.textContent = score;
             }
-        } else {
-            console.warn('Score elements not found:', {scoreEl, scoreDisplayEl});
         }
 
         const dateEl = this.modal.querySelector('#matchDate');
         const timeEl = this.modal.querySelector('#matchTime');
         if (dateEl && timeEl) {
-            let dateValue = dateTime.displayDate || 'TBD';
-            let timeValue = dateTime.time || 'TBD';
-
-            if (typeof dateTime === 'string') {
-                if (dateTime.includes(' — ')) {
-                    const [datePart, timePart] = dateTime.split(' — ');
-                    const dateParts = datePart.split(' ');
-                    const day = dateParts[0];
-                    const monthEnglish = dateParts[1]?.toLowerCase();
-                    const monthDutch = this.monthMapEnglishToDutch[monthEnglish] || monthEnglish || 'TBD';
-                    dateValue = `${day} ${monthDutch}`;
-                    const timeMatch = timePart.match(/\d{2}:\d{2}/);
-                    timeValue = timeMatch ? timeMatch[0] : 'TBD';
-                } else {
-                    const dateParts = dateTime.split(' ');
-                    const day = dateParts[0];
-                    const monthEnglish = dateParts[1]?.toLowerCase();
-                    const monthDutch = this.monthMapEnglishToDutch[monthEnglish] || monthEnglish || 'TBD';
-                    dateValue = `${day} ${monthDutch}`;
-                }
-            }
+            // Simplified: Direct assignment from the data object
+            const dateValue = dateTime.displayDate || 'TBD';
+            const timeValue = dateTime.time || 'TBD';
 
             dateEl.innerHTML = `<i class="fas fa-calendar"></i> ${dateValue}`;
             timeEl.innerHTML = `<i class="fas fa-clock"></i> ${timeValue}`;
@@ -292,136 +243,11 @@ class MatchModal {
             const li = document.createElement('li');
             li.className = 'goalscorer-item';
 
-            let footballIcons = '';
-            for (let i = 0; i < goals; i++) {
-                footballIcons += '<i class="fas fa-futbol"></i> ';
-            }
+            const footballIcons = '<i class="fas fa-futbol"></i> '.repeat(goals);
 
             li.innerHTML = `${footballIcons}${player}`;
             goalscorersList.appendChild(li);
         });
-    }
-
-    /* Add to Calendar Functionality */
-    addToCalendar() {
-        const titleEl = this.modal.querySelector('#modalMatchTitle');
-        const dateEl = this.modal.querySelector('#matchDate');
-        const timeEl = this.modal.querySelector('#matchTime');
-        const stadiumEl = this.modal.querySelector('#stadiumName');
-
-        if (!titleEl || !dateEl || !timeEl || !stadiumEl) {
-            console.error('Cannot add to calendar: Missing modal elements');
-            return;
-        }
-
-        const matchTitle = titleEl.textContent;
-        const dateText = dateEl.textContent.replace(/<[^>]+>/g, '').trim();
-        const timeText = timeEl.textContent.replace(/<[^>]+>/g, '').trim();
-        const stadium = stadiumEl.textContent.replace(/<[^>]+>/g, '').trim();
-
-        // Parse date in "DD MMM" format, where MMM is Dutch abbreviation
-        const [day, month] = dateText.split(' ');
-        const monthMap = {
-            'jan': '01',
-            'feb': '02',
-            'mrt': '03',
-            'apr': '04',
-            'mei': '05',
-            'jun': '06',
-            'jul': '07',
-            'aug': '08',
-            'sep': '09',
-            'okt': '10',
-            'nov': '11',
-            'dec': '12'
-        };
-        const monthNum = monthMap[month.toLowerCase()] || '06'; // Fallback to June if invalid
-        const currentYear = new Date().getMonth() < 6 ? 2026 : 2025;
-        const [hours, minutes] = timeText.split(':');
-
-        const startDate = new Date(`${currentYear}-${monthNum}-${day.padStart(2, '0')}T${hours}:${minutes}:00`);
-        const endDate = new Date(startDate.getTime() + 2 * 60 * 60 * 1000);
-
-        const event = {
-            title: matchTitle,
-            start: startDate.toISOString().replace(/[-:]/g, '').slice(0, 15) + 'Z',
-            end: endDate.toISOString().replace(/[-:]/g, '').slice(0, 15) + 'Z',
-            location: stadium,
-            description: `Football match: ${matchTitle} at ${stadium}`
-        };
-
-        const icsContent = [
-            'BEGIN:VCALENDAR',
-            'VERSION:2.0',
-            'BEGIN:VEVENT',
-            `SUMMARY:${event.title}`,
-            `DTSTART:${event.start}`,
-            `DTEND:${event.end}`,
-            `LOCATION:${event.location}`,
-            `DESCRIPTION:${event.description}`,
-            'END:VEVENT',
-            'END:VCALENDAR'
-        ].join('\n');
-
-        const blob = new Blob([icsContent], { type: 'text/calendar' });
-        const url = URL.createObjectURL(blob);
-        const link = document.createElement('a');
-        link.href = url;
-        link.download = `${matchTitle.replace(/[^a-z0-9]/gi, '_')}.ics`;
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-        URL.revokeObjectURL(url);
-
-        alert('Match added to your calendar!');
-    }
-}
-
-/* Animation Function */
-function animateOnScroll() {
-    const elements = [
-        { selector: '.modal-match-score', containerSelector: null },
-        { selector: '.goalscorers-section', containerSelector: null },
-        { selector: '.date-time-section', containerSelector: null },
-        { selector: '.stadium-section', containerSelector: null },
-        { selector: '#addToCalendarBtn', containerSelector: null }
-    ];
-
-    const observer = new IntersectionObserver((entries, observer) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                const elementType = elements.find(el => entry.target.matches(el.selector));
-                if (elementType) {
-                    const container = getContainer(entry.target, elementType.containerSelector);
-                    const itemsInContainer = container.querySelectorAll(elementType.selector);
-                    const itemIndex = Array.from(itemsInContainer).indexOf(entry.target);
-                    setTimeout(() => {
-                        entry.target.classList.add('animate-in');
-                        console.log(`Animating ${elementType.selector}, index: ${itemIndex}`);
-                    }, itemIndex * 100);
-                    observer.unobserve(entry.target);
-                }
-            }
-        });
-    }, { root: null, rootMargin: '50px', threshold: 0.01 });
-
-    elements.forEach(el => {
-        const items = document.querySelectorAll(el.selector);
-        if (items.length === 0) {
-            console.warn(`No elements found for selector: ${el.selector}`);
-        }
-        items.forEach(item => observer.observe(item));
-    });
-
-    function getContainer(target, containerSelector) {
-        if (!containerSelector) return document;
-        if (Array.isArray(containerSelector)) {
-            for (const selector of containerSelector) {
-                const container = target.closest(selector);
-                if (container) return container;
-            }
-        }
-        return target.closest(containerSelector);
     }
 }
 

@@ -1,4 +1,9 @@
-/* Countdown Timer */
+/* js/general.js */
+import { MONTH_INDEX_MAP } from './utils/helpers.js';
+
+/**
+ * Countdown Timer & Sponsor Logic
+ */
 export function initializeCountdown() {
     const countdownElement = document.getElementById("countdown");
     const titleEl = document.getElementById("next-match-title");
@@ -10,14 +15,8 @@ export function initializeCountdown() {
 
     const upcomingMatches = window.upcomingMatchesData || [];
 
-    const monthMap = {
-        'jan': 0, 'feb': 1, 'mrt': 2, 'mar': 2, 'apr': 3, 'mei': 4, 'may': 4, 'jun': 5,
-        'jul': 6, 'aug': 7, 'sep': 8, 'okt': 9, 'oct': 9, 'nov': 10, 'dec': 11
-    };
-
     const parseDateTime = (matchDate, matchTime) => {
         if (!matchDate || !matchTime) return NaN;
-
         const dateParts = matchDate.split(' ');
         if (dateParts.length < 3) return NaN;
 
@@ -28,16 +27,13 @@ export function initializeCountdown() {
         const timeParts = matchTime.split(':');
         if (timeParts.length < 2) return NaN;
 
-        const hours = timeParts[0];
-        const minutes = timeParts[1];
-        const monthIndex = monthMap[month];
-
+        const monthIndex = MONTH_INDEX_MAP[month];
         if (monthIndex === undefined) return NaN;
 
-        return new Date(year, monthIndex, day, hours, minutes).getTime();
+        return new Date(year, monthIndex, day, timeParts[0], timeParts[1]).getTime();
     };
 
-    const now = new Date().getTime();
+    const now = Date.now();
     let targetMatch = null;
     let targetDate = NaN;
 
@@ -73,7 +69,7 @@ export function initializeCountdown() {
     if (window.countdownInterval) clearInterval(window.countdownInterval);
 
     function updateDisplay() {
-        const currentTime = new Date().getTime();
+        const currentTime = Date.now();
         const distance = targetDate - currentTime;
 
         if (distance < 0) {
@@ -98,113 +94,33 @@ export function initializeCountdown() {
     window.countdownInterval = setInterval(updateDisplay, 1000);
 }
 
-/* Player Card Animations */
-export function animatePlayerCards() {
-    function isElementInViewport(el) {
-        const rect = el.getBoundingClientRect();
-        return (
-            rect.top >= 0 &&
-            rect.left >= 0 &&
-            rect.bottom <= (window.innerHeight || document.documentElement.clientHeight) &&
-            rect.right <= (window.innerWidth || document.documentElement.clientWidth)
-        );
+/**
+ * Updates global match data (called by home page initializer)
+ */
+export function updateCountdown(upcomingMatches) {
+    window.upcomingMatchesData = upcomingMatches;
+
+    const titleEl = document.getElementById('next-match-title');
+    const countdownEl = document.getElementById('countdown');
+    const sponsorBlock = document.getElementById('home-match-sponsor');
+
+    if (upcomingMatches.length === 0) {
+        if (titleEl) titleEl.textContent = 'Geen wedstrijden gepland in de nabije toekomst.';
+        if (countdownEl) countdownEl.style.display = 'none';
+        if (sponsorBlock) sponsorBlock.style.display = 'none';
+        return;
     }
 
-    const initialItems = document.querySelectorAll('.player-card:not(.animate-in)');
-    const container = document.querySelector('.players-grid') || document;
-    const itemsInContainer = container.querySelectorAll('.player-card');
-    initialItems.forEach(item => {
-        if (isElementInViewport(item)) {
-            const itemIndex = Array.from(itemsInContainer).indexOf(item);
-            item.style.setProperty('--animation-delay', Math.min(itemIndex * 0.2, 2));
-            item.classList.add('animate-in');
-        }
-    });
+    const nextMatch = upcomingMatches[0];
+    if (titleEl) titleEl.textContent = nextMatch.title;
 
-    const observer = new IntersectionObserver((entries, observer) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                const container = entry.target.closest('.players-grid') || document;
-                const itemsInContainer = container.querySelectorAll('.player-card');
-                const itemIndex = Array.from(itemsInContainer).indexOf(entry.target);
-                entry.target.style.setProperty('--animation-delay', itemIndex);
-                entry.target.classList.add('animate-in');
-                observer.unobserve(entry.target);
-            }
-        });
-    }, { root: null, rootMargin: '0px', threshold: 0.1 });
-
-    document.querySelectorAll('.player-card:not(.animate-in)').forEach(item => observer.observe(item));
-
-    window.addEventListener('hashchange', () => {
-        const items = document.querySelectorAll('.player-card:not(.animate-in)');
-        const container = document.querySelector('.players-grid') || document;
-        const itemsInContainer = container.querySelectorAll('.player-card');
-        items.forEach(item => {
-            if (isElementInViewport(item)) {
-                const itemIndex = Array.from(itemsInContainer).indexOf(item);
-                item.style.setProperty('--animation-delay', Math.min(itemIndex * 0.2, 2));
-                item.classList.add('animate-in');
-            }
-        });
-    }, { once: true });
-}
-
-/* Scroll-Based Animations */
-export function animateOnScroll(elements = [], observerOptions = { root: null, rootMargin: '0px', threshold: 0.1 }) {
-    const observer = new IntersectionObserver((entries, observer) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                const elementType = elements.find(el => entry.target.matches(el.selector));
-                if (elementType) {
-                    const container = getContainer(entry.target, elementType.containerSelector);
-                    const itemsInContainer = container.querySelectorAll(elementType.selector);
-                    const itemIndex = Array.from(itemsInContainer).indexOf(entry.target);
-                    setTimeout(() => {
-                        entry.target.classList.add('animate-in');
-                    }, itemIndex * 100);
-                    observer.unobserve(entry.target);
-                }
-            }
-        });
-    }, observerOptions);
-
-    elements.forEach(el => {
-        document.querySelectorAll(el.selector).forEach(item => observer.observe(item));
-    });
-
-    function getContainer(target, containerSelector) {
-        if (!containerSelector) return document;
-        if (Array.isArray(containerSelector)) {
-            for (const selector of containerSelector) {
-                const container = target.closest(selector);
-                if (container) return container;
-            }
-        }
-        return target.closest(containerSelector);
+    if (nextMatch.sponsor && sponsorBlock) {
+        document.getElementById('home-sponsor-link').href = nextMatch.sponsor.url;
+        const logo = document.getElementById('home-sponsor-logo');
+        logo.src = nextMatch.sponsor.logo;
+        logo.alt = `Logo ${nextMatch.sponsor.name}`;
+        sponsorBlock.style.display = 'block';
+    } else if (sponsorBlock) {
+        sponsorBlock.style.display = 'none';
     }
-}
-
-/* Smooth Scrolling */
-export function setupSmoothScrolling() {
-    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-        anchor.addEventListener('click', function (e) {
-            const target = document.querySelector(this.getAttribute('href'));
-            if (target) {
-                e.preventDefault();
-                target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-            }
-        });
-    });
-}
-
-/* Page Load Animation */
-export function setupPageLoadAnimation() {
-    window.addEventListener('load', () => {
-        document.body.style.opacity = '0';
-        setTimeout(() => {
-            document.body.style.transition = 'opacity 0.5s ease';
-            document.body.style.opacity = '1';
-        }, 100);
-    });
 }

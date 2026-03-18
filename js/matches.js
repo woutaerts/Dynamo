@@ -1,5 +1,6 @@
-// matches.js
-import { initializeCountdown, animateOnScroll } from './general.js';
+import { animateOnScroll } from './utils/animations.js';
+import { initializeCountdown, updateCountdown } from './general.js';
+import { fetchCurrentSeasonMatches } from './utils/dataService.js';
 
 // Define animation elements
 const animationElements = [
@@ -53,14 +54,8 @@ async function fetchAndRenderMatches() {
         el.style.transition = 'opacity 0.4s ease';
     });
 
-    const spreadsheetUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQRCgon0xh9NuQ87NgqQzBNPCEmmZWcC_jrulRhLwmrudf5UQ2QBRA28F1qmWB9L5xP9uZ8-ct2aqfR/pub?gid=300017481&single=true&output=csv';
-
     try {
-        const response = await fetch(spreadsheetUrl);
-        if (!response.ok) throw new Error('Network error');
-
-        const csvText = await response.text();
-        const matches = parseCsvData(csvText);
+        const matches = await fetchCurrentSeasonMatches();
 
         renderUpcomingMatches(matches.upcoming);
         renderRecentMatches(matches.past);
@@ -95,172 +90,6 @@ async function fetchAndRenderMatches() {
             countdownEl.style.display = 'none';
         }
     }
-}
-
-// Month mapping: English to Dutch
-const monthMapEnglishToDutch = {
-    'jan': 'jan',
-    'feb': 'feb',
-    'mar': 'mrt',
-    'apr': 'apr',
-    'may': 'mei',
-    'jun': 'jun',
-    'jul': 'jul',
-    'aug': 'aug',
-    'sep': 'sep',
-    'oct': 'okt',
-    'nov': 'nov',
-    'dec': 'dec'
-};
-
-// Parse CSV data using Papaparse
-function parseCsvData(csvText) {
-    // Parse CSV properly handling quoted fields
-    const parsed = Papa.parse(csvText, {
-        skipEmptyLines: true,
-        delimiter: ','
-    });
-
-    const rows = parsed.data;
-    const matches = { upcoming: [], past: [], all: [], form: [] };
-
-    // Extract match data from columns F to AA
-    const columns = ['F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', 'AA'];
-    const colIndexMap = columns.reduce((map, col, idx) => {
-        map[col] = idx + 5; // Columns start at F (index 5 in 0-based indexing)
-        return map;
-    }, {});
-
-    for (const col of columns) {
-        const colIdx = colIndexMap[col];
-        const opponent = rows[1]?.[colIdx]?.trim(); // Row 2
-        const date = rows[2]?.[colIdx]?.trim(); // Row 3
-        const time = rows[3]?.[colIdx]?.trim(); // Row 4
-        const stadium = rows[4]?.[colIdx]?.trim(); // Row 5
-        const homeAway = rows[5]?.[colIdx]?.trim().toLowerCase(); // Row 6
-        const result = rows[73]?.[colIdx]?.trim().toLowerCase(); // Row 74
-        const goalsScoredRaw = rows[74]?.[colIdx]?.trim(); // Row 75
-        const goalsConcededRaw = rows[75]?.[colIdx]?.trim(); // Row 76
-        const goalscorersRaw = rows[77]?.[colIdx]?.trim(); // Row 78
-
-        const sponsorName = rows[84]?.[colIdx]?.trim();     // Row 85 → sponsor name
-        const sponsorLogo = rows[85]?.[colIdx]?.trim();     // Row 86 → logo URL
-        const sponsorUrl  = rows[86]?.[colIdx]?.trim();     // Row 87 → website
-
-        const hasSponsor = sponsorName &&
-            !sponsorName.toLowerCase().includes('beschikbaar') &&
-            sponsorLogo &&
-            sponsorUrl;
-
-        if (opponent && date && time && stadium && homeAway) {
-            const isHome = homeAway === 'thuis';
-            const title = isHome ? `Dynamo Beirs vs ${opponent}` : `${opponent} vs Dynamo Beirs`;
-
-            // Transform English month to Dutch
-            const dateParts = date.split(' ');
-            const day = dateParts[0];
-            const monthEnglish = dateParts[1]?.toLowerCase();
-            const year = dateParts[2];
-            const monthDutch = monthMapEnglishToDutch[monthEnglish] || monthEnglish; // Fallback to original if not found
-            const displayDate = `${day} ${monthDutch}`;
-
-            const match = {
-                title,
-                dateTime: { date, time, displayDate },
-                season: '2025-26',
-                stadium,
-                isHome,
-                sponsor: hasSponsor ? { name: sponsorName, logo: sponsorLogo, url: sponsorUrl } : null
-            };
-
-            if (result) {
-                const goalsScored = isHome ? goalsScoredRaw : goalsConcededRaw;
-                const goalsConceded = isHome ? goalsConcededRaw : goalsScoredRaw;
-                match.score = `${goalsScored}-${goalsConceded}`;
-                match.goalscorers = parseGoalscorers(goalscorersRaw);
-                match.result = result;
-                matches.past.push(match);
-            } else {
-                matches.upcoming.push(match);
-            }
-            matches.all.push(match);
-        }
-    }
-
-    // Sort matches by date
-    const parseDate = (dateStr) => {
-        const [day, month, year] = dateStr.split(' ');
-        const monthMap = {
-            'jan': 0, 'feb': 1, 'mar': 2, 'apr': 3, 'may': 4, 'jun': 5,
-            'jul': 6, 'aug': 7, 'sep': 8, 'oct': 9, 'nov': 10, 'dec': 11
-        };
-        return new Date(year, monthMap[month.toLowerCase()], day);
-    };
-
-    matches.all.sort((a, b) => parseDate(a.dateTime.date) - parseDate(b.dateTime.date));
-    matches.past.sort((a, b) => parseDate(a.dateTime.date) - parseDate(b.dateTime.date));
-    matches.upcoming.sort((a, b) => parseDate(a.dateTime.date) - parseDate(b.dateTime.date));
-
-    // Extract form from cells AC70 to AG70 and map W/D/L to winst/gelijk/verlies
-    const formStartCol = 28; // AC = 28 (0-indexed)
-    const formCells = [];
-    const resultMap = {
-        'w': 'winst',
-        'd': 'gelijk',
-        'l': 'verlies'
-    };
-    for (let i = 0; i < 5; i++) {
-        const cell = rows[82]?.[formStartCol + i]?.trim().toLowerCase(); // Row 83
-        if (cell && resultMap[cell]) {
-            formCells.push(resultMap[cell]);
-        }
-    }
-    matches.form = formCells; // Most recent first (AG70 first)
-
-    return matches;
-}
-
-// Parse goalscorers
-function parseGoalscorers(goalscorersRaw) {
-    console.log('Raw goalscorers input:', goalscorersRaw);
-
-    if (!goalscorersRaw ||
-        goalscorersRaw.trim() === '' ||
-        goalscorersRaw.trim() === '/') {
-        return [];
-    }
-
-    const goalscorers = [];
-    // Remove surrounding quotes and extra whitespace
-    const cleanedRaw = goalscorersRaw.replace(/^["'\s]+|["'\s]+$/g, '').trim();
-
-    if (!cleanedRaw) {
-        console.log('Cleaned goalscorers is empty');
-        return [];
-    }
-
-    // Split by semicolons
-    const scorerEntries = cleanedRaw.split(';').map(s => s.trim()).filter(s => s);
-
-    console.log('Scorer entries:', scorerEntries);
-
-    for (const entry of scorerEntries) {
-        // Match player name and optional goal count (e.g., "Player (x3)" or "Player")
-        const match = entry.match(/^(.+?)(?:\s*\(x(\d+)\))?$/i);
-        if (match) {
-            const player = match[1].trim();
-            const goals = match[2] ? parseInt(match[2], 10) : 1;
-            if (player && player.length > 0) {
-                goalscorers.push({ player, goals });
-                console.log(`Added goalscorer: ${player} with ${goals} goal(s)`);
-            }
-        } else {
-            console.warn('Failed to parse goalscorer entry:', entry);
-        }
-    }
-
-    console.log('Final parsed goalscorers:', goalscorers);
-    return goalscorers;
 }
 
 // Render upcoming matches
@@ -299,6 +128,7 @@ function renderUpcomingMatches(upcomingMatches) {
         card.setAttribute('data-match-time', match.dateTime.time);
         card.setAttribute('data-match-season', match.season);
         card.setAttribute('data-sponsor', JSON.stringify(match.sponsor || null));
+        card.setAttribute('data-match-data', JSON.stringify(match));
 
         const [homeTeam, awayTeam] = match.title.split(' vs ');
         card.innerHTML = `
@@ -361,6 +191,7 @@ function renderRecentMatches(pastMatches) {
         card.setAttribute('data-match-season', match.season);
         card.setAttribute('data-goalscorers', JSON.stringify(match.goalscorers));
         card.setAttribute('data-sponsor', JSON.stringify(match.sponsor || null));
+        card.setAttribute('data-match-data', JSON.stringify(match));
 
         const [homeTeam, awayTeam] = match.title.split(' vs ');
         card.innerHTML = `
@@ -504,93 +335,34 @@ function renderSponsorsTicker(allMatches) {
     }
 }
 
-// Update countdown
-function updateCountdown(upcomingMatches) {
-    window.upcomingMatchesData = upcomingMatches;
-
-    const titleEl = document.getElementById('next-match-title');
-    const countdownEl = document.getElementById('countdown');
-    const sponsorBlock = document.getElementById('home-match-sponsor');
-    const sponsorLink = document.getElementById('home-sponsor-link');
-    const sponsorLogo = document.getElementById('home-sponsor-logo');
-
-    if (upcomingMatches.length === 0) {
-        titleEl.textContent = 'Geen wedstrijden gepland in de nabije toekomst.';
-        countdownEl.style.display = 'none';
-        if (sponsorBlock) sponsorBlock.style.display = 'none';
-        window.nextMatchDateTime = null;
-        return;
-    }
-
-    const nextMatch = upcomingMatches[0];
-    titleEl.textContent = nextMatch.title;
-    window.nextMatchDateTime = `${nextMatch.dateTime.date} ${nextMatch.dateTime.time}`;
-
-    // Handle sponsor
-    if (nextMatch.sponsor) {
-        sponsorLink.href = nextMatch.sponsor.url;
-        sponsorLogo.src = nextMatch.sponsor.logo;
-        sponsorLogo.alt = `Logo ${nextMatch.sponsor.name}`;
-        sponsorLink.title = `Bezoek website van ${nextMatch.sponsor.name} - Matchbalsponsor`;
-        sponsorBlock.style.display = 'block';
-    } else {
-        sponsorBlock.style.display = 'none';
-    }
-}
 // Match interactions
 function setupMatchInteractions() {
-    document.querySelectorAll('.match-card.modern:not(.result)').forEach(card => {
-        card.style.cursor = 'pointer';
+    // 1. Single loop for all match cards (both upcoming and past)
+    document.querySelectorAll('.match-card.modern').forEach(card => {
         card.addEventListener('click', () => {
-            const matchData = {
-                title: card.getAttribute('data-match-title') || 'Wedstrijddetails',
-                stadium: card.getAttribute('data-venue') || 'Thuisstadion',
-                isUpcoming: true,
-                ...getMatchData(card)
-            };
+            const matchDataRaw = card.getAttribute('data-match-data');
+            if (!matchDataRaw) return;
+
+            let matchData;
+            try {
+                matchData = JSON.parse(matchDataRaw);
+            } catch (error) {
+                console.warn('Failed to parse match data:', error);
+                return;
+            }
+
+            matchData.isUpcoming = !card.classList.contains('result');
+
             if (window.matchModal) {
                 window.matchModal.show(matchData);
             } else {
                 console.error('MatchModal not initialized');
             }
         });
-        card.addEventListener('mouseenter', () => {
-            card.style.transform = 'translateY(-5px)';
-            card.style.boxShadow = '0 10px 25px rgba(0, 0, 0, 0.15)';
-        });
-        card.addEventListener('mouseleave', () => {
-            card.style.transform = 'translateY(0)';
-            card.style.boxShadow = '';
-        });
     });
 
-    document.querySelectorAll('.match-card.modern.result').forEach(card => {
-        card.style.cursor = 'pointer';
-        card.addEventListener('click', () => {
-            const matchData = {
-                title: card.getAttribute('data-match-title') || 'Match Details',
-                stadium: card.getAttribute('data-venue') || 'Home Stadium',
-                isUpcoming: false,
-                ...getMatchData(card)
-            };
-            if (window.matchModal) {
-                window.matchModal.show(matchData);
-            } else {
-                console.error('MatchModal not initialized');
-            }
-        });
-        card.addEventListener('mouseenter', () => {
-            card.style.transform = 'translateY(-5px)';
-            card.style.boxShadow = '0 10px 25px rgba(0, 0, 0, 0.15)';
-        });
-        card.addEventListener('mouseleave', () => {
-            card.style.transform = 'translateY(0)';
-            card.style.boxShadow = '';
-        });
-    });
-
+    // 2. Timeline items loop
     document.querySelectorAll('.timeline-item').forEach(item => {
-        item.style.cursor = 'pointer';
         item.addEventListener('click', () => {
             const matchDataRaw = item.getAttribute('data-match-data');
             let matchData;
@@ -615,51 +387,6 @@ function setupMatchInteractions() {
             }
         });
     });
-}
-
-// Extract match data from card attributes
-function getMatchData(card) {
-    const matchDate = card.getAttribute('data-match-date') || 'TBD';
-    const matchTime = card.getAttribute('data-match-time') || 'TBD';
-    const season = card.getAttribute('data-match-season') || '2025-26';
-    const score = card.getAttribute('data-score') || null;
-    let goalscorers = [];
-    const goalscorersData = card.getAttribute('data-goalscorers');
-    if (goalscorersData) {
-        try {
-            goalscorers = JSON.parse(goalscorersData);
-            if (!Array.isArray(goalscorers)) {
-                console.warn('Goalscorers data is not an array:', goalscorersData);
-                goalscorers = [];
-            }
-        } catch (error) {
-            console.warn('Failed to parse goalscorers data:', error, goalscorersData);
-            goalscorers = [];
-        }
-    }
-    let sponsor = null;
-    const sponsorData = card.getAttribute('data-sponsor');
-    if (sponsorData) {
-        try {
-            sponsor = JSON.parse(sponsorData);
-        } catch (error) {
-            console.warn('Failed to parse sponsor data:', error);
-        }
-    }
-    // Transform English month to Dutch for displayDate
-    const dateParts = matchDate.split(' ');
-    const day = dateParts[0];
-    const monthEnglish = dateParts[1]?.toLowerCase();
-    const monthDutch = monthMapEnglishToDutch[monthEnglish] || monthEnglish; // Fallback to original
-    const displayDate = `${day} ${monthDutch}`;
-
-    return {
-        dateTime: { date: matchDate, time: matchTime, displayDate },
-        season,
-        score,
-        goalscorers,
-        sponsor
-    };
 }
 
 // Timeline scroller

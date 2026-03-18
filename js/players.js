@@ -1,5 +1,6 @@
-/* Imports van externe modules en configuratie voor animaties */
-import { animateOnScroll } from './general.js';
+import { animateOnScroll, animatePlayerCards } from './utils/animations.js';
+import { positionDisplayMap } from './utils/helpers.js';
+import { fetchSeasonPlayers } from './utils/dataService.js';
 
 const animationElements = [
     { selector: '.section-title', containerSelector: 'section' },
@@ -9,6 +10,17 @@ const animationElements = [
     { selector: '.search-container', containerSelector: null },
     { selector: '.player-card', containerSelector: 'section' }
 ];
+
+let globalPlayers = [];
+let currentFilter = 'all';
+
+const DOM = {
+    get grid()          { return document.querySelector('.players-grid'); },
+    get loading()       { return document.getElementById('players-loading'); },
+    get searchInput()   { return document.querySelector('.player-search'); },
+    get filterButtons() { return document.querySelectorAll('.filter-btn'); },
+    get cards()         { return document.querySelectorAll('.player-card'); }
+};
 
 /* Initialisatie van de pagina en alle bijbehorende functionaliteiten bij het laden */
 document.addEventListener('DOMContentLoaded', async () => {
@@ -22,129 +34,50 @@ document.addEventListener('DOMContentLoaded', async () => {
     setTimeout(checkInitialHash, 100);
 });
 
-/* Haal de spelersdata op via een externe CSV en render deze op het scherm */
+/* Haal de spelersdata op via de data service en render deze op het scherm */
 async function fetchAndRenderPlayers() {
-    const loadingEl = document.getElementById('players-loading');
-    const gridEl = document.querySelector('.players-grid');
+    const loadingEl = DOM.loading;
+    const gridEl = DOM.grid;
 
-    if (loadingEl) {
-        loadingEl.classList.remove('hidden');
-    }
-    if (gridEl) {
-        gridEl.style.opacity = '0';
-    }
-
-    const url = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQRCgon0xh9NuQ87NgqQzBNPCEmmZWcC_jrulRhLwmrudf5UQ2QBRA28F1qmWB9L5xP9uZ8-ct2aqfR/pub?gid=300017481&single=true&output=csv';
+    if (loadingEl) loadingEl.classList.remove('hidden');
+    if (gridEl) gridEl.style.opacity = '0';
 
     try {
-        const response = await fetch(url);
-        if (!response.ok) throw new Error('Network error');
+        // Pass 'true' to get detailed fields like nationality and birthdays
+        globalPlayers = await fetchSeasonPlayers(true);
 
-        const csvText = await response.text();
-        const players = parseCSV(csvText);
+        renderPlayerCards(globalPlayers);
 
-        renderPlayerCards(players);
-        initializePlayerCards();
-
-        if (loadingEl) {
-            loadingEl.classList.add('hidden');
-        }
+        if (loadingEl) loadingEl.classList.add('hidden');
         if (gridEl) {
             gridEl.style.opacity = '1';
             gridEl.style.transition = 'opacity 0.4s ease';
         }
-
     } catch (error) {
         console.error('Error fetching or rendering players:', error);
-
-        if (loadingEl) {
-            loadingEl.innerHTML = '<p style="color: var(--dynamo-red);">Fout bij laden spelers.</p>';
-        }
+        if (loadingEl) loadingEl.innerHTML = '<p style="color: var(--dynamo-red);">Fout bij laden spelers.</p>';
     }
 }
 
-/* Verwerk de ruwe CSV data naar een gestructureerde array van spelerobjecten */
-function parseCSV(csvText) {
-    const rows = csvText.split('\n').map(row => row.split(','));
-    const players = [];
-    const positionMap = {
-        'GK': 'goalkeeper',
-        'VER': 'defender',
-        'MID': 'midfielder',
-        'AAN': 'attacker'
-    };
-    const nationalityMap = {
-        'BEL': { name: 'Belgium', flagSrc: '../img/icons/flags/belgium.svg' },
-        'NLD': { name: 'Netherlands', flagSrc: '../img/icons/flags/netherlands.svg' }
-    };
-
-    const today = new Date();
-    const todayStr = `${String(today.getDate()).padStart(2, '0')}/${String(today.getMonth() + 1).padStart(2, '0')}`;
-
-    for (let i = 4; i < rows.length; i++) {
-        const row = rows[i];
-        const name = row[1]?.trim();
-        const nationalityCode = row[2]?.trim();
-        const positionCode = row[3]?.trim();
-        const birthdayDDMM = row[36]?.trim();
-        const goalsThisSeason = row[29]?.trim();
-        const gamesThisSeason = row[30]?.trim();
-        const goalsTotal = row[39]?.trim();
-        const gamesTotal = row[40]?.trim();
-
-        if (!name || name === '/' || name === '\\' || name.trim() === '') continue;
-
-        if (name && nationalityCode && positionCode) {
-            const position = positionMap[positionCode.toUpperCase()] || 'unknown';
-            const nationality = nationalityMap[nationalityCode.toUpperCase()] || { name: 'Unknown', flagSrc: '../img/icons/flags/belgium.svg' };
-            const isBirthday = birthdayDDMM === todayStr;
-
-            players.push({
-                name,
-                position,
-                nationality: nationality.name,
-                flagSrc: nationality.flagSrc,
-                gamesThisSeason: parseInt(gamesThisSeason) || 0,
-                gamesTotal: parseInt(gamesTotal) || 0,
-                goalsThisSeason: parseInt(goalsThisSeason) || 0,
-                goalsTotal: parseInt(goalsTotal) || 0,
-                isBirthday
-            });
-        }
-    }
-    return players;
-}
-
-/* Genereer de HTML voor de spelerskaarten en voeg deze toe aan de grid */
+/* Genereer de HTML voor de spelerskaarten en koppel direct de events */
 function renderPlayerCards(players) {
     const playersGrid = document.querySelector('.players-grid');
     if (!playersGrid) return;
-
-    const positionDisplayMap = {
-        'goalkeeper': 'Doelman',
-        'defender': 'Verdediger',
-        'midfielder': 'Middenvelder',
-        'attacker': 'Aanvaller'
-    };
-
     playersGrid.innerHTML = '';
 
     players.forEach(player => {
         const card = document.createElement('div');
         card.className = `player-card${player.isBirthday ? ' birthday' : ''}`;
         card.setAttribute('data-position', player.position);
-        card.setAttribute('data-name', player.name);
-        card.setAttribute('data-nationality', player.nationality);
-        card.setAttribute('data-flag-src', player.flagSrc);
-        card.setAttribute('data-games-season', player.gamesThisSeason);
-        card.setAttribute('data-games-total', player.gamesTotal);
-        card.setAttribute('data-goals-season', player.goalsThisSeason);
-        card.setAttribute('data-goals-total', player.goalsTotal);
 
+        // 1. Define the conditional HTML logic outside the template string
+        const birthdayHTML = player.isBirthday
+            ? '<div class="confetti-bg"></div><div class="garland-left"></div><div class="garland-right"></div>'
+            : '';
+
+        // 2. Inject the variable into the template string using ${}
         card.innerHTML = `
-            ${player.isBirthday ? '<div class="confetti-bg"></div>' : ''}
-            ${player.isBirthday ? '<div class="garland-left"></div>' : ''}
-            ${player.isBirthday ? '<div class="garland-right"></div>' : ''}
+            ${birthdayHTML}
             <div class="player-info">
                 <div class="player-name">${player.name}</div>
                 <div class="player-position">${positionDisplayMap[player.position]}</div>
@@ -153,72 +86,63 @@ function renderPlayerCards(players) {
                 </div>
             </div>
         `;
-        playersGrid.appendChild(card);
-    });
-}
 
-/* Koppel klik- en hover-events aan de gegenereerde spelerskaarten voor de modal */
-function initializePlayerCards() {
-    document.querySelectorAll('.player-card').forEach(card => {
+        // 1. Set cursor style
         card.style.cursor = 'pointer';
 
+        // 2. Attach click event using the 'player' object directly via closure
         card.addEventListener('click', (e) => {
             e.preventDefault();
-            const playerData = {
-                name: card.getAttribute('data-name') || 'Player Name',
-                position: card.getAttribute('data-position') || 'Unknown',
-                nationality: card.getAttribute('data-nationality') || 'Unknown',
-                flagSrc: card.getAttribute('data-flag-src') || '../img/icons/flags/belgium.svg',
-                gamesThisSeason: parseInt(card.getAttribute('data-games-season')) || 0,
-                gamesTotal: parseInt(card.getAttribute('data-games-total')) || 0,
-                goalsThisSeason: parseInt(card.getAttribute('data-goals-season')) || 0,
-                goalsTotal: parseInt(card.getAttribute('data-goals-total')) || 0
-            };
 
             if (window.playerModal) {
-                window.playerModal.show(playerData);
+                // Pass the existing player object directly!
+                window.playerModal.show(player);
             } else {
                 console.error('PlayerModal not initialized');
                 alert('Spelerdetails zijn momenteel niet beschikbaar. Probeer het later opnieuw.');
             }
         });
 
+        // 3. Attach hover events
         card.addEventListener('mouseenter', () => card.style.transform = 'translateY(-8px) scale(1.02)');
         card.addEventListener('mouseleave', () => card.style.transform = 'translateY(0) scale(1)');
+
+        // Save the DOM element reference directly to the player object!
+        player.element = card;
+
+        // Finally, append the card to the grid
+        playersGrid.appendChild(card);
     });
 }
 
 /* Stel de positiefilters in en koppel de juiste filteracties aan de knoppen */
 function initializeFilters() {
-    const filterButtons = document.querySelectorAll('.filter-btn');
-    const playerCards = document.querySelectorAll('.player-card');
+    const buttons = DOM.filterButtons; // Query once here
 
-    filterButtons.forEach(button => {
+    buttons.forEach(button => {
         button.addEventListener('click', () => {
             const targetPosition = button.getAttribute('data-position');
+            currentFilter = targetPosition;
 
-            filterButtons.forEach(btn => btn.classList.remove('active'));
-            button.classList.add('active');
+            // Efficiently toggle classes using the cached list
+            buttons.forEach(btn => btn.classList.toggle('active', btn === button));
 
             updateHeroAccentColor(targetPosition);
-            filterPlayers(targetPosition, playerCards);
+            filterPlayers(targetPosition);
 
-            const searchInput = document.querySelector('.player-search');
-            if (searchInput) searchInput.value = '';
-
+            if (DOM.searchInput) DOM.searchInput.value = '';
             history.replaceState(null, null, targetPosition === 'all' ? '#players' : `#${targetPosition}`);
         });
     });
 }
 
 /* Toon of verberg spelerskaarten op basis van de geselecteerde positie */
-function filterPlayers(position, cards) {
-    cards.forEach(card => {
-        const cardPosition = card.getAttribute('data-position');
-        const shouldShow = position === 'all' || cardPosition === position;
+function filterPlayers(position) {
+    globalPlayers.forEach(player => {
+        const shouldShow = position === 'all' || player.position === position;
 
-        card.classList.toggle('filter-hidden', !shouldShow);
-        card.classList.toggle('filter-visible', shouldShow);
+        player.element.classList.toggle('filter-hidden', !shouldShow);
+        player.element.classList.toggle('filter-visible', shouldShow);
     });
 }
 
@@ -242,50 +166,44 @@ function addSearchFunctionality() {
 /* Verwerk de zoekinvoer en combineer deze met de actieve positiefilter */
 function handleSearch(e) {
     const searchTerm = e.target.value.toLowerCase().trim();
-    const playerCards = document.querySelectorAll('.player-card');
-    const activeFilter = document.querySelector('.filter-btn.active');
-    const activePosition = activeFilter ? activeFilter.getAttribute('data-position') : 'all';
 
-    playerCards.forEach(card => {
-        const playerName = card.querySelector('.player-name').textContent.toLowerCase();
-        const cardPosition = card.getAttribute('data-position');
-        const matchesSearch = searchTerm === '' || playerName.includes(searchTerm);
-        const matchesFilter = activePosition === 'all' || cardPosition === activePosition;
+    globalPlayers.forEach(player => {
+        const matchesSearch = searchTerm === '' || player.name.toLowerCase().includes(searchTerm);
+        const matchesFilter = currentFilter === 'all' || player.position === currentFilter;
 
-        card.classList.toggle('filter-hidden', !(matchesSearch && matchesFilter));
-        card.classList.toggle('filter-visible', matchesSearch && matchesFilter);
+        player.element.classList.toggle('filter-hidden', !(matchesSearch && matchesFilter));
+        player.element.classList.toggle('filter-visible', matchesSearch && matchesFilter);
     });
 }
 
 /* Maak het mogelijk om met de pijltjestoetsen door de filters te navigeren */
 function initializeKeyboardNavigation() {
-    document.addEventListener('keydown', (e) => {
-        const searchInput = document.querySelector('.player-search');
-        if (searchInput && document.activeElement === searchInput) return;
+    const buttons = Array.from(DOM.filterButtons); // Convert NodeList to Array once
 
-        const filterButtons = document.querySelectorAll('.filter-btn');
-        const activeButton = document.querySelector('.filter-btn.active');
-        const currentIndex = Array.from(filterButtons).indexOf(activeButton);
+    document.addEventListener('keydown', (e) => {
+        if (DOM.searchInput && document.activeElement === DOM.searchInput) return;
 
         if (e.key === 'ArrowLeft' || e.key === 'ArrowRight') {
             e.preventDefault();
+
+            const currentIndex = buttons.findIndex(btn => btn.classList.contains('active'));
             let newIndex;
 
             if (e.key === 'ArrowLeft') {
-                newIndex = currentIndex > 0 ? currentIndex - 1 : filterButtons.length - 1;
+                newIndex = currentIndex > 0 ? currentIndex - 1 : buttons.length - 1;
             } else {
-                newIndex = currentIndex < filterButtons.length - 1 ? currentIndex + 1 : 0;
+                newIndex = currentIndex < buttons.length - 1 ? currentIndex + 1 : 0;
             }
 
-            filterButtons[newIndex].focus();
-            filterButtons[newIndex].click();
+            buttons[newIndex].click();
+            buttons[newIndex].focus();
         }
     });
 }
 
 /* Voeg een dynamisch hover-effect toe aan de filterknoppen op basis van muispositie */
 function initializePositionAwareHover() {
-    const filterButtons = document.querySelectorAll('.filter-btn');
+    const filterButtons = DOM.filterButtons;
 
     filterButtons.forEach(button => {
         const hoverSpan = document.createElement('span');
@@ -312,28 +230,15 @@ function initializePositionAwareHover() {
     });
 }
 
-/* Initialiseer de intersection observer voor het vloeiend animeren van spelerskaarten */
-function animatePlayerCards() {
-    const observer = new IntersectionObserver((entries, observer) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                const container = entry.target.closest('.players-grid');
-                const itemsInContainer = container.querySelectorAll('.player-card');
-                const itemIndex = Array.from(itemsInContainer).indexOf(entry.target);
-
-                entry.target.style.setProperty('--animation-delay', itemIndex);
-                entry.target.classList.add('animate-in');
-                observer.unobserve(entry.target);
-            }
-        });
-    }, { root: null, rootMargin: '0px', threshold: 0.1 });
-
-    document.querySelectorAll('.player-card').forEach(item => observer.observe(item));
-}
-
 /* Pas de accentkleur van de pagina aan op basis van de geselecteerde positiefilter */
 function updateHeroAccentColor(position) {
     const validPositions = ['goalkeeper', 'defender', 'midfielder', 'attacker', 'all'];
     const newClass = validPositions.includes(position) ? `filter-${position}` : 'filter-all';
-    document.body.className = newClass;
+
+    // 1. Remove all possible filter classes safely without touching other classes
+    const filterClasses = validPositions.map(pos => `filter-${pos}`);
+    document.body.classList.remove(...filterClasses);
+
+    // 2. Add the specific new filter class
+    document.body.classList.add(newClass);
 }

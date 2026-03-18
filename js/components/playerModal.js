@@ -1,4 +1,4 @@
-/* playerModal.js */
+import { positionDisplayMap } from '../utils/helpers.js';
 
 /* Player Modal Component */
 class PlayerModal {
@@ -105,14 +105,6 @@ class PlayerModal {
 
     /* Content Updates */
     updateContent(name, position, flagSrc, gamesThisSeason, gamesTotal, goalsThisSeason, goalsTotal) {
-        // Mapping for Dutch translations of positions
-        const positionDisplayMap = {
-            'goalkeeper': 'Doelman',
-            'defender': 'Verdediger',
-            'midfielder': 'Middenvelder',
-            'attacker': 'Aanvaller'
-        };
-
         const nameEl = this.modal.querySelector('#modalPlayerName');
         if (nameEl) nameEl.textContent = name;
 
@@ -136,51 +128,6 @@ class PlayerModal {
 
         const goalsTotalEl = this.modal.querySelector('#goalsTotal');
         if (goalsTotalEl) goalsTotalEl.textContent = goalsTotal;
-    }
-}
-
-/* Animation Function */
-function animateOnScroll() {
-    const elements = [
-        { selector: '.season-stats-section', containerSelector: null },
-        { selector: '.all-time-stats-section', containerSelector: null }
-    ];
-
-    const observer = new IntersectionObserver((entries, observer) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                const elementType = elements.find(el => entry.target.matches(el.selector));
-                if (elementType) {
-                    const container = getContainer(entry.target, elementType.containerSelector);
-                    const itemsInContainer = container.querySelectorAll(elementType.selector);
-                    const itemIndex = Array.from(itemsInContainer).indexOf(entry.target);
-                    setTimeout(() => {
-                        entry.target.classList.add('animate-in');
-                        console.log(`Animating ${elementType.selector}, index: ${itemIndex}`);
-                    }, itemIndex * 100);
-                    observer.unobserve(entry.target);
-                }
-            }
-        });
-    }, { root: null, rootMargin: '50px', threshold: 0.01 });
-
-    elements.forEach(el => {
-        const items = document.querySelectorAll(el.selector);
-        if (items.length === 0) {
-            console.warn(`No elements found for selector: ${el.selector}`);
-        }
-        items.forEach(item => observer.observe(item));
-    });
-
-    function getContainer(target, containerSelector) {
-        if (!containerSelector) return document;
-        if (Array.isArray(containerSelector)) {
-            for (const selector of containerSelector) {
-                const container = target.closest(selector);
-                if (container) return container;
-            }
-        }
-        return target.closest(containerSelector);
     }
 }
 

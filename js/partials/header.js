@@ -25,7 +25,8 @@ async function loadHeader() {
         } else {
             document.body.insertAdjacentHTML('afterbegin', headerHTML);
         }
-        configureHeader(false);
+        highlightCurrentPage();
+        initializeMobileMenu();
         initializeScrollProgress();
         setupHeaderScrollEffect();
         setupPositionAwareHoverEffect();
@@ -83,41 +84,6 @@ function loadFallbackHeader() {
     setupPositionAwareHoverEffect();
 }
 
-/* Configure Header */
-function configureHeader(isRootPage) {
-    const navLinks = document.querySelectorAll('.nav-link');
-    const headerLogoLink = document.getElementById('header-logo-link');
-    const headerLogoRed = document.getElementById('header-logo-red');
-    navLinks.forEach(link => {
-        const page = link.getAttribute('data-page');
-        switch (page) {
-            case 'home':
-                link.href = '/dynamo/index.html';
-                break;
-            case 'statistics':
-                link.href = '/dynamo/html/statistics.html';
-                break;
-            case 'players':
-                link.href = '/dynamo/html/players.html';
-                break;
-            case 'matches':
-                link.href = '/dynamo/html/matches.html';
-                break;
-            case 'search':
-                link.href = '/dynamo/html/search.html';
-                break;
-        }
-    });
-    if (headerLogoLink && headerLogoRed) {
-        headerLogoLink.href = '/dynamo/index.html';
-        headerLogoRed.src = '/dynamo/img/logos/red-outlined-logo.png';
-    } else {
-        console.warn('Header logo elements not found');
-    }
-    highlightCurrentPage();
-    initializeMobileMenu();
-}
-
 /* Highlight Current Page */
 function highlightCurrentPage() {
     const currentPath = window.location.pathname;
@@ -127,7 +93,7 @@ function highlightCurrentPage() {
         const page = link.getAttribute('data-page');
         if ((currentPath === '/dynamo/' || currentPath === '/dynamo/index.html') && page === 'home') {
             link.classList.add('active');
-        } else if (currentPath.includes(page)) {
+        } else if (currentPath.endsWith(page + '.html')) {
             link.classList.add('active');
         }
     });
@@ -152,8 +118,12 @@ function initializeScrollProgress() {
         console.warn('Scroll progress bar element not found');
         return;
     }
-    function updateScrollProgress() {
-        const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+
+    // 1. Create a variable to cache the max scroll value
+    let cachedMaxScroll = 0;
+
+    // 2. Extract the heavy math into its own function
+    function calculateDimensions() {
         const documentHeight = Math.max(
             document.body.scrollHeight,
             document.body.offsetHeight,
@@ -162,14 +132,22 @@ function initializeScrollProgress() {
             document.documentElement.offsetHeight
         );
         const windowHeight = window.innerHeight;
-        const maxScroll = documentHeight - windowHeight;
-        let progress = 0;
-        if (maxScroll > 0) {
-            progress = (scrollTop / maxScroll) * 100;
-            progress = Math.min(100, Math.max(0, progress));
-        }
-        progressBar.style.width = progress + '%';
+        cachedMaxScroll = documentHeight - windowHeight;
     }
+
+    // 3. Keep the scroll function extremely lightweight
+    function updateScrollProgress() {
+        if (cachedMaxScroll <= 0) {
+            progressBar.style.width = '0%';
+            return;
+        }
+
+        const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+        let progress = (scrollTop / cachedMaxScroll) * 100;
+
+        progressBar.style.width = Math.min(100, Math.max(0, progress)) + '%';
+    }
+
     let ticking = false;
     function throttledUpdateScrollProgress() {
         if (!ticking) {
@@ -180,30 +158,29 @@ function initializeScrollProgress() {
             ticking = true;
         }
     }
+
+    // Initial calculation
+    calculateDimensions();
     updateScrollProgress();
-    window.addEventListener('scroll', throttledUpdateScrollProgress, { passive: true });
-    window.addEventListener('resize', () => {
-        setTimeout(updateScrollProgress, 100);
-    });
-    const observer = new MutationObserver(mutations => {
-        let shouldUpdate = false;
-        mutations.forEach(mutation => {
-            if (mutation.type === 'childList' ||
-                (mutation.type === 'attributes' &&
-                    (mutation.attributeName === 'style' || mutation.attributeName === 'class'))) {
-                shouldUpdate = true;
-            }
+
+    // 4. Use a ResizeObserver to automatically recalculate ONLY when the page
+    // actually changes size (handles both window resizing AND async CSV content loading!)
+    if (window.ResizeObserver) {
+        const resizeObserver = new ResizeObserver(() => {
+            calculateDimensions();
+            updateScrollProgress();
         });
-        if (shouldUpdate) {
-            setTimeout(updateScrollProgress, 50);
-        }
-    });
-    observer.observe(document.body, {
-        childList: true,
-        subtree: true,
-        attributes: true,
-        attributeFilter: ['style', 'class']
-    });
+        resizeObserver.observe(document.body);
+    } else {
+        // Fallback for very old browsers
+        window.addEventListener('resize', () => {
+            calculateDimensions();
+            updateScrollProgress();
+        });
+    }
+
+    // The scroll listener now only does simple math using the cached value
+    window.addEventListener('scroll', throttledUpdateScrollProgress, { passive: true });
 }
 
 /* Header Scroll Effect */
@@ -213,22 +190,24 @@ function setupHeaderScrollEffect() {
         console.warn('Header element not found for scroll effect');
         return;
     }
+
     let lastScrollTop = 0;
     let ticking = false;
-    const scrollThreshold = 100;
+    const scrollThreshold = 100; // Only hide after scrolling down 100px
+
     function handleScroll() {
         const currentScroll = window.pageYOffset || document.documentElement.scrollTop;
+
         if (!ticking) {
             window.requestAnimationFrame(() => {
-                if (currentScroll > scrollThreshold) {
-                    if (currentScroll > lastScrollTop) {
-                        header.classList.add('header-hidden');
-                    } else {
-                        header.classList.remove('header-hidden');
-                    }
-                } else {
-                    header.classList.remove('header-hidden');
-                }
+                // 1. Calculate the desired state in one simple boolean
+                // Hide IF we are past the threshold AND scrolling down
+                const shouldHide = currentScroll > scrollThreshold && currentScroll > lastScrollTop;
+
+                // 2. The toggle method's second parameter forces the class on (true) or off (false)
+                header.classList.toggle('header-hidden', shouldHide);
+
+                // 3. Update the last scroll position (prevent negative scrolling bouncing on Mac/iOS)
                 lastScrollTop = currentScroll <= 0 ? 0 : currentScroll;
                 ticking = false;
             });
@@ -241,67 +220,32 @@ function setupHeaderScrollEffect() {
 /* Hover Effect */
 function setupPositionAwareHoverEffect() {
     const isDesktop = window.matchMedia('(min-width: 769px)').matches;
-    if (isDesktop) {
-        if (typeof jQuery !== 'undefined') {
-            setupJQueryHoverEffect();
-        } else {
-            setupVanillaHoverEffect();
-        }
-    }
-}
 
-function setupJQueryHoverEffect() {
-    $(() => {
-        $('.nav-link').each(function() {
-            if ($(this).find('span.ripple').length === 0) {
-                $(this).append('<span class="ripple"></span>');
-            }
-            $(this).on('mouseenter', function(e) {
-                if (!$(this).hasClass('active')) {
-                    const parentOffset = $(this).offset();
-                    const relX = e.pageX - parentOffset.left;
-                    const relY = e.pageY - parentOffset.top;
-                    $(this).find('span.ripple').css({ top: relY, left: relX });
-                }
-            }).on('mouseout', function(e) {
-                if (!$(this).hasClass('active')) {
-                    const parentOffset = $(this).offset();
-                    const relX = e.pageX - parentOffset.left;
-                    const relY = e.pageY - parentOffset.top;
-                    $(this).find('span.ripple').css({ top: relY, left: relX });
-                }
-            });
-        });
-    });
-}
+    // If it's not a desktop screen, exit early.
+    if (!isDesktop) return;
 
-function setupVanillaHoverEffect() {
     const navLinks = document.querySelectorAll('.nav-link');
+
     navLinks.forEach(link => {
+        // 1. Ensure the ripple span exists
         if (!link.querySelector('span.ripple')) {
             const span = document.createElement('span');
             span.className = 'ripple';
             link.appendChild(span);
         }
-        link.addEventListener('mouseenter', function(e) {
-            if (!this.classList.contains('active')) {
-                const rect = this.getBoundingClientRect();
-                const relX = e.clientX - rect.left;
-                const relY = e.clientY - rect.top;
-                const span = this.querySelector('span.ripple');
-                span.style.top = relY + 'px';
-                span.style.left = relX + 'px';
-            }
-        });
-        link.addEventListener('mouseleave', function(e) {
-            if (!this.classList.contains('active')) {
-                const rect = this.getBoundingClientRect();
-                const relX = e.clientX - rect.left;
-                const relY = e.clientY - rect.top;
-                const span = this.querySelector('span.ripple');
-                span.style.top = relY + 'px';
-                span.style.left = relX + 'px';
-            }
+
+        // 2. Attach the same logic to both mouseenter AND mouseleave
+        ['mouseenter', 'mouseleave'].forEach(eventType => {
+            link.addEventListener(eventType, function(e) {
+                if (!this.classList.contains('active')) {
+                    const rect = this.getBoundingClientRect();
+                    const span = this.querySelector('span.ripple');
+
+                    // Calculate exact cursor position relative to the button
+                    span.style.left = (e.clientX - rect.left) + 'px';
+                    span.style.top = (e.clientY - rect.top) + 'px';
+                }
+            });
         });
     });
 }
