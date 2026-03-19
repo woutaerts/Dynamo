@@ -18,7 +18,7 @@ let currentFilter = 'all';
 const DOM = {
     get grid()          { return document.querySelector('.players-grid'); },
     get loading()       { return document.getElementById('players-loading'); },
-    get searchInput()   { return document.querySelector('.player-search'); },
+    get searchInput()   { return document.querySelector('.search-input'); },
     get filterButtons() { return document.querySelectorAll('.filter-btn'); },
     get cards()         { return document.querySelectorAll('.player-card'); },
     get emptyState() { return document.getElementById('players-empty-state'); }
@@ -174,7 +174,7 @@ function checkInitialHash() {
 
 /* Initialiseer het zoekveld om spelers op naam te kunnen zoeken */
 function addSearchFunctionality() {
-    const searchInput = document.querySelector('.player-search');
+    const searchInput = document.querySelector('.search-input');
     if (searchInput) searchInput.addEventListener('input', handleSearch);
 }
 

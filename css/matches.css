@@ -418,30 +418,6 @@
     opacity: 1;
 }
 
-/* Tooltips */
-.player-position, .scorer-position {
-    position: relative;
-}
-
-.player-position:hover::after, .scorer-position:hover::after {
-    content: attr(data-position);
-    position: absolute;
-    top: -30px;
-    left: 50%;
-    transform: translateX(-50%);
-    background: var(--primary-theme-color);
-    color: white;
-    padding: 4px 8px;
-    border-radius: 4px;
-    font-size: 0.8rem;
-    font-family: 'Poppins', sans-serif;
-    font-weight: 500;
-    white-space: nowrap;
-    z-index: 1000;
-    opacity: 1;
-    transition: opacity 0.2s ease-in-out;
-}
-
 /* Tablet View */
 @media (max-width: 768px) {
     .matches-grid {
@@ -572,10 +548,6 @@
     .upcoming-match-name h3 {
         font-size: 1.1rem;
         margin: 0.5rem 0;
-    }
-
-    .player-position:hover::after, .scorer-position:hover::after {
-        display: none;
     }
 
     .ticker-wrapper {

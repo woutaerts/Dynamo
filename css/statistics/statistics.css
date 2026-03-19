@@ -8,10 +8,6 @@
     --season-bg: var(--soft-coral);
     --alltime-color: var(--dark-yellow);
     --alltime-bg: var(--golden-yellow);
-    --primary-theme-color: var(--team-color);
-    --primary-theme-hover: var(--team-bg);
-    --underline-color: var(--season-bg);
-    --dropdown-text-color: var(--season-color);
 }
 
 /* Toggle Buttons */
@@ -199,6 +195,7 @@ body {
     --primary-theme-color: var(--team-color);
     --primary-theme-hover: var(--team-bg);
     --underline-color: var(--season-bg);
+    --dropdown-text-color: var(--season-color);
 }
 
 body.player-season, body.player-alltime {
@@ -637,14 +634,6 @@ body.player-alltime .player-rank {
         line-height: normal;
     }
 
-    .desktop-only {
-        display: none;
-    }
-
-    .mobile-only {
-        display: inline-block;
-    }
-
     .header-icon {
         display: inline-block;
         font-size: 0.9rem;
@@ -718,16 +707,16 @@ body.player-alltime .player-rank {
         left: 2px;
     }
 
-    #button .checkbox:checked + .knob:before, #season-alltime-toggle-btn .checkbox:checked + .knob:before {
+    #team-player-toggle-btn .checkbox:checked + .knob:before, #season-alltime-toggle-btn .checkbox:checked + .knob:before {
         left: 35px;
     }
 
-    #button .checkbox:active + .knob:before, #season-alltime-toggle-btn .checkbox:active + .knob:before {
+    #team-player-toggle-btn .checkbox:active + .knob:before, #season-alltime-toggle-btn .checkbox:active + .knob:before {
         width: 36px;
         border-radius: 80px;
     }
 
-    #button .checkbox:checked:active + .knob:before, #season-alltime-toggle-btn .checkbox:checked:active + .knob:before {
+    #team-player-toggle-btn .checkbox:checked:active + .knob:before, #season-alltime-toggle-btn .checkbox:checked:active + .knob:before {
         margin-left: -12px;
     }
 

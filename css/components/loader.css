@@ -30,7 +30,7 @@
 
 .search-inline-loader .football-loader path {
     animation: pulse 1s infinite;
-    fill: #B90A0A;
+    fill: var(--dynamo-red);
     opacity: 0.1;
 }
 

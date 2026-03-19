@@ -5,20 +5,20 @@
 
 .archive-content-section ~ * .page-hero h1::before,
 .archive-content-section ~ * .page-hero h1::after {
-    color: #B90A0A;
+    color: var(--dynamo-red);
 }
 
 .page-hero h1::before,
 .page-hero h1::after {
-    color: #B90A0A !important;
+    color: var(--dynamo-red) !important;
 }
 
 #archive-season-title::after {
-    background: #3D5A80 !important;
+    background: var(--dark-blue) !important;
 }
 
 #archive-stats-grid .stat-number {
-    color: #3D5A80;
+    color: var(--dark-blue);
 }
 
 .archive-subsection {
@@ -151,35 +151,6 @@
     margin-right: auto;
 }
 
-.stat-card {
-    background: white;
-    padding: 2rem;
-    border-radius: 15px;
-    box-shadow: var(--shadow-medium);
-    text-align: center;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-.stat-card:hover {
-    transform: translateY(-5px);
-    box-shadow: var(--shadow-hover);
-}
-
-.stat-number {
-    font-size: 2.5rem;
-    font-weight: 900;
-    line-height: 1;
-    margin-bottom: 0.5rem;
-}
-
-.stat-label {
-    color: var(--medium-gray);
-    font-weight: 600;
-    text-transform: uppercase;
-    font-size: 0.9rem;
-    letter-spacing: 1px;
-}
-
 /* Kleuren, tooltips en overschrijvingen specifiek voor de spelerstabel */
 #archive-players-section .section-title::after {
     background: var(--dark-green) !important;
@@ -268,14 +239,6 @@
         width: 90%;
     }
 
-    .stat-card {
-        padding: 1.5rem 1rem;
-    }
-
-    .stat-number {
-        font-size: 2rem;
-    }
-
     .archive-subsection .matches-grid {
         width: 90%;
     }
@@ -287,19 +250,6 @@
         grid-template-columns: repeat(2, 1fr);
         gap: 0.8rem;
         width: 90%;
-    }
-
-    .stat-card {
-        padding: 1rem;
-        border-radius: 12px;
-    }
-
-    .stat-number {
-        font-size: 1.6rem;
-    }
-
-    .stat-label {
-        font-size: 0.75rem;
     }
 
     .archive-subsection .matches-grid {

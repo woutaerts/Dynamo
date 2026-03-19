@@ -1,110 +1,12 @@
 /* Global Styles */
-body.modal-open {
-    overflow: hidden;
-    position: fixed;
-    width: 100%;
-}
-
 #matchCenterModal {
     display: none;
 }
 
-/* Modal Overlay */
-.modal-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    background: rgba(0, 0, 0, 0.5);
-    display: none;
-    justify-content: center;
-    align-items: center;
-    z-index: 9999;
-    backdrop-filter: blur(3px);
-    visibility: hidden;
-    opacity: 0;
-    transition: opacity 0.3s ease, visibilty 0.3s ease;
-}
-
-.modal-overlay.show {
-    display: flex;
-    visibility: visible;
-    opacity: 1;
-}
-
-/* Modal Content */
+/* Modal Content Constraints */
 .modal-content {
-    background: var(--off-white);
-    border-radius: 16px;
-    box-shadow: var(--shadow-medium);
-    padding: 1.5rem;
-    width: 90%;
     max-width: 700px;
-    max-height: 90vh;
-    overflow-y: auto;
-    position: relative;
-    color: var(--dark-gray);
-    font-family: 'Poppins', sans-serif;
-    border: 1px solid rgba(0, 0, 0, 0.05);
 }
-
-.modal-content::-webkit-scrollbar {
-    width: 6px;
-}
-
-.modal-content::-webkit-scrollbar-track {
-    background: transparent;
-    border-radius: 10px;
-    margin: 16px 0;
-}
-
-.modal-content::-webkit-scrollbar-thumb {
-    background: var(--light-gray);
-    border-radius: 10px;
-}
-
-.modal-content::-webkit-scrollbar-thumb:hover {
-    background: var(--medium-gray);
-}
-
-/* Close Button */
-.close-modal {
-    position: sticky;
-    top: 0px;
-    float: right;
-    background: white;
-    margin-top: -5px;
-    margin-right: -5px;
-    margin-bottom: -36px;
-    border: 1px solid transparent;
-    cursor: pointer;
-    width: 36px;
-    height: 36px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: all 0.3s ease;
-    box-shadow: var(--shadow-medium);
-    line-height: 1;
-    padding: 0;
-    z-index: 10000;
-}
-.close-modal i {
-    font-size: 1.3rem;
-    line-height: 1;
-    color: var(--medium-gray);
-    pointer-events: none;
-}
-.close-modal:hover {
-    box-shadow: var(--shadow-hover);
-    border-color: var(--dynamo-red);
-}
-.close-modal:hover i {
-    color: var(--dynamo-red);
-}
-
 
 /* Title Container */
 .match-title-container {
@@ -180,7 +82,6 @@ body.modal-open {
     text-align: center;
     margin: 0 0 1rem 0;
     text-transform: uppercase;
-    letter-spacing: 0.5px;
 }
 
 /* Score Display */
@@ -208,8 +109,7 @@ body.modal-open {
 
 /* Modal Sections */
 .modal-section,
-.goalscorers-section,
-.add-to-calendar-section {
+.goalscorers-section{
     margin-bottom: 1.5rem;
     padding: 1.2rem;
     background: white;
@@ -221,15 +121,13 @@ body.modal-open {
 
 .modal-section:hover,
 .goalscorers-section:hover,
-.add-to-calendar-section:hover,
 .score-display:hover {
     transform: translateY(-2px);
     box-shadow: var(--shadow-hover);
 }
 
 .modal-section h3,
-.goalscorers-section h3,
-.add-to-calendar-section h3 {
+.goalscorers-section h3{
     margin-bottom: 0.8rem;
     color: var(--dark-gray);
     font-size: 1.2rem;
@@ -240,8 +138,7 @@ body.modal-open {
 }
 
 .modal-section h3::after,
-.goalscorers-section h3::after,
-.add-to-calendar-section h3::after {
+.goalscorers-section h3::after{
     content: '';
     position: absolute;
     bottom: -4px;
@@ -398,8 +295,6 @@ body.modal-open {
 /* Tablet View */
 @media (max-width: 768px) {
     .modal-content {
-        width: 90%;
-        max-width: none;
         padding: 1rem;
         max-height: 80vh;
         border-radius: 14px;
@@ -438,8 +333,7 @@ body.modal-open {
     }
 
     .modal-section,
-    .goalscorers-section,
-    .add-to-calendar-section {
+    .goalscorers-section {
         padding: 0.9rem;
         margin-bottom: 1rem;
         border-radius: 10px;
@@ -447,14 +341,12 @@ body.modal-open {
     }
 
     .modal-section h3,
-    .goalscorers-section h3,
-    .add-to-calendar-section h3 {
+    .goalscorers-section h3 {
         font-size: 1rem;
     }
 
     .modal-section h3::after,
-    .goalscorers-section h3::after,
-    .add-to-calendar-section h3::after {
+    .goalscorers-section h3::after {
         width: 30px;
         height: 3px;
     }
@@ -469,18 +361,6 @@ body.modal-open {
     .goalscorer-item {
         font-size: 0.85rem;
         padding: 0.6rem;
-    }
-
-    .close-modal {
-        width: 30px;
-        height: 30px;
-        top: 8px;
-        right: 8px;
-        box-shadow: var(--shadow-small);
-    }
-
-    .close-modal i {
-        font-size: 1rem;
     }
 
     .date-time-container {
@@ -498,8 +378,6 @@ body.modal-open {
 /* Mobile View */
 @media (max-width: 480px) {
     .modal-content {
-        width: 90%;
-        max-width: none;
         padding: 0.8rem;
         max-height: 82vh;
         border-radius: 12px;
@@ -537,24 +415,21 @@ body.modal-open {
     }
 
     .modal-section,
-    .goalscorers-section,
-    .add-to-calendar-section {
+    .goalscorers-section {
         padding: 0.8rem;
         margin-bottom: 0.8rem;
         border-radius: 8px;
     }
 
     .modal-section h3,
-    .goalscorers-section h3,
-    .add-to-calendar-section h3 {
+    .goalscorers-section h3{
         font-size: 0.9rem;
     }
 
     .modal-section h3::after,
-    .goalscorers-section h3::after,
-    .add-to-calendar-section h3::after {
+    .goalscorers-section h3::after{
         width: 25px;
-        height: 1.5px;
+        height: 2px;
     }
 
     .date-box p,
@@ -567,17 +442,6 @@ body.modal-open {
     .goalscorer-item {
         font-size: 0.8rem;
         padding: 0.5rem;
-    }
-
-    .close-modal {
-        width: 28px;
-        height: 28px;
-        top: 6px;
-        right: 6px;
-    }
-
-    .close-modal i {
-        font-size: 0.9rem;
     }
 
     .date-time-container {
