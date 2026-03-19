@@ -3,11 +3,7 @@
     padding: 2rem 0 4rem;
 }
 
-.archive-content-section ~ * .page-hero h1::before,
-.archive-content-section ~ * .page-hero h1::after {
-    color: var(--dynamo-red);
-}
-
+/* Force hero pipes to match archive branding */
 .page-hero h1::before,
 .page-hero h1::after {
     color: var(--dynamo-red) !important;
@@ -152,43 +148,30 @@
 }
 
 /* Kleuren, tooltips en overschrijvingen specifiek voor de spelerstabel */
-#archive-players-section .section-title::after {
-    background: var(--dark-green) !important;
-}
-
-#archive-players-section .table-header {
-    background: var(--dark-green) !important;
-}
-
-#archive-players-section .player-name {
-    color: var(--dark-green) !important;
+#archive-players-section .section-title::after,
+#archive-players-section .table-header,
+#archive-players-section .player-rank,
+#archive-players-section .table-cell.player-position .tooltip {
+    background-color: var(--dark-green) !important;
 }
 
 #archive-players-section .player-rank {
-    background: var(--dark-green) !important;
     color: white;
 }
 
-#archive-players-section .custom-dropdown {
-    border-color: var(--dark-green) !important;
+#archive-players-section .player-name,
+#archive-players-section .custom-dropdown .options li:hover {
+    color: var(--dark-green) !important;
 }
 
+#archive-players-section .custom-dropdown,
 #archive-players-section .custom-dropdown .options {
     border-color: var(--dark-green) !important;
-}
-
-#archive-players-section .custom-dropdown .options li:hover {
-    color: var(--dark-green);
 }
 
 #archive-players-section .table-cell.player-position::after,
 #archive-players-section .table-cell.player-position:hover::after {
     display: none !important;
-    content: none !important;
-}
-
-#archive-players-section .table-cell.player-position .tooltip {
-    background-color: var(--dark-green) !important;
 }
 
 /* Opmaak en animaties voor de wedstrijden in het archief */
@@ -247,12 +230,6 @@
 /* Responsieve weergave voor mobiele telefoons */
 @media (max-width: 480px) {
     .stats-grid {
-        grid-template-columns: repeat(2, 1fr);
         gap: 0.8rem;
-        width: 90%;
-    }
-
-    .archive-subsection .matches-grid {
-        width: 90%;
     }
 }

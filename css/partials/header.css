@@ -172,24 +172,17 @@ body {
     color: var(--off-white);
 }
 
-.nav-link:hover span.ripple {
-    width: 200%;
-    height: 165px;
-}
-
-.nav-link.active {
-    color: var(--off-white);
-    background: var(--dynamo-red);
-}
-
-.nav-link:focus {
-    color: var(--off-white);
-    outline: none;
-}
-
+.nav-link:hover span.ripple,
 .nav-link:focus span.ripple {
     width: 200%;
     height: 165px;
+}
+
+.nav-link.active,
+.nav-link:focus {
+    color: var(--off-white);
+    background: var(--dynamo-red);
+    outline: none;
 }
 
 /* Mobile Search Container */
@@ -364,20 +357,14 @@ body {
         justify-content: center;
     }
 
-    .nav-link.search-link {
+    .nav-link.search-link,
+    .nav-link i,
+    .nav-link span.ripple {
         display: none;
     }
 
     .nav-link span.nav-text {
         margin-left: 0;
-    }
-
-    .nav-link i {
-        display: none;
-    }
-
-    .nav-link span.ripple {
-        display: none;
     }
 
     .nav-link:hover,
@@ -416,7 +403,6 @@ body {
     }
 
     .nav-container {
-        padding: 0;
         justify-content: space-between;
         position: relative;
         width: 100%;
@@ -465,11 +451,6 @@ body {
     }
 
     .nav-links.active {
-        transform: translateY(0);
-        opacity: 1;
-        visibility: visible;
-        pointer-events: auto;
-        max-height: 500px;
         box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
     }
 
@@ -477,41 +458,6 @@ body {
         padding: 8px 16px;
         border-radius: 22px;
         font-size: 1rem;
-        width: 100%;
-        min-height: 44px;
-    }
-
-    .nav-link i {
-        display: none;
-    }
-
-    .nav-link span.nav-text {
-        margin-left: 0;
-    }
-
-    .nav-link span.ripple {
-        display: none;
-    }
-
-    .nav-link:hover,
-    .nav-link:focus {
-        color: var(--dark-gray);
-        background: transparent;
-    }
-
-    .nav-link:hover span.ripple,
-    .nav-link:focus span.ripple {
-        width: 0;
-        height: 0;
-    }
-
-    .nav-link.active {
-        color: var(--off-white);
-        background: var(--dynamo-red);
-    }
-
-    .nav-link.search-link {
-        display: none;
     }
 }
 
@@ -521,21 +467,11 @@ body {
         scroll-behavior: auto;
     }
 
-    .header {
-        animation: none;
-        transition: transform 0.1s ease, opacity 0.1s ease;
-    }
-
-    .nav-link {
-        animation: none;
-        transition: none;
-    }
-
-    .nav-link span.ripple {
-        transition: none;
-    }
-
+    .header,
+    .nav-link,
+    .nav-link span.ripple,
     .scroll-progress-bar {
+        animation: none;
         transition: none;
     }
 }

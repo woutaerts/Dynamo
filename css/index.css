@@ -354,14 +354,11 @@
 /* Tablet View */
 @media (max-width: 768px) {
     .hero {
-        height: 20vh;
         width: 80%;
-        margin: 0 auto;
     }
 
     .hero-content {
         width: 80%;
-        margin: 0 auto;
     }
 
     .hero h1 {
@@ -391,17 +388,11 @@
 
     .stats-grid {
         grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-        gap: 1rem;
         width: 80%;
     }
 
-    .sponsor-cta-section {
-        width: 80%;
-    }
-
+    .sponsor-cta-section,
     .contact-grid {
-        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-        gap: 1rem;
         width: 80%;
     }
 
@@ -432,39 +423,24 @@
 /* Mobile View */
 @media (max-width: 480px) {
     .hero {
-        height: 20vh;
         padding: 1rem 0.6rem;
         width: 90%;
-        margin: 0 auto;
-        display: flex;
-        align-items: center;
         justify-content: center;
     }
 
     .hero-content {
         width: 100%;
-        text-align: center;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
         gap: 0.5rem;
     }
 
     .hero h1 {
         font-size: clamp(2rem, 10vw, 3.5rem);
-        font-weight: 900;
-        color: var(--dark-gray);
         margin: 0;
         line-height: 1.1;
-        white-space: nowrap;
         overflow: hidden;
         text-overflow: clip;
         max-width: 90vw;
         width: fit-content;
-        display: flex;
-        justify-content: center;
-        align-items: center;
         gap: 0.5rem;
         padding: 0 0.5rem;
     }
@@ -474,21 +450,10 @@
     }
 
     .hero-content::after {
-        content: '';
-        position: absolute;
         bottom: -8px;
-        left: 50%;
-        transform: translateX(-50%) scaleX(0);
         width: 94%;
-        max-width: 90vw;
         height: 6px;
-        background: var(--dynamo-red);
         border-radius: 3px;
-        transition: transform 0.6s ease-out 0.3s;
-    }
-
-    .hero.animate-in .hero-content::after {
-        transform: translateX(-50%) scaleX(1);
     }
 
     .carousel-section {

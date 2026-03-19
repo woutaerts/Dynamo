@@ -1,27 +1,10 @@
 /* Theme Colors */
-body {
-    --hero-accent-color: var(--medium-gray);
-}
-
-body.filter-goalkeeper {
-    --hero-accent-color: var(--dark-blue);
-}
-
-body.filter-defender {
-    --hero-accent-color: var(--dark-green);
-}
-
-body.filter-midfielder {
-    --hero-accent-color: var(--dark-yellow);
-}
-
-body.filter-attacker {
-    --hero-accent-color: var(--dynamo-red);
-}
-
-body.filter-all {
-    --hero-accent-color: var(--medium-gray);
-}
+body {--hero-accent-color: var(--medium-gray);}
+body.filter-goalkeeper {--hero-accent-color: var(--dark-blue);}
+body.filter-defender {--hero-accent-color: var(--dark-green);}
+body.filter-midfielder {--hero-accent-color: var(--dark-yellow);}
+body.filter-attacker {--hero-accent-color: var(--dynamo-red);}
+body.filter-all {--hero-accent-color: var(--medium-gray);}
 
 /* Page Hero */
 main .page-hero {
@@ -155,57 +138,29 @@ main .page-hero h1.animate-in::after {
     z-index: -1;
 }
 
-.filter-btn[data-position="goalkeeper"] .hover-effect {
-    background-color: var(--dark-blue);
-}
+/* Dynamic Filter Colors */
+.filter-btn[data-position="goalkeeper"] .hover-effect,
+.filter-btn.active[data-position="goalkeeper"] { background-color: var(--dark-blue); }
 
-.filter-btn[data-position="defender"] .hover-effect {
-    background-color: var(--dark-green);
-}
+.filter-btn[data-position="defender"] .hover-effect,
+.filter-btn.active[data-position="defender"] { background-color: var(--dark-green); }
 
-.filter-btn[data-position="midfielder"] .hover-effect {
-    background-color: var(--dark-yellow);
-}
+.filter-btn[data-position="midfielder"] .hover-effect,
+.filter-btn.active[data-position="midfielder"] { background-color: var(--dark-yellow); }
 
-.filter-btn[data-position="attacker"] .hover-effect {
-    background-color: var(--dynamo-red);
-}
+.filter-btn[data-position="attacker"] .hover-effect,
+.filter-btn.active[data-position="attacker"] { background-color: var(--dynamo-red); }
 
-.filter-btn[data-position="all"] .hover-effect {
-    background-color: var(--medium-gray);
-}
+.filter-btn[data-position="all"] .hover-effect,
+.filter-btn.active[data-position="all"] { background-color: var(--medium-gray); }
 
-.filter-btn:hover {
+.filter-btn:hover, .filter-btn.active {
     color: var(--off-white);
 }
 
 .filter-btn:hover .hover-effect {
     width: 225%;
     height: 180px;
-}
-
-.filter-btn.active {
-    color: var(--off-white);
-}
-
-.filter-btn.active[data-position="goalkeeper"] {
-    background: var(--dark-blue);
-}
-
-.filter-btn.active[data-position="defender"] {
-    background: var(--dark-green);
-}
-
-.filter-btn.active[data-position="midfielder"] {
-    background: var(--dark-yellow);
-}
-
-.filter-btn.active[data-position="attacker"] {
-    background: var(--dynamo-red);
-}
-
-.filter-btn.active[data-position="all"] {
-    background: var(--medium-gray);
 }
 
 /* Players Section */
@@ -232,7 +187,7 @@ main .page-hero h1.animate-in::after {
     transform: translateY(50px);
     position: relative;
     overflow: visible;
-    transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+    transition: opacity 0.6s ease-out, transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
     will-change: transform, box-shadow, border-color;
 }
 
@@ -246,21 +201,11 @@ main .page-hero h1.animate-in::after {
     transform: translateY(0);
 }
 
-.player-card[data-position="goalkeeper"]:hover {
-    border-color: var(--dark-blue);
-}
-
-.player-card[data-position="defender"]:hover {
-    border-color: var(--dark-green);
-}
-
-.player-card[data-position="midfielder"]:hover {
-    border-color: var(--dark-yellow);
-}
-
-.player-card[data-position="attacker"]:hover {
-    border-color: var(--dynamo-red);
-}
+/* Dynamic Player Card Hover Colors */
+.player-card[data-position="goalkeeper"]:hover { border-color: var(--dark-blue); }
+.player-card[data-position="defender"]:hover { border-color: var(--dark-green); }
+.player-card[data-position="midfielder"]:hover { border-color: var(--dark-yellow); }
+.player-card[data-position="attacker"]:hover { border-color: var(--dynamo-red); }
 
 .player-card.filter-hidden {
     display: none;
@@ -285,7 +230,6 @@ main .page-hero h1.animate-in::after {
 
 .player-position {
     text-transform: uppercase;
-    color: var(--dynamo-red);
     font-size: 0.8rem;
     font-weight: 800;
     margin-bottom: 0.8rem;
@@ -316,21 +260,11 @@ main .page-hero h1.animate-in::after {
     vertical-align: middle;
 }
 
-.player-card[data-position="goalkeeper"] .player-position {
-    color: var(--dark-blue);
-}
-
-.player-card[data-position="defender"] .player-position {
-    color: var(--dark-green);
-}
-
-.player-card[data-position="midfielder"] .player-position {
-    color: var(--dark-yellow);
-}
-
-.player-card[data-position="attacker"] .player-position {
-    color: var(--dynamo-red);
-}
+/* Dynamic Text Colors */
+.player-card[data-position="goalkeeper"] .player-position { color: var(--dark-blue); }
+.player-card[data-position="defender"] .player-position { color: var(--dark-green); }
+.player-card[data-position="midfielder"] .player-position { color: var(--dark-yellow); }
+.player-card[data-position="attacker"] .player-position { color: var(--dynamo-red); }
 
 /* Birthday Card */
 .player-card.birthday > .player-info {
@@ -340,10 +274,7 @@ main .page-hero h1.animate-in::after {
 
 .confetti-bg {
     position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
+    inset: 0;
     background-image: url('/dynamo/img/icons/birthday/confetti.png');
     background-repeat: repeat;
     background-size: 60px 60px;
@@ -352,32 +283,29 @@ main .page-hero h1.animate-in::after {
     z-index: 0;
     border-radius: 12px;
 }
-/* Garland – top-left */
+
+/* Garlands */
+.garland-left, .garland-right {
+    position: absolute;
+    top: -8px;
+    width: 70px;
+    height: 70px;
+    background: url('/dynamo/img/icons/birthday/garland.png') no-repeat center / contain;
+    pointer-events: none;
+    z-index: 2;
+    opacity: 0.5;
+}
+
 .garland-left {
-    position: absolute;
-    top: -8px;
-    left: 0px;
-    width: 70px;
-    height: 70px;
-    background: url('/dynamo/img/icons/birthday/garland.png') no-repeat center / contain;
-    pointer-events: none;
-    z-index: 2;
+    left: 0;
     transform: rotate(-30deg);
-    opacity: 0.5;
 }
-/* Garland – top-right */
+
 .garland-right {
-    position: absolute;
-    top: -8px;
-    right: 0px;
-    width: 70px;
-    height: 70px;
-    background: url('/dynamo/img/icons/birthday/garland.png') no-repeat center / contain;
+    right: 0;
     transform: scaleX(-1) rotate(-30deg);
-    pointer-events: none;
-    z-index: 2;
-    opacity: 0.5;
 }
+
 /* Crown */
 .player-card.birthday .player-name::before {
     content: "";
@@ -414,15 +342,11 @@ main .page-hero h1.animate-in::after {
 
     .filter-controls {
         gap: 0.6rem;
-        flex-direction: row;
-        flex-wrap: wrap;
-        justify-content: center;
     }
 
     .filter-btn {
         padding: 0.5rem 1rem;
         font-size: 0.8rem;
-        width: auto;
         max-width: 150px;
         justify-content: center;
     }
@@ -433,9 +357,7 @@ main .page-hero h1.animate-in::after {
 
     .players-grid {
         grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-        gap: 1rem;
         max-width: 90%;
-        margin: 0 auto;
     }
 
     .player-card {
@@ -461,15 +383,15 @@ main .page-hero h1.animate-in::after {
 
     .garland-left,
     .garland-right {
-        width:50px;
-        height:50px;
-        top:-6px;
+        width: 50px;
+        height: 50px;
+        top: -6px;
     }
 
     .player-card.birthday .player-name::before {
-        width:22px;
-        height:22px;
-        top:-18px;
+        width: 22px;
+        height: 22px;
+        top: -18px;
     }
 }
 
@@ -484,7 +406,6 @@ main .page-hero h1.animate-in::after {
         grid-template-columns: repeat(2, 1fr);
         row-gap: 0.75rem;
         column-gap: 0.3rem;
-        justify-items: center;
         padding: 0 2.5rem;
         margin-bottom: 0.75rem;
     }
@@ -510,15 +431,12 @@ main .page-hero h1.animate-in::after {
     .players-grid {
         grid-template-columns: repeat(2, 1fr);
         gap: 0.8rem;
-        max-width: 90%;
-        margin: 0 auto;
         padding: 0;
     }
 
     .player-card {
         padding: 0.9rem;
         border-radius: 10px;
-        box-shadow: var(--shadow-medium, 0 2px 4px rgba(0, 0, 0, 0.1));
     }
 
     .player-name {
@@ -542,14 +460,14 @@ main .page-hero h1.animate-in::after {
 
     .garland-left,
     .garland-right {
-        width:40px;
-        height:40px;
-        top:-5px;
+        width: 40px;
+        height: 40px;
+        top: -5px;
     }
 
     .player-card.birthday .player-name::before {
-        width:18px;
-        height:18px;
-        top:-15px;
+        width: 18px;
+        height: 18px;
+        top: -15px;
     }
 }

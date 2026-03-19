@@ -19,12 +19,12 @@
     padding: 1.5rem;
     border-radius: 15px;
     box-shadow: var(--shadow-medium);
+    transition: box-shadow 0.3s ease, transform 0.3s ease;
 }
 
 .record-category:hover {
     box-shadow: var(--shadow-hover);
     transform: translateY(-5px);
-    transition: transform 0.3s ease;
 }
 
 .record-category h3 {
@@ -34,7 +34,7 @@
     font-family: 'Poppins', sans-serif;
     font-weight: 700;
     font-size: 1.3rem;
-    transition: opacity 0.6s ease-out, transform 0.6s ease-out, box-shadow 0.3s ease;
+    transition: opacity 0.6s ease-out, transform 0.6s ease-out;
 }
 
 /* Record Items */
@@ -48,6 +48,7 @@
     border-radius: 10px;
     margin-bottom: 0.8rem;
     font-family: 'Poppins', sans-serif;
+    transition: opacity 0.6s ease-out, transform 0.6s ease-out;
 }
 
 .record-item:last-child {
@@ -65,7 +66,7 @@
     font-weight: 700;
     color: var(--primary-theme-color);
     font-size: 1.1rem;
-    transition: opacity 0.6s ease-out, transform 0.6s ease-out, box-shadow 0.3s ease;
+    transition: opacity 0.6s ease-out, transform 0.6s ease-out;
 }
 
 .record-season {
@@ -90,14 +91,12 @@
         flex-direction: column;
         gap: 0.8rem;
         width: 90%;
-        margin: 0 auto;
     }
 
     .record-category {
         flex: none;
         padding: 1rem;
         border-radius: 12px;
-        box-shadow: var(--shadow-medium);
         min-height: 44px;
     }
 

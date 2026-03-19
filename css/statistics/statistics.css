@@ -11,10 +11,6 @@
 }
 
 /* Toggle Buttons */
-.gd {
-    display: grid;
-}
-
 .toggles-container {
     display: flex;
     flex-direction: column;
@@ -27,8 +23,8 @@
 }
 
 .toggles-container.animate-in {
-    opacity: 1 !important;
-    transform: translateY(0) !important;
+    opacity: 1;
+    transform: translateY(0);
 }
 
 .toggle-wrapper {
@@ -40,7 +36,6 @@
     height: 80px;
     gap: 2rem;
     max-width: 400px;
-    transition: opacity 0.6s ease-out, transform 0.6s ease-out;
 }
 
 .toggle-button-container {
@@ -152,7 +147,6 @@
 }
 
 .toggle-label {
-    font-family: 'Poppins', sans-serif;
     font-weight: 700;
     font-size: 1.5rem;
     color: var(--light-gray);
@@ -464,10 +458,6 @@ body.player-alltime .player-rank {
         padding: 1.5rem 0.8rem;
     }
 
-    .section-title br {
-        display: block;
-    }
-
     .toggles-container {
         gap: 0.8rem;
         max-width: 100%;
@@ -504,22 +494,6 @@ body.player-alltime .player-rank {
         margin: -20px auto 0;
         border-radius: 100px;
         box-shadow: var(--shadow-small);
-    }
-
-    .btn-bg {
-        background: var(--team-bg);
-    }
-
-    #team-player-toggle-btn .checkbox:checked ~ .btn-bg {
-        background: var(--player-bg);
-    }
-
-    #season-alltime-toggle-btn .btn-bg {
-        background: var(--season-bg);
-    }
-
-    #season-alltime-toggle-btn .checkbox:checked ~ .btn-bg {
-        background: var(--alltime-bg);
     }
 
     #team-player-toggle-btn .knob:before, #season-alltime-toggle-btn .knob:before {
@@ -604,18 +578,10 @@ body.player-alltime .player-rank {
         font-size: 0.75rem;
     }
 
-    .table-header {
-        font-size: 0.75rem;
-    }
-
     .table-header .table-cell:nth-child(2),
     .scorer-position,
     .player-position {
         display: none;
-    }
-
-    .scorer-position i, .player-position i {
-        font-size: 0.9rem;
     }
 
     .scorer-name, .player-name {
@@ -626,12 +592,6 @@ body.player-alltime .player-rank {
         width: 22px;
         height: 22px;
         font-size: 0.75rem;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        margin: 0 auto;
-        padding: 0;
-        line-height: normal;
     }
 
     .header-icon {
@@ -681,22 +641,6 @@ body.player-alltime .player-rank {
         height: 35px;
         margin: -17.5px auto 0;
         border-radius: 80px;
-    }
-
-    .btn-bg {
-        background: var(--team-bg);
-    }
-
-    #team-player-toggle-btn .checkbox:checked ~ .btn-bg {
-        background: var(--player-bg);
-    }
-
-    #season-alltime-toggle-btn .btn-bg {
-        background: var(--season-bg);
-    }
-
-    #season-alltime-toggle-btn .checkbox:checked ~ .btn-bg {
-        background: var(--alltime-bg);
     }
 
     #team-player-toggle-btn .knob:before, #season-alltime-toggle-btn .knob:before {
@@ -764,14 +708,6 @@ body.player-alltime .player-rank {
         font-size: 0.7rem;
     }
 
-    .table-header {
-        font-size: 0.7rem;
-    }
-
-    .scorer-position i, .player-position i {
-        font-size: 0.85rem;
-    }
-
     .scorer-name, .player-name {
         font-size: 0.7rem;
     }
@@ -780,12 +716,6 @@ body.player-alltime .player-rank {
         width: 22px;
         height: 22px;
         font-size: 0.7rem;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        margin: 0 auto;
-        padding: 0;
-        line-height: normal;
     }
 
     .header-icon {

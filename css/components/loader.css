@@ -34,6 +34,7 @@
     opacity: 0.1;
 }
 
+/* Loader Animation Timings */
 .search-inline-loader .football-loader .path-0 { animation-delay: -0.125s; }
 .search-inline-loader .football-loader .path-1 { animation-delay: -0.25s; }
 .search-inline-loader .football-loader .path-2 { animation-delay: -0.375s; }

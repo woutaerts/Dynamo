@@ -108,13 +108,19 @@ body.modal-open {
 @media (max-width: 768px) {
     .modal-content {
         max-width: none;
+        padding: 1.2rem;
+        max-height: 85vh;
+        border-radius: 14px;
+        box-shadow: var(--shadow-small);
     }
+
     .close-modal {
         width: 30px;
         height: 30px;
         top: 8px;
         right: 8px;
     }
+
     .close-modal i {
         font-size: 1rem;
     }
@@ -123,14 +129,18 @@ body.modal-open {
 /* Shared mobile tweaks */
 @media (max-width: 480px) {
     .modal-content {
-        max-width: none;
+        padding: 1rem;
+        max-height: 82vh;
+        border-radius: 12px;
     }
+
     .close-modal {
         width: 28px;
         height: 28px;
         top: 6px;
         right: 6px;
     }
+
     .close-modal i {
         font-size: 0.9rem;
     }

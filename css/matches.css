@@ -14,17 +14,10 @@
     z-index: 3;
 }
 
-.result-icon.win {
-    background: var(--light-green);
-}
-
-.result-icon.draw {
-    background: var(--golden-yellow);
-}
-
-.result-icon.loss {
-    background: var(--soft-coral);
-}
+/* Unified Colors for Results */
+.win .result-icon, .result-icon.win, .timeline-item.win::before { background: var(--light-green) !important; }
+.draw .result-icon, .result-icon.draw, .timeline-item.draw::before { background: var(--golden-yellow) !important; }
+.loss .result-icon, .result-icon.loss, .timeline-item.loss::before { background: var(--soft-coral) !important; }
 
 .result-icon:not(.win):not(.draw):not(.loss) {
     background: var(--dusty-blue);
@@ -51,12 +44,12 @@
     cursor: pointer;
     border: 1px solid rgba(0, 0, 0, 0.05);
     position: relative;
+    transition: box-shadow 0.3s ease, transform 0.3s ease;
 }
 
 .match-card.modern:hover {
     box-shadow: var(--shadow-hover);
     transform: translateY(-5px);
-    transition: transform 0.3s ease;
 }
 
 .match-card.modern .result-icon {
@@ -222,7 +215,6 @@
 
 .timeline-start-knob.animate-in {
     opacity: 1;
-    transform: translateY(-50%);
 }
 
 .timeline::before {
@@ -271,11 +263,11 @@
     padding: 0 10px;
     height: 100%;
     justify-content: center;
+    transition: transform 0.3s ease;
 }
 
 .timeline-item:hover {
     transform: translateY(-5px);
-    transition: transform 0.3s ease;
 }
 
 .timeline-item .result-icon {
@@ -283,22 +275,9 @@
     z-index: 4;
 }
 
-.timeline-item.win .result-icon {
-    background: var(--light-green) !important;
-}
-
-.timeline-item.draw .result-icon {
-    background: var(--golden-yellow) !important;
-}
-
-.timeline-item.loss .result-icon {
-    background: var(--soft-coral) !important;
-}
-
 .timeline-item:hover .result-icon {
     box-shadow: var(--shadow-hover);
     transform: translateY(-5px);
-    transition: transform 0.3s ease;
 }
 
 .timeline-item::before {
@@ -316,21 +295,8 @@
     box-shadow: var(--shadow-medium);
 }
 
-.timeline-item.win::before {
-    background: var(--light-green);
-}
-
-.timeline-item.draw::before {
-    background: var(--golden-yellow);
-}
-
-.timeline-item.loss::before {
-    background: var(--soft-coral);
-}
-
 .timeline-item:hover::before {
     box-shadow: var(--shadow-hover);
-    transition: transform 0.3s ease;
 }
 
 .timeline-item small {
@@ -422,9 +388,7 @@
 @media (max-width: 768px) {
     .matches-grid {
         grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
-        gap: 1rem;
         width: 90%;
-        margin: 0 auto;
     }
 
     .match-card.modern {
@@ -502,18 +466,15 @@
     .timeline-start-knob {
         width: 10px;
         height: 10px;
-        left: 0;
     }
 
     .timeline::before {
         height: 3px;
-        left: 0;
         right: 0.8rem;
     }
 
     .timeline::after {
         font-size: 20px;
-        right: 0.8rem;
         top: 49.7%;
         transform: translate(50%, -49%);
     }
@@ -567,8 +528,6 @@
     .matches-grid {
         grid-template-columns: repeat(2, minmax(160px, 1fr));
         gap: 0.8rem;
-        width: 90%;
-        margin: 0 auto;
     }
 
     .form-display {
@@ -608,11 +567,6 @@
     }
 
     .match-card.modern .result-icon {
-        width: 30px;
-        height: 30px;
-        font-size: 1rem;
-        top: -8px;
-        right: -8px;
         box-shadow: var(--shadow-medium);
         z-index: 3;
     }
@@ -628,36 +582,29 @@
     .timeline-wrapper {
         min-height: 140px;
         margin: 0.6rem auto;
-        border-radius: 12px;
-        width: 90%;
         max-width: 90%;
         transform: translateX(0.3rem);
     }
 
     .timeline {
         min-height: 140px;
-        padding: 0;
         transform: translateY(10px);
     }
 
     .timeline-start-knob {
         width: 8px;
         height: 8px;
-        left: 0;
     }
 
     .timeline::before {
         top: 50.5%;
         height: 2px;
-        left: 0;
         right: 0.6rem;
     }
 
     .timeline::after {
         top: 49.5%;
         font-size: 18px;
-        right: 0.8rem;
-        transform: translate(50%, -49%);
     }
 
     .timeline-item {
@@ -666,9 +613,6 @@
     }
 
     .timeline-item .result-icon {
-        width: 30px;
-        height: 30px;
-        font-size: 1rem;
         margin-bottom: 0.8rem;
     }
 
@@ -684,11 +628,8 @@
 
     .ticker-wrapper {
         width: 90%;
-        padding: 1rem 0 0;
     }
-    .ticker-track {
-        gap: 2rem;
-    }
+
     .sponsor-logo {
         height: 50px;
     }
