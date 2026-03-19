@@ -133,6 +133,7 @@
 
 #season-select .options li:hover {
     color: var(--dynamo-red);
+    font-weight: 700;
 }
 
 #season-select.active .options {

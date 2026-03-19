@@ -1,6 +1,7 @@
 import { animateOnScroll } from './utils/animations.js';
 import { initializeCountdown, updateCountdown } from './general.js';
 import { fetchCurrentSeasonMatches } from './utils/dataService.js';
+import { FootballLoader } from './components/loader.js'; // Ensure this matches your new component path
 
 // Define animation elements
 const animationElements = [
@@ -19,7 +20,7 @@ const animationElements = [
     { selector: '.form-description', containerSelector: null }
 ];
 
-// Matches page initialization and functionality
+// Matches page initialization
 document.addEventListener('DOMContentLoaded', async () => {
     await fetchAndRenderMatches();
     animateOnScroll(animationElements);
@@ -28,27 +29,20 @@ document.addEventListener('DOMContentLoaded', async () => {
 
 /* Fetch and Render Matches */
 async function fetchAndRenderMatches() {
-    const loader = document.getElementById('matches-global-loader');
-    const sections = [
-        document.querySelector('.countdown-section .container'),
-        document.querySelector('.match-form-section .container'),
-        document.querySelector('.upcoming-matches .container'),
-        document.querySelector('.matches-section .container'),
-        document.querySelector('.match-timeline .container')
-    ];
+    const loaderId = 'matches-global-loader';
+    const errorId = 'matches-error';
+    const loaderContainer = document.getElementById(loaderId);
 
-    if (loader) {
-        loader.classList.remove('hidden');
-        const firstSection = sections.find(s => s);
-        if (firstSection) {
-            firstSection.style.position = 'relative';
-            firstSection.appendChild(loader);
-        }
+    // 1. Initialize the modular loader
+    if (loaderContainer) {
+        loaderContainer.classList.remove('hidden');
+        FootballLoader.init(loaderId, 'Wedstrijden worden geladen...');
     }
 
     const knob = document.querySelector('.timeline-start-knob');
     if (knob) knob.style.opacity = '0';
 
+    // Hide grids during load for a cleaner transition
     document.querySelectorAll('.matches-grid, #form-results, #season-timeline').forEach(el => {
         el.style.opacity = '0';
         el.style.transition = 'opacity 0.4s ease';
@@ -65,8 +59,10 @@ async function fetchAndRenderMatches() {
         updateCountdown(matches.upcoming);
         setupMatchInteractions();
 
-        if (loader) loader.classList.add('hidden');
+        // 2. Hide loader on success
+        if (loaderContainer) loaderContainer.classList.add('hidden');
 
+        // Fade in content
         document.querySelectorAll('.matches-grid, #form-results, #season-timeline').forEach(el => {
             el.style.opacity = '1';
         });
@@ -79,9 +75,9 @@ async function fetchAndRenderMatches() {
     } catch (error) {
         console.error('Error fetching or parsing CSV:', error);
 
-        if (loader) {
-            loader.innerHTML = '<p style="color:var(--dynamo-red);font-weight:600;">Fout bij laden wedstrijden.</p>';
-        }
+        // 3. Use modular error display
+        if (loaderContainer) loaderContainer.classList.add('hidden');
+        FootballLoader.showError(errorId, 'Wedstrijden konden niet worden geladen. Probeer opnieuw.');
 
         const titleEl = document.getElementById('next-match-title');
         const countdownEl = document.getElementById('countdown');

@@ -1,6 +1,7 @@
 import { animateOnScroll, animatePlayerCards } from './utils/animations.js';
 import { positionDisplayMap } from './utils/helpers.js';
 import { fetchSeasonPlayers } from './utils/dataService.js';
+import { FootballLoader } from './components/loader.js';
 
 const animationElements = [
     { selector: '.section-title', containerSelector: 'section' },
@@ -19,7 +20,8 @@ const DOM = {
     get loading()       { return document.getElementById('players-loading'); },
     get searchInput()   { return document.querySelector('.player-search'); },
     get filterButtons() { return document.querySelectorAll('.filter-btn'); },
-    get cards()         { return document.querySelectorAll('.player-card'); }
+    get cards()         { return document.querySelectorAll('.player-card'); },
+    get emptyState() { return document.getElementById('players-empty-state'); }
 };
 
 /* Initialisatie van de pagina en alle bijbehorende functionaliteiten bij het laden */
@@ -36,10 +38,17 @@ document.addEventListener('DOMContentLoaded', async () => {
 
 /* Haal de spelersdata op via de data service en render deze op het scherm */
 async function fetchAndRenderPlayers() {
+    const loaderId = 'players-loading';
+    const errorId = 'players-error';
     const loadingEl = DOM.loading;
     const gridEl = DOM.grid;
 
-    if (loadingEl) loadingEl.classList.remove('hidden');
+    // 1. Initialize the modular loader
+    if (loadingEl) {
+        loadingEl.classList.remove('hidden');
+        FootballLoader.init(loaderId, 'Spelers worden geladen...');
+    }
+
     if (gridEl) gridEl.style.opacity = '0';
 
     try {
@@ -48,14 +57,19 @@ async function fetchAndRenderPlayers() {
 
         renderPlayerCards(globalPlayers);
 
+        // 2. Hide loader on success
         if (loadingEl) loadingEl.classList.add('hidden');
+
         if (gridEl) {
             gridEl.style.opacity = '1';
             gridEl.style.transition = 'opacity 0.4s ease';
         }
     } catch (error) {
         console.error('Error fetching or rendering players:', error);
-        if (loadingEl) loadingEl.innerHTML = '<p style="color: var(--dynamo-red);">Fout bij laden spelers.</p>';
+
+        // 3. Use modular error display
+        if (loadingEl) loadingEl.classList.add('hidden');
+        FootballLoader.showError(errorId, 'Spelers konden niet worden geladen. Probeer opnieuw.');
     }
 }
 
@@ -144,6 +158,7 @@ function filterPlayers(position) {
         player.element.classList.toggle('filter-hidden', !shouldShow);
         player.element.classList.toggle('filter-visible', shouldShow);
     });
+    toggleEmptyState();
 }
 
 /* Controleer de URL-hash bij het laden en activeer automatisch de juiste filter */
@@ -174,6 +189,7 @@ function handleSearch(e) {
         player.element.classList.toggle('filter-hidden', !(matchesSearch && matchesFilter));
         player.element.classList.toggle('filter-visible', matchesSearch && matchesFilter);
     });
+    toggleEmptyState();
 }
 
 /* Maak het mogelijk om met de pijltjestoetsen door de filters te navigeren */
@@ -241,4 +257,21 @@ function updateHeroAccentColor(position) {
 
     // 2. Add the specific new filter class
     document.body.classList.add(newClass);
+}
+
+/**
+ * Checks if any players are currently visible and toggles the empty state message
+ */
+function toggleEmptyState() {
+    const visiblePlayers = globalPlayers.filter(player =>
+        player.element && player.element.classList.contains('filter-visible')
+    );
+
+    if (visiblePlayers.length === 0) {
+        DOM.emptyState?.classList.remove('hidden');
+        DOM.grid.style.display = 'none'; // Hide grid to center the message better
+    } else {
+        DOM.emptyState?.classList.add('hidden');
+        DOM.grid.style.display = 'grid';
+    }
 }

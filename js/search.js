@@ -1,5 +1,6 @@
 import { animateOnScroll } from './utils/animations.js';
 import { fetchSearchMatches } from './utils/dataService.js';
+import { FootballLoader } from './components/loader.js';
 
 /* Animation Elements */
 const animationElements = [
@@ -25,24 +26,32 @@ document.addEventListener('DOMContentLoaded', async () => {
 });
 
 /* Fetch and Render Matches */
+/* Fetch and Render Matches */
 async function fetchAndRenderMatches() {
-    const loadingEl   = document.getElementById('search-loading');
-    const errorEl     = document.getElementById('search-error');
+    const loaderId    = 'search-loading';
+    const errorId     = 'search-error';
+    const loadingEl   = document.getElementById(loaderId);
     const contentEl   = document.getElementById('search-results-content');
     const searchMsg   = document.getElementById('search-message');
     const resultsHeader = document.getElementById('search-results-header');
 
-    loadingEl?.classList.remove('hidden');
-    errorEl?.classList.add('hidden');
+    // 1. Initialize modular loader with specific text
+    if (loadingEl) {
+        loadingEl.classList.remove('hidden');
+        FootballLoader.init(loaderId, 'Wedstrijden worden geladen...');
+    }
+
+    document.getElementById(errorId)?.classList.add('hidden');
     contentEl?.classList.add('hidden');
     searchMsg?.classList.add('hidden');
     resultsHeader?.classList.add('results-header-hidden');
 
     try {
-        // Fetch via service!
+        // Fetch via service
         window.allMatches = await fetchSearchMatches();
 
-        loadingEl?.classList.add('hidden');
+        // 2. Hide loader on success
+        if (loadingEl) loadingEl.classList.add('hidden');
         contentEl?.classList.remove('hidden');
 
         renderSearchResults(window.allMatches);
@@ -53,13 +62,14 @@ async function fetchAndRenderMatches() {
 
     } catch (error) {
         console.error('Error fetching matches:', error);
-        loadingEl?.classList.add('hidden');
-        errorEl?.classList.remove('hidden');
+
+        if (loadingEl) loadingEl.classList.add('hidden');
+
+        // 3. Use modular error display
+        FootballLoader.showError(errorId, 'Wedstrijden konden niet worden geladen. Probeer opnieuw.');
+
         contentEl?.classList.add('hidden');
         resultsHeader?.classList.add('results-header-hidden');
-        searchMsg.textContent = 'Fout bij het laden van wedstrijden.';
-        searchMsg.classList.add('error-message');
-        searchMsg.classList.remove('hidden');
     }
 }
 

@@ -3,7 +3,16 @@ import { animateOnScroll } from './utils/animations.js';
 import { LineGraph } from './components/lineGraph.js';
 import { Papa, SHEET_URLS } from './utils/dataService.js';
 import { fetchCsvCached } from './utils/fetchCsv.js';
-import { PLAYER_TABLE_HEADER_HTML, positionIcons, positionDisplayMap, positionMap, monthMapEnglishToDutch, parseGoalscorers, parseDate } from './utils/helpers.js';
+import { FootballLoader } from './components/loader.js';
+import {
+    PLAYER_TABLE_HEADER_HTML,
+    positionIcons,
+    positionDisplayMap,
+    positionMap,
+    monthMapEnglishToDutch,
+    parseGoalscorers,
+    parseDate
+} from './utils/helpers.js';
 
 /* Configuratie voor animaties */
 const animationElements = [
@@ -55,7 +64,7 @@ const SEASON_CONFIG = {
 /* Globale status voor archiefspelers */
 let archivePlayers = [];
 
-/* Genereer de HTML voor de grafiek tooltip (Hoisted voor betere prestaties) */
+/* Genereer de HTML voor de grafiek tooltip */
 const getArchiveTooltipHTML = (d) => `
     <div style="background:white;border:2px solid #3D5A80;border-radius:12px;padding:10px 8px;
          box-shadow:0 4px 10px rgba(0,0,0,0.1);width:90px;box-sizing:border-box;
@@ -64,19 +73,19 @@ const getArchiveTooltipHTML = (d) => `
         <div style="display:flex;justify-content:center;align-items:center;gap:8px;margin-bottom:6px;">
             <span style="display:flex;justify-content:center;align-items:center;width:22px;height:22px;
                   border-radius:50%;background:#648F5F;color:white;font-size:10px;">
-                <i class="fas fa-check" style="-webkit-text-stroke:1px white;"></i></span>
+                <i class="fas fa-check"></i></span>
             <span style="font-size:0.95rem;font-weight:600;color:#333;width:16px;text-align:left;">${d.winst}</span>
         </div>
         <div style="display:flex;justify-content:center;align-items:center;gap:8px;margin-bottom:6px;">
             <span style="display:flex;justify-content:center;align-items:center;width:22px;height:22px;
                   border-radius:50%;background:#E8B04B;color:white;font-size:10px;">
-                <i class="fas fa-minus" style="-webkit-text-stroke:1px white;"></i></span>
+                <i class="fas fa-minus"></i></span>
             <span style="font-size:0.95rem;font-weight:600;color:#333;width:16px;text-align:left;">${d.gelijk}</span>
         </div>
         <div style="display:flex;justify-content:center;align-items:center;gap:8px;">
             <span style="display:flex;justify-content:center;align-items:center;width:22px;height:22px;
                   border-radius:50%;background:#E07A5F;color:white;font-size:10px;">
-                <i class="fas fa-times" style="-webkit-text-stroke:1px white;"></i></span>
+                <i class="fas fa-times"></i></span>
             <span style="font-size:0.95rem;font-weight:600;color:#333;width:16px;text-align:left;">${d.verlies}</span>
         </div>
     </div>`;
@@ -94,9 +103,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
 /* Bepaal en wissel tussen seizoensweergave of vergelijking */
 async function loadSeason(seasonString) {
-    const loadingEl      = document.getElementById('archive-loading');
+    const loadingId     = 'archive-loading';
+    const errorId       = 'archive-error';
+    const loadingEl      = document.getElementById(loadingId);
     const contentEl      = document.getElementById('archive-content');
-    const errorEl        = document.getElementById('archive-error');
+    const errorEl        = document.getElementById(errorId);
     const titleEl        = document.getElementById('archive-season-title');
     const comparisonView = document.getElementById('archive-comparison-view');
     const seasonView     = document.getElementById('archive-season-view');
@@ -108,7 +119,11 @@ async function loadSeason(seasonString) {
 
     contentEl.style.display = 'none';
     errorEl.classList.add('hidden');
-    loadingEl.classList.remove('hidden');
+
+    if (loadingEl) {
+        loadingEl.classList.remove('hidden');
+        FootballLoader.init(loadingId, 'Gegevens worden geladen...');
+    }
 
     try {
         if (seasonString === 'Vergelijking') {
@@ -119,7 +134,6 @@ async function loadSeason(seasonString) {
             loadingEl.classList.add('hidden');
             contentEl.style.display = 'block';
 
-            // 1. Define our graphs in a clean configuration array
             const graphConfigs = [
                 {
                     id: '#matches-graph', title: 'Aantal gespeelde wedstrijden', color: '#7B96B7', dotColor: '#3D5A80', hideLine: true,
@@ -138,11 +152,10 @@ async function loadSeason(seasonString) {
                 { id: '#avg-tegen-graph', title: 'Gemiddeld aantal tegendoelpunten per wedstrijd', color: '#E07A5F', dotColor: '#B90A0A', mapFn: d => ({ label: d.seasonLabel, value: d.avgTegen }) }
             ];
 
-            // 2. Loop through the config to clear and render them automatically
             graphConfigs.forEach(config => {
                 const el = document.querySelector(config.id);
                 if (el) {
-                    el.innerHTML = ''; // Clear old graph
+                    el.innerHTML = '';
                     new LineGraph(config.id, {
                         title: config.title,
                         hideLineAndDots: config.hideLine || false,
@@ -164,21 +177,26 @@ async function loadSeason(seasonString) {
 
     } catch (err) {
         console.error('Error loading data:', err);
-        loadingEl.classList.add('hidden');
-        errorEl.classList.remove('hidden');
+        if (loadingEl) loadingEl.classList.add('hidden');
+        FootballLoader.showError(errorId, 'Gegevens konden niet worden geladen. Probeer opnieuw.');
     }
 }
 
 /* Verwerk en weergave van data voor een specifiek seizoen */
 async function loadSeasonData(seasonString) {
-    const config       = SEASON_CONFIG[seasonString];
-    const innerLoader  = document.getElementById('archive-season-loader');
-    const innerError   = document.getElementById('archive-season-error');
-    const innerContent = document.getElementById('archive-season-content');
+    const config        = SEASON_CONFIG[seasonString];
+    const innerLoaderId = 'archive-season-loader';
+    const innerErrorId  = 'archive-season-error';
+    const innerLoader   = document.getElementById(innerLoaderId);
+    const innerContent  = document.getElementById('archive-season-content');
 
-    if (innerLoader)  innerLoader.classList.remove('hidden');
-    if (innerError)   innerError.classList.add('hidden');
-    if (innerContent) innerContent.classList.add('hidden');
+    if (innerLoader) {
+        innerLoader.classList.remove('hidden');
+        FootballLoader.init(innerLoaderId, 'Seizoensgegevens worden geladen...');
+    }
+
+    document.getElementById(innerErrorId)?.classList.add('hidden');
+    innerContent?.classList.add('hidden');
 
     const sortSel = document.querySelector('#archive-player-sort .selected');
     if (sortSel) { sortSel.textContent = 'Totaal Doelpunten'; sortSel.dataset.value = 'goals'; }
@@ -212,7 +230,7 @@ async function loadSeasonData(seasonString) {
     } catch (err) {
         console.error('Error loading season data:', err);
         if (innerLoader) innerLoader.classList.add('hidden');
-        if (innerError)  innerError.classList.remove('hidden');
+        FootballLoader.showError(innerErrorId, 'Seizoensgegevens konden niet worden geladen. Probeer opnieuw.');
     }
 }
 
@@ -355,6 +373,7 @@ function parseSeasonMatches(rows, config, seasonString) {
     matches.sort((a, b) => parseDate(a.dateRaw) - parseDate(b.dateRaw));
     return matches;
 }
+
 /* Toon de globale statistieken op de pagina */
 function renderSeasonStats(stats) {
     const map = {
@@ -384,7 +403,6 @@ function renderArchivePlayers(sortBy = 'goals') {
         return bR - aR || b.goals - a.goals;
     });
 
-    // 1. Build Structure
     tableContainer.innerHTML = `
         ${PLAYER_TABLE_HEADER_HTML}
         <div id="archive-player-list"></div>
@@ -396,7 +414,6 @@ function renderArchivePlayers(sortBy = 'goals') {
         return;
     }
 
-    // 2. Inject Rows
     sorted.forEach((player, index) => {
         const avg = player.matches === 0 ? '0.00' : (player.goals / player.matches).toFixed(2);
         const row = document.createElement('div');
@@ -415,7 +432,6 @@ function renderArchivePlayers(sortBy = 'goals') {
         list.appendChild(row);
     });
 
-    // 3. Re-bind Archive Sort Listeners
     initArchiveSortableHeaders();
 }
 
@@ -504,14 +520,14 @@ function initArchivePlayerSort() {
     const options  = dropdown.querySelector('.options');
 
     selected.addEventListener('click', (e) => {
-        e.stopPropagation(); // Good practice to add this here too
+        e.stopPropagation();
         dropdown.classList.toggle('active');
         options.style.display = options.style.display === 'block' ? 'none' : 'block';
     });
 
     options.querySelectorAll('li').forEach(opt => {
         opt.addEventListener('click', (e) => {
-            e.stopPropagation(); // And here
+            e.stopPropagation();
             selected.textContent   = opt.textContent;
             selected.dataset.value = opt.dataset.value;
             dropdown.classList.remove('active');
@@ -521,16 +537,14 @@ function initArchivePlayerSort() {
     });
 }
 
-/* Eén globale listener om alle actieve dropdowns te sluiten bij een klik ernaast */
+/* Eén globale listener om alle actieve dropdowns te sluiten */
 function initGlobalDropdownCloser() {
     document.addEventListener('click', e => {
-        // 1. Check and close Season Dropdown
         const seasonDropdown = document.getElementById('season-select');
         if (seasonDropdown && !seasonDropdown.contains(e.target)) {
             seasonDropdown.classList.remove('active');
         }
 
-        // 2. Check and close Player Sort Dropdown
         const sortDropdown = document.getElementById('archive-player-sort');
         if (sortDropdown && !sortDropdown.contains(e.target)) {
             sortDropdown.classList.remove('active');
@@ -540,7 +554,7 @@ function initGlobalDropdownCloser() {
     });
 }
 
-/* Maak specifieke tabelkoppen sorteerbaar en klikbaar */
+/* Maak specifieke tabelkoppen sorteerbaar */
 function initArchiveSortableHeaders() {
     const headerCells = document.querySelectorAll('#archive-players-section .table-header .table-cell');
 
@@ -573,7 +587,7 @@ function initArchiveSortableHeaders() {
     });
 }
 
-/* Verbind de klik-events op wedstrijdkaarten aan de infomodal */
+/* Verbind de klik-events op wedstrijdkaarten aan de modal */
 function setupArchiveMatchInteractions() {
     document.querySelectorAll('#archive-matches-grid .archive-match-card').forEach(card => {
         card.style.cursor = 'pointer';
@@ -612,7 +626,7 @@ function setupArchiveMatchInteractions() {
     });
 }
 
-/* Initialiseer intersection observer voor getrapte animaties van wedstrijdkaarten */
+/* Initialiseer intersection observer voor getrapte animaties */
 function animateArchiveMatches() {
     const observer = new IntersectionObserver((entries, observer) => {
         entries.forEach(entry => {

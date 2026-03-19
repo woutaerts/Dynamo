@@ -323,6 +323,7 @@ body.player-alltime .player-rank {
 
 .custom-dropdown .options li:hover {
     color: var(--underline-color);
+    font-weight: 700;
 }
 
 .custom-dropdown.active .options {

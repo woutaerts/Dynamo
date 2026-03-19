@@ -49,6 +49,17 @@ main .page-hero h1 {
     transition: opacity 0.6s ease-out, transform 0.6s ease-out;
 }
 
+.empty-state-message {
+    text-align: center;
+    padding: 1rem;
+    font-family: 'Poppins', sans-serif;
+    font-size: 1rem;
+}
+
+.empty-state-message.hidden {
+    display: none;
+}
+
 main .page-hero h1::before,
 main .page-hero h1::after {
     content: '|';

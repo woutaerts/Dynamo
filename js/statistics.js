@@ -1,6 +1,7 @@
 import { animateOnScroll } from './utils/animations.js';
 import { PLAYER_TABLE_HEADER_HTML, positionIcons, positionDisplayMap } from './utils/helpers.js';
 import { fetchTeamSeasonStats, fetchTeamAllTimeStats, fetchSeasonRecords, fetchSeasonPlayers, fetchAllTimePlayers} from './utils/dataService.js';
+import { FootballLoader } from './components/loader.js';
 
 // Variables
 let seasonPlayers = [];
@@ -96,49 +97,40 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 // Initialize player stats and team stats
+// Initialize player stats and team stats
 async function initPlayerStats() {
     isLoading = true;
+
+    // Define the specific loaders we want to use modularly
+    const loaders = [
+        { id: 'team-season-loading', text: 'Teamstatistieken worden geladen...' },
+        { id: 'team-season-detailed-loading', text: 'Teamstatistieken worden geladen...' }
+    ];
+
+    const errorIds = ['team-season-error', 'team-season-detailed-error'];
+    const contentIds = ['team-season-grid', 'team-season-detailed-stats'];
+
+    // 1. Initialize Modular Loaders
+    loaders.forEach(loader => {
+        const el = document.getElementById(loader.id);
+        if (el) {
+            el.classList.remove('hidden');
+            FootballLoader.init(loader.id, loader.text);
+        }
+    });
+
+    // 2. Hide existing errors and content containers
+    errorIds.forEach(id => document.getElementById(id)?.classList.add('hidden'));
+    contentIds.forEach(id => document.getElementById(id)?.classList.add('hidden'));
+
+    // UI Guard: Disable toggles during load
     const teamPlayerToggle = document.getElementById('team-player-toggle');
     const seasonAlltimeToggle = document.getElementById('season-alltime-toggle');
     [teamPlayerToggle, seasonAlltimeToggle].forEach(t => t && (t.disabled = true));
     document.querySelectorAll('.toggle-label').forEach(l => l.style.pointerEvents = 'none');
 
-    const uiGroups = [
-        {
-            l: document.getElementById('team-season-loading'),
-            e: document.getElementById('team-season-error'),
-            c: document.getElementById('team-season-grid')
-        },
-        {
-            l: document.getElementById('team-season-detailed-loading'),
-            e: document.getElementById('team-season-detailed-error'),
-            c: document.getElementById('team-season-detailed-stats')
-        },
-        {
-            l: document.getElementById('team-alltime-performance-loading'),
-            e: document.getElementById('team-alltime-performance-error'),
-            c: document.getElementById('team-alltime-performance-grid')
-        },
-        {
-            l: document.getElementById('team-alltime-loading'),
-            e: document.getElementById('team-alltime-error'),
-            c: document.getElementById('team-alltime-records')
-        },
-        {
-            l: document.getElementById('player-season-loading'),
-            e: document.getElementById('player-season-error'),
-            c: document.getElementById('player-season-content')
-        },
-        {
-            l: document.getElementById('player-alltime-loading'),
-            e: document.getElementById('player-alltime-error'),
-            c: document.getElementById('player-alltime-content')
-        }
-    ];
-    uiGroups.forEach(group => setElementState(group.l, group.e, group.c, 'loading'));
-
     try {
-        // Fetch everything via the data service in parallel!
+        // Fetch all data in parallel
         const [seasonStats, allTimeStats, records, sPlayers, aPlayers] = await Promise.all([
             fetchTeamSeasonStats(),
             fetchTeamAllTimeStats(),
@@ -148,7 +140,6 @@ async function initPlayerStats() {
         ]);
 
         const currentSeasonLabel = "2025-2026";
-
         const teamTitle = document.getElementById('team-season-title');
         const detailedTitle = document.getElementById('detailed-team-stats-title');
         const playerTitle = document.getElementById('player-season-title');
@@ -157,27 +148,41 @@ async function initPlayerStats() {
         if (detailedTitle) detailedTitle.innerHTML = `Gedetailleerde <br>Teamstatistieken<br> ${currentSeasonLabel}`;
         if (playerTitle) playerTitle.innerHTML = `Spelersstatistieken<br> ${currentSeasonLabel}`;
 
-        // Assign the returned data to your global variables
+        // Assign global data
         teamSeasonStats = seasonStats;
         teamAllTimeStats = allTimeStats;
         seasonRecords = records;
         seasonPlayers = sPlayers;
         allTimePlayers = aPlayers;
 
+        // Render displays
         updateTeamSeasonStats();
         updateTeamAllTimeStats();
         updateSeasonPlayerStats();
         updateAllTimePlayerStats();
 
-        uiGroups.forEach(group => setElementState(group.l, group.e, group.c, 'success'));
+        // 3. Success: Hide loaders and reveal content
+        loaders.forEach(l => document.getElementById(l.id)?.classList.add('hidden'));
+        contentIds.forEach(id => document.getElementById(id)?.classList.remove('hidden'));
+
     } catch (error) {
-        console.error('Error initializing player stats:', error);
-        uiGroups.forEach(group => setElementState(group.l, group.e, group.c, 'error'));
+        console.error('Error initializing statistics:', error);
+
+        // 4. Error: Hide loaders and show modular error messages
+        loaders.forEach(l => document.getElementById(l.id)?.classList.add('hidden'));
+
+        errorIds.forEach(id => {
+            FootballLoader.showError(id, 'Teamstatistieken konden niet worden geladen. Probeer opnieuw.');
+        });
     } finally {
         isLoading = false;
         if (teamPlayerToggle) teamPlayerToggle.disabled = false;
         if (seasonAlltimeToggle) seasonAlltimeToggle.disabled = false;
         document.querySelectorAll('.toggle-label').forEach(label => label.style.pointerEvents = '');
+
+        // Final check to ensure UI reflects the correct toggle state
+        const event = new Event('change');
+        teamPlayerToggle?.dispatchEvent(event);
     }
 }
 
