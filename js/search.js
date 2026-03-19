@@ -34,7 +34,7 @@ async function fetchAndRenderMatches() {
 
     loadingEl?.classList.remove('hidden');
     errorEl?.classList.add('hidden');
-    contentEl.style.display = 'none';
+    contentEl?.classList.add('hidden');
     searchMsg?.classList.add('hidden');
     resultsHeader?.classList.add('results-header-hidden');
 
@@ -43,7 +43,7 @@ async function fetchAndRenderMatches() {
         window.allMatches = await fetchSearchMatches();
 
         loadingEl?.classList.add('hidden');
-        contentEl.style.display = 'block';
+        contentEl?.classList.remove('hidden');
 
         renderSearchResults(window.allMatches);
         resultsHeader?.classList.remove('results-header-hidden');
@@ -55,7 +55,7 @@ async function fetchAndRenderMatches() {
         console.error('Error fetching matches:', error);
         loadingEl?.classList.add('hidden');
         errorEl?.classList.remove('hidden');
-        contentEl.style.display = 'none';
+        contentEl?.classList.add('hidden');
         resultsHeader?.classList.add('results-header-hidden');
         searchMsg.textContent = 'Fout bij het laden van wedstrijden.';
         searchMsg.classList.add('error-message');
@@ -84,14 +84,13 @@ function renderSearchResults(matches) {
         }
 
         resultsHeader?.classList.add('results-header-hidden');
-        resultsContent.style.display = 'none';
-
+        resultsContent?.classList.add('hidden');
         return;
     }
 
     searchMessage?.classList.add('hidden');
     resultsHeader?.classList.remove('results-header-hidden');
-    resultsContent.style.display = 'block';
+    resultsContent?.classList.remove('hidden');
 
     matches.forEach(match => {
         const resCls = match.result === 'winst' ? 'win' : match.result === 'gelijk' ? 'draw' : 'loss';

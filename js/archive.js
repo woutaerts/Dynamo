@@ -1,9 +1,9 @@
 /* Imports van externe modules */
 import { animateOnScroll } from './utils/animations.js';
 import { LineGraph } from './components/lineGraph.js';
-import { SHEET_URLS} from './utils/dataService.js';
+import { Papa, SHEET_URLS } from './utils/dataService.js';
 import { fetchCsvCached } from './utils/fetchCsv.js';
-import { positionIcons, positionDisplayMap, positionMap, monthMapEnglishToDutch, parseGoalscorers, parseDate } from './utils/helpers.js';
+import { PLAYER_TABLE_HEADER_HTML, positionIcons, positionDisplayMap, positionMap, monthMapEnglishToDutch, parseGoalscorers, parseDate } from './utils/helpers.js';
 
 /* Configuratie voor animaties */
 const animationElements = [
@@ -373,32 +373,32 @@ function renderSeasonStats(stats) {
 
 /* Toon en sorteer de spelers in de archieftabel */
 function renderArchivePlayers(sortBy = 'goals') {
-    const list = document.getElementById('archive-player-list');
-    if (!list) return;
+    const tableContainer = document.querySelector('.player-stats-table');
+    if (!tableContainer) return;
 
     const sorted = [...archivePlayers].sort((a, b) => {
         const aR = a.matches === 0 ? 0 : a.goals / a.matches;
         const bR = b.matches === 0 ? 0 : b.goals / b.matches;
-        if (sortBy === 'goals') {
-            return b.goals - a.goals || bR - aR || b.matches - a.matches || a.name.localeCompare(b.name);
-        } else if (sortBy === 'matches') {
-            return b.matches - a.matches || b.goals - a.goals || bR - aR || a.name.localeCompare(b.name);
-        } else {
-            return bR - aR || b.goals - a.goals || b.matches - a.matches || a.name.localeCompare(b.name);
-        }
+        if (sortBy === 'goals') return b.goals - a.goals || bR - aR || b.matches - a.matches;
+        if (sortBy === 'matches') return b.matches - a.matches || b.goals - a.goals;
+        return bR - aR || b.goals - a.goals;
     });
 
-    list.innerHTML = '';
+    // 1. Build Structure
+    tableContainer.innerHTML = `
+        ${PLAYER_TABLE_HEADER_HTML}
+        <div id="archive-player-list"></div>
+    `;
 
+    const list = document.getElementById('archive-player-list');
     if (sorted.length === 0) {
-        list.innerHTML = '<div class="archive-empty-msg">Geen spelersdata beschikbaar.</div>';
+        list.innerHTML = '<div class="archive-empty-msg">Geen data beschikbaar.</div>';
         return;
     }
 
+    // 2. Inject Rows
     sorted.forEach((player, index) => {
-        const avg = player.matches === 0
-            ? '0.00'
-            : (player.goals / player.matches).toFixed(2);
+        const avg = player.matches === 0 ? '0.00' : (player.goals / player.matches).toFixed(2);
         const row = document.createElement('div');
         row.className = 'player-row archive-player-row';
         row.innerHTML = `
@@ -414,6 +414,9 @@ function renderArchivePlayers(sortBy = 'goals') {
         `;
         list.appendChild(row);
     });
+
+    // 3. Re-bind Archive Sort Listeners
+    initArchiveSortableHeaders();
 }
 
 /* Toon alle seizoenswedstrijden als interactieve kaarten */

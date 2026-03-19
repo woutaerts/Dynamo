@@ -72,6 +72,7 @@
     </script>
 
     <!-- Scripts -->
+    <script src="/dynamo/js/utils/vendor/papaparse.min.js" defer></script>
     <script type="module" src="/dynamo/js/players.js"></script>
     <script type="module" src="/dynamo/js/partials/header.js"></script>
     <script type="module" src="/dynamo/js/partials/footer.js"></script>
@@ -121,12 +122,18 @@
     </section>
 
     <!-- Search Section -->
-    <div class="search-container">
-        <div class="search-wrapper">
-            <i class="fas fa-search search-icon"></i>
-            <input type="text" id="player-search" class="player-search" placeholder="Zoek spelers...">
+    <section class="search-section" aria-labelledby="search-heading">
+        <h2 id="search-heading" class="sr-only">Spelers zoeken</h2>
+
+        <div class="container">
+            <div class="search-container">
+                <div class="search-wrapper">
+                    <i class="fas fa-search search-icon"></i>
+                    <input type="text" id="player-search" class="player-search" placeholder="Zoek spelers..." aria-label="Zoek spelers op naam">
+                </div>
+            </div>
         </div>
-    </div>
+    </section>
 
     <!-- Players Grid -->
     <section class="players-section" id="players">

@@ -55,3 +55,23 @@ export function parseGoalscorers(raw) {
     }
     return scorers;
 }
+
+export const PLAYER_TABLE_HEADER_HTML = `
+    <div class="table-header">
+        <div class="table-cell">Rang</div>
+        <div class="table-cell">Positie</div>
+        <div class="table-cell">Speler</div>
+        <div class="table-cell sort-header" data-column="goals">
+            <span class="desktop-only">Doelpunten</span>
+            <i class="fas fa-futbol mobile-only"></i>
+        </div>
+        <div class="table-cell sort-header" data-column="matches">
+            <span class="desktop-only">Wedstrijden</span>
+            <i class="fas fa-shirt mobile-only"></i>
+        </div>
+        <div class="table-cell sort-header" data-column="avg-goals">
+            <span class="desktop-only">Gem. D/W</span>
+            <span class="mobile-only"><i class="fas fa-futbol"></i> / <i class="fas fa-shirt"></i></span>
+        </div>
+    </div>
+`;

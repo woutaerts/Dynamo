@@ -1,9 +1,14 @@
 import { fetchCsvCached } from './fetchCsv.js';
 import { monthMapEnglishToDutch, parseDate, parseGoalscorers, positionMap } from './helpers.js';
 
+export const Papa = window.Papa;
+export const gsap = window.gsap;
+export const Draggable = window.Draggable;
+export const MotionPathPlugin = window.MotionPathPlugin;
+
 const BASE_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQRCgon0xh9NuQ87NgqQzBNPCEmmZWcC_jrulRhLwmrudf5UQ2QBRA28F1qmWB9L5xP9uZ8-ct2aqfR';
 
-/* --- Static Constants (Moved to Module Level) --- */
+/* --- Static Constants --- */
 const TITLE_ROWS = new Set(['keeper', 'verdedigers', 'middenvelders', 'aanvallers']);
 
 const DUTCH_MONTH_NAMES = ['jan','feb','mrt','apr','mei','jun','jul','aug','sep','okt','nov','dec'];

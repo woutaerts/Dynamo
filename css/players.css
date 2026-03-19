@@ -230,7 +230,7 @@ main .page-hero h1.animate-in::after {
 
 .player-search {
     padding: 0.6rem 0.8rem 0.6rem 2.2rem;
-    border: 2px solid white;
+    border: 3px solid white;
     border-radius: 20px;
     font-family: 'Poppins', sans-serif;
     font-size: 0.85rem;
@@ -271,7 +271,7 @@ main .page-hero h1.animate-in::after {
     padding: 1.5rem;
     box-shadow: var(--shadow-medium);
     cursor: pointer;
-    border: 2px solid transparent;
+    border: 3px solid transparent;
     opacity: 0;
     transform: translateY(50px);
     position: relative;

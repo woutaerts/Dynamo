@@ -1,5 +1,5 @@
 import { animateOnScroll } from './utils/animations.js';
-import { positionIcons, positionDisplayMap } from './utils/helpers.js';
+import { PLAYER_TABLE_HEADER_HTML, positionIcons, positionDisplayMap } from './utils/helpers.js';
 import { fetchTeamSeasonStats, fetchTeamAllTimeStats, fetchSeasonRecords, fetchSeasonPlayers, fetchAllTimePlayers} from './utils/dataService.js';
 
 // Variables
@@ -147,6 +147,16 @@ async function initPlayerStats() {
             fetchAllTimePlayers()
         ]);
 
+        const currentSeasonLabel = "2025-2026";
+
+        const teamTitle = document.getElementById('team-season-title');
+        const detailedTitle = document.getElementById('detailed-team-stats-title');
+        const playerTitle = document.getElementById('player-season-title');
+
+        if (teamTitle) teamTitle.textContent = `Teamprestaties ${currentSeasonLabel}`;
+        if (detailedTitle) detailedTitle.innerHTML = `Gedetailleerde <br>Teamstatistieken<br> ${currentSeasonLabel}`;
+        if (playerTitle) playerTitle.innerHTML = `Spelersstatistieken<br> ${currentSeasonLabel}`;
+
         // Assign the returned data to your global variables
         teamSeasonStats = seasonStats;
         teamAllTimeStats = allTimeStats;
@@ -199,34 +209,42 @@ function sortPlayers(players, sortBy) {
  * Shared renderer for player tables
  */
 function renderPlayerTable(players, listSelector, rowClass, sortBy) {
-    const list = document.querySelector(listSelector);
-    if (!list) return;
+    const listPlaceholder = document.querySelector(listSelector);
+    const tableContainer = listPlaceholder ? listPlaceholder.closest('.player-stats-table, .top-scorers-table') : null;
+    if (!tableContainer) return;
 
-    // COMPUTE ONCE: 'player-row' becomes 'player', 'scorer-row' becomes 'scorer'
     const prefix = rowClass.split('-')[0];
-
     const sortedPlayers = sortPlayers(players, sortBy);
-    list.innerHTML = '';
 
+    // 1. Wipe and Rebuild (Header + List Shell)
+    const listClassName = listSelector.replace('.', '');
+    tableContainer.innerHTML = `
+        ${PLAYER_TABLE_HEADER_HTML}
+        <div class="${listClassName}"></div>
+    `;
+
+    // 2. Fill the list
+    const newList = tableContainer.querySelector(listSelector);
     sortedPlayers.forEach((player, index) => {
-        const avgGoals = player.matches === 0 ? '0.00' : (player.goals / player.matches).toFixed(2);
+        const avg = player.matches === 0 ? '0.00' : (player.goals / player.matches).toFixed(2);
         const row = document.createElement('div');
         row.className = rowClass;
-
-        // Use the cached 'prefix' variable for all cell classes
         row.innerHTML = `
             <div class="table-cell ${prefix}-rank">${index + 1}</div>
-            <div class="table-cell ${prefix}-position" data-position="${positionDisplayMap[player.position]}">
+            <div class="table-cell ${prefix}-position">
                 ${positionIcons[player.position]}
                 <span class="tooltip">${positionDisplayMap[player.position]}</span>
             </div>
             <div class="table-cell ${prefix}-name">${player.name}</div>
             <div class="table-cell ${prefix}-goals">${player.goals}</div>
             <div class="table-cell ${prefix}-matches">${player.matches}</div>
-            <div class="table-cell ${prefix}-avg-goals">${avgGoals}</div>
+            <div class="table-cell ${prefix}-avg-goals">${avg}</div>
         `;
-        list.appendChild(row);
+        newList.appendChild(row);
     });
+
+    // 3. Re-bind header click listeners (Critical!)
+    initSortableHeaders();
 }
 
 // Update season player stats display
@@ -468,29 +486,19 @@ function initRowObserver() {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
                 entry.target.classList.add('animate-in');
-                observer.unobserve(entry.target); // Stop watching once animated
+                observer.unobserve(entry.target);
             }
         });
     }, { threshold: 0.1 });
 
-    // We watch the parent containers. When content changes,
-    // we observe the new children.
-    const config = { childList: true };
-    const tables = ['.player-stats-list', '.top-scorers-list'];
-
-    tables.forEach(selector => {
-        const container = document.querySelector(selector);
-        if (!container) return;
-
-        // Watch for new rows being added via re-sort or view change
-        const mutationObserver = new MutationObserver((mutations) => {
-            mutations.forEach(mutation => {
-                mutation.addedNodes.forEach(node => {
-                    if (node.nodeType === 1) observer.observe(node);
-                });
+    // Use MutationObserver to watch the containers for new rows
+    const tables = document.querySelectorAll('.player-stats-table, .top-scorers-table');
+    tables.forEach(table => {
+        const mutator = new MutationObserver(() => {
+            table.querySelectorAll('.player-row, .scorer-row').forEach(row => {
+                if (!row.classList.contains('animate-in')) observer.observe(row);
             });
         });
-
-        mutationObserver.observe(container, config);
+        mutator.observe(table, { childList: true, subtree: true });
     });
 }

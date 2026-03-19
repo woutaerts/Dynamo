@@ -44,7 +44,7 @@
 /* Search Input */
 .player-search {
     padding: 0.6rem 0.8rem 0.6rem 2.2rem;
-    border: 2px solid white;
+    border: 3px solid white;
     border-radius: 20px;
     font-family: 'Poppins', sans-serif;
     font-size: 0.85rem;
@@ -113,7 +113,7 @@
 
 .custom-dropdown {
     position: relative;
-    border: 2px solid var(--dark-blue);
+    border: 3px solid var(--dark-blue);
     border-radius: 25px;
     background: white;
     cursor: pointer;
@@ -158,7 +158,7 @@
     left: 50%;
     transform: translateX(-50%);
     background: white;
-    border: 2px solid var(--dark-blue);
+    border: 3px solid var(--dark-blue);
     border-radius: 10px;
     box-shadow: var(--shadow-medium);
     list-style: none;
