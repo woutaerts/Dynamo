@@ -123,6 +123,13 @@
     box-shadow: var(--shadow-hover);
 }
 
+.modal-section,
+.goalscorers-section,
+.score-display,
+#modalSponsorLink {
+    transition: var(--t-hover);
+}
+
 .modal-section h3,
 .goalscorers-section h3,
 .modal-sponsor-container h3 {
@@ -321,7 +328,7 @@
     .time-box p,
     .stadium-name,
     .goalscorer-item {
-        font-size: 0.85rem !important;
+        font-size: 0.85rem;
         padding: 0.6rem;
     }
 
@@ -393,7 +400,7 @@
     .time-box p,
     .stadium-name,
     .goalscorer-item {
-        font-size: 0.8rem !important;
+        font-size: 0.8rem;
         padding: 0.5rem;
     }
 

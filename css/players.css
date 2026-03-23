@@ -18,18 +18,8 @@ main .page-hero {
 
 main .page-hero h1 {
     position: relative;
-    font-family: 'Poppins', sans-serif;
-    font-size: 3rem;
-    font-weight: 900;
-    color: var(--dark-gray);
     text-align: center;
     margin: 0 auto;
-    max-width: 100%;
-    padding: 0;
-    display: inline-block;
-    opacity: 0;
-    transform: translateY(20px);
-    transition: opacity 0.6s ease-out, transform 0.6s ease-out;
 }
 
 .empty-state-message {
@@ -56,7 +46,7 @@ main .page-hero h1::after {
     opacity: 0;
     transform: scaleY(0);
     transform-origin: center center;
-    transition: opacity 0.6s ease-out 0.3s, transform 0.6s ease-out 0.3s, color 0.3s ease;
+    transition: var(--t-decorative), color var(--dur-base) var(--ease-standard);
 }
 
 main .page-hero h1:hover::before {
@@ -84,7 +74,7 @@ main .page-hero h1.animate-in::after {
     background: var(--off-white);
     opacity: 0;
     transform: translateY(20px);
-    transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+    transition: var(--t-reveal);
 }
 
 .filter-section.animate-in {
@@ -110,7 +100,10 @@ main .page-hero h1.animate-in::after {
     letter-spacing: 1px;
     font-size: 0.85rem;
     cursor: pointer;
-    transition: all 0.3s ease;
+    transition:
+            color      var(--dur-base) var(--ease-standard),
+            background var(--dur-base) var(--ease-standard),
+            box-shadow var(--dur-base) var(--ease-standard);
     display: flex;
     align-items: center;
     gap: 0.4rem;
@@ -133,7 +126,7 @@ main .page-hero h1.animate-in::after {
     width: 0;
     height: 0;
     border-radius: 50%;
-    transition: width 0.4s ease-in-out, height 0.4s ease-in-out;
+    transition: var(--t-ripple);
     transform: translate(-50%, -50%);
     z-index: -1;
 }
@@ -187,7 +180,7 @@ main .page-hero h1.animate-in::after {
     transform: translateY(50px);
     position: relative;
     overflow: visible;
-    transition: opacity 0.6s ease-out, transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+    transition: var(--t-reveal-card), border-color var(--dur-base) var(--ease-standard);
     will-change: transform, box-shadow, border-color;
 }
 
@@ -324,10 +317,6 @@ main .page-hero h1.animate-in::after {
 @media (max-width: 768px) {
     main .page-hero {
         padding: 1rem 0.5rem;
-    }
-
-    main .page-hero h1 {
-        font-size: 2rem;
     }
 
     main .page-hero h1::before,

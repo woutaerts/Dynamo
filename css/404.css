@@ -47,7 +47,9 @@
     font-weight: 700;
     font-size: 1rem;
     cursor: pointer;
-    transition: all 0.3s ease;
+    transition:
+            color      var(--dur-base) var(--ease-standard),
+            background var(--dur-base) var(--ease-standard);
     display: inline-flex;
     align-items: center;
     gap: 0.5rem;
@@ -72,8 +74,7 @@
     width: 0;
     height: 0;
     border-radius: 50%;
-    transition: width 0.4s ease-in-out, height 0.4s ease-in-out;
-    transform: translate(-50%, -50%);
+    transition: var(--t-ripple);    transform: translate(-50%, -50%);
     z-index: -1;
     background-color: var(--dynamo-red);
 }

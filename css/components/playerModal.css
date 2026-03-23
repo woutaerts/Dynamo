@@ -62,22 +62,22 @@
     background: white;
     border-radius: 12px;
     border: 1px solid transparent;
-    transition: opacity 0.6s ease-out, transform 0.6s ease-out, box-shadow 0.3s ease;
+    transition: var(--t-reveal-card);
     box-shadow: var(--shadow-medium);
     opacity: 0;
     transform: translateY(20px);
-}
-
-.season-stats-section:hover,
-.all-time-stats-section:hover {
-    transform: translateY(-2px);
-    box-shadow: var(--shadow-hover);
 }
 
 .season-stats-section.animate-in,
 .all-time-stats-section.animate-in {
     opacity: 1;
     transform: translateY(0);
+}
+
+.season-stats-section.animate-in:hover,
+.all-time-stats-section.animate-in:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-hover);
 }
 
 .season-stats-section h3,

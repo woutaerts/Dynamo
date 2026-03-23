@@ -20,7 +20,7 @@ body.modal-open {
     backdrop-filter: blur(3px);
     visibility: hidden;
     opacity: 0;
-    transition: opacity 0.3s ease, visibility 0.3s ease;
+    transition: var(--t-modal);
 }
 
 .modal-overlay.show {
@@ -81,7 +81,9 @@ body.modal-open {
     display: flex;
     align-items: center;
     justify-content: center;
-    transition: all 0.3s ease;
+    transition:
+            box-shadow   var(--dur-base) var(--ease-standard),
+            border-color var(--dur-base) var(--ease-standard);
     box-shadow: var(--shadow-medium);
     line-height: 1;
     padding: 0;

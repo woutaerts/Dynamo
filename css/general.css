@@ -15,13 +15,82 @@
     --medium-gray: #666;
     --line-gray: #999;
     --light-gray: #ccc;
-    --silver-mist: #e8e8e8;
+    --silver-mist: #E8E8E8;
     --off-white: #FAF9F5;
     --nested-box: #EFF2F7;
     --shadow-small: 0 8px 20px rgba(0, 0, 0, 0.10);
     --shadow-medium: 0 8px 20px rgba(0, 0, 0, 0.20);
     --shadow-hover: 0 8px 20px rgba(0, 0, 0, 0.35);
     --animation-delay: 0;
+
+    /* MOTION DESIGNS */
+
+    /* Durations */
+    --dur-instant:   0.1s;   /* scroll-progress bar width tracking */
+    --dur-micro:     0.2s;   /* tooltips, autocomplete items, hamburger bars */
+    --dur-base:      0.3s;   /* standard UI feedback (hover states, modal close) */
+    --dur-ripple:    0.4s;   /* ripple/hover-effect expansion */
+    --dur-reveal:    0.6s;   /* scroll-reveal entrances */
+    --dur-enter:     0.8s;   /* page/header-level entrances */
+    --dur-loader:    1s;     /* pulse animation cycle */
+    --dur-ticker:    30s;    /* sponsor ticker loop */
+
+    /* Easing */
+    --ease-standard: ease;
+    --ease-out:      ease-out;
+    --ease-in-out:   ease-in-out;
+    --ease-ui:       cubic-bezier(0.4, 0, 0.2, 1);   /* Material: nav, header, hamburger */
+    --ease-carousel: cubic-bezier(0.33, 1, 0.68, 1); /* ease-out-cubic: carousel slides */
+    --ease-spring:   cubic-bezier(0.18, 0.89, 0.35, 1.15); /* overshoot: toggle knob */
+
+    /* Delays */
+    --delay-stagger: 0.3s;  /* follow-up decorative element (underline, pipe chars) */
+
+    /* ─── Compound transition shorthands ─── */
+
+    /* Hover: card lift + shadow depth */
+    --t-hover:
+            box-shadow var(--dur-base) var(--ease-standard),
+            transform   var(--dur-base) var(--ease-standard);
+
+    /* Hover: colour-only links and icons */
+    --t-color:
+            color var(--dur-base) var(--ease-standard);
+
+    /* Hover: background highlight (dropdown items) */
+    --t-bg:
+            background var(--dur-micro) var(--ease-standard);
+
+    /* Ripple expansion (width + height together) */
+    --t-ripple:
+            width  var(--dur-ripple) var(--ease-in-out),
+            height var(--dur-ripple) var(--ease-in-out);
+
+    /* Scroll-reveal entrance (symmetric — opacity & position finish together) */
+    --t-reveal:
+            opacity   var(--dur-reveal) var(--ease-out),
+            transform var(--dur-reveal) var(--ease-out);
+
+    /* Scroll-reveal entrance for cards that also change shadow on hover */
+    --t-reveal-card:
+            opacity    var(--dur-reveal) var(--ease-out),
+            transform  var(--dur-reveal) var(--ease-out),
+            box-shadow var(--dur-base)   var(--ease-standard);
+
+    /* Delayed decorative elements (underlines, pipe characters) */
+    --t-decorative:
+            opacity   var(--dur-reveal) var(--ease-out) var(--delay-stagger),
+            transform var(--dur-reveal) var(--ease-out) var(--delay-stagger);
+
+    /* Modal overlay fade */
+    --t-modal:
+            opacity    var(--dur-base) var(--ease-standard),
+            visibility var(--dur-base) var(--ease-standard);
+
+    /* Tooltip fade */
+    --t-tooltip:
+            opacity    var(--dur-micro) var(--ease-standard),
+            visibility var(--dur-micro) var(--ease-standard);
 }
 
 /* Base Reset and Typography */
@@ -81,7 +150,7 @@ html {
     display: inline-block;
     opacity: 0;
     transform: translateY(20px);
-    transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+    transition: var(--t-reveal);
 }
 
 .page-hero h1::before,
@@ -97,7 +166,7 @@ html {
     opacity: 0;
     transform: scaleY(0);
     transform-origin: center center;
-    transition: opacity 0.6s ease-out 0.3s, transform 0.6s ease-out 0.3s, color 0.3s ease;
+    transition: var(--t-decorative), color var(--dur-base) var(--ease-standard);
 }
 
 .page-hero h1:hover::before {
@@ -128,7 +197,7 @@ html {
     position: relative;
     opacity: 0;
     transform: translateY(20px);
-    transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+    transition: var(--t-reveal);
     font-family: 'Poppins', sans-serif;
 }
 
@@ -151,7 +220,7 @@ html {
     transform-origin: left center;
     background: var(--dynamo-red);
     border-radius: 3px;
-    transition: transform 0.6s ease-out 0.3s;
+    transition: transform var(--dur-reveal) var(--ease-out) var(--delay-stagger);
 }
 
 .section-title::after {
@@ -199,13 +268,16 @@ html {
     padding: 0.8rem;
     border-radius: 12px;
     box-shadow: var(--shadow-medium);
-    transition: transform 0.3s, box-shadow 0.3s ease;
+    transition: var(--t-hover);
     width: 80px;
 }
 
-.countdown-box:hover {
-    box-shadow: var(--shadow-hover);
+.stat-card:hover,
+.countdown-box:hover,
+.contact-section .contact-card:hover,
+.stats-overview-section .stat-card:hover {
     transform: translateY(-5px);
+    box-shadow: var(--shadow-hover);
 }
 
 .countdown-box span {
@@ -229,6 +301,9 @@ html {
 .upcoming-match-name {
     text-align: center;
     margin: 1rem 0;
+    opacity: 0;
+    transform: translateY(50px);
+    transition: opacity 0.6s ease-out, transform 0.3s ease-out;
 }
 
 .upcoming-match-name h3 {
@@ -283,7 +358,7 @@ html {
 .match-sponsor-link {
     display: inline-block;
     border-radius: 12px;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    transition: var(--t-hover);
 }
 
 .match-sponsor-link:hover {
@@ -340,7 +415,9 @@ html {
     width: 100%;
     box-sizing: border-box;
     text-align: center;
-    transition: all 0.3s ease;
+    transition:
+            border-color var(--dur-base) var(--ease-standard),
+            box-shadow   var(--dur-base) var(--ease-standard);
     outline: none;
     box-shadow: var(--shadow-medium);
     min-height: 44px;
@@ -362,11 +439,6 @@ html {
     border-radius: 15px;
     box-shadow: var(--shadow-medium);
     text-align: center;
-}
-
-.stat-card:hover {
-    transform: translateY(-5px);
-    box-shadow: var(--shadow-hover);
 }
 
 .stat-number {
@@ -510,12 +582,11 @@ html {
 .goalscorers-section,
 .date-time-section,
 .stadium-section,
-.upcoming-match-name,
 .form-description,
 .match-sponsor-block {
     opacity: 0;
     transform: translateY(50px);
-    transition: opacity 0.6s ease-out, transform 0.3s ease-out, box-shadow 0.3s ease;
+    transition: var(--t-reveal-card);
 }
 
 .animate-in {
@@ -679,5 +750,42 @@ html {
 
     .form-result.loss:last-child {
         box-shadow: 0 0 0 2px var(--soft-coral);
+    }
+}
+
+
+@media (prefers-reduced-motion: reduce) {
+    /* Cancel all scroll-reveal entrances */
+    .overview-card, .stat-card, .contact-card, .countdown-block,
+    .form-result, .map-container, .record-category, .scorer-card,
+    .player-card, .stat-category, .match-card, .timeline-item,
+    .modal-match-score, .goalscorers-section, .date-time-section,
+    .stadium-section, .form-description, .match-sponsor-block,
+    .section-title, .section-subtitle, .page-hero h1,
+    .archive-match-card, .dropdown-container, .filter-section,
+    .carousel-container, .sponsor-cta-section, .toggles-container,
+    .search-container, .upcoming-match-name {
+        opacity: 1 !important;
+        transform: none !important;
+        transition: none !important;
+        animation: none !important;
+        visibility: visible !important;
+    }
+
+    /* Cancel ticker and loader animations */
+    .ticker-track.scrolling,
+    .search-inline-loader .football-loader path {
+        animation: none !important;
+    }
+
+    /* Cancel carousel */
+    .carousel, .slide img {
+        transition: none !important;
+    }
+
+    /* Keep functional micro-transitions (modal visibility) */
+    .modal-overlay {
+        transition: opacity var(--dur-micro) var(--ease-standard),
+        visibility var(--dur-micro) var(--ease-standard);
     }
 }
