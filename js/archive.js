@@ -66,27 +66,33 @@ let archivePlayers = [];
 
 /* Genereer de HTML voor de grafiek tooltip */
 const getArchiveTooltipHTML = (d) => `
-    <div style="background:white;border:2px solid #3D5A80;border-radius:12px;padding:10px 8px;
-         box-shadow:0 4px 10px rgba(0,0,0,0.1);width:90px;box-sizing:border-box;
-         text-align:center;font-family:'Poppins',sans-serif;">
-        <h4 style="margin:0 0 6px;font-size:1.3rem;font-weight:800;color:#3D5A80;line-height:1;">${d.matches}</h4>
-        <div style="display:flex;justify-content:center;align-items:center;gap:8px;margin-bottom:6px;">
-            <span style="display:flex;justify-content:center;align-items:center;width:22px;height:22px;
-                  border-radius:50%;background:#648F5F;color:white;font-size:10px;">
-                <i class="fas fa-check"></i></span>
-            <span style="font-size:0.95rem;font-weight:600;color:#333;width:16px;text-align:left;">${d.winst}</span>
+    <div style="background:white; border:3px solid #3D5A80; border-radius:12px; padding:10px 8px;
+         box-shadow:0 4px 10px rgba(0,0,0,0.1); width:90px; box-sizing:border-box;
+         text-align:center; font-family:'Poppins',sans-serif;">
+        <h4 style="margin:0 0 6px; font-size:1.3rem; font-weight:800; color:#3D5A80; line-height:1;">${d.matches}</h4>
+        <div style="display:flex; justify-content:center; align-items:center; gap:8px; margin-bottom:6px;">
+            <span style="display:flex; justify-content:center; align-items:center; width:22px; height:22px;
+                  border-radius:50%; background:#648F5F; color:white; font-size:11px; line-height:1;
+                  font-weight:900;">
+                <i class="fas fa-check" style="transform: translateY(1px) translateX(0.5px);"></i>
+            </span>
+            <span style="font-size:0.95rem; font-weight:600; color:#333; width:16px; text-align:left;">${d.winst}</span>
         </div>
-        <div style="display:flex;justify-content:center;align-items:center;gap:8px;margin-bottom:6px;">
-            <span style="display:flex;justify-content:center;align-items:center;width:22px;height:22px;
-                  border-radius:50%;background:#E8B04B;color:white;font-size:10px;">
-                <i class="fas fa-minus"></i></span>
-            <span style="font-size:0.95rem;font-weight:600;color:#333;width:16px;text-align:left;">${d.gelijk}</span>
+        <div style="display:flex; justify-content:center; align-items:center; gap:8px; margin-bottom:6px;">
+            <span style="display:flex; justify-content:center; align-items:center; width:22px; height:22px;
+                  border-radius:50%; background:#E8B04B; color:white; font-size:11px; line-height:1;
+                  font-weight:900;">
+                <i class="fas fa-minus" style="transform: translateY(1px) translateX(0.5px);"></i>
+            </span>
+            <span style="font-size:0.95rem; font-weight:600; color:#333; width:16px; text-align:left;">${d.gelijk}</span>
         </div>
-        <div style="display:flex;justify-content:center;align-items:center;gap:8px;">
-            <span style="display:flex;justify-content:center;align-items:center;width:22px;height:22px;
-                  border-radius:50%;background:#E07A5F;color:white;font-size:10px;">
-                <i class="fas fa-times"></i></span>
-            <span style="font-size:0.95rem;font-weight:600;color:#333;width:16px;text-align:left;">${d.verlies}</span>
+        <div style="display:flex; justify-content:center; align-items:center; gap:8px;">
+            <span style="display:flex; justify-content:center; align-items:center; width:22px; height:22px;
+                  border-radius:50%; background:#E07A5F; color:white; font-size:11px; line-height:1;
+                  font-weight:900;">
+                <i class="fas fa-times" style="transform: translateY(1px) translateX(0.5px);"></i>
+            </span>
+            <span style="font-size:0.95rem; font-weight:600; color:#333; width:16px; text-align:left;">${d.verlies}</span>
         </div>
     </div>`;
 
@@ -466,6 +472,7 @@ function renderSeasonMatches(matches) {
         card.setAttribute('data-match-time',   match.time);
         card.setAttribute('data-match-season', match.season);
         card.setAttribute('data-goalscorers',  JSON.stringify(match.goalscorers));
+        card.setAttribute('data-result', match.result);
 
         card.innerHTML = `
             <div class="result-icon ${resultClass}">
@@ -611,6 +618,7 @@ function setupArchiveMatchInteractions() {
                 title:      card.getAttribute('data-match-title') || 'Wedstrijddetails',
                 stadium:    card.getAttribute('data-venue')        || 'Onbekend stadion',
                 score:      card.getAttribute('data-score'),
+                result: card.getAttribute('data-result') || null,
                 season:     card.getAttribute('data-match-season') || '',
                 isUpcoming: false,
                 goalscorers,

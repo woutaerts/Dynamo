@@ -278,6 +278,7 @@ html {
 .stats-overview-section .stat-card:hover {
     transform: translateY(-5px);
     box-shadow: var(--shadow-hover);
+    transition: var(--t-hover);
 }
 
 .countdown-box span {
@@ -303,7 +304,7 @@ html {
     margin: 1rem 0;
     opacity: 0;
     transform: translateY(50px);
-    transition: opacity 0.6s ease-out, transform 0.3s ease-out;
+    transition: var(--t-reveal);
 }
 
 .upcoming-match-name h3 {
@@ -380,7 +381,7 @@ html {
     text-align: center;
     opacity: 0;
     transform: translateY(20px);
-    transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+    transition: var(--t-reveal);
 }
 
 .search-container.animate-in {
@@ -523,6 +524,7 @@ html {
 .form-result:hover {
     box-shadow: var(--shadow-hover);
     transform: translateY(-5px);
+    transition: var(--t-hover);
 }
 
 .form-result.win:last-child:hover {
@@ -620,6 +622,23 @@ html {
     .page-hero h1::after {
         font-size: 1em;
         margin: 6px;
+    }
+
+    .stat-card:hover,
+    .contact-section .contact-card:hover,
+    .countdown-box:hover {
+        transform: translateY(0) !important;
+        box-shadow: var(--shadow-hover);
+    }
+
+    .form-result:hover,
+    .form-result:last-child:hover {
+        transform: translateY(0) !important;
+    }
+
+    .match-sponsor-link:hover {
+        transform: translateY(0) !important;
+        box-shadow: var(--shadow-hover);
     }
 
     .section-title {

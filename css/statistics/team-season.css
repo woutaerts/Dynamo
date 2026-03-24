@@ -33,7 +33,7 @@
     padding: 1.5rem;
     border-radius: 15px;
     box-shadow: var(--shadow-medium);
-    transition: box-shadow 0.3s ease, transform 0.3s ease;
+    transition: var(--t-hover);
 }
 
 .stat-category:nth-child(1) {
@@ -70,7 +70,7 @@
     font-family: 'Poppins', sans-serif;
     font-weight: 700;
     font-size: 1.3rem;
-    transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+    transition: var(--t-reveal);
 }
 
 .stat-item {
@@ -83,7 +83,7 @@
     border-radius: 10px;
     margin-bottom: 0.8rem;
     font-family: 'Poppins', sans-serif;
-    transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+    transition: var(--t-reveal);
 }
 
 .stat-item .stat-name {
@@ -95,7 +95,7 @@
     font-weight: 700;
     color: var(--primary-theme-color);
     font-size: 1.1rem;
-    transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+    transition: var(--t-reveal);
 }
 
 /* Tablet View */
@@ -116,6 +116,11 @@
     .stat-category,
     .stat-category:nth-child(1) {
         width: 100%;
+    }
+
+    .stat-category:hover {
+        transform: translateY(0) !important;
+        box-shadow: var(--shadow-hover);
     }
 
     .stat-category-container {

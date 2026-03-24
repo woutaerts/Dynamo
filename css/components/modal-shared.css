@@ -41,7 +41,6 @@ body.modal-open {
     position: relative;
     color: var(--dark-gray);
     font-family: 'Poppins', sans-serif;
-    border: 1px solid rgba(0, 0, 0, 0.05);
 }
 
 /* Custom Scrollbar for all modals */
@@ -73,7 +72,7 @@ body.modal-open {
     margin-top: -5px;
     margin-right: -5px;
     margin-bottom: -36px;
-    border: 1px solid transparent;
+    border: 3px solid transparent;
     cursor: pointer;
     width: 36px;
     height: 36px;
@@ -83,7 +82,8 @@ body.modal-open {
     justify-content: center;
     transition:
             box-shadow   var(--dur-base) var(--ease-standard),
-            border-color var(--dur-base) var(--ease-standard);
+            border-color var(--dur-base) var(--ease-standard),
+            color        var(--dur-base) var(--ease-standard);
     box-shadow: var(--shadow-medium);
     line-height: 1;
     padding: 0;
@@ -99,11 +99,11 @@ body.modal-open {
 
 .close-modal:hover {
     box-shadow: var(--shadow-hover);
-    border-color: var(--dynamo-red);
+    border-color: var(--dark-gray);
 }
 
 .close-modal:hover i {
-    color: var(--dynamo-red);
+    color: var(--dark-gray);
 }
 
 /* Shared tablet tweaks */

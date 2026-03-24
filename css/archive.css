@@ -81,7 +81,7 @@
     box-sizing: border-box;
     text-align: center;
     position: relative;
-    transition: background 0.2s ease;
+    transition: var(--t-bg);
 }
 
 #season-select .selected::after {
@@ -94,7 +94,7 @@
     transform: translateY(-55%);
     font-size: 1.2rem;
     color: var(--dark-gray);
-    transition: transform var(--dur-base) var(--ease-standard);
+    transition: transform var(--dur-base) var(--ease-ui);
 }
 
 #season-select.active .selected::after {
@@ -214,6 +214,11 @@
     .dropdown-container {
         flex-direction: column;
         gap: 0.5rem;
+    }
+
+    .archive-match-card:hover {
+        transform: translateY(0) !important;
+        box-shadow: var(--shadow-hover);
     }
 
     .stats-grid {

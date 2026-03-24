@@ -19,11 +19,7 @@ body {
     backdrop-filter: blur(25px);
     box-shadow: var(--shadow-medium);
     border-radius: 55px;
-    transition:
-            transform   var(--dur-base) var(--ease-ui),
-            background  var(--dur-base) var(--ease-ui),
-            box-shadow  var(--dur-base) var(--ease-ui),
-            opacity     var(--dur-base) var(--ease-ui);
+    transition: var(--t-hover);
     animation: slideDown var(--dur-enter) var(--ease-ui);
     padding: 8px 12px;
     will-change: transform, background, box-shadow, opacity;
@@ -127,9 +123,7 @@ body {
     letter-spacing: 1px;
     font-size: 1rem;
     cursor: pointer;
-    transition:
-            color      var(--dur-base) var(--ease-standard),
-            background var(--dur-base) var(--ease-standard);
+    transition: var(--t-color), var(--t-bg);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -374,6 +368,25 @@ body {
         font-size: 0.88rem;
         width: 100%;
         justify-content: center;
+    }
+
+    .mobile-search-link:hover,
+    .mobile-menu-toggle:hover {
+        transform: none !important;
+        background: rgba(255, 255, 255, 0.5);
+    }
+
+    .nav-link:hover span.ripple,
+    .nav-link:focus span.ripple {
+        width: 0 !important;
+        height: 0 !important;
+        transition: none !important;
+    }
+
+    .nav-link:hover,
+    .nav-link:focus {
+        color: var(--off-white);
+        background: var(--dynamo-red);
     }
 
     .nav-link.search-link,

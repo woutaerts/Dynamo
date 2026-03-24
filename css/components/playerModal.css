@@ -76,8 +76,9 @@
 
 .season-stats-section.animate-in:hover,
 .all-time-stats-section.animate-in:hover {
-    transform: translateY(-2px);
+    transform: translateY(-3px);
     box-shadow: var(--shadow-hover);
+    transition: var(--t-hover);
 }
 
 .season-stats-section h3,
@@ -168,6 +169,12 @@
     .stat-box {
         flex: 1 1 calc(50% - 0.5rem);
         min-width: calc(50% - 0.5rem);
+    }
+
+    .season-stats-section.animate-in:hover,
+    .all-time-stats-section.animate-in:hover {
+        transform: translateY(0) !important;
+        box-shadow: var(--shadow-hover);
     }
 }
 

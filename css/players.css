@@ -100,10 +100,7 @@ main .page-hero h1.animate-in::after {
     letter-spacing: 1px;
     font-size: 0.85rem;
     cursor: pointer;
-    transition:
-            color      var(--dur-base) var(--ease-standard),
-            background var(--dur-base) var(--ease-standard),
-            box-shadow var(--dur-base) var(--ease-standard);
+    transition: var(--t-color), var(--t-bg), box-shadow var(--dur-base) var(--ease-standard);
     display: flex;
     align-items: center;
     gap: 0.4rem;
@@ -180,13 +177,14 @@ main .page-hero h1.animate-in::after {
     transform: translateY(50px);
     position: relative;
     overflow: visible;
-    transition: var(--t-reveal-card), border-color var(--dur-base) var(--ease-standard);
+    transition: var(--t-reveal-card);
     will-change: transform, box-shadow, border-color;
 }
 
 .player-card:hover {
     box-shadow: var(--shadow-hover);
     transform: translateY(-5px);
+    transition: var(--t-hover);
 }
 
 .player-card.animate-in {
@@ -351,6 +349,11 @@ main .page-hero h1.animate-in::after {
 
     .player-card {
         padding: 1.2rem;
+    }
+
+    .player-card:hover {
+        transform: translateY(0) !important;
+        box-shadow: var(--shadow-hover);
     }
 
     .player-name {

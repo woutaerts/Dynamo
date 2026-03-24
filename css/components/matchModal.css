@@ -47,7 +47,19 @@
     transform: translateX(-50%);
     width: 50px;
     height: 3px;
-    background: var(--dynamo-red);
+    background: var(--dusty-blue);
+}
+
+#matchCenterModal.win #modalMatchTitle::after {
+    background: var(--light-green) !important;
+}
+
+#matchCenterModal.draw #modalMatchTitle::after {
+    background: var(--golden-yellow) !important;
+}
+
+#matchCenterModal.loss #modalMatchTitle::after {
+    background: var(--soft-coral) !important;
 }
 
 .match-title-container::after {
@@ -96,11 +108,25 @@
     font-weight: 700;
     color: var(--dark-gray);
     font-family: 'Poppins', sans-serif;
-    border: 3px solid transparent;
+    border: 3px solid var(--dusty-blue);
     box-shadow: var(--shadow-medium);
     text-align: center;
     min-width: 110px;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+#matchCenterModal.win .score-display,
+#matchCenterModal:has(.result-icon.win) .score-display {
+    border-color: var(--light-green) !important;
+}
+
+#matchCenterModal.draw .score-display,
+#matchCenterModal:has(.result-icon.draw) .score-display {
+    border-color: var(--golden-yellow) !important;
+}
+
+#matchCenterModal.loss .score-display,
+#matchCenterModal:has(.result-icon.loss) .score-display {
+    border-color: var(--soft-coral) !important;
 }
 
 /* Modal Sections */
@@ -111,7 +137,6 @@
     background: white;
     border-radius: 12px;
     border: 1px solid transparent;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
     box-shadow: var(--shadow-medium);
 }
 
@@ -119,8 +144,9 @@
 .goalscorers-section:hover,
 .score-display:hover,
 #modalSponsorLink:hover {
-    transform: translateY(-2px);
+    transform: translateY(-3px);
     box-shadow: var(--shadow-hover);
+    transition: var(--t-hover);
 }
 
 .modal-section,
@@ -152,8 +178,26 @@
     transform: translateX(-50%);
     width: 35px;
     height: 3px;
-    background: var(--dynamo-red);
+    background: var(--dusty-blue);
     border-radius: 1px;
+}
+
+#matchCenterModal.win .modal-section h3::after,
+#matchCenterModal.win .goalscorers-section h3::after,
+#matchCenterModal.win .modal-sponsor-container h3::after {
+    background: var(--light-green) !important;
+}
+
+#matchCenterModal.draw .modal-section h3::after,
+#matchCenterModal.draw .goalscorers-section h3::after,
+#matchCenterModal.draw .modal-sponsor-container h3::after {
+    background: var(--golden-yellow) !important;
+}
+
+#matchCenterModal.loss .modal-section h3::after,
+#matchCenterModal.loss .goalscorers-section h3::after,
+#matchCenterModal.loss .modal-sponsor-container h3::after {
+    background: var(--soft-coral) !important;
 }
 
 /* Matchbal Sponsor */
@@ -166,7 +210,6 @@
 #modalSponsorLink {
     display: inline-block;
     border-radius: 12px;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 #modalSponsorLogo {
@@ -180,13 +223,13 @@
 /* Match Details Container */
 .match-details-container {
     display: flex;
-    justify-content: space-between;
     margin-bottom: 1.5rem;
+    gap: 1.5rem;
 }
 
 .match-details-container .modal-section {
     flex: 1;
-    margin: 0 0.5rem;
+    margin:0;
 }
 
 .match-details-container .modal-section p,
@@ -203,7 +246,6 @@
     padding: 0.8rem;
     background: var(--nested-box);
     border-radius: 10px;
-    border: 1px solid transparent;
     box-shadow: var(--shadow-medium);
     display: flex;
     align-items: center;
@@ -214,7 +256,7 @@
 /* Date and Time Section */
 .date-time-section {
     flex: 1;
-    margin: 0 0.5rem;
+    margin:0;
     width: 100%;
 }
 
@@ -272,51 +314,39 @@
     background: var(--medium-gray);
 }
 
+#matchCenterModal .modal-content > *:last-child {
+    margin-bottom: 0 !important;
+}
+
+/* Tablet View */
 /* Tablet View */
 @media (max-width: 768px) {
-    .team-name {
-        font-size: 1.3rem;
-    }
-
-    .vs-text {
-        font-size: 1rem;
-    }
-
+    .team-name { font-size: 1.3rem; }
+    .vs-text { font-size: 1rem; }
     .score-display {
         font-size: 1.3rem;
         padding: 7px 12px;
         min-width: 90px;
         border-radius: 18px;
     }
-
     #modalMatchTitle {
         font-size: 1.4rem;
-        margin-bottom: 1rem;
+        margin-bottom: 1.2rem; /* ← now matches padding */
     }
-
-    #modalMatchTitle::after {
-        width: 40px;
-        height: 3px;
-    }
-
+    #modalMatchTitle::after { width: 40px; height: 3px; }
     .season {
         font-size: 0.9rem;
-        margin-bottom: 0.8rem;
+        margin-bottom: 1.2rem; /* ← now matches */
     }
-
     .modal-section,
     .goalscorers-section {
         padding: 0.9rem;
-        margin-bottom: 1rem;
+        margin-bottom: 1.2rem; /* ← now matches padding */
         border-radius: 10px;
     }
-
     .modal-section h3,
     .goalscorers-section h3,
-    .modal-sponsor-container h3 {
-        font-size: 1rem;
-    }
-
+    .modal-sponsor-container h3 { font-size: 1rem; }
     .modal-section h3::after,
     .goalscorers-section h3::after,
     .modal-sponsor-container h3::after {
@@ -324,6 +354,13 @@
         height: 3px;
     }
 
+    .modal-section:hover,
+    .goalscorers-section:hover,
+    .score-display:hover,
+    #modalSponsorLink:hover {
+        transform: translateY(0) !important;
+        box-shadow: var(--shadow-hover);
+    }
     .date-box p,
     .time-box p,
     .stadium-name,
@@ -331,71 +368,51 @@
         font-size: 0.85rem;
         padding: 0.6rem;
     }
-
     .date-time-container {
         flex-direction: row;
         gap: 0.4rem;
     }
-
     .date-box,
-    .time-box {
-        flex: 1;
-        min-width: 0;
-    }
+    .time-box { flex: 1; min-width: 0; }
+    .modal-match-score { margin-bottom: 1.2rem; }
+    .match-details-container { margin-bottom: 1.2rem; }
+    .match-title-container { margin-bottom: 1.2rem; }
 }
 
 /* Mobile View */
 @media (max-width: 480px) {
-    .team-name {
-        font-size: 1.2rem;
-    }
-
-    .vs-text {
-        font-size: 0.9rem;
-    }
-
+    .team-name { font-size: 1.2rem; }
+    .vs-text { font-size: 0.9rem; }
     .score-display {
         font-size: 1.2rem;
         padding: 6px 10px;
         min-width: 80px;
         border-radius: 16px;
     }
-
     #modalMatchTitle {
         font-size: 1.3rem;
-        margin-bottom: 0.8rem;
+        margin-bottom: 1rem;
     }
-
-    #modalMatchTitle::after {
-        width: 35px;
-        height: 2px;
-    }
-
+    #modalMatchTitle::after { width: 35px; height: 2px; }
     .season {
         font-size: 0.85rem;
-        margin-bottom: 0.6rem;
+        margin-bottom: 1rem;
     }
-
     .modal-section,
     .goalscorers-section {
         padding: 0.8rem;
-        margin-bottom: 0.8rem;
+        margin-bottom: 1rem;
         border-radius: 8px;
     }
-
     .modal-section h3,
     .goalscorers-section h3,
-    .modal-sponsor-container h3 {
-        font-size: 0.9rem;
-    }
-
+    .modal-sponsor-container h3 { font-size: 0.9rem; }
     .modal-section h3::after,
     .goalscorers-section h3::after,
     .modal-sponsor-container h3::after {
         width: 25px;
         height: 2px;
     }
-
     .date-box p,
     .time-box p,
     .stadium-name,
@@ -403,17 +420,13 @@
         font-size: 0.8rem;
         padding: 0.5rem;
     }
+    .date-time-container { gap: 0.3rem; }
 
-    .date-time-container {
-        gap: 0.3rem;
-    }
-
+    .modal-match-score { margin-bottom: 1rem; }
     .match-details-container {
         flex-direction: column;
-        gap: 0.8rem;
+        gap: 1rem;
+        margin-bottom: 1rem;
     }
-
-    .match-details-container .modal-section {
-        margin: 0;
-    }
+    .match-title-container { margin-bottom: 1rem; }
 }

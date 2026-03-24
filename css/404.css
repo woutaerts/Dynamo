@@ -118,6 +118,17 @@
         font-size: 0.9rem;
         min-height: 44px;
     }
+
+    .error-cta:hover .hover-effect {
+        width: 0 !important;
+        height: 0 !important;
+        transition: none !important;
+    }
+
+    .error-cta:hover {
+        background: var(--dynamo-red);
+        color: var(--off-white);
+    }
 }
 
 /* Mobile View */

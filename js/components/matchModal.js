@@ -83,12 +83,22 @@ class MatchModal {
             stadium = 'Home Stadium',
             goalscorers = [],
             score = null,
+            result = null,
             isUpcoming = false,
             isHome = true,
             sponsor = null
         } = matchData;
 
         document.body.classList.add('modal-open');
+
+        const resultClass = !isUpcoming && result
+            ? (result === 'winst' ? 'win' : result === 'gelijk' ? 'draw' : 'loss')
+            : '';
+
+        this.modal.classList.remove('win', 'draw', 'loss');
+        if (resultClass) {
+            this.modal.classList.add(resultClass);
+        }
 
         // Update content first
         const modalContent = this.modal.querySelector('.modal-content');
