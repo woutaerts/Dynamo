@@ -90,7 +90,7 @@ function parseMatchesCsv(csvText, layout) {
         const match = {
             title,
             dateTime: { date, time, displayDate },
-            season: '2025-26',
+            season: '2025-2026',
             stadium,
             isHome,
             sponsor: hasSponsor ? { name: sponsorName, logo: sponsorLogo, url: sponsorUrl } : null
@@ -304,17 +304,19 @@ export async function fetchSearchMatches() {
 
         if (!opponent || !dateRaw || goalsScored === undefined || goalsConceded === undefined) continue;
 
-        let displayDate = '', season = '';
+        let displayDate = '', season = 'Onbekend seizoen';
         try {
             const [day, month, year] = dateRaw.split('-').map(Number);
             if (new Date(year, month - 1, day) > currentDate) continue;
+
             displayDate = `${day} ${DUTCH_MONTH_NAMES[month - 1]}`;
 
             const seasonStart = month >= 8 ? year : year - 1;
             const seasonEnd = seasonStart + 1;
-            season = `'${(seasonStart % 100).toString().padStart(2, '0')}-'${(seasonEnd % 100).toString().padStart(2, '0')}`;
+            season = `${seasonStart}-${seasonEnd}`;
+
         } catch (e) {
-            continue;
+            console.warn('Failed to parse date/season for match:', opponent, dateRaw);
         }
 
         const isHome = homeAwayRaw?.toLowerCase() === 'thuis';
@@ -323,7 +325,8 @@ export async function fetchSearchMatches() {
         matches.push({
             title: isHome ? `Dynamo Beirs vs ${opponent}` : `${opponent} vs Dynamo Beirs`,
             opponent,
-            dateTime: { date: dateRaw, time: time || '??:??', displayDate, season },
+            dateTime: { date: dateRaw, time: time || '??:??', displayDate },
+            season,
             stadium: stadium || 'Onbekend stadion',
             isHome,
             score: isHome ? `${goalsScored}-${goalsConceded}` : `${goalsConceded}-${goalsScored}`,

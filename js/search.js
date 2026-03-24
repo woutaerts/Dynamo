@@ -124,7 +124,7 @@ function renderSearchResults(matches) {
                 <div class="match-score">${match.score}</div>
                 <div class="match-details">
                     <span class="match-date"><i class="fas fa-calendar"></i> ${match.dateTime.displayDate}</span>
-                    <span class="match-season"><i class="fas fa-trophy"></i> ${match.dateTime.season}</span>
+                    <span class="match-season"><i class="fas fa-trophy"></i> ${match.season}</span>
                 </div>
             </div>
         `;

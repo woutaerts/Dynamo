@@ -369,7 +369,7 @@ function setupMatchInteractions() {
                 matchData = {
                     title: `Match ${item.dataset.match}`,
                     dateTime: { date: item.querySelector('small')?.textContent || 'TBD', time: 'TBD' },
-                    season: '2025-26',
+                    season: '2025-2026',
                     stadium: 'Onbekend Stadion',
                     score: null,
                     goalscorers: []

@@ -24,7 +24,7 @@ const animationElements = [
 /* Configuratie van alle seizoenen en hun spreadsheet parameters */
 const SEASON_CONFIG = {
     '2024-2025': {
-        label: '2024-25',
+        label: '2024-2025',
         url: SHEET_URLS.season2425,
         matchCols:    { first: col('F'), last: col('AA') },
         matchRows:    { opponent: 1, date: 2, time: 3, stadium: 4, homeAway: 5, goalsFor: 75, goalsAgainst: 76, goalscorers: 78 },
@@ -33,7 +33,7 @@ const SEASON_CONFIG = {
         statsCell:    { played: [78, col('AE')], wins: [76, col('AG')], draws: [77, col('AG')], losses: [78, col('AG')], goalsFor: [75, col('AE')], goalsAgainst: [76, col('AE')] },
     },
     '2023-2024': {
-        label: '2023-24',
+        label: '2023-2024',
         url: SHEET_URLS.season2324,
         matchCols:    { first: col('F'), last: col('Z') },
         matchRows:    { opponent: 1, date: 2, time: 3, stadium: 4, homeAway: 5, goalsFor: 64, goalsAgainst: 65, goalscorers: 67 },
@@ -42,7 +42,7 @@ const SEASON_CONFIG = {
         statsCell:    { played: [67, col('AD')], wins: [65, col('AF')], draws: [66, col('AF')], losses: [67, col('AF')], goalsFor: [64, col('AD')], goalsAgainst: [65, col('AD')] },
     },
     '2022-2023': {
-        label: '2022-23',
+        label: '2022-2023',
         url: SHEET_URLS.season2223,
         matchCols:    { first: col('F'), last: col('W') },
         matchRows:    { opponent: 1, date: 2, time: 3, stadium: 4, homeAway: 5, goalsFor: 73, goalsAgainst: 74, goalscorers: 76 },
@@ -51,7 +51,7 @@ const SEASON_CONFIG = {
         statsCell:    { played: [76, col('AA')], wins: [74, col('AC')], draws: [75, col('AC')], losses: [76, col('AC')], goalsFor: [73, col('AA')], goalsAgainst: [74, col('AA')] },
     },
     '2021-2022': {
-        label: '2021-22',
+        label: '2021-2022',
         url: SHEET_URLS.season2122,
         matchCols:    { first: col('F'), last: col('X') },
         matchRows:    { opponent: 1, date: 2, time: 3, stadium: 4, homeAway: 5, goalsFor: 56, goalsAgainst: 57, goalscorers: 59 },
