@@ -15,7 +15,7 @@
 
 .boxLabel {
     text-anchor: middle;
-    font-size: 21px;
+    font-size: var(--text-h3);
     user-select: none;
     -webkit-user-select: none;
     pointer-events: none;

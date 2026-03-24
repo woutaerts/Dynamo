@@ -16,7 +16,7 @@ body.modal-open {
     display: none;
     justify-content: center;
     align-items: center;
-    z-index: 9999;
+    z-index: var(--z-modal);
     backdrop-filter: blur(3px);
     visibility: hidden;
     opacity: 0;
@@ -41,6 +41,7 @@ body.modal-open {
     position: relative;
     color: var(--dark-gray);
     font-family: 'Poppins', sans-serif;
+    font-size: var(--text-body);
 }
 
 /* Custom Scrollbar for all modals */
@@ -87,11 +88,11 @@ body.modal-open {
     box-shadow: var(--shadow-medium);
     line-height: 1;
     padding: 0;
-    z-index: 10000;
+    z-index: var(--z-close-btn);
 }
 
 .close-modal i {
-    font-size: 1.3rem;
+    font-size: 1.3em;
     line-height: 1;
     color: var(--medium-gray);
     pointer-events: none;
@@ -121,10 +122,6 @@ body.modal-open {
         top: 8px;
         right: 8px;
     }
-
-    .close-modal i {
-        font-size: 1rem;
-    }
 }
 
 /* Shared mobile tweaks */
@@ -139,9 +136,5 @@ body.modal-open {
         height: 28px;
         top: 6px;
         right: 6px;
-    }
-
-    .close-modal i {
-        font-size: 0.9rem;
     }
 }

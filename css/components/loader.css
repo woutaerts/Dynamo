@@ -11,7 +11,7 @@
 }
 
 .search-inline-loader .loader-text {
-    font-size: 1.1rem;
+    font-size: var(--text-lg);
     font-weight: 500;
     margin-bottom: 0.75rem;
     color: var(--dark-gray);
@@ -29,7 +29,7 @@
 }
 
 .search-inline-loader .football-loader path {
-    animation: pulse 1s infinite;
+    animation: pulse var(--dur-loader) infinite;
     fill: var(--dynamo-red);
     opacity: 0.1;
 }

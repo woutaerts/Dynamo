@@ -9,7 +9,7 @@
     flex-wrap: wrap;
     gap: 1rem;
     justify-content: space-between;
-    width: 70%;
+    width: var(--content-width);
     margin: 0 auto;
 }
 
@@ -24,7 +24,7 @@
 
 .record-category:hover {
     box-shadow: var(--shadow-hover);
-    transform: translateY(-5px);
+    transform: translateY(var(--hover-lift));
 }
 
 .record-category h3 {
@@ -33,7 +33,7 @@
     text-align: center;
     font-family: 'Poppins', sans-serif;
     font-weight: 700;
-    font-size: 1.3rem;
+    font-size: var(--text-h3);
     transition: var(--t-reveal);
 }
 
@@ -60,17 +60,18 @@
     font-weight: 500;
     color: var(--dark-gray);
     flex: 1;
+    font-size: var(--text-body);
 }
 
 .record-value {
     font-weight: 700;
     color: var(--primary-theme-color);
-    font-size: 1.1rem;
+    font-size: var(--text-lg);
     transition: var(--t-reveal);
 }
 
 .record-season {
-    font-size: 0.8rem;
+    font-size: var(--text-sm);
     color: var(--medium-gray);
     margin-left: 1rem;
 }
@@ -97,7 +98,6 @@
     .team-records-grid {
         flex-direction: column;
         gap: 0.8rem;
-        width: 90%;
     }
 
     .record-category {
@@ -106,17 +106,9 @@
         min-height: 44px;
     }
 
-    .record-category h3 {
-        font-size: 1.2rem;
-    }
-
     .record-item {
         padding: 0.6rem;
         margin-bottom: 0.5rem;
         min-height: 44px;
-    }
-
-    .record-value {
-        font-size: 0.9rem;
     }
 }

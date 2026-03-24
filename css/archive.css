@@ -30,7 +30,7 @@
 .season-selector-section {
     padding: 1rem 0;
     position: relative;
-    z-index: 100;
+    z-index: var(--z-dropdown);
 }
 
 .dropdown-container {
@@ -72,6 +72,7 @@
     transition: var(--t-hover);
     min-width: 180px;
     z-index: 102;
+    font-size: var(--text-body);
 }
 
 #season-select .selected {
@@ -92,7 +93,7 @@
     right: 0.8rem;
     top: 50%;
     transform: translateY(-55%);
-    font-size: 1.2rem;
+    font-size: var(--text-lg);
     color: var(--dark-gray);
     transition: transform var(--dur-base) var(--ease-ui);
 }
@@ -115,7 +116,7 @@
     margin: 5px 0 0;
     padding: 0;
     display: none;
-    z-index: 1000;
+    z-index: var(--z-dropdown);
     width: 100%;
     box-sizing: border-box;
     overflow: hidden;
@@ -142,7 +143,7 @@
     grid-template-columns: repeat(3, 1fr);
     gap: 1.5rem;
     margin-top: 2rem;
-    width: 70%;
+    width: var(--content-width);
     margin-left: auto;
     margin-right: auto;
 }
@@ -180,7 +181,7 @@
 }
 
 .archive-subsection .matches-grid {
-    width: 70%;
+    width: var(--content-width);
     margin: 0 auto;
 }
 
@@ -196,7 +197,7 @@
 }
 
 .archive-match-card:hover {
-    transform: translateY(-5px);
+    transform: translateY(var(--hover-lift));
     box-shadow: var(--shadow-hover);
 }
 
@@ -206,7 +207,7 @@
     padding: 2rem;
     color: var(--medium-gray);
     font-weight: 600;
-    font-size: 1rem;
+    font-size: var(--text-body);
 }
 
 /* Responsieve weergave voor tablets en middelgrote schermen */
@@ -224,11 +225,6 @@
     .stats-grid {
         grid-template-columns: repeat(2, 1fr);
         gap: 1rem;
-        width: 90%;
-    }
-
-    .archive-subsection .matches-grid {
-        width: 90%;
     }
 }
 

@@ -31,6 +31,27 @@
     --radius-pill: 999px;
     --radius-circle: 50%;
 
+    /* Standardized Typography */
+    --text-hero: 3.5rem;     /* Massive page headers, 404 title */
+    --text-h1: 3rem;         /* Standard page hero h1 */
+    --text-h2: 2.5rem;       /* .section-title */
+    --text-h3: 1.6rem;       /* .section-subtitle, .contact-card h3 */
+    --text-lg: 1.2rem;       /* Player names, stat numbers */
+    --text-body: 1rem;       /* Standard paragraphs */
+    --text-sm: 0.85rem;      /* Meta info, dates, tags, mobile links */
+
+    /* Content Width */
+    --content-width: 70%;
+
+    /* Z-values */
+    --z-dropdown:   100;
+    --z-header:     200;
+    --z-modal:      1000;
+    --z-close-btn:  1010;
+
+    /* Hover lift */
+    --hover-lift: -5px;
+
     /* MOTION DESIGNS */
 
     /* Durations */
@@ -150,7 +171,7 @@ html {
 }
 
 .page-hero h1 {
-    font-size: 3rem;
+    font-size: var(--text-h1);
     font-weight: 900;
     color: var(--dark-gray);
     font-family: 'Poppins', sans-serif;
@@ -210,12 +231,12 @@ html {
 }
 
 .section-title {
-    font-size: 2.5rem;
+    font-size: var(--text-h2);
     margin: 1.5rem 0 2rem;
 }
 
 .section-subtitle {
-    font-size: 1.6rem;
+    font-size: var(--text-h3);
     margin-bottom: 1.5rem;
 }
 
@@ -284,14 +305,14 @@ html {
 .countdown-box:hover,
 .contact-section .contact-card:hover,
 .stats-overview-section .stat-card:hover {
-    transform: translateY(-5px);
+    transform: translateY(var(--hover-lift));
     box-shadow: var(--shadow-hover);
     transition: var(--t-hover);
 }
 
 .countdown-box span {
     display: block;
-    font-size: 1.8rem;
+    font-size: var(--text-h3);
     font-weight: bold;
     color: var(--dynamo-red);
     font-family: 'Poppins', sans-serif;
@@ -299,7 +320,7 @@ html {
 
 .countdown-block small {
     display: block;
-    font-size: 0.8rem;
+    font-size: var(--text-sm);
     color: var(--medium-gray);
     text-transform: uppercase;
     letter-spacing: 1px;
@@ -316,7 +337,7 @@ html {
 }
 
 .upcoming-match-name h3 {
-    font-size: 1.3rem;
+    font-size: var(--text-lg);
     color: var(--dark-gray);
     margin: 0;
     font-family: 'Poppins', sans-serif;
@@ -342,7 +363,7 @@ html {
 .match-sponsor-label {
     margin-bottom: 0.8rem;
     color: var(--medium-gray);
-    font-size: 0.9rem;
+    font-size: var(--text-sm);
     font-weight: 500;
     letter-spacing: 0.5px;
     text-transform: uppercase;
@@ -350,7 +371,7 @@ html {
 }
 
 .match-sponsor-name {
-    font-size: 1rem;
+    font-size: var(--text-body);
     font-weight: 500;
     text-align: center;
     color: var(--dark-gray);
@@ -402,7 +423,7 @@ html {
     display: inline-block;
     width: 90%;
     max-width: 280px;
-    z-index: 1001;
+    z-index: var(--z-dropdown);
 }
 
 .search-icon {
@@ -420,7 +441,7 @@ html {
     border: 3px solid var(--medium-gray);
     border-radius: var(--radius-pill);
     font-family: 'Poppins', sans-serif;
-    font-size: 0.85rem;
+    font-size: var(--text-sm);
     width: 100%;
     box-sizing: border-box;
     text-align: center;
@@ -451,7 +472,7 @@ html {
 }
 
 .stat-number {
-    font-size: 2.5rem;
+    font-size: var(--text-h2);
     font-weight: 800;
     line-height: 1;
     margin-bottom: 0.5rem;
@@ -462,7 +483,7 @@ html {
     color: var(--medium-gray);
     text-transform: uppercase;
     font-weight: 600;
-    font-size: 0.9rem;
+    font-size: var(--text-sm);
     letter-spacing: 1px;
     margin-top: 0.5rem;
 }
@@ -531,7 +552,7 @@ html {
 
 .form-result:hover {
     box-shadow: var(--shadow-hover);
-    transform: translateY(-5px);
+    transform: translateY(var(--hover-lift));
     transition: var(--t-hover);
 }
 
@@ -548,13 +569,13 @@ html {
 }
 
 .form-result:last-child:hover {
-    transform: translateY(-5px);
+    transform: translateY(var(--hover-lift));
     border: 3px solid var(--off-white);
 }
 
 .form-description {
     display: block;
-    font-size: 0.8rem;
+    font-size: var(--text-sm);
     color: var(--medium-gray);
     text-transform: uppercase;
     letter-spacing: 1px;
@@ -567,7 +588,7 @@ html {
     text-align: center;
     padding: 1rem;
     font-family: 'Poppins', sans-serif;
-    font-size: 1rem;
+    font-size: var(--text-body);
     color: var(--dark-gray);
 }
 
@@ -619,6 +640,13 @@ html {
         --radius-md: 10px;
         --radius-lg: 14px;
         --radius-xl: 20px;
+        --content-width:80%;
+        --text-hero: 2.75rem;
+        --text-h1: 2rem;
+        --text-h2: 1.8rem;
+        --text-h3: 1.4rem;
+        --text-lg: 1.1rem;
+
     }
 
     .container {
@@ -629,13 +657,8 @@ html {
         padding: 1rem 0.5rem;
     }
 
-    .page-hero h1 {
-        font-size: 2rem;
-    }
-
     .page-hero h1::before,
     .page-hero h1::after {
-        font-size: 1em;
         margin: 6px;
     }
 
@@ -656,17 +679,9 @@ html {
         box-shadow: var(--shadow-hover);
     }
 
-    .section-title {
-        font-size: 1.8rem;
-    }
-
     .section-title::after {
         width: 50px;
         height: 3px;
-    }
-
-    .section-subtitle {
-        font-size: 1.4rem;
     }
 
     .section-subtitle::after {
@@ -681,14 +696,6 @@ html {
     .countdown-box {
         width: 70px;
         padding: 0.7rem;
-    }
-
-    .countdown-box span {
-        font-size: 1.3rem;
-    }
-
-    .countdown-block small {
-        font-size: 0.7rem;
     }
 
     .form-results {
@@ -706,15 +713,10 @@ html {
         height: calc(35px + 4px);
     }
 
-    .form-description {
-        font-size: 0.7rem;
-    }
     .stat-card { padding: 1.2rem; }
-    .stat-number { font-size: 1.8rem; }
-    .stat-label { font-size: 0.8rem; }
     .search-wrapper { max-width: 250px; }
-    .search-input { padding: 0.5rem 0.7rem 0.5rem 2rem; font-size: 0.8rem; }
-    .search-icon { font-size: 0.8rem; left: 0.7rem; }
+    .search-input { padding: 0.5rem 0.7rem 0.5rem 2rem }
+    .search-icon { left: 0.7rem; }
 }
 
 /* Mobile View */
@@ -724,33 +726,22 @@ html {
         --radius-md: 8px;
         --radius-lg: 12px;
         --radius-xl: 16px;
+        --content-width:90%;
+        --text-hero: 2.25rem;
+        --text-h1: 1.8rem;
+        --text-h2: 1.5rem;
+        --text-h3: 1.2rem;
+        --text-lg: 1rem;
+        --text-body: 0.95rem;
+        --text-sm: 0.8rem;
     }
 
     .stat-card { padding: 1rem; }
-    .stat-number { font-size: 1.6rem; }
-    .stat-label { font-size: 0.75rem; }
     .search-wrapper { max-width: 291px; }
-    .search-input { font-size: 0.75rem; min-height: 40px; }
-    .search-icon { font-size: 0.75rem; }
+    .search-input { min-height: 40px; }
 
     .container {
         padding: 0 8px;
-    }
-
-    .page-hero h1 {
-        font-size: 1.8rem;
-    }
-
-    .section-title {
-        font-size: 1.6rem;
-    }
-
-    .section-subtitle {
-        font-size: 1.2rem;
-    }
-
-    .upcoming-match-name h3 {
-        font-size: 1rem;
     }
 
     .countdown-box {
@@ -758,16 +749,8 @@ html {
         padding: 0.6rem;
     }
 
-    .countdown-box span {
-        font-size: 1.1rem;
-    }
-
     .match-sponsor-link img {
         max-height: 50px;
-    }
-
-    .match-sponsor-label {
-        font-size: 0.85rem;
     }
 
     .form-result {

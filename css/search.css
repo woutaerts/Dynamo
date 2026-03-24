@@ -2,7 +2,7 @@
 .search-section {
     padding: 1.5rem 0;
     position: relative;
-    z-index: 1000;
+    z-index: var(--z-dropdown);
 }
 
 .results-header-hidden {
@@ -21,7 +21,7 @@
     box-shadow: var(--shadow-medium);
     list-style: none;
     margin: 0.2rem 0 0;
-    z-index: 9999;
+    z-index: var(--z-dropdown);
     display: none;
     max-height: 200px;
     overflow-y: auto;
@@ -31,7 +31,7 @@
 .autocomplete-item {
     padding: 0.5rem 1rem;
     font-family: 'Poppins', sans-serif;
-    font-size: 0.85rem;
+    font-size: var(--text-sm);
     color: var(--dark-gray);
     cursor: pointer;
     transition: var(--t-bg), var(--t-color);
@@ -50,7 +50,7 @@
     justify-content: center;
     align-items: center;
     gap: 1rem;
-    max-width: 70%;
+    max-width: var(--content-width);
     margin-left: auto;
     margin-right: auto;
 }
@@ -66,6 +66,7 @@
     font-weight: 500;
     color: var(--dark-gray);
     transition: var(--t-hover);
+    font-size:var(--text-sm);
 }
 
 .custom-dropdown .selected {
@@ -86,7 +87,7 @@
     right: 0.6rem;
     top: 50%;
     transform: translateY(-55%);
-    font-size: 1.2rem;
+    font-size: var(--text-lg);
     color: var(--dark-gray);
     transition: transform var(--dur-base) var(--ease-standard);
 }
@@ -110,7 +111,7 @@
     margin: 5px 0 0;
     padding: 0;
     display: none;
-    z-index: 1000;
+    z-index: var(--z-dropdown);
     width: 240px;
     box-sizing: border-box;
     overflow: hidden;
@@ -142,13 +143,13 @@
 #search-message {
     padding: 1rem;
     font-family: 'Poppins', sans-serif;
-    font-size: 1rem;
+    font-size: var(--text-body);
 }
 
 /* Match Season */
 .match-season {
     color: var(--medium-gray);
-    font-size: 0.95rem;
+    font-size: var(--text-sm);
     font-family: 'Poppins', sans-serif;
     font-weight: 500;
     display: flex;
@@ -157,7 +158,7 @@
 }
 
 .match-season i {
-    font-size: 0.9rem;
+    font-size: 0.9em;
     opacity: 0.8;
 }
 
@@ -176,7 +177,7 @@
 
 .match-card.modern:hover {
     box-shadow: var(--shadow-hover);
-    transform: translateY(-5px);
+    transform: translateY(var(--hover-lift));
 }
 
 .match-card.animate-in {
@@ -195,17 +196,8 @@
         padding: 0.4rem 0.9rem;
     }
 
-    #search-message {
-        font-size: 0.85rem;
-    }
-
     .match-season {
-        font-size: 0.85rem;
         gap: 5px;
-    }
-
-    .match-season i {
-        font-size: 0.8rem;
     }
 
     .match-card.modern:hover {
@@ -222,11 +214,6 @@
 
     .custom-dropdown .selected {
         padding: 0.5rem 1.8rem 0.5rem 0.8rem;
-        font-size: 0.85rem;
-    }
-
-    .custom-dropdown .selected::after {
-        font-size: 1rem;
     }
 
     .custom-dropdown .options {
@@ -235,7 +222,6 @@
 
     .custom-dropdown .options li {
         padding: 0.5rem 0.8rem;
-        font-size: 0.85rem;
     }
 }
 
@@ -249,29 +235,12 @@
         padding: 0.4rem 0.8rem;
     }
 
-    #search-message {
-        font-size: 0.8rem;
-    }
-
-    .match-season {
-        font-size: 0.8rem;
-    }
-
-    .match-season i {
-        font-size: 0.75rem;
-    }
-
     .sort-controls {
         gap: 0.6rem;
     }
 
     .custom-dropdown .selected {
         padding: 0.4rem 1.6rem 0.4rem 0.7rem;
-        font-size: 0.8rem;
-    }
-
-    .custom-dropdown .selected::after {
-        font-size: 0.9rem;
     }
 
     .custom-dropdown .options {
@@ -280,6 +249,5 @@
 
     .custom-dropdown .options li {
         padding: 0.4rem 0.7rem;
-        font-size: 0.8rem;
     }
 }

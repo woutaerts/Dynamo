@@ -24,7 +24,7 @@
 
 #modalPlayerName {
     margin: 0.5rem 0 0.3rem 0;
-    font-size: 2rem;
+    font-size: var(--text-h3);
     font-weight: 800;
     color: var(--dark-gray);
     font-family: 'Poppins', sans-serif;
@@ -47,7 +47,7 @@
     font-family: 'Poppins', sans-serif;
     margin: 1rem auto 1rem auto;
     font-weight: 600;
-    font-size: 1rem;
+    font-size: var(--text-body);
     text-align: center;
     text-transform: uppercase;
     letter-spacing: 0.5px;
@@ -90,7 +90,7 @@
 .all-time-stats-section h3 {
     margin-bottom: 0.8rem;
     color: var(--dark-gray);
-    font-size: 1.2rem;
+    font-size: var(--text-lg);
     text-align: center;
     font-weight: 700;
     font-family: 'Poppins', sans-serif;
@@ -126,7 +126,7 @@
 
 .stat-box p {
     text-align: center;
-    font-size: 1rem;
+    font-size: var(--text-sm);
     color: var(--dark-gray);
     font-weight: 600;
     font-family: 'Poppins', sans-serif;
@@ -146,7 +146,7 @@
 .stat-box i {
     color: var(--medium-gray);
     margin-right: 8px;
-    font-size: 1rem;
+    font-size: 1.1em;
 }
 
 /* Tablet View */
@@ -155,7 +155,6 @@
         width: 35px;
     }
     #modalPlayerName {
-        font-size: 1.7rem;
         margin-bottom: 1.2rem;
     }
     .season-stats-section,
@@ -163,10 +162,7 @@
         padding: 1rem;
         margin-bottom: 1.2rem;
     }
-    .season-stats-section h3,
-    .all-time-stats-section h3 {
-        font-size: 1.1rem;
-    }
+
     .stats-container {
         flex-direction: row;
         flex-wrap: wrap;
@@ -188,11 +184,7 @@
     .player-header .flag-icon {
         width: 30px;
     }
-    #modalPlayerName {
-        font-size: 1.4rem;
-    }
     .stat-box p {
-        font-size: 0.80rem;
         padding: 0.6rem 0.8rem;
     }
     .stat-box i {

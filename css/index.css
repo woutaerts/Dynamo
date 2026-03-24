@@ -6,7 +6,7 @@
     position: relative;
     overflow: hidden;
     background-size: cover;
-    width: 70%;
+    width: var(--content-width);
     margin: 0 auto;
     padding: 7rem 1rem;
 }
@@ -23,7 +23,7 @@
 }
 
 .hero h1 {
-    font-size: 3.5rem;
+    font-size: var(--text-hero);
     font-weight: 900;
     margin-bottom: 0.2rem;
     color: var(--dark-gray);
@@ -170,13 +170,17 @@
     padding: 1.5rem 0 2rem;
 }
 
+.stats-overview-section .section-title::after {
+    background: var(--dark-blue);
+}
+
 .stats-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
     gap: 1rem;
     justify-content: center;
     text-align: center;
-    width: 70%;
+    width: var(--content-width);
     margin: 0 auto;
 }
 
@@ -186,13 +190,13 @@
 }
 
 .stat-number {
-    color: var(--dynamo-red);
+    color: var(--dark-blue);
 }
 
 .stats-overview-section .stat-card:hover,
 .contact-section .contact-card:hover {
     box-shadow: var(--shadow-hover);
-    transform: translateY(-5px);
+    transform: translateY(var(--hover-lift));
     z-index: 10;
 }
 
@@ -201,8 +205,12 @@
     padding: 2rem 0;
     background: var(--off-white);
     text-align: center;
-    width: 70%;
+    width: var(--content-width);
     margin: 0 auto;
+}
+
+.sponsor-cta-section .section-title::after {
+    background: var(--dark-green);
 }
 
 .sponsor-cta-section .container {
@@ -218,13 +226,13 @@
 .btn-primary {
     display: inline-block;
     padding: 0.8rem 2rem;
-    background: var(--dynamo-red);
+    background: var(--dark-green);
     color: white;
     border-radius: var(--radius-pill);
     text-decoration: none;
     font-weight: 600;
-    font-size: 1rem;
-    border: 3px solid var(--dynamo-red);
+    font-size: var(--text-body);
+    border: 3px solid var(--dark-green);
     position: relative;
     overflow: hidden;
     z-index: 1;
@@ -244,8 +252,8 @@
 }
 
 .btn-primary:hover {
-    color: var(--dynamo-red);
-    border-color: var(--dynamo-red);
+    color: var(--dark-green);
+    border-color: var(--dark-green);
 }
 
 .btn-primary:hover .hover-effect {
@@ -285,11 +293,16 @@
     padding: 0.5rem 0;
 }
 
+.contact-section .section-title::after {
+    background: var(--dark-yellow);
+}
+
+
 .contact-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
     gap: 1rem;
-    width: 70%;
+    width: var(--content-width);
     margin: 0 auto;
 }
 
@@ -314,12 +327,12 @@
 
 .contact-card i {
     font-size: 1.8rem;
-    color: var(--dynamo-red);
+    color: var(--dark-yellow);
     margin-bottom: 0.8rem;
 }
 
 .contact-card h3 {
-    font-size: 1.3rem;
+    font-size: var(--text-body);
     color: var(--dark-gray);
     margin-bottom: 0.4rem;
     font-weight: 600;
@@ -327,7 +340,7 @@
 
 .contact-card p {
     color: var(--medium-gray);
-    font-size: 0.9rem;
+    font-size: var(--text-sm);
     line-height: 1.6;
 }
 
@@ -344,7 +357,7 @@
     position: relative;
     opacity: 0;
     transform: translateY(50px);
-    width: 70%;
+    width: var(--content-width);
     margin: 0 auto;
     transition: var(--t-reveal-card);
 }
@@ -362,16 +375,7 @@
 
 /* Tablet View */
 @media (max-width: 768px) {
-    .hero {
-        width: 80%;
-    }
-
-    .hero-content {
-        width: 80%;
-    }
-
     .hero h1 {
-        font-size: 3rem;
         white-space: nowrap;
     }
 
@@ -409,12 +413,6 @@
 
     .stats-grid {
         grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-        width: 80%;
-    }
-
-    .sponsor-cta-section,
-    .contact-grid {
-        width: 80%;
     }
 
     .contact-card {
@@ -425,17 +423,8 @@
         font-size: 1.6rem;
     }
 
-    .contact-card h3 {
-        font-size: 1.2rem;
-    }
-
-    .contact-card p {
-        font-size: 0.85rem;
-    }
-
     .map-container {
         height: 300px;
-        width: 80%;
     }
 }
 
@@ -443,17 +432,14 @@
 @media (max-width: 480px) {
     .hero {
         padding: 1rem 0.6rem;
-        width: 90%;
         justify-content: center;
     }
 
     .hero-content {
-        width: 100%;
         gap: 0.5rem;
     }
 
     .hero h1 {
-        font-size: clamp(2rem, 10vw, 3.5rem);
         margin: 0;
         line-height: 1.1;
         overflow: hidden;
@@ -517,16 +503,11 @@
     .stats-grid {
         grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
         gap: 0.6rem;
-        width: 90%;
     }
 
     .stat-card {
         min-height: 44px;
         min-width: 150px;
-    }
-
-    .sponsor-cta-section {
-        width: 90%;
     }
 
     .contact-section {
@@ -536,7 +517,6 @@
     .contact-grid {
         grid-template-columns: 1fr;
         gap: 0.6rem;
-        width: 90%;
     }
 
     .contact-card {
@@ -548,20 +528,11 @@
         font-size: 1.4rem;
     }
 
-    .contact-card h3 {
-        font-size: 1rem;
-    }
-
-    .contact-card p {
-        font-size: 0.75rem;
-    }
-
     .map-section {
         padding: 0.3rem 0;
     }
 
     .map-container {
         height: 200px;
-        width: 90%;
     }
 }

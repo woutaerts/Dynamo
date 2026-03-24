@@ -33,7 +33,7 @@
     grid-template-columns: repeat(2, minmax(260px, 1fr));
     gap: 1rem;
     padding: 0;
-    width: 70%;
+    width: var(--content-width);
     margin: 0 auto;
 }
 
@@ -49,7 +49,7 @@
 
 .match-card.modern:hover {
     box-shadow: var(--shadow-hover);
-    transform: translateY(-5px);
+    transform: translateY(var(--hover-lift));
     border-color: var(--dusty-blue);
     transition: var(--t-hover);
 }
@@ -115,7 +115,7 @@
 }
 
 .home-team, .away-team {
-    font-size: 1.1rem;
+    font-size: var(--text-lg);
     color: var(--dark-gray);
     font-family: 'Poppins', sans-serif;
     font-weight: 600;
@@ -125,7 +125,7 @@
 
 .vs-divider {
     color: var(--medium-gray);
-    font-size: 0.95rem;
+    font-size: var(--text-sm);
     font-weight: 500;
     margin: 8px 0;
 }
@@ -173,7 +173,7 @@
 
 .match-date, .match-venue {
     color: var(--medium-gray);
-    font-size: 0.95rem;
+    font-size: var(--text-sm);
     font-family: 'Poppins', sans-serif;
     font-weight: 500;
     display: flex;
@@ -182,7 +182,7 @@
 }
 
 .match-date i, .match-venue i {
-    font-size: 0.9rem;
+    font-size: 0.9em;
     opacity: 0.8;
     line-height: 1;
     transform: translateY(-2px);
@@ -198,7 +198,7 @@
     min-height: 220px;
     scrollbar-width: thin;
     scrollbar-color: var(--light-gray) var(--silver-mist);
-    max-width: 71%;
+    max-width: var(--content-width);
     margin: 0 auto;
     transform: translateX(0.3rem);
 }
@@ -302,7 +302,7 @@
 }
 
 .timeline-item:hover {
-    transform: translateY(-5px);
+    transform: translateY(var(--hover-lift));
 }
 
 .timeline-item .result-icon {
@@ -312,7 +312,7 @@
 
 .timeline-item:hover .result-icon {
     box-shadow: var(--shadow-hover);
-    transform: translateY(-5px);
+    transform: translateY(var(--hover-lift));
 }
 
 .timeline-item::before {
@@ -358,7 +358,7 @@
 }
 
 .ticker-wrapper {
-    width: 70%;
+    width: var(--content-width);
     margin: 0 auto;
     overflow: hidden;
     position: relative;
@@ -427,7 +427,6 @@
 @media (max-width: 768px) {
     .matches-grid {
         grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
-        width: 90%;
     }
 
     .match-card.modern {
@@ -448,13 +447,7 @@
         margin-bottom: 12px;
     }
 
-    .home-team, .away-team {
-        font-size: 0.95rem;
-        font-weight: 600;
-    }
-
     .vs-divider {
-        font-size: 0.85rem;
         margin: 6px 0;
     }
 
@@ -480,18 +473,12 @@
     }
 
     .match-date, .match-venue {
-        font-size: 0.85rem;
         gap: 5px;
-    }
-
-    .match-date i, .match-venue i {
-        font-size: 0.8rem;
     }
 
     .timeline-wrapper {
         min-height: 160px;
         margin: 0.8rem auto;
-        width: 90%;
     }
 
     .timeline {
@@ -533,7 +520,6 @@
     }
 
     .timeline-item small {
-        font-size: 0.7rem;
         padding: 0.25rem 0.5rem;
     }
 
@@ -547,12 +533,10 @@
     }
 
     .upcoming-match-name h3 {
-        font-size: 1.1rem;
         margin: 0.5rem 0;
     }
 
     .ticker-wrapper {
-        width: 80%;
         padding: 1rem 0 0;
     }
 
@@ -588,12 +572,7 @@
         padding: 14px;
     }
 
-    .home-team, .away-team {
-        font-size: 0.9rem;
-    }
-
     .vs-divider {
-        font-size: 0.8rem;
         margin: 5px 0;
     }
 
@@ -611,18 +590,9 @@
         z-index: 3;
     }
 
-    .match-date, .match-venue {
-        font-size: 0.8rem;
-    }
-
-    .match-date i, .match-venue i {
-        font-size: 0.75rem;
-    }
-
     .timeline-wrapper {
         min-height: 140px;
         margin: 0.6rem auto;
-        max-width: 90%;
         transform: translateX(0.3rem);
     }
 
@@ -657,17 +627,12 @@
     }
 
     .timeline-item small {
-        font-size: 0.65rem;
         padding: 0.2rem 0.4rem;
     }
 
     .timeline-item::before {
         width: 14px;
         height: 14px;
-    }
-
-    .ticker-wrapper {
-        width: 90%;
     }
 
     .sponsor-logo {
