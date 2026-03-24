@@ -39,8 +39,8 @@
     width: 100%;
     height: 8px;
     background: var(--dynamo-red);
-    border-radius: var(--radius-sm);
-    transition: transform var(--dur-reveal) var(--ease-out) var(--delay-stagger);
+    border-radius: 4px;
+    transition: transform 0.6s ease-out 0.3s;
 }
 
 .hero.animate-in h1 {
@@ -62,11 +62,11 @@
     width: 100%;
     max-width: 380px;
     aspect-ratio: 1365 / 2048;
-    border-radius: var(--radius-xl);
+    border-radius: 24px;
     overflow: hidden;
     box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
     margin: 0 auto;
-    transition: var(--t-reveal);
+    transition: opacity 0.6s ease-out, transform 0.6s ease-out;
 }
 
 .carousel {
@@ -76,7 +76,7 @@
     touch-action: none;
     user-select: none;
     will-change: transform;
-    transition: transform var(--dur-ripple) var(--ease-carousel);
+    transition: transform 0.4s cubic-bezier(0.33, 1, 0.68, 1);
 }
 
 .slide {
@@ -89,7 +89,7 @@
     height: 100%;
     object-fit: cover;
     display: block;
-    transition: transform var(--dur-enter) var(--ease-standard);
+    transition: transform 0.8s ease;
 }
 
 .slide:hover img {
@@ -107,14 +107,14 @@
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
     border: 1px solid rgba(255, 255, 255, 0.2);
-    border-radius: var(--radius-circle);
+    border-radius: 50%;
     color: white;
     font-size: 1.1rem;
     cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
-    transition: var(--t-hover);
+    transition: all 0.3s ease;
     z-index: 10;
     opacity: 0;
     pointer-events: auto;
@@ -153,21 +153,21 @@
 .dot {
     width: 8px;
     height: 8px;
-    border-radius: var(--radius-circle);
+    border-radius: 50%;
     background: rgba(255, 255, 255, 0.4);
-    transition: all var(--dur-ripple) var(--ease-ui);
+    transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
     cursor: pointer;
 }
 
 .dot.active {
     width: 24px;
-    border-radius: var(--radius-pill);
+    border-radius: 12px;
     background: white;
 }
 
 /* Statistics Section */
 .stats-overview-section {
-    padding: 1.5rem 0 2rem;
+    padding: 1.5rem 0;
 }
 
 .stats-grid {
@@ -180,13 +180,33 @@
     margin: 0 auto;
 }
 
+.stat-card {
+    background: white;
+    padding: 1.5rem;
+    border-radius: 12px;
+    box-shadow: var(--shadow-medium);
+    opacity: 0;
+    transform: translateY(50px);
+    transition: opacity 0.6s ease-out, transform 0.6s ease-out, box-shadow 0.3s ease;
+}
+
 .stat-card.animate-in {
     opacity: 1;
     transform: translateY(0);
 }
 
 .stat-number {
+    font-size: 2rem;
     color: var(--dynamo-red);
+    font-weight: 800;
+}
+
+.stat-label {
+    color: var(--medium-gray);
+    text-transform: uppercase;
+    margin-top: 0.4rem;
+    font-weight: 600;
+    font-size: 0.8rem;
 }
 
 .stats-overview-section .stat-card:hover,
@@ -194,90 +214,6 @@
     box-shadow: var(--shadow-hover);
     transform: translateY(-5px);
     z-index: 10;
-}
-
-/* Sponsor Section */
-.sponsor-cta-section {
-    padding: 2rem 0;
-    background: var(--off-white);
-    text-align: center;
-    width: 70%;
-    margin: 0 auto;
-}
-
-.sponsor-cta-section .container {
-    text-align: center;
-}
-
-.sponsor-cta-section p {
-    max-width: 700px;
-    margin: 0 auto 1.5rem;
-    color: var(--dark-gray);
-}
-
-.btn-primary {
-    display: inline-block;
-    padding: 0.8rem 2rem;
-    background: var(--dynamo-red);
-    color: white;
-    border-radius: var(--radius-pill);
-    text-decoration: none;
-    font-weight: 600;
-    font-size: 1rem;
-    border: 3px solid var(--dynamo-red);
-    position: relative;
-    overflow: hidden;
-    z-index: 1;
-    transition: var(--t-color), background var(--dur-base) var(--ease-ui), border-color var(--dur-base) var(--ease-ui);
-}
-
-.btn-primary .hover-effect {
-    position: absolute;
-    display: block;
-    width: 0;
-    height: 0;
-    border-radius: var(--radius-circle);
-    background-color: var(--off-white);
-    transition: var(--t-ripple);
-    transform: translate(-50%, -50%);
-    z-index: -1;
-}
-
-.btn-primary:hover {
-    color: var(--dynamo-red);
-    border-color: var(--dynamo-red);
-}
-
-.btn-primary:hover .hover-effect {
-    width: 225%;
-    height: 180px;
-}
-
-.sponsor-cta-section,
-.sponsor-cta-section .section-title,
-.sponsor-cta-section p,
-.sponsor-cta-section .btn-primary {
-    opacity: 0;
-    transform: translateY(50px);
-    transition: var(--t-reveal);
-}
-
-.sponsor-logo {
-    transition:
-            filter  var(--dur-base) var(--ease-standard),
-            opacity var(--dur-base) var(--ease-standard);
-}
-
-.sponsor-item {
-    transition: transform var(--dur-base) var(--ease-standard);
-}
-
-.sponsor-cta-section.animate-in,
-.sponsor-cta-section.animate-in .section-title,
-.sponsor-cta-section.animate-in p,
-.sponsor-cta-section.animate-in .btn-primary {
-    opacity: 1;
-    transform: translateY(0);
 }
 
 /* Contact Section */
@@ -297,14 +233,14 @@
     text-align: center;
     background: white;
     padding: 1.5rem;
-    border-radius: var(--radius-lg);
+    border-radius: 16px;
     box-shadow: var(--shadow-medium);
     text-decoration: none;
     color: inherit;
     display: block;
     opacity: 0;
     transform: translateY(50px);
-    transition: var(--t-reveal-card);
+    transition: opacity 0.6s ease-out, transform 0.3s ease-out, box-shadow 0.3s ease;
 }
 
 .contact-card.animate-in {
@@ -337,16 +273,16 @@
 }
 
 .map-container {
-    border-radius: var(--radius-lg);
+    border-radius: 12px;
     overflow: hidden;
     box-shadow: var(--shadow-medium);
     height: 350px;
     position: relative;
     opacity: 0;
     transform: translateY(50px);
+    transition: opacity 0.6s ease-out, transform 0.3s ease-out;
     width: 70%;
     margin: 0 auto;
-    transition: var(--t-reveal-card);
 }
 
 .map-container.animate-in {
@@ -360,14 +296,31 @@
     border: none;
 }
 
+/* Section Titles and Subtitles */
+.section-title,
+.section-subtitle {
+    opacity: 0;
+    transform: translateY(50px);
+    transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+}
+
+.section-title.animate-in,
+.section-subtitle.animate-in {
+    opacity: 1;
+    transform: translateY(0);
+}
+
 /* Tablet View */
 @media (max-width: 768px) {
     .hero {
+        height: 20vh;
         width: 80%;
+        margin: 0 auto;
     }
 
     .hero-content {
         width: 80%;
+        margin: 0 auto;
     }
 
     .hero h1 {
@@ -377,22 +330,9 @@
 
     .hero-content::after {
         height: 7px;
+        border-radius: 3.5px;
         width: 124%;
         max-width: 90vw;
-    }
-
-    .stats-overview-section .stat-card:hover,
-    .contact-section .contact-card:hover {
-        transform: translateY(0) !important;
-        box-shadow: var(--shadow-hover);
-    }
-
-    .slide:hover img {
-        transform: scale(1) !important;
-    }
-
-    .nav-btn:hover {
-        transform: translateY(-50%) scale(1) !important;
     }
 
     .carousel-section {
@@ -401,24 +341,41 @@
 
     .carousel-container {
         max-width: 320px;
+        border-radius: 20px;
     }
 
     .stats-overview-section {
-        padding: 1.3rem 0 1.8rem;
+        padding: 1.3rem 0;
     }
 
     .stats-grid {
         grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+        gap: 1rem;
         width: 80%;
     }
 
-    .sponsor-cta-section,
+    .stat-card {
+        padding: 1.2rem;
+        border-radius: 10px;
+    }
+
+    .stat-number {
+        font-size: 1.8rem;
+    }
+
+    .stat-label {
+        font-size: 0.75rem;
+    }
+
     .contact-grid {
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 1rem;
         width: 80%;
     }
 
     .contact-card {
         padding: 1.2rem;
+        border-radius: 14px;
     }
 
     .contact-card i {
@@ -436,30 +393,46 @@
     .map-container {
         height: 300px;
         width: 80%;
+        border-radius: 10px;
     }
 }
 
 /* Mobile View */
 @media (max-width: 480px) {
     .hero {
+        height: 20vh;
         padding: 1rem 0.6rem;
         width: 90%;
+        margin: 0 auto;
+        display: flex;
+        align-items: center;
         justify-content: center;
     }
 
     .hero-content {
         width: 100%;
+        text-align: center;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
         gap: 0.5rem;
     }
 
     .hero h1 {
         font-size: clamp(2rem, 10vw, 3.5rem);
+        font-weight: 900;
+        color: var(--dark-gray);
         margin: 0;
         line-height: 1.1;
+        white-space: nowrap;
         overflow: hidden;
         text-overflow: clip;
         max-width: 90vw;
         width: fit-content;
+        display: flex;
+        justify-content: center;
+        align-items: center;
         gap: 0.5rem;
         padding: 0 0.5rem;
     }
@@ -469,9 +442,21 @@
     }
 
     .hero-content::after {
+        content: '';
+        position: absolute;
         bottom: -8px;
+        left: 50%;
+        transform: translateX(-50%) scaleX(0);
         width: 94%;
+        max-width: 90vw;
         height: 6px;
+        background: var(--dynamo-red);
+        border-radius: 3px;
+        transition: transform 0.6s ease-out 0.3s;
+    }
+
+    .hero.animate-in .hero-content::after {
+        transform: translateX(-50%) scaleX(1);
     }
 
     .carousel-section {
@@ -480,6 +465,7 @@
 
     .carousel-container {
         max-width: 280px;
+        border-radius: 16px;
     }
 
     .nav-btn {
@@ -508,10 +494,11 @@
 
     .dot.active {
         width: 20px;
+        border-radius: 10px;
     }
 
     .stats-overview-section {
-        padding: 1rem 0 1.8rem;
+        padding: 1rem 0;
     }
 
     .stats-grid {
@@ -521,12 +508,18 @@
     }
 
     .stat-card {
+        padding: 0.8rem;
+        border-radius: 10px;
         min-height: 44px;
         min-width: 150px;
     }
 
-    .sponsor-cta-section {
-        width: 90%;
+    .stat-number {
+        font-size: 1.4rem;
+    }
+
+    .stat-label {
+        font-size: 0.65rem;
     }
 
     .contact-section {
@@ -541,6 +534,7 @@
 
     .contact-card {
         padding: 0.8rem;
+        border-radius: 10px;
         min-height: 44px;
     }
 
@@ -563,5 +557,6 @@
     .map-container {
         height: 200px;
         width: 90%;
+        border-radius: 8px;
     }
 }

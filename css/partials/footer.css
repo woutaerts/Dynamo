@@ -34,7 +34,6 @@
     flex: 1;
     height: 1px;
     background: var(--line-gray);
-    border-radius: var(--radius-sm);
 }
 
 /* Social Icons and Logo */
@@ -62,46 +61,42 @@
     margin: 0;
 }
 
-/* Logo Dimensions Grouping */
-.logo-link,
-.logo-container,
-.footer-logo {
-    width: 80px;
-    height: 80px;
-}
-
 /* Logo Link */
 .logo-link {
     display: flex;
     align-items: center;
     justify-content: center;
     text-decoration: none;
+    width: 80px;
+    height: 80px;
 }
 
 /* Logo Container */
 .logo-container {
     position: relative;
+    width: 80px;
+    height: 80px;
 }
 
 /* Logo Images */
 .footer-logo {
+    width: 80px;
+    height: 80px;
     position: absolute;
     top: 0;
     left: 0;
 }
 
-/* Logo Transitions Grouping */
-.footer-logo-grey,
-.footer-logo-red {
-    transition: opacity var(--dur-base) var(--ease-standard);
-}
-
+/* Logo Grey */
 .footer-logo-grey {
     opacity: 1;
+    transition: opacity 0.3s ease;
 }
 
+/* Logo Red */
 .footer-logo-red {
     opacity: 0;
+    transition: opacity 0.3s ease;
 }
 
 /* Logo Hover Effects */
@@ -123,7 +118,7 @@
     color: var(--medium-gray);
     font-size: 1.4rem;
     text-decoration: none;
-    transition: var(--t-color);
+    transition: color 0.3s ease;
     min-height: 44px;
 }
 
@@ -171,15 +166,6 @@
         width: 30px;
         height: 30px;
         font-size: 1rem;
-    }
-
-    .logo-link:hover .footer-logo-grey,
-    .logo-link:hover .footer-logo-red {
-        transition: opacity var(--dur-base) var(--ease-standard);
-    }
-
-    .social-icon:hover {
-        transition: color 0.2s ease;
     }
 
     .footer-copyright p {

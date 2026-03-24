@@ -8,9 +8,16 @@
     --season-bg: var(--soft-coral);
     --alltime-color: var(--dark-yellow);
     --alltime-bg: var(--golden-yellow);
+    --primary-theme-color: var(--team-color);
+    --primary-theme-hover: var(--team-bg);
+    --underline-color: var(--season-bg);
 }
 
 /* Toggle Buttons */
+.gd {
+    display: grid;
+}
+
 .toggles-container {
     display: flex;
     flex-direction: column;
@@ -19,7 +26,7 @@
     margin: 1rem auto 0;
     opacity: 0;
     transform: translateY(20px);
-    transition: var(--t-reveal);
+    transition: opacity 0.6s ease-out, transform 0.6s ease-out;
 }
 
 .toggles-container.animate-in {
@@ -36,6 +43,7 @@
     height: 80px;
     gap: 2rem;
     max-width: 400px;
+    transition: opacity 0.6s ease-out, transform 0.6s ease-out;
 }
 
 .toggle-button-container {
@@ -51,7 +59,7 @@
     height: 53px;
     margin: 13px;
     background: transparent;
-    border-radius: var(--radius-sm);
+    border-radius: 8px;
 }
 
 .btn {
@@ -62,7 +70,7 @@
     margin: -16px auto 0;
     overflow: hidden;
     box-shadow: var(--shadow-medium);
-    border-radius: var(--radius-pill);
+    border-radius: 200px;
 }
 
 .checkbox {
@@ -88,11 +96,11 @@
 .btn-bg {
     width: 100%;
     background: var(--team-bg);
-    transition: var(--t-bg);
+    transition: background 0.3s ease;
     z-index: 1;
 }
 
-#team-player-toggle-btn .knob:before, #season-alltime-toggle-btn .knob:before {
+#button .knob:before, #button2 .knob:before {
     content: "";
     position: absolute;
     top: 50%;
@@ -101,52 +109,53 @@
     width: 21px;
     height: 27px;
     padding: 0 4px;
-    border-radius: var(--radius-circle);
+    border-radius: 50%;
     transition: all 0.3s ease, left 0.3s cubic-bezier(0.18, 0.89, 0.35, 1.15);
 }
 
-#team-player-toggle-btn .checkbox:active + .knob:before, #season-alltime-toggle-btn .checkbox:active + .knob:before {
+#button .checkbox:active + .knob:before, #button2 .checkbox:active + .knob:before {
     width: 33px;
-    border-radius: var(--radius-pill);
+    border-radius: 200px;
 }
 
-#team-player-toggle-btn .checkbox:checked:active + .knob:before, #season-alltime-toggle-btn .checkbox:checked:active + .knob:before {
+#button .checkbox:checked:active + .knob:before, #button2 .checkbox:checked:active + .knob:before {
     margin-left: -12px;
 }
 
-#team-player-toggle-btn .checkbox:checked + .knob:before, #season-alltime-toggle-btn .checkbox:checked + .knob:before {
+#button .checkbox:checked + .knob:before, #button2 .checkbox:checked + .knob:before {
     left: 41px;
 }
 
-#team-player-toggle-btn .knob:before {
+#button .knob:before {
     background: var(--team-color);
 }
 
-#team-player-toggle-btn .checkbox:checked + .knob:before {
+#button .checkbox:checked + .knob:before {
     background: var(--player-color);
 }
 
-#team-player-toggle-btn .checkbox:checked ~ .btn-bg {
+#button .checkbox:checked ~ .btn-bg {
     background: var(--player-bg);
 }
 
-#season-alltime-toggle-btn .btn-bg {
+#button2 .btn-bg {
     background: var(--season-bg);
 }
 
-#season-alltime-toggle-btn .knob:before {
+#button2 .knob:before {
     background: var(--season-color);
 }
 
-#season-alltime-toggle-btn .checkbox:checked + .knob:before {
+#button2 .checkbox:checked + .knob:before {
     background: var(--alltime-color);
 }
 
-#season-alltime-toggle-btn .checkbox:checked ~ .btn-bg {
+#button2 .checkbox:checked ~ .btn-bg {
     background: var(--alltime-bg);
 }
 
 .toggle-label {
+    font-family: 'Poppins', sans-serif;
     font-weight: 700;
     font-size: 1.5rem;
     color: var(--light-gray);
@@ -156,7 +165,7 @@
     align-items: center;
     position: relative;
     top: -8px;
-    transition: var(--t-color);
+    transition: color 0.3s ease;
     user-select: none;
 }
 
@@ -189,7 +198,6 @@ body {
     --primary-theme-color: var(--team-color);
     --primary-theme-hover: var(--team-bg);
     --underline-color: var(--season-bg);
-    --dropdown-text-color: var(--season-color);
 }
 
 body.player-season, body.player-alltime {
@@ -224,12 +232,12 @@ body.player-alltime .player-rank {
 
 .section-title::after, .section-subtitle::after {
     background: var(--underline-color);
-    transition: var(--t-decorative), background var(--dur-base) var(--ease-standard);
+    transition: background 0.3s ease, transform 0.6s ease-out 0.3s;
 }
 
-.page-hero h1::before, .page-hero h1::after {
+.page-hero h1::after, .page-hero h1::before {
     color: var(--underline-color);
-    transition: var(--t-decorative), color var(--dur-base) var(--ease-standard);
+    transition: opacity 0.6s ease-out 0.3s, transform 0.6s ease-out 0.3s, color 0.6s ease;
 }
 
 .hidden {
@@ -250,8 +258,8 @@ body.player-alltime .player-rank {
 
 .custom-dropdown {
     position: relative;
-    border: 3px solid var(--underline-color);
-    border-radius: var(--radius-pill);
+    border: 2px solid var(--underline-color);
+    border-radius: 25px;
     background: white;
     cursor: pointer;
     box-shadow: var(--shadow-small);
@@ -262,7 +270,7 @@ body.player-alltime .player-rank {
 
 .custom-dropdown .selected {
     padding: 0.6rem 2rem 0.6rem 1rem;
-    border-radius: var(--radius-pill);
+    border-radius: 25px;
     width: auto;
     box-sizing: border-box;
     text-align: center;
@@ -271,7 +279,7 @@ body.player-alltime .player-rank {
 
 .custom-dropdown .selected::after {
     content: '\f0d7';
-    font-family: 'Font Awesome 6 Free', serif;
+    font-family: 'Font Awesome 6 Free';
     font-weight: 900;
     position: absolute;
     right: 0.6rem;
@@ -279,7 +287,7 @@ body.player-alltime .player-rank {
     transform: translateY(-55%);
     font-size: 1.2rem;
     color: var(--dark-gray);
-    transition: transform var(--dur-base) var(--ease-ui), content 0s;
+    transition: transform 0.3s ease, content 0s;
 }
 
 .custom-dropdown.active .selected::after {
@@ -293,8 +301,8 @@ body.player-alltime .player-rank {
     left: 50%;
     transform: translateX(-50%);
     background: white;
-    border: 3px solid var(--underline-color);
-    border-radius: var(--radius-md);
+    border: 2px solid var(--underline-color);
+    border-radius: 10px;
     box-shadow: var(--shadow-medium);
     list-style: none;
     margin: 5px 0 0;
@@ -303,18 +311,16 @@ body.player-alltime .player-rank {
     z-index: 1000;
     width: 240px;
     box-sizing: border-box;
-    overflow: hidden;
 }
 
 .custom-dropdown .options li {
     padding: 0.6rem 1rem;
     text-align: center;
-    transition: var(--t-bg);
+    transition: background 0.2s;
 }
 
 .custom-dropdown .options li:hover {
-    color: var(--underline-color);
-    font-weight: 700;
+    background: var(--underline-color);
 }
 
 .custom-dropdown.active .options {
@@ -324,7 +330,7 @@ body.player-alltime .player-rank {
 /* Tables */
 .top-scorers-table, .player-stats-table {
     background: white;
-    border-radius: var(--radius-lg);
+    border-radius: 15px;
     box-shadow: var(--shadow-medium);
     overflow: hidden;
     max-width: 70%;
@@ -355,7 +361,7 @@ body.player-alltime .player-rank {
 
 .scorer-row, .player-row {
     border-bottom: 1px solid var(--light-gray);
-    transition: var(--t-bg);
+    transition: background 0.3s ease;
 }
 
 .scorer-row:hover, .player-row:hover {
@@ -371,7 +377,7 @@ body.player-alltime .player-rank {
     color: white;
     width: 30px;
     height: 30px;
-    border-radius: var(--radius-circle);
+    border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -412,12 +418,12 @@ body.player-alltime .player-rank {
     background-color: var(--primary-theme-color);
     color: white;
     padding: 0.5rem 1rem;
-    border-radius: var(--radius-sm);
+    border-radius: 5px;
     font-size: 0.9rem;
     white-space: nowrap;
     z-index: 1000;
     opacity: 0;
-    transition: var(--t-tooltip);
+    transition: opacity 0.2s ease, visibility 0.2s ease;
 }
 
 .table-cell.player-position:hover .tooltip, .table-cell.scorer-position:hover .tooltip {
@@ -458,6 +464,10 @@ body.player-alltime .player-rank {
         padding: 1.5rem 0.8rem;
     }
 
+    .section-title br {
+        display: block;
+    }
+
     .toggles-container {
         gap: 0.8rem;
         max-width: 100%;
@@ -483,6 +493,7 @@ body.player-alltime .player-rank {
     .toggle-button {
         height: 50px;
         margin: 5px;
+        border-radius: 6px;
         background: transparent;
         box-shadow: none;
     }
@@ -491,10 +502,27 @@ body.player-alltime .player-rank {
         width: 80px;
         height: 40px;
         margin: -20px auto 0;
+        border-radius: 100px;
         box-shadow: var(--shadow-small);
     }
 
-    #team-player-toggle-btn .knob:before, #season-alltime-toggle-btn .knob:before {
+    .btn-bg {
+        background: var(--team-bg);
+    }
+
+    #button .checkbox:checked ~ .btn-bg {
+        background: var(--player-bg);
+    }
+
+    #button2 .btn-bg {
+        background: var(--season-bg);
+    }
+
+    #button2 .checkbox:checked ~ .btn-bg {
+        background: var(--alltime-bg);
+    }
+
+    #button .knob:before, #button2 .knob:before {
         width: 30px;
         height: 34px;
         top: 50%;
@@ -502,15 +530,16 @@ body.player-alltime .player-rank {
         left: 5px;
     }
 
-    #team-player-toggle-btn .checkbox:checked + .knob:before, #season-alltime-toggle-btn .checkbox:checked + .knob:before {
+    #button .checkbox:checked + .knob:before, #button2 .checkbox:checked + .knob:before {
         left: 45px;
     }
 
-    #team-player-toggle-btn .checkbox:active + .knob:before, #season-alltime-toggle-btn .checkbox:active + .knob:before {
+    #button .checkbox:active + .knob:before, #button2 .checkbox:active + .knob:before {
         width: 40px;
+        border-radius: 100px;
     }
 
-    #team-player-toggle-btn .checkbox:checked:active + .knob:before, #season-alltime-toggle-btn .checkbox:checked:active + .knob:before {
+    #button .checkbox:checked:active + .knob:before, #button2 .checkbox:checked:active + .knob:before {
         margin-left: -14px;
     }
 
@@ -537,6 +566,7 @@ body.player-alltime .player-rank {
     }
 
     .custom-dropdown {
+        border-radius: 20px;
         box-shadow: var(--shadow-small);
     }
 
@@ -551,6 +581,7 @@ body.player-alltime .player-rank {
 
     .custom-dropdown .options {
         width: 200px;
+        border-radius: 8px;
         box-shadow: var(--shadow-small);
     }
 
@@ -562,6 +593,7 @@ body.player-alltime .player-rank {
     .top-scorers-table, .player-stats-table {
         max-width: 90%;
         margin: 0 auto;
+        border-radius: 12px;
         box-shadow: var(--shadow-medium);
     }
 
@@ -572,10 +604,18 @@ body.player-alltime .player-rank {
         font-size: 0.75rem;
     }
 
+    .table-header {
+        font-size: 0.75rem;
+    }
+
     .table-header .table-cell:nth-child(2),
     .scorer-position,
     .player-position {
         display: none;
+    }
+
+    .scorer-position i, .player-position i {
+        font-size: 0.9rem;
     }
 
     .scorer-name, .player-name {
@@ -586,6 +626,20 @@ body.player-alltime .player-rank {
         width: 22px;
         height: 22px;
         font-size: 0.75rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto;
+        padding: 0;
+        line-height: normal;
+    }
+
+    .desktop-only {
+        display: none;
+    }
+
+    .mobile-only {
+        display: inline-block;
     }
 
     .header-icon {
@@ -625,6 +679,7 @@ body.player-alltime .player-rank {
     .toggle-button {
         height: 45px;
         margin: 4px;
+        border-radius: 5px;
         background: transparent;
         box-shadow: none;
     }
@@ -633,9 +688,26 @@ body.player-alltime .player-rank {
         width: 70px;
         height: 35px;
         margin: -17.5px auto 0;
+        border-radius: 80px;
     }
 
-    #team-player-toggle-btn .knob:before, #season-alltime-toggle-btn .knob:before {
+    .btn-bg {
+        background: var(--team-bg);
+    }
+
+    #button .checkbox:checked ~ .btn-bg {
+        background: var(--player-bg);
+    }
+
+    #button2 .btn-bg {
+        background: var(--season-bg);
+    }
+
+    #button2 .checkbox:checked ~ .btn-bg {
+        background: var(--alltime-bg);
+    }
+
+    #button .knob:before, #button2 .knob:before {
         width: 25px;
         height: 31px;
         top: 40%;
@@ -643,15 +715,16 @@ body.player-alltime .player-rank {
         left: 2px;
     }
 
-    #team-player-toggle-btn .checkbox:checked + .knob:before, #season-alltime-toggle-btn .checkbox:checked + .knob:before {
+    #button .checkbox:checked + .knob:before, #button2 .checkbox:checked + .knob:before {
         left: 35px;
     }
 
-    #team-player-toggle-btn .checkbox:active + .knob:before, #season-alltime-toggle-btn .checkbox:active + .knob:before {
+    #button .checkbox:active + .knob:before, #button2 .checkbox:active + .knob:before {
         width: 36px;
+        border-radius: 80px;
     }
 
-    #team-player-toggle-btn .checkbox:checked:active + .knob:before, #season-alltime-toggle-btn .checkbox:checked:active + .knob:before {
+    #button .checkbox:checked:active + .knob:before, #button2 .checkbox:checked:active + .knob:before {
         margin-left: -12px;
     }
 
@@ -661,6 +734,10 @@ body.player-alltime .player-rank {
 
     .sort-controls {
         gap: 0.6rem;
+    }
+
+    .custom-dropdown {
+        border-radius: 18px;
     }
 
     .custom-dropdown .selected {
@@ -674,6 +751,7 @@ body.player-alltime .player-rank {
 
     .custom-dropdown .options {
         width: 180px;
+        border-radius: 6px;
     }
 
     .custom-dropdown .options li {
@@ -683,6 +761,7 @@ body.player-alltime .player-rank {
 
     .top-scorers-table, .player-stats-table {
         max-width: 90%;
+        border-radius: 10px;
         box-shadow: var(--shadow-medium);
     }
 
@@ -693,6 +772,14 @@ body.player-alltime .player-rank {
         font-size: 0.7rem;
     }
 
+    .table-header {
+        font-size: 0.7rem;
+    }
+
+    .scorer-position i, .player-position i {
+        font-size: 0.85rem;
+    }
+
     .scorer-name, .player-name {
         font-size: 0.7rem;
     }
@@ -701,6 +788,12 @@ body.player-alltime .player-rank {
         width: 22px;
         height: 22px;
         font-size: 0.7rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto;
+        padding: 0;
+        line-height: normal;
     }
 
     .header-icon {
