@@ -62,8 +62,9 @@
     background: var(--soft-coral) !important;
 }
 
-.match-title-container::after {
-    border-radius: 3px;
+.match-title-container::after,
+#modalMatchTitle::after {
+    border-radius: var(--radius-sm);
 }
 
 /* Title and Season */
@@ -76,10 +77,6 @@
     font-family: 'Poppins', sans-serif;
     position: relative;
     margin-top: 0.5rem;
-}
-
-#modalMatchTitle::after {
-    border-radius: 2px;
 }
 
 .season {
@@ -103,7 +100,7 @@
 .score-display {
     background: white;
     padding: 10px 18px;
-    border-radius: 20px;
+    border-radius: var(--radius-pill);
     font-size: 1.8rem;
     font-weight: 700;
     color: var(--dark-gray);
@@ -135,7 +132,7 @@
     margin-bottom: 1.5rem;
     padding: 1.2rem;
     background: white;
-    border-radius: 12px;
+    border-radius: var(--radius-lg);
     border: 1px solid transparent;
     box-shadow: var(--shadow-medium);
 }
@@ -179,7 +176,7 @@
     width: 35px;
     height: 3px;
     background: var(--dusty-blue);
-    border-radius: 1px;
+    border-radius: var(--radius-sm);
 }
 
 #matchCenterModal.win .modal-section h3::after,
@@ -209,7 +206,7 @@
 
 #modalSponsorLink {
     display: inline-block;
-    border-radius: 12px;
+    border-radius: var(--radius-md);
 }
 
 #modalSponsorLogo {
@@ -217,7 +214,7 @@
     max-width: 100%;
     width: auto;
     display: block;
-    border-radius: 12px;
+    border-radius: var(--radius-md);
 }
 
 /* Match Details Container */
@@ -245,7 +242,7 @@
     margin: 0;
     padding: 0.8rem;
     background: var(--nested-box);
-    border-radius: 10px;
+    border-radius: var(--radius-md);
     box-shadow: var(--shadow-medium);
     display: flex;
     align-items: center;
@@ -302,12 +299,12 @@
 
 .timeline-wrapper::-webkit-scrollbar-track {
     background: var(--silver-mist);
-    border-radius: 10px;
+    border-radius: var(--radius-sm);
 }
 
 .timeline-wrapper::-webkit-scrollbar-thumb {
     background: var(--light-gray);
-    border-radius: 10px;
+    border-radius: var(--radius-sm);
 }
 
 .timeline-wrapper::-webkit-scrollbar-thumb:hover {
@@ -327,7 +324,6 @@
         font-size: 1.3rem;
         padding: 7px 12px;
         min-width: 90px;
-        border-radius: 18px;
     }
     #modalMatchTitle {
         font-size: 1.4rem;
@@ -336,13 +332,12 @@
     #modalMatchTitle::after { width: 40px; height: 3px; }
     .season {
         font-size: 0.9rem;
-        margin-bottom: 1.2rem; /* ← now matches */
+        margin-bottom: 1.2rem;
     }
     .modal-section,
     .goalscorers-section {
         padding: 0.9rem;
-        margin-bottom: 1.2rem; /* ← now matches padding */
-        border-radius: 10px;
+        margin-bottom: 1.2rem;
     }
     .modal-section h3,
     .goalscorers-section h3,
@@ -387,7 +382,6 @@
         font-size: 1.2rem;
         padding: 6px 10px;
         min-width: 80px;
-        border-radius: 16px;
     }
     #modalMatchTitle {
         font-size: 1.3rem;
@@ -402,7 +396,6 @@
     .goalscorers-section {
         padding: 0.8rem;
         margin-bottom: 1rem;
-        border-radius: 8px;
     }
     .modal-section h3,
     .goalscorers-section h3,

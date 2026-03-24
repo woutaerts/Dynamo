@@ -17,7 +17,7 @@
     flex: 1 1 300px;
     background: white;
     padding: 1.5rem;
-    border-radius: 15px;
+    border-radius: var(--radius-lg);
     box-shadow: var(--shadow-medium);
     transition: var(--t-hover);
 }
@@ -45,7 +45,7 @@
     align-items: center;
     padding: 1rem;
     gap: 1rem;
-    border-radius: 10px;
+    border-radius: var(--radius-sm);
     margin-bottom: 0.8rem;
     font-family: 'Poppins', sans-serif;
     transition: var(--t-reveal);
@@ -103,7 +103,6 @@
     .record-category {
         flex: none;
         padding: 1rem;
-        border-radius: 12px;
         min-height: 44px;
     }
 
@@ -114,7 +113,6 @@
     .record-item {
         padding: 0.6rem;
         margin-bottom: 0.5rem;
-        border-radius: 8px;
         min-height: 44px;
     }
 

@@ -32,7 +32,7 @@ body.modal-open {
 /* Shared Modal Content Base */
 .modal-content {
     background: var(--off-white);
-    border-radius: 16px;
+    border-radius: var(--radius-lg);
     box-shadow: var(--shadow-medium);
     padding: 1.5rem;
     width: 90%;
@@ -50,13 +50,13 @@ body.modal-open {
 
 .modal-content::-webkit-scrollbar-track {
     background: transparent;
-    border-radius: 10px;
+    border-radius: var(--radius-sm);
     margin: 16px 0;
 }
 
 .modal-content::-webkit-scrollbar-thumb {
     background: var(--light-gray);
-    border-radius: 10px;
+    border-radius: var(--radius-sm);
 }
 
 .modal-content::-webkit-scrollbar-thumb:hover {
@@ -76,7 +76,7 @@ body.modal-open {
     cursor: pointer;
     width: 36px;
     height: 36px;
-    border-radius: 50%;
+    border-radius: var(--radius-circle);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -112,7 +112,6 @@ body.modal-open {
         max-width: none;
         padding: 1.2rem;
         max-height: 85vh;
-        border-radius: 14px;
         box-shadow: var(--shadow-small);
     }
 
@@ -133,7 +132,6 @@ body.modal-open {
     .modal-content {
         padding: 1rem;
         max-height: 82vh;
-        border-radius: 12px;
     }
 
     .close-modal {

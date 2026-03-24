@@ -94,7 +94,7 @@ main .page-hero h1.animate-in::after {
     border: none;
     color: var(--medium-gray);
     padding: 0.6rem 1.2rem;
-    border-radius: 20px;
+    border-radius: var(--radius-pill);
     font-family: 'Poppins', sans-serif;
     font-weight: 700;
     letter-spacing: 1px;
@@ -122,7 +122,7 @@ main .page-hero h1.animate-in::after {
     display: block;
     width: 0;
     height: 0;
-    border-radius: 50%;
+    border-radius: var(--radius-circle);
     transition: var(--t-ripple);
     transform: translate(-50%, -50%);
     z-index: -1;
@@ -168,7 +168,7 @@ main .page-hero h1.animate-in::after {
 
 .player-card {
     background: white;
-    border-radius: 12px;
+    border-radius: var(--radius-lg);
     padding: 1.5rem;
     box-shadow: var(--shadow-medium);
     cursor: pointer;
@@ -235,7 +235,7 @@ main .page-hero h1.animate-in::after {
     font-size: 0.85rem;
     font-weight: 500;
     padding: 0.4rem 0.8rem;
-    border-radius: 16px;
+    border-radius: var(--radius-pill);
     margin: 0 auto;
     width: fit-content;
 }
@@ -272,7 +272,7 @@ main .page-hero h1.animate-in::after {
     opacity: 0.1;
     pointer-events: none;
     z-index: 0;
-    border-radius: 12px;
+    border-radius: var(--radius-lg);
 }
 
 /* Garlands */
@@ -428,7 +428,6 @@ main .page-hero h1.animate-in::after {
 
     .player-card {
         padding: 0.9rem;
-        border-radius: 10px;
     }
 
     .player-name {

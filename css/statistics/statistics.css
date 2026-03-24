@@ -51,7 +51,7 @@
     height: 53px;
     margin: 13px;
     background: transparent;
-    border-radius: 8px;
+    border-radius: var(--radius-sm);
 }
 
 .btn {
@@ -62,7 +62,7 @@
     margin: -16px auto 0;
     overflow: hidden;
     box-shadow: var(--shadow-medium);
-    border-radius: 200px;
+    border-radius: var(--radius-pill);
 }
 
 .checkbox {
@@ -101,13 +101,13 @@
     width: 21px;
     height: 27px;
     padding: 0 4px;
-    border-radius: 50%;
+    border-radius: var(--radius-circle);
     transition: all 0.3s ease, left 0.3s cubic-bezier(0.18, 0.89, 0.35, 1.15);
 }
 
 #team-player-toggle-btn .checkbox:active + .knob:before, #season-alltime-toggle-btn .checkbox:active + .knob:before {
     width: 33px;
-    border-radius: 200px;
+    border-radius: var(--radius-pill);
 }
 
 #team-player-toggle-btn .checkbox:checked:active + .knob:before, #season-alltime-toggle-btn .checkbox:checked:active + .knob:before {
@@ -251,7 +251,7 @@ body.player-alltime .player-rank {
 .custom-dropdown {
     position: relative;
     border: 3px solid var(--underline-color);
-    border-radius: 25px;
+    border-radius: var(--radius-pill);
     background: white;
     cursor: pointer;
     box-shadow: var(--shadow-small);
@@ -262,7 +262,7 @@ body.player-alltime .player-rank {
 
 .custom-dropdown .selected {
     padding: 0.6rem 2rem 0.6rem 1rem;
-    border-radius: 25px;
+    border-radius: var(--radius-pill);
     width: auto;
     box-sizing: border-box;
     text-align: center;
@@ -294,7 +294,7 @@ body.player-alltime .player-rank {
     transform: translateX(-50%);
     background: white;
     border: 3px solid var(--underline-color);
-    border-radius: 10px;
+    border-radius: var(--radius-md);
     box-shadow: var(--shadow-medium);
     list-style: none;
     margin: 5px 0 0;
@@ -324,7 +324,7 @@ body.player-alltime .player-rank {
 /* Tables */
 .top-scorers-table, .player-stats-table {
     background: white;
-    border-radius: 15px;
+    border-radius: var(--radius-lg);
     box-shadow: var(--shadow-medium);
     overflow: hidden;
     max-width: 70%;
@@ -371,7 +371,7 @@ body.player-alltime .player-rank {
     color: white;
     width: 30px;
     height: 30px;
-    border-radius: 50%;
+    border-radius: var(--radius-circle);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -412,7 +412,7 @@ body.player-alltime .player-rank {
     background-color: var(--primary-theme-color);
     color: white;
     padding: 0.5rem 1rem;
-    border-radius: 5px;
+    border-radius: var(--radius-sm);
     font-size: 0.9rem;
     white-space: nowrap;
     z-index: 1000;
@@ -483,7 +483,6 @@ body.player-alltime .player-rank {
     .toggle-button {
         height: 50px;
         margin: 5px;
-        border-radius: 6px;
         background: transparent;
         box-shadow: none;
     }
@@ -492,7 +491,6 @@ body.player-alltime .player-rank {
         width: 80px;
         height: 40px;
         margin: -20px auto 0;
-        border-radius: 100px;
         box-shadow: var(--shadow-small);
     }
 
@@ -510,7 +508,6 @@ body.player-alltime .player-rank {
 
     #team-player-toggle-btn .checkbox:active + .knob:before, #season-alltime-toggle-btn .checkbox:active + .knob:before {
         width: 40px;
-        border-radius: 100px;
     }
 
     #team-player-toggle-btn .checkbox:checked:active + .knob:before, #season-alltime-toggle-btn .checkbox:checked:active + .knob:before {
@@ -540,7 +537,6 @@ body.player-alltime .player-rank {
     }
 
     .custom-dropdown {
-        border-radius: 20px;
         box-shadow: var(--shadow-small);
     }
 
@@ -555,7 +551,6 @@ body.player-alltime .player-rank {
 
     .custom-dropdown .options {
         width: 200px;
-        border-radius: 8px;
         box-shadow: var(--shadow-small);
     }
 
@@ -567,7 +562,6 @@ body.player-alltime .player-rank {
     .top-scorers-table, .player-stats-table {
         max-width: 90%;
         margin: 0 auto;
-        border-radius: 12px;
         box-shadow: var(--shadow-medium);
     }
 
@@ -631,7 +625,6 @@ body.player-alltime .player-rank {
     .toggle-button {
         height: 45px;
         margin: 4px;
-        border-radius: 5px;
         background: transparent;
         box-shadow: none;
     }
@@ -640,7 +633,6 @@ body.player-alltime .player-rank {
         width: 70px;
         height: 35px;
         margin: -17.5px auto 0;
-        border-radius: 80px;
     }
 
     #team-player-toggle-btn .knob:before, #season-alltime-toggle-btn .knob:before {
@@ -657,7 +649,6 @@ body.player-alltime .player-rank {
 
     #team-player-toggle-btn .checkbox:active + .knob:before, #season-alltime-toggle-btn .checkbox:active + .knob:before {
         width: 36px;
-        border-radius: 80px;
     }
 
     #team-player-toggle-btn .checkbox:checked:active + .knob:before, #season-alltime-toggle-btn .checkbox:checked:active + .knob:before {
@@ -672,10 +663,6 @@ body.player-alltime .player-rank {
         gap: 0.6rem;
     }
 
-    .custom-dropdown {
-        border-radius: 18px;
-    }
-
     .custom-dropdown .selected {
         padding: 0.4rem 1.6rem 0.4rem 0.7rem;
         font-size: 0.8rem;
@@ -687,7 +674,6 @@ body.player-alltime .player-rank {
 
     .custom-dropdown .options {
         width: 180px;
-        border-radius: 6px;
     }
 
     .custom-dropdown .options li {
@@ -697,7 +683,6 @@ body.player-alltime .player-rank {
 
     .top-scorers-table, .player-stats-table {
         max-width: 90%;
-        border-radius: 10px;
         box-shadow: var(--shadow-medium);
     }
 

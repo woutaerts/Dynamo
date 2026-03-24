@@ -42,7 +42,7 @@
     border: none;
     color: var(--medium-gray);
     padding: 0.75rem 1.5rem;
-    border-radius: 25px;
+    border-radius: var(--radius-pill);
     font-family: 'Poppins', sans-serif;
     font-weight: 700;
     font-size: 1rem;
@@ -73,7 +73,7 @@
     display: block;
     width: 0;
     height: 0;
-    border-radius: 50%;
+    border-radius: var(--radius-circle);
     transition: var(--t-ripple);    transform: translate(-50%, -50%);
     z-index: -1;
     background-color: var(--dynamo-red);

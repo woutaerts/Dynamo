@@ -34,6 +34,7 @@
     flex: 1;
     height: 1px;
     background: var(--line-gray);
+    border-radius: var(--radius-sm);
 }
 
 /* Social Icons and Logo */
@@ -174,7 +175,7 @@
 
     .logo-link:hover .footer-logo-grey,
     .logo-link:hover .footer-logo-red {
-        transition: opacity 0.2s ease;
+        transition: opacity var(--dur-base) var(--ease-standard);
     }
 
     .social-icon:hover {

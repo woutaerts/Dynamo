@@ -62,7 +62,7 @@
 #season-select {
     position: relative;
     border: 3px solid var(--dynamo-red);
-    border-radius: 25px;
+    border-radius: var(--radius-pill);
     background: white;
     cursor: pointer;
     box-shadow: var(--shadow-small);
@@ -76,7 +76,7 @@
 
 #season-select .selected {
     padding: 0.6rem 2rem 0.6rem 1rem;
-    border-radius: 25px;
+    border-radius: var(--radius-pill);
     width: auto;
     box-sizing: border-box;
     text-align: center;
@@ -109,7 +109,7 @@
     transform: translateX(-50%);
     background: white;
     border: 3px solid var(--dynamo-red);
-    border-radius: 10px;
+    border-radius: var(--radius-md);
     box-shadow: var(--shadow-medium);
     list-style: none;
     margin: 5px 0 0;

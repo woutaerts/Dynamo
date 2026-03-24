@@ -1,6 +1,6 @@
 .comparison-graph-container {
     background-color: white;
-    border-radius: 15px;
+    border-radius: var(--radius-lg);
     box-shadow: var(--shadow-medium);
     overflow: hidden;
     width: 100%;

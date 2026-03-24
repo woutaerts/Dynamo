@@ -18,7 +18,7 @@ body {
     background: rgba(255, 255, 255, 0.95);
     backdrop-filter: blur(25px);
     box-shadow: var(--shadow-medium);
-    border-radius: 55px;
+    border-radius: var(--radius-pill);
     transition: var(--t-hover);
     animation: slideDown var(--dur-enter) var(--ease-ui);
     padding: 8px 12px;
@@ -33,7 +33,7 @@ body {
     right: 0;
     bottom: 0;
     background: rgba(255, 255, 255, 0.1);
-    border-radius: 55px;
+    border-radius: var(--radius-pill);
     pointer-events: none;
     z-index: -1;
 }
@@ -70,7 +70,7 @@ body {
     transition: width var(--dur-instant) var(--ease-out);
     box-shadow: var(--shadow-medium);
     position: relative;
-    border-radius: 0 6px 6px 0;
+    border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
     will-change: width;
 }
 
@@ -109,7 +109,7 @@ body {
     gap: 8px;
     background: rgba(255, 255, 255, 0.3);
     backdrop-filter: blur(15px);
-    border-radius: 33px;
+    border-radius: var(--radius-pill);
 }
 
 .nav-link {
@@ -117,7 +117,7 @@ body {
     border: none;
     color: var(--dark-gray);
     padding: 8px 16px;
-    border-radius: 22px;
+    border-radius: var(--radius-pill);
     font-family: 'Poppins', sans-serif;
     font-weight: 600;
     letter-spacing: 1px;
@@ -161,7 +161,7 @@ body {
     display: block;
     width: 0;
     height: 0;
-    border-radius: 50%;
+    border-radius: var(--radius-circle);
     background-color: var(--dynamo-red);
     transition: var(--t-ripple);
     transform: translate(-50%, -50%);
@@ -195,7 +195,7 @@ body {
 
 .mobile-search-link {
     background: rgba(255, 255, 255, 0.3);
-    border-radius: 9px;
+    border-radius: var(--radius-sm);
     padding: 8px 10px;
     backdrop-filter: blur(10px);
     transition:
@@ -230,7 +230,7 @@ body {
     padding: 9px 13px;
     z-index: 1001;
     background: rgba(255, 255, 255, 0.3);
-    border-radius: 9px;
+    border-radius: var(--radius-sm);
     backdrop-filter: blur(10px);
     transition:
             background var(--dur-base) var(--ease-standard),
@@ -248,7 +248,7 @@ body {
     height: 2px;
     background: var(--dynamo-red);
     margin: 2px 0;
-    border-radius: 2px;
+    border-radius: var(--radius-sm);
     transition:
             transform var(--dur-micro) var(--ease-ui),
             opacity   var(--dur-micro) var(--ease-ui);
@@ -338,7 +338,6 @@ body {
         flex-direction: column;
         background: rgba(255, 255, 255, 0.95);
         backdrop-filter: blur(25px);
-        border-radius: 22px;
         padding: 18px;
         gap: 9px;
         transition:
@@ -422,7 +421,6 @@ body {
         width: 86%;
         top: 8px;
         padding: 6px 8px;
-        border-radius: 40px;
         background: rgba(255, 255, 255, 0.92);
         backdrop-filter: blur(20px);
         box-shadow: var(--shadow-hover);
@@ -443,7 +441,6 @@ body {
 
     .mobile-menu-toggle {
         padding: 8px 10px;
-        border-radius: 8px;
         order: 1;
     }
 
@@ -476,7 +473,6 @@ body {
         right: 6px;
         top: calc(100% + 8px);
         padding: 12px;
-        border-radius: 16px;
         background: rgba(255, 255, 255, 0.98);
         backdrop-filter: blur(15px);
         gap: 8px;
@@ -488,7 +484,6 @@ body {
 
     .nav-link {
         padding: 8px 16px;
-        border-radius: 22px;
         font-size: 1rem;
     }
 }
