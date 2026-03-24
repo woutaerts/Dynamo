@@ -18,9 +18,9 @@ body {
     background: rgba(255, 255, 255, 0.95);
     backdrop-filter: blur(25px);
     box-shadow: var(--shadow-medium);
-    border-radius: 55px;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    animation: slideDown 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+    border-radius: var(--radius-pill);
+    transition: var(--t-hover);
+    animation: slideDown var(--dur-enter) var(--ease-ui);
     padding: 8px 12px;
     will-change: transform, background, box-shadow, opacity;
 }
@@ -33,7 +33,7 @@ body {
     right: 0;
     bottom: 0;
     background: rgba(255, 255, 255, 0.1);
-    border-radius: 55px;
+    border-radius: var(--radius-pill);
     pointer-events: none;
     z-index: -1;
 }
@@ -66,24 +66,22 @@ body {
 .scroll-progress-bar {
     height: 100%;
     width: 0;
-    background-size: 200% 100%;
     background: var(--dynamo-red) 0 50%;
-    transition: width 0.1s ease-out;
+    transition: width var(--dur-instant) var(--ease-out);
     box-shadow: var(--shadow-medium);
-    animation: gradientShift 3s ease-in-out infinite;
     position: relative;
-    border-radius: 0 6px 6px 0;
+    border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
     will-change: width;
 }
 
 .scroll-progress-bar::after {
     content: '';
     position: absolute;
-    right: -1px;
+    right: 0;
     top: 50%;
     transform: translateY(-50%);
-    width: 12px;
-    height: 12px;
+    width: 13px;
+    height: 13px;
     background-image: url('../../img/icons/white-football-icon.png');
     background-size: contain;
     background-repeat: no-repeat;
@@ -111,7 +109,7 @@ body {
     gap: 8px;
     background: rgba(255, 255, 255, 0.3);
     backdrop-filter: blur(15px);
-    border-radius: 33px;
+    border-radius: var(--radius-pill);
 }
 
 .nav-link {
@@ -119,13 +117,13 @@ body {
     border: none;
     color: var(--dark-gray);
     padding: 8px 16px;
-    border-radius: 22px;
+    border-radius: var(--radius-pill);
     font-family: 'Poppins', sans-serif;
     font-weight: 600;
     letter-spacing: 1px;
     font-size: 1rem;
     cursor: pointer;
-    transition: all 0.3s ease;
+    transition: var(--t-color), var(--t-bg);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -163,9 +161,9 @@ body {
     display: block;
     width: 0;
     height: 0;
-    border-radius: 50%;
+    border-radius: var(--radius-circle);
     background-color: var(--dynamo-red);
-    transition: width 0.4s ease-in-out, height 0.4s ease-in-out;
+    transition: var(--t-ripple);
     transform: translate(-50%, -50%);
     z-index: -1;
 }
@@ -174,24 +172,20 @@ body {
     color: var(--off-white);
 }
 
-.nav-link:hover span.ripple {
+.nav-link:hover span.ripple,
+.nav-link:focus span.ripple {
     width: 200%;
     height: 165px;
 }
 
-.nav-link.active {
+.nav-link.active,
+.nav-link:focus {
     color: var(--off-white);
     background: var(--dynamo-red);
 }
 
 .nav-link:focus {
-    color: var(--off-white);
     outline: none;
-}
-
-.nav-link:focus span.ripple {
-    width: 200%;
-    height: 165px;
 }
 
 /* Mobile Search Container */
@@ -201,10 +195,12 @@ body {
 
 .mobile-search-link {
     background: rgba(255, 255, 255, 0.3);
-    border-radius: 9px;
+    border-radius: var(--radius-sm);
     padding: 8px 10px;
     backdrop-filter: blur(10px);
-    transition: all 0.3s ease;
+    transition:
+            background var(--dur-base) var(--ease-standard),
+            transform  var(--dur-base) var(--ease-standard);
     display: flex;
     align-items: center;
     text-decoration: none;
@@ -234,9 +230,12 @@ body {
     padding: 9px 13px;
     z-index: 1001;
     background: rgba(255, 255, 255, 0.3);
-    border-radius: 9px;
+    border-radius: var(--radius-sm);
     backdrop-filter: blur(10px);
-    transition: all 0.3s ease;
+    transition:
+            background var(--dur-base) var(--ease-standard),
+            transform  var(--dur-base) var(--ease-standard);
+    isolation: isolate;
 }
 
 .mobile-menu-toggle:hover {
@@ -249,8 +248,12 @@ body {
     height: 2px;
     background: var(--dynamo-red);
     margin: 2px 0;
-    border-radius: 2px;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    border-radius: var(--radius-sm);
+    transition:
+            transform var(--dur-micro) var(--ease-ui),
+            opacity   var(--dur-micro) var(--ease-ui);
+    transform-origin: center center;
+    will-change: transform, opacity;
 }
 
 .mobile-menu-toggle.active span:nth-child(1) {
@@ -335,20 +338,28 @@ body {
         flex-direction: column;
         background: rgba(255, 255, 255, 0.95);
         backdrop-filter: blur(25px);
-        border-radius: 22px;
         padding: 18px;
         gap: 9px;
+        transition:
+                transform   var(--dur-micro) var(--ease-ui),
+                opacity     var(--dur-micro) var(--ease-ui),
+                visibility  var(--dur-micro) var(--ease-ui),
+                max-height  var(--dur-micro) var(--ease-ui);
+        box-shadow: var(--shadow-medium);
         transform: translateY(-20px);
         opacity: 0;
         visibility: hidden;
-        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        box-shadow: var(--shadow-medium);
+        pointer-events: none;
+        max-height: 0;
+        overflow: hidden;
     }
 
     .nav-links.active {
         transform: translateY(0);
         opacity: 1;
         visibility: visible;
+        pointer-events: auto;
+        max-height: 500px;
     }
 
     .nav-link {
@@ -358,20 +369,33 @@ body {
         justify-content: center;
     }
 
-    .nav-link.search-link {
+    .mobile-search-link:hover,
+    .mobile-menu-toggle:hover {
+        transform: none !important;
+        background: rgba(255, 255, 255, 0.5);
+    }
+
+    .nav-link:hover span.ripple,
+    .nav-link:focus span.ripple {
+        width: 0 !important;
+        height: 0 !important;
+        transition: none !important;
+    }
+
+    .nav-link:hover,
+    .nav-link:focus {
+        color: var(--off-white);
+        background: var(--dynamo-red);
+    }
+
+    .nav-link.search-link,
+    .nav-link i,
+    .nav-link span.ripple {
         display: none;
     }
 
     .nav-link span.nav-text {
         margin-left: 0;
-    }
-
-    .nav-link i {
-        display: none;
-    }
-
-    .nav-link span.ripple {
-        display: none;
     }
 
     .nav-link:hover,
@@ -397,7 +421,6 @@ body {
         width: 86%;
         top: 8px;
         padding: 6px 8px;
-        border-radius: 40px;
         background: rgba(255, 255, 255, 0.92);
         backdrop-filter: blur(20px);
         box-shadow: var(--shadow-hover);
@@ -410,7 +433,6 @@ body {
     }
 
     .nav-container {
-        padding: 0;
         justify-content: space-between;
         position: relative;
         width: 100%;
@@ -419,7 +441,6 @@ body {
 
     .mobile-menu-toggle {
         padding: 8px 10px;
-        border-radius: 8px;
         order: 1;
     }
 
@@ -452,58 +473,18 @@ body {
         right: 6px;
         top: calc(100% + 8px);
         padding: 12px;
-        border-radius: 16px;
         background: rgba(255, 255, 255, 0.98);
         backdrop-filter: blur(15px);
         gap: 8px;
     }
 
     .nav-links.active {
-        transform: translateY(0);
-        opacity: 1;
-        visibility: visible;
         box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
     }
 
     .nav-link {
         padding: 8px 16px;
-        border-radius: 22px;
         font-size: 1rem;
-        width: 100%;
-        min-height: 44px;
-    }
-
-    .nav-link i {
-        display: none;
-    }
-
-    .nav-link span.nav-text {
-        margin-left: 0;
-    }
-
-    .nav-link span.ripple {
-        display: none;
-    }
-
-    .nav-link:hover,
-    .nav-link:focus {
-        color: var(--dark-gray);
-        background: transparent;
-    }
-
-    .nav-link:hover span.ripple,
-    .nav-link:focus span.ripple {
-        width: 0;
-        height: 0;
-    }
-
-    .nav-link.active {
-        color: var(--off-white);
-        background: var(--dynamo-red);
-    }
-
-    .nav-link.search-link {
-        display: none;
     }
 }
 
@@ -513,20 +494,9 @@ body {
         scroll-behavior: auto;
     }
 
-    .header {
-        animation: none;
-        transition: transform 0.1s ease, opacity 0.1s ease;
-    }
-
-    .nav-link {
-        animation: none;
-        transition: none;
-    }
-
-    .nav-link span.ripple {
-        transition: none;
-    }
-
+    .header,
+    .nav-link,
+    .nav-link span.ripple,
     .scroll-progress-bar {
         animation: none;
         transition: none;
@@ -549,5 +519,17 @@ body {
 
     .nav-link.search-link {
         padding: 8px 12px;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .header,
+    .nav-link,
+    .nav-link span.ripple,
+    .scroll-progress-bar,
+    .mobile-menu-toggle span,
+    .nav-links {
+        animation: none;
+        transition: none;
     }
 }

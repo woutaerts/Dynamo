@@ -1,5 +1,6 @@
-/* Stats Section */
-.stats-section {
+/* Shared Section Padding */
+.stats-section,
+.detailed-stats {
     padding: 2rem 0;
 }
 
@@ -13,42 +14,11 @@
     margin: 0 auto;
 }
 
-.stat-card {
-    background: white;
-    padding: 2rem;
-    border-radius: 15px;
-    box-shadow: var(--shadow-medium);
-    border: 2px solid transparent;
-}
-
-.stat-card:hover {
-    box-shadow: var(--shadow-hover);
-    transform: translateY(-5px);
-    transition: transform 0.3s ease;
-}
-
 .stat-number {
-    font-size: 2.5rem;
     color: var(--primary-theme-color);
-    font-weight: 800;
-    font-family: 'Poppins', sans-serif;
-    transition: opacity 0.6s ease-out, transform 0.6s ease-out, box-shadow 0.3s ease;
-}
-
-.stat-label {
-    color: var(--medium-gray);
-    text-transform: uppercase;
-    margin-top: 0.5rem;
-    font-family: 'Poppins', sans-serif;
-    font-weight: 600;
-    font-size: 0.9rem;
 }
 
 /* Detailed Stats */
-.detailed-stats {
-    padding: 2rem 0;
-}
-
 .stats-categories {
     display: grid;
     grid-template-rows: auto auto;
@@ -61,8 +31,9 @@
     width: calc((70% - 2rem) / 2);
     background: white;
     padding: 1.5rem;
-    border-radius: 15px;
+    border-radius: var(--radius-lg);
     box-shadow: var(--shadow-medium);
+    transition: var(--t-hover);
 }
 
 .stat-category:nth-child(1) {
@@ -90,7 +61,6 @@
 .stat-category:hover {
     box-shadow: var(--shadow-hover);
     transform: translateY(-5px);
-    transition: transform 0.3s ease;
 }
 
 .stat-category h3 {
@@ -100,7 +70,7 @@
     font-family: 'Poppins', sans-serif;
     font-weight: 700;
     font-size: 1.3rem;
-    transition: opacity 0.6s ease-out, transform 0.6s ease-out, box-shadow 0.3s ease;
+    transition: var(--t-reveal);
 }
 
 .stat-item {
@@ -110,10 +80,10 @@
     align-items: center;
     padding: 1rem;
     gap: 1rem;
-    border-radius: 10px;
+    border-radius: var(--radius-sm);
     margin-bottom: 0.8rem;
     font-family: 'Poppins', sans-serif;
-    transition: opacity 0.6s ease-out, transform 0.6s ease-out, box-shadow 0.3s ease;
+    transition: var(--t-reveal);
 }
 
 .stat-item .stat-name {
@@ -125,58 +95,36 @@
     font-weight: 700;
     color: var(--primary-theme-color);
     font-size: 1.1rem;
-    transition: opacity 0.6s ease-out, transform 0.6s ease-out, box-shadow 0.3s ease;
+    transition: var(--t-reveal);
 }
 
 /* Tablet View */
 @media (max-width: 768px) {
-    .stats-section {
+    .stats-section,
+    .detailed-stats {
         padding: 1.5rem 0;
     }
 
     .stats-grid {
         grid-template-columns: repeat(2, 1fr);
-        gap: 1rem;
-        width: 70%;
-        margin: 0 auto;
     }
 
     .stat-card {
-        padding: 1.2rem;
         min-height: 44px;
     }
 
-    .stat-number {
-        font-size: 1.8rem;
-    }
-
-    .stat-label {
-        font-size: 0.8rem;
-    }
-
-    .detailed-stats {
-        padding: 1.5rem 0;
-    }
-
-    .stats-categories {
-        gap: 1rem;
-        width: 70%;
-    }
-
-    .stat-category {
+    .stat-category,
+    .stat-category:nth-child(1) {
         width: 100%;
+    }
+
+    .stat-category:hover {
+        transform: translateY(0) !important;
+        box-shadow: var(--shadow-hover);
     }
 
     .stat-category-container {
         grid-template-columns: 1fr;
-    }
-
-    .stat-category-container .stat-category {
-        width: 100%;
-    }
-
-    .stat-category:nth-child(1) {
-        width: 100%;
     }
 
     .stat-category h3 {
@@ -196,34 +144,14 @@
 
 /* Mobile View */
 @media (max-width: 480px) {
-    .stats-section {
+    .stats-section,
+    .detailed-stats {
         padding: 1.2rem 0;
     }
 
     .stats-grid {
-        grid-template-columns: repeat(2, 1fr);
         gap: 0.8rem;
         width: 90%;
-        margin: 0 auto;
-    }
-
-    .stat-card {
-        padding: 1rem;
-        border-radius: 12px;
-        box-shadow: var(--shadow-medium);
-        min-height: 44px;
-    }
-
-    .stat-number {
-        font-size: 1.6rem;
-    }
-
-    .stat-label {
-        font-size: 0.75rem;
-    }
-
-    .detailed-stats {
-        padding: 1.2rem 0;
     }
 
     .stats-categories {
@@ -231,29 +159,14 @@
         width: 90%;
     }
 
-    .stat-category {
-        width: 100%;
-    }
-
     .stat-category-container {
-        grid-template-columns: 1fr;
         gap: 0.8rem;
-    }
-
-    .stat-category-container .stat-category {
-        width: 100%;
-    }
-
-    .stat-category h3 {
-        font-size: 1.2rem;
     }
 
     .stat-item {
         padding: 0.6rem;
         margin-bottom: 0.5rem;
-        border-radius: 8px;
-        min-height: 44px;
-    }
+   }
 
     .stat-item .stat-value {
         font-size: 0.9rem;

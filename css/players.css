@@ -1,27 +1,10 @@
 /* Theme Colors */
-body {
-    --hero-accent-color: var(--medium-gray);
-}
-
-body.filter-goalkeeper {
-    --hero-accent-color: var(--dark-blue);
-}
-
-body.filter-defender {
-    --hero-accent-color: var(--dark-green);
-}
-
-body.filter-midfielder {
-    --hero-accent-color: var(--dark-yellow);
-}
-
-body.filter-attacker {
-    --hero-accent-color: var(--dynamo-red);
-}
-
-body.filter-all {
-    --hero-accent-color: var(--medium-gray);
-}
+body {--hero-accent-color: var(--medium-gray);}
+body.filter-goalkeeper {--hero-accent-color: var(--dark-blue);}
+body.filter-defender {--hero-accent-color: var(--dark-green);}
+body.filter-midfielder {--hero-accent-color: var(--dark-yellow);}
+body.filter-attacker {--hero-accent-color: var(--dynamo-red);}
+body.filter-all {--hero-accent-color: var(--medium-gray);}
 
 /* Page Hero */
 main .page-hero {
@@ -35,18 +18,19 @@ main .page-hero {
 
 main .page-hero h1 {
     position: relative;
-    font-family: 'Poppins', sans-serif;
-    font-size: 3rem;
-    font-weight: 900;
-    color: var(--dark-gray, #343a40);
     text-align: center;
     margin: 0 auto;
-    max-width: 100%;
-    padding: 0;
-    display: inline-block;
-    opacity: 0;
-    transform: translateY(20px);
-    transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+}
+
+.empty-state-message {
+    text-align: center;
+    padding: 1rem;
+    font-family: 'Poppins', sans-serif;
+    font-size: 1rem;
+}
+
+.empty-state-message.hidden {
+    display: none;
 }
 
 main .page-hero h1::before,
@@ -62,7 +46,7 @@ main .page-hero h1::after {
     opacity: 0;
     transform: scaleY(0);
     transform-origin: center center;
-    transition: opacity 0.6s ease-out 0.3s, transform 0.6s ease-out 0.3s, color 0.3s ease;
+    transition: var(--t-decorative), color var(--dur-base) var(--ease-standard);
 }
 
 main .page-hero h1:hover::before {
@@ -90,7 +74,7 @@ main .page-hero h1.animate-in::after {
     background: var(--off-white);
     opacity: 0;
     transform: translateY(20px);
-    transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+    transition: var(--t-reveal);
 }
 
 .filter-section.animate-in {
@@ -110,13 +94,13 @@ main .page-hero h1.animate-in::after {
     border: none;
     color: var(--medium-gray);
     padding: 0.6rem 1.2rem;
-    border-radius: 20px;
+    border-radius: var(--radius-pill);
     font-family: 'Poppins', sans-serif;
     font-weight: 700;
     letter-spacing: 1px;
     font-size: 0.85rem;
     cursor: pointer;
-    transition: all 0.3s ease;
+    transition: var(--t-color), var(--t-bg), box-shadow var(--dur-base) var(--ease-standard);
     display: flex;
     align-items: center;
     gap: 0.4rem;
@@ -138,118 +122,35 @@ main .page-hero h1.animate-in::after {
     display: block;
     width: 0;
     height: 0;
-    border-radius: 50%;
-    transition: width 0.4s ease-in-out, height 0.4s ease-in-out;
+    border-radius: var(--radius-circle);
+    transition: var(--t-ripple);
     transform: translate(-50%, -50%);
     z-index: -1;
 }
 
-.filter-btn[data-position="goalkeeper"] .hover-effect {
-    background-color: var(--dark-blue);
-}
+/* Dynamic Filter Colors */
+.filter-btn[data-position="goalkeeper"] .hover-effect,
+.filter-btn.active[data-position="goalkeeper"] { background-color: var(--dark-blue); }
 
-.filter-btn[data-position="defender"] .hover-effect {
-    background-color: var(--dark-green);
-}
+.filter-btn[data-position="defender"] .hover-effect,
+.filter-btn.active[data-position="defender"] { background-color: var(--dark-green); }
 
-.filter-btn[data-position="midfielder"] .hover-effect {
-    background-color: var(--dark-yellow);
-}
+.filter-btn[data-position="midfielder"] .hover-effect,
+.filter-btn.active[data-position="midfielder"] { background-color: var(--dark-yellow); }
 
-.filter-btn[data-position="attacker"] .hover-effect {
-    background-color: var(--dynamo-red);
-}
+.filter-btn[data-position="attacker"] .hover-effect,
+.filter-btn.active[data-position="attacker"] { background-color: var(--dynamo-red); }
 
-.filter-btn[data-position="all"] .hover-effect {
-    background-color: var(--medium-gray);
-}
+.filter-btn[data-position="all"] .hover-effect,
+.filter-btn.active[data-position="all"] { background-color: var(--medium-gray); }
 
-.filter-btn:hover {
+.filter-btn:hover, .filter-btn.active {
     color: var(--off-white);
 }
 
 .filter-btn:hover .hover-effect {
     width: 225%;
     height: 180px;
-}
-
-.filter-btn.active {
-    color: var(--off-white);
-}
-
-.filter-btn.active[data-position="goalkeeper"] {
-    background: var(--dark-blue);
-}
-
-.filter-btn.active[data-position="defender"] {
-    background: var(--dark-green);
-}
-
-.filter-btn.active[data-position="midfielder"] {
-    background: var(--dark-yellow);
-}
-
-.filter-btn.active[data-position="attacker"] {
-    background: var(--dynamo-red);
-}
-
-.filter-btn.active[data-position="all"] {
-    background: var(--medium-gray);
-}
-
-/* Search Section */
-.search-container {
-    margin: 0.8rem 0;
-    text-align: center;
-    opacity: 0;
-    transform: translateY(20px);
-    transition: opacity 0.6s ease-out, transform 0.6s ease-out;
-}
-
-.search-container.animate-in {
-    opacity: 1;
-    transform: translateY(0);
-}
-
-.search-wrapper {
-    position: relative;
-    display: inline-block;
-    width: 90%;
-    max-width: 280px;
-}
-
-.search-icon {
-    position: absolute;
-    left: 0.8rem;
-    top: 50%;
-    transform: translateY(-50%);
-    color: var(--medium-gray);
-    font-size: 0.9rem;
-    pointer-events: none;
-}
-
-.player-search {
-    padding: 0.6rem 0.8rem 0.6rem 2.2rem;
-    border: 2px solid white;
-    border-radius: 20px;
-    font-family: 'Poppins', sans-serif;
-    font-size: 0.85rem;
-    width: 100%;
-    box-sizing: border-box;
-    text-align: center;
-    transition: all 0.3s ease;
-    outline: none;
-    box-shadow: var(--shadow-medium);
-    min-height: 44px;
-}
-
-.player-search:focus {
-    border-color: var(--light-gray);
-}
-
-.player-search::placeholder {
-    color: var(--medium-gray);
-    opacity: 1;
 }
 
 /* Players Section */
@@ -267,22 +168,23 @@ main .page-hero h1.animate-in::after {
 
 .player-card {
     background: white;
-    border-radius: 12px;
+    border-radius: var(--radius-lg);
     padding: 1.5rem;
     box-shadow: var(--shadow-medium);
     cursor: pointer;
-    border: 2px solid transparent;
+    border: 3px solid transparent;
     opacity: 0;
     transform: translateY(50px);
     position: relative;
     overflow: visible;
-    transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+    transition: var(--t-reveal-card);
     will-change: transform, box-shadow, border-color;
 }
 
 .player-card:hover {
     box-shadow: var(--shadow-hover);
     transform: translateY(-5px);
+    transition: var(--t-hover);
 }
 
 .player-card.animate-in {
@@ -290,21 +192,11 @@ main .page-hero h1.animate-in::after {
     transform: translateY(0);
 }
 
-.player-card[data-position="goalkeeper"]:hover {
-    border-color: var(--dark-blue);
-}
-
-.player-card[data-position="defender"]:hover {
-    border-color: var(--dark-green);
-}
-
-.player-card[data-position="midfielder"]:hover {
-    border-color: var(--dark-yellow);
-}
-
-.player-card[data-position="attacker"]:hover {
-    border-color: var(--dynamo-red);
-}
+/* Dynamic Player Card Hover Colors */
+.player-card[data-position="goalkeeper"]:hover { border-color: var(--dark-blue); }
+.player-card[data-position="defender"]:hover { border-color: var(--dark-green); }
+.player-card[data-position="midfielder"]:hover { border-color: var(--dark-yellow); }
+.player-card[data-position="attacker"]:hover { border-color: var(--dynamo-red); }
 
 .player-card.filter-hidden {
     display: none;
@@ -329,7 +221,6 @@ main .page-hero h1.animate-in::after {
 
 .player-position {
     text-transform: uppercase;
-    color: var(--dynamo-red);
     font-size: 0.8rem;
     font-weight: 800;
     margin-bottom: 0.8rem;
@@ -344,7 +235,7 @@ main .page-hero h1.animate-in::after {
     font-size: 0.85rem;
     font-weight: 500;
     padding: 0.4rem 0.8rem;
-    border-radius: 16px;
+    border-radius: var(--radius-pill);
     margin: 0 auto;
     width: fit-content;
 }
@@ -360,21 +251,11 @@ main .page-hero h1.animate-in::after {
     vertical-align: middle;
 }
 
-.player-card[data-position="goalkeeper"] .player-position {
-    color: var(--dark-blue);
-}
-
-.player-card[data-position="defender"] .player-position {
-    color: var(--dark-green);
-}
-
-.player-card[data-position="midfielder"] .player-position {
-    color: var(--dark-yellow);
-}
-
-.player-card[data-position="attacker"] .player-position {
-    color: var(--dynamo-red);
-}
+/* Dynamic Text Colors */
+.player-card[data-position="goalkeeper"] .player-position { color: var(--dark-blue); }
+.player-card[data-position="defender"] .player-position { color: var(--dark-green); }
+.player-card[data-position="midfielder"] .player-position { color: var(--dark-yellow); }
+.player-card[data-position="attacker"] .player-position { color: var(--dynamo-red); }
 
 /* Birthday Card */
 .player-card.birthday > .player-info {
@@ -384,44 +265,38 @@ main .page-hero h1.animate-in::after {
 
 .confetti-bg {
     position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-image: url('/dynamo/img/icons/confetti.png');
+    inset: 0;
+    background-image: url('/dynamo/img/icons/birthday/confetti.png');
     background-repeat: repeat;
     background-size: 60px 60px;
     opacity: 0.1;
     pointer-events: none;
     z-index: 0;
-    border-radius: 12px;
+    border-radius: var(--radius-lg);
 }
-/* Garland – top-left */
+
+/* Garlands */
+.garland-left, .garland-right {
+    position: absolute;
+    top: -8px;
+    width: 70px;
+    height: 70px;
+    background: url('/dynamo/img/icons/birthday/garland.png') no-repeat center / contain;
+    pointer-events: none;
+    z-index: 2;
+    opacity: 0.5;
+}
+
 .garland-left {
-    position: absolute;
-    top: -8px;
-    left: 0px;
-    width: 70px;
-    height: 70px;
-    background: url('/dynamo/img/icons/garland.png') no-repeat center / contain;
-    pointer-events: none;
-    z-index: 2;
+    left: 0;
     transform: rotate(-30deg);
-    opacity: 0.5;
 }
-/* Garland – top-right */
+
 .garland-right {
-    position: absolute;
-    top: -8px;
-    right: 0px;
-    width: 70px;
-    height: 70px;
-    background: url('/dynamo/img/icons/garland.png') no-repeat center / contain;
+    right: 0;
     transform: scaleX(-1) rotate(-30deg);
-    pointer-events: none;
-    z-index: 2;
-    opacity: 0.5;
 }
+
 /* Crown */
 .player-card.birthday .player-name::before {
     content: "";
@@ -431,7 +306,7 @@ main .page-hero h1.animate-in::after {
     transform: translateX(-50%);
     width: 30px;
     height: 30px;
-    background: url('/dynamo/img/icons/crown.png') no-repeat center / contain;
+    background: url('/dynamo/img/icons/birthday/crown.png') no-repeat center / contain;
     pointer-events: none;
     z-index: 3;
 }
@@ -440,10 +315,6 @@ main .page-hero h1.animate-in::after {
 @media (max-width: 768px) {
     main .page-hero {
         padding: 1rem 0.5rem;
-    }
-
-    main .page-hero h1 {
-        font-size: 2rem;
     }
 
     main .page-hero h1::before,
@@ -458,15 +329,11 @@ main .page-hero h1.animate-in::after {
 
     .filter-controls {
         gap: 0.6rem;
-        flex-direction: row;
-        flex-wrap: wrap;
-        justify-content: center;
     }
 
     .filter-btn {
         padding: 0.5rem 1rem;
         font-size: 0.8rem;
-        width: auto;
         max-width: 150px;
         justify-content: center;
     }
@@ -475,30 +342,18 @@ main .page-hero h1.animate-in::after {
         font-size: 0.8rem;
     }
 
-    .search-wrapper {
-        width: 100%;
-        max-width: 250px;
-    }
-
-    .player-search {
-        padding: 0.5rem 0.7rem 0.5rem 2rem;
-        font-size: 0.8rem;
-    }
-
-    .search-icon {
-        font-size: 0.8rem;
-        left: 0.7rem;
-    }
-
     .players-grid {
         grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-        gap: 1rem;
         max-width: 90%;
-        margin: 0 auto;
     }
 
     .player-card {
         padding: 1.2rem;
+    }
+
+    .player-card:hover {
+        transform: translateY(0) !important;
+        box-shadow: var(--shadow-hover);
     }
 
     .player-name {
@@ -520,15 +375,15 @@ main .page-hero h1.animate-in::after {
 
     .garland-left,
     .garland-right {
-        width:50px;
-        height:50px;
-        top:-6px;
+        width: 50px;
+        height: 50px;
+        top: -6px;
     }
 
     .player-card.birthday .player-name::before {
-        width:22px;
-        height:22px;
-        top:-18px;
+        width: 22px;
+        height: 22px;
+        top: -18px;
     }
 }
 
@@ -543,7 +398,6 @@ main .page-hero h1.animate-in::after {
         grid-template-columns: repeat(2, 1fr);
         row-gap: 0.75rem;
         column-gap: 0.3rem;
-        justify-items: center;
         padding: 0 2.5rem;
         margin-bottom: 0.75rem;
     }
@@ -566,59 +420,10 @@ main .page-hero h1.animate-in::after {
         font-size: 0.75rem;
     }
 
-    .search-wrapper {
-        width: 100%;
-        max-width: 291px;
-        margin: 0 auto;
-    }
-
-    .player-search {
-        padding: 0.5rem 0.7rem 0.5rem 2rem;
-        font-size: 0.75rem;
-        min-height: 40px;
-    }
-
-    .search-icon {
-        font-size: 0.75rem;
-        left: 0.7rem;
-    }
-
     .players-grid {
         grid-template-columns: repeat(2, 1fr);
         gap: 0.8rem;
-        max-width: 90%;
-        margin: 0 auto;
         padding: 0;
-    }
-
-    .player-card {
-        padding: 0.8rem;
-        border-radius: 10px;
-        box-shadow: var(--shadow-medium, 0 2px 4px rgba(0, 0, 0, 0.1));
-    }
-
-    .player-name {
-        font-size: 0.95rem;
-        margin-bottom: 0.3rem;
-    }
-
-    .player-position {
-        font-size: 0.65rem;
-        margin-bottom: 0.6rem;
-    }
-
-    .player-nationality {
-        font-size: 0.7rem;
-        padding: 0.25rem 0.5rem;
-    }
-
-    .flag-icon {
-        width: 26px;
-    }
-
-    .filter-controls {
-        row-gap: 0.75rem;
-        padding: 0 2.5rem;
     }
 
     .player-card {
@@ -627,14 +432,17 @@ main .page-hero h1.animate-in::after {
 
     .player-name {
         font-size: 0.8rem;
+        margin-bottom: 0.3rem;
     }
 
     .player-position {
         font-size: 0.6rem;
+        margin-bottom: 0.6rem;
     }
 
     .player-nationality {
         font-size: 0.65rem;
+        padding: 0.25rem 0.5rem;
     }
 
     .flag-icon {
@@ -643,14 +451,14 @@ main .page-hero h1.animate-in::after {
 
     .garland-left,
     .garland-right {
-        width:40px;
-        height:40px;
-        top:-5px;
+        width: 40px;
+        height: 40px;
+        top: -5px;
     }
 
     .player-card.birthday .player-name::before {
-        width:18px;
-        height:18px;
-        top:-15px;
+        width: 18px;
+        height: 18px;
+        top: -15px;
     }
 }
