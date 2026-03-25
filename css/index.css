@@ -1,124 +1,120 @@
-/* Hero Section */
+/* ============================================================
+   INDEX.CSS
+   ============================================================ */
+
+/* ── Hero Section ───────────────────────────────────────────── */
 .hero {
-    height: 20vh;
-    display: flex;
-    align-items: center;
-    position: relative;
-    overflow: hidden;
+    height:          20vh;
+    display:         flex;
+    align-items:     center;
+    position:        relative;
+    overflow:        hidden;
     background-size: cover;
-    width: var(--content-width);
-    margin: 0 auto;
-    padding: 7rem 1rem;
+    width:           var(--content-width);
+    margin:          0 auto;
+    padding:         7rem 1rem;
 }
 
 .hero-content {
-    position: relative;
-    z-index: 2;
-    text-align: center;
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+    position:        relative;
+    z-index:         2;
+    text-align:      center;
+    width:           100%;
+    display:         flex;
+    flex-direction:  column;
+    align-items:     center;
     justify-content: center;
 }
 
 .hero h1 {
-    font-size: var(--text-hero);
-    font-weight: 900;
+    font-size:     var(--text-hero);
+    font-weight:   900;
     margin-bottom: 0.2rem;
-    color: var(--dark-gray);
+    color:         var(--dark-gray);
 }
 
+/* Animated underbar beneath the hero text */
 .hero-content::after {
-    content: '';
-    position: absolute;
-    bottom: -4px;
-    left: 50%;
-    transform: translateX(-50%) scaleX(0);
+    content:          '';
+    position:         absolute;
+    bottom:           -4px;
+    left:             50%;
+    transform:        translateX(-50%) scaleX(0);
     transform-origin: left center;
-    width: 100%;
-    height: 8px;
-    background: var(--dynamo-red);
-    border-radius: var(--radius-sm);
-    transition: transform var(--dur-reveal) var(--ease-out) var(--delay-stagger);
+    width:            100%;
+    height:           8px;
+    background:       var(--dynamo-red);
+    border-radius:    var(--radius-sm);
+    transition:       transform var(--dur-reveal) var(--ease-out) var(--delay-stagger);
 }
 
-.hero.animate-in h1 {
-    opacity: 1;
-    transform: translateY(0);
-}
+.hero.animate-in .hero-content::after { transform: translateX(-50%) scaleX(1); }
 
-.hero.animate-in .hero-content::after {
-    transform: translateX(-50%) scaleX(1);
-}
-
-/* Carousel Section */
+/* ── Carousel Section ───────────────────────────────────────── */
 .carousel-section {
     padding: 1rem 0;
 }
 
 .carousel-container {
-    position: relative;
-    width: 100%;
-    max-width: 380px;
-    aspect-ratio: 1365 / 2048;
+    position:      relative;
+    width:         100%;
+    max-width:     380px;
+    aspect-ratio:  1365 / 2048;
     border-radius: var(--radius-xl);
-    overflow: hidden;
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
-    margin: 0 auto;
-    transition: var(--t-reveal);
+    overflow:      hidden;
+    box-shadow:    0 20px 40px rgba(0, 0, 0, 0.3);
+    margin:        0 auto;
+    transition:    var(--t-reveal);
 }
 
 .carousel {
-    display: flex;
-    width: 100%;
-    height: 100%;
+    display:      flex;
+    width:        100%;
+    height:       100%;
     touch-action: none;
-    user-select: none;
-    will-change: transform;
-    transition: transform var(--dur-ripple) var(--ease-carousel);
+    user-select:  none;
+    will-change:  transform;
+    transition:   transform var(--dur-ripple) var(--ease-carousel);
 }
 
 .slide {
     min-width: 100%;
-    height: 100%;
+    height:    100%;
 }
 
 .slide img {
-    width: 100%;
-    height: 100%;
+    width:      100%;
+    height:     100%;
     object-fit: cover;
-    display: block;
+    display:    block;
     transition: transform var(--dur-enter) var(--ease-standard);
 }
 
-.slide:hover img {
-    transform: scale(1.05);
-}
+.slide:hover img { transform: scale(1.05); }
 
-/* Navigation Buttons */
+/* ── Carousel Navigation Buttons ────────────────────────────── */
 .nav-btn {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    width: 44px;
-    height: 44px;
-    background: rgba(255, 255, 255, 0.15);
+    position:        absolute;
+    top:             50%;
+    transform:       translateY(-50%);
+    width:           44px;
+    height:          44px;
+    background:      rgba(255, 255, 255, 0.15);
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    border-radius: var(--radius-circle);
-    color: white;
-    font-size: 1.1rem;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
+    border:          1px solid rgba(255, 255, 255, 0.2);
+    border-radius:   var(--radius-circle);
+    color:           white;
+    font-size:       1.1rem;
+    cursor:          pointer;
+    display:         flex;
+    align-items:     center;
     justify-content: center;
-    transition: var(--t-hover);
-    z-index: 10;
-    opacity: 0;
-    pointer-events: auto;
-    touch-action: pan-y;
+    transition:      var(--t-hover);
+    z-index:         10;
+    opacity:         0;
+    pointer-events:  auto;
+    touch-action:    pan-y;
 }
 
 .carousel-container:hover .nav-btn,
@@ -128,44 +124,39 @@
 
 .nav-btn:hover {
     background: rgba(255, 255, 255, 0.3);
-    transform: translateY(-50%) scale(1.1);
+    transform:  translateY(-50%) scale(1.1);
 }
 
-.prev-btn {
-    left: 16px;
-}
+.prev-btn { left: 16px; }
+.next-btn { right: 16px; }
 
-.next-btn {
-    right: 16px;
-}
-
-/* Dots */
+/* ── Carousel Dots ──────────────────────────────────────────── */
 .dots-container {
-    position: absolute;
-    bottom: 20px;
-    left: 50%;
+    position:  absolute;
+    bottom:    20px;
+    left:      50%;
     transform: translateX(-50%);
-    display: flex;
-    gap: 8px;
-    z-index: 10;
+    display:   flex;
+    gap:       8px;
+    z-index:   10;
 }
 
 .dot {
-    width: 8px;
-    height: 8px;
+    width:         8px;
+    height:        8px;
     border-radius: var(--radius-circle);
-    background: rgba(255, 255, 255, 0.4);
-    transition: all var(--dur-ripple) var(--ease-ui);
-    cursor: pointer;
+    background:    rgba(255, 255, 255, 0.4);
+    transition:    all var(--dur-ripple) var(--ease-ui);
+    cursor:        pointer;
 }
 
 .dot.active {
-    width: 24px;
+    width:         24px;
     border-radius: var(--radius-pill);
-    background: white;
+    background:    white;
 }
 
-/* Statistics Section */
+/* ── Stats Overview ─────────────────────────────────────────── */
 .stats-overview-section {
     padding: 1.5rem 0 2rem;
 }
@@ -174,102 +165,97 @@
     background: var(--dark-blue);
 }
 
-.stats-grid {
-    display: grid;
+/* Grid columns — overrides the base .stats-grid from general.css */
+.stats-overview-section .stats-grid {
     grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-    gap: 1rem;
-    justify-content: center;
-    text-align: center;
-    width: var(--content-width);
-    margin: 0 auto;
-}
-
-.stat-card.animate-in {
-    opacity: 1;
-    transform: translateY(0);
+    justify-content:       center;
+    text-align:            center;
 }
 
 .stat-number {
     color: var(--dark-blue);
 }
 
-.stats-overview-section .stat-card:hover,
-.contact-section .contact-card:hover {
-    box-shadow: var(--shadow-hover);
-    transform: translateY(var(--hover-lift));
-    z-index: 10;
-}
-
-/* Sponsor Section */
+/* ── Sponsor CTA Section ────────────────────────────────────── */
 .sponsor-cta-section {
-    padding: 2rem 0;
+    padding:    2rem 0;
     background: var(--off-white);
     text-align: center;
-    width: var(--content-width);
-    margin: 0 auto;
+    width:      var(--content-width);
+    margin:     0 auto;
+    /* Entrance animation */
+    opacity:    0;
+    transform:  translateY(50px);
+    transition: var(--t-reveal);
 }
 
-.sponsor-cta-section .section-title::after {
-    background: var(--dark-green);
-}
-
-.sponsor-cta-section .container {
-    text-align: center;
-}
+.sponsor-cta-section .section-title::after { background: var(--dark-green); }
 
 .sponsor-cta-section p {
     max-width: 700px;
-    margin: 0 auto 1.5rem;
-    color: var(--dark-gray);
+    margin:    0 auto 1.5rem;
+    color:     var(--dark-gray);
 }
 
+/* Internal children also animate in with parent */
+.sponsor-cta-section .section-title,
+.sponsor-cta-section p,
+.sponsor-cta-section .btn-primary {
+    opacity:    0;
+    transform:  translateY(50px);
+    transition: var(--t-reveal);
+}
+
+.sponsor-cta-section.animate-in,
+.sponsor-cta-section.animate-in .section-title,
+.sponsor-cta-section.animate-in p,
+.sponsor-cta-section.animate-in .btn-primary {
+    opacity:   1;
+    transform: translateY(0);
+}
+
+/* ── Primary Button ─────────────────────────────────────────── */
 .btn-primary {
-    display: inline-block;
-    padding: 0.8rem 2rem;
-    background: var(--dark-green);
-    color: white;
-    border-radius: var(--radius-pill);
+    display:        inline-block;
+    padding:        0.8rem 2rem;
+    background:     var(--dark-green);
+    color:          white;
+    border-radius:  var(--radius-pill);
     text-decoration: none;
-    font-weight: 600;
-    font-size: var(--text-body);
-    border: 3px solid var(--dark-green);
-    position: relative;
-    overflow: hidden;
-    z-index: 1;
-    transition: var(--t-color), background var(--dur-base) var(--ease-ui), border-color var(--dur-base) var(--ease-ui);
+    font-weight:    600;
+    font-size:      var(--text-body);
+    border:         3px solid var(--dark-green);
+    position:       relative;
+    overflow:       hidden;
+    z-index:        1;
+    transition:     var(--t-color),
+    background   var(--dur-base) var(--ease-ui),
+    border-color var(--dur-base) var(--ease-ui);
 }
 
 .btn-primary .hover-effect {
-    position: absolute;
-    display: block;
-    width: 0;
-    height: 0;
-    border-radius: var(--radius-circle);
+    position:         absolute;
+    display:          block;
+    width:            0;
+    height:           0;
+    border-radius:    var(--radius-circle);
     background-color: var(--off-white);
-    transition: var(--t-ripple);
-    transform: translate(-50%, -50%);
-    z-index: -1;
+    transition:       var(--t-ripple);
+    transform:        translate(-50%, -50%);
+    z-index:          -1;
 }
 
 .btn-primary:hover {
-    color: var(--dark-green);
+    color:        var(--dark-green);
     border-color: var(--dark-green);
 }
 
 .btn-primary:hover .hover-effect {
-    width: 225%;
+    width:  225%;
     height: 180px;
 }
 
-.sponsor-cta-section,
-.sponsor-cta-section .section-title,
-.sponsor-cta-section p,
-.sponsor-cta-section .btn-primary {
-    opacity: 0;
-    transform: translateY(50px);
-    transition: var(--t-reveal);
-}
-
+/* ── Sponsor Ticker Logos ────────────────────────────────────── */
 .sponsor-logo {
     transition:
             filter  var(--dur-base) var(--ease-standard),
@@ -280,259 +266,175 @@
     transition: transform var(--dur-base) var(--ease-standard);
 }
 
-.sponsor-cta-section.animate-in,
-.sponsor-cta-section.animate-in .section-title,
-.sponsor-cta-section.animate-in p,
-.sponsor-cta-section.animate-in .btn-primary {
-    opacity: 1;
-    transform: translateY(0);
-}
-
-/* Contact Section */
+/* ── Contact Section ────────────────────────────────────────── */
 .contact-section {
     padding: 0.5rem 0;
 }
 
-.contact-section .section-title::after {
-    background: var(--dark-yellow);
-}
-
+.contact-section .section-title::after { background: var(--dark-yellow); }
 
 .contact-grid {
-    display: grid;
+    display:               grid;
     grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-    gap: 1rem;
-    width: var(--content-width);
-    margin: 0 auto;
+    gap:                   1rem;
+    width:                 var(--content-width);
+    margin:                0 auto;
 }
 
 .contact-card {
-    text-align: center;
-    background: white;
-    padding: 1.5rem;
-    border-radius: var(--radius-lg);
-    box-shadow: var(--shadow-medium);
+    text-align:      center;
+    background:      white;
+    padding:         1.5rem;
+    border-radius:   var(--radius-lg);
+    box-shadow:      var(--shadow-medium);
     text-decoration: none;
-    color: inherit;
-    display: block;
-    opacity: 0;
-    transform: translateY(50px);
-    transition: var(--t-reveal-card);
-}
-
-.contact-card.animate-in {
-    opacity: 1;
-    transform: translateY(0);
+    color:           inherit;
+    display:         block;
+    /* Entrance animation handled by general.css .contact-card rule */
 }
 
 .contact-card i {
-    font-size: 1.8rem;
-    color: var(--dark-yellow);
+    font-size:     1.8rem;
+    color:         var(--dark-yellow);
     margin-bottom: 0.8rem;
 }
 
 .contact-card h3 {
-    font-size: var(--text-body);
-    color: var(--dark-gray);
+    font-size:     var(--text-body);
+    color:         var(--dark-gray);
     margin-bottom: 0.4rem;
-    font-weight: 600;
+    font-weight:   600;
 }
 
 .contact-card p {
-    color: var(--medium-gray);
-    font-size: var(--text-sm);
+    color:       var(--medium-gray);
+    font-size:   var(--text-sm);
     line-height: 1.6;
 }
 
-/* Map Section */
+/* ── Map Section ────────────────────────────────────────────── */
 .map-section {
     padding: 0.5rem 0;
 }
 
 .map-container {
     border-radius: var(--radius-lg);
-    overflow: hidden;
-    box-shadow: var(--shadow-medium);
-    height: 350px;
-    position: relative;
-    opacity: 0;
-    transform: translateY(50px);
-    width: var(--content-width);
-    margin: 0 auto;
-    transition: var(--t-reveal-card);
-}
-
-.map-container.animate-in {
-    opacity: 1;
-    transform: translateY(0);
+    overflow:      hidden;
+    box-shadow:    var(--shadow-medium);
+    height:        350px;
+    position:      relative;
+    width:         var(--content-width);
+    margin:        0 auto;
+    /* Entrance animation handled by general.css .map-container rule */
 }
 
 .map-container iframe {
-    width: 100%;
+    width:  100%;
     height: 100%;
     border: none;
 }
 
-/* Tablet View */
+/* ── Responsive: Tablet (≤ 768 px) ─────────────────────────── */
 @media (max-width: 768px) {
-    .hero h1 {
-        white-space: nowrap;
-    }
+    .hero h1 { white-space: nowrap; }
 
     .hero-content::after {
-        height: 7px;
-        width: 124%;
+        height:    7px;
+        width:     124%;
         max-width: 90vw;
     }
 
+    /* Disable hover lifts on touch */
     .stats-overview-section .stat-card:hover,
     .contact-section .contact-card:hover {
-        transform: translateY(0) !important;
+        transform:  translateY(0) !important;
         box-shadow: var(--shadow-hover);
     }
 
-    .slide:hover img {
-        transform: scale(1) !important;
-    }
+    .slide:hover img           { transform: scale(1) !important; }
+    .nav-btn:hover             { transform: translateY(-50%) scale(1) !important; }
 
-    .nav-btn:hover {
-        transform: translateY(-50%) scale(1) !important;
-    }
+    .carousel-section    { padding: 1.5rem 0; }
+    .carousel-container  { max-width: 320px; }
 
-    .carousel-section {
-        padding: 1.5rem 0;
-    }
+    .stats-overview-section { padding: 1.3rem 0 1.8rem; }
 
-    .carousel-container {
-        max-width: 320px;
-    }
-
-    .stats-overview-section {
-        padding: 1.3rem 0 1.8rem;
-    }
-
-    .stats-grid {
+    .stats-overview-section .stats-grid {
         grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
     }
 
-    .contact-card {
-        padding: 1.2rem;
-    }
+    .contact-card   { padding: 1.2rem; }
+    .contact-card i { font-size: 1.6rem; }
 
-    .contact-card i {
-        font-size: 1.6rem;
-    }
-
-    .map-container {
-        height: 300px;
-    }
+    .map-container { height: 300px; }
 }
 
-/* Mobile View */
+/* ── Responsive: Mobile (≤ 480 px) ─────────────────────────── */
 @media (max-width: 480px) {
     .hero {
-        padding: 1rem 0.6rem;
+        padding:         1rem 0.6rem;
         justify-content: center;
     }
 
-    .hero-content {
-        gap: 0.5rem;
-    }
+    .hero-content { gap: 0.5rem; }
 
     .hero h1 {
-        margin: 0;
+        margin:      0;
         line-height: 1.1;
-        overflow: hidden;
-        text-overflow: clip;
-        max-width: 90vw;
-        width: fit-content;
-        gap: 0.5rem;
-        padding: 0 0.5rem;
-    }
-
-    .hero h1 .club-name-part {
-        display: inline;
+        overflow:    hidden;
+        max-width:   90vw;
+        width:       fit-content;
+        padding:     0 0.5rem;
     }
 
     .hero-content::after {
         bottom: -8px;
-        width: 94%;
+        width:  94%;
         height: 6px;
     }
 
-    .carousel-section {
-        padding: 1rem 0;
-    }
-
-    .carousel-container {
-        max-width: 280px;
-    }
+    .carousel-section   { padding: 1rem 0; }
+    .carousel-container { max-width: 280px; }
 
     .nav-btn {
-        width: 36px;
-        height: 36px;
+        width:     36px;
+        height:    36px;
         font-size: 0.9rem;
     }
 
-    .prev-btn {
-        left: 12px;
-    }
+    .prev-btn      { left: 12px; }
+    .next-btn      { right: 12px; }
 
-    .next-btn {
-        right: 12px;
-    }
+    .dots-container { bottom: 16px; gap: 6px; }
+    .dot            { width: 6px; height: 6px; }
+    .dot.active     { width: 20px; }
 
-    .dots-container {
-        bottom: 16px;
-        gap: 6px;
-    }
+    .stats-overview-section { padding: 1rem 0 1.8rem; }
 
-    .dot {
-        width: 6px;
-        height: 6px;
-    }
-
-    .dot.active {
-        width: 20px;
-    }
-
-    .stats-overview-section {
-        padding: 1rem 0 1.8rem;
-    }
-
-    .stats-grid {
+    .stats-overview-section .stats-grid {
         grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
         gap: 0.6rem;
     }
 
     .stat-card {
         min-height: 44px;
-        min-width: 150px;
+        min-width:  150px;
     }
 
-    .contact-section {
-        padding: 0.3rem 0;
-    }
+    .contact-section { padding: 0.3rem 0; }
 
     .contact-grid {
         grid-template-columns: 1fr;
-        gap: 0.6rem;
+        gap:                   0.6rem;
     }
 
     .contact-card {
-        padding: 0.8rem;
+        padding:    0.8rem;
         min-height: 44px;
     }
 
-    .contact-card i {
-        font-size: 1.4rem;
-    }
+    .contact-card i { font-size: 1.4rem; }
 
-    .map-section {
-        padding: 0.3rem 0;
-    }
-
-    .map-container {
-        height: 200px;
-    }
+    .map-section   { padding: 0.3rem 0; }
+    .map-container { height: 200px; }
 }

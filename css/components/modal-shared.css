@@ -1,140 +1,139 @@
-/* Prevent scrolling when modal is active */
+/* ============================================================
+   COMPONENTS/MODAL-SHARED.CSS
+   Shared base styles consumed by matchModal.css and playerModal.css.
+   ============================================================ */
+
+/* ── Scroll Lock ────────────────────────────────────────────── */
 body.modal-open {
-    overflow: hidden;
-    position: fixed;
-    width: 100%;
+    overflow:  hidden;
+    position:  fixed;
+    width:     100%;
 }
 
-/* Base Overlay Style */
+/* ── Overlay ────────────────────────────────────────────────── */
 .modal-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    background: rgba(0, 0, 0, 0.5);
-    display: none;
+    position:        fixed;
+    top:             0;
+    left:            0;
+    width:           100vw;
+    height:          100vh;
+    background:      rgba(0, 0, 0, 0.5);
+    display:         none;
     justify-content: center;
-    align-items: center;
-    z-index: var(--z-modal);
+    align-items:     center;
+    z-index:         var(--z-modal);
     backdrop-filter: blur(3px);
-    visibility: hidden;
-    opacity: 0;
-    transition: var(--t-modal);
+    visibility:      hidden;
+    opacity:         0;
+    transition:      var(--t-modal);
 }
 
 .modal-overlay.show {
-    display: flex !important;
+    display:    flex !important;
     visibility: visible;
-    opacity: 1;
+    opacity:    1;
 }
 
-/* Shared Modal Content Base */
+/* ── Modal Content ──────────────────────────────────────────── */
 .modal-content {
-    background: var(--off-white);
+    background:    var(--off-white);
     border-radius: var(--radius-lg);
-    box-shadow: var(--shadow-medium);
-    padding: 1.5rem;
-    width: 90%;
-    max-height: 90vh;
-    overflow-y: auto;
-    position: relative;
-    color: var(--dark-gray);
-    font-family: 'Poppins', sans-serif;
-    font-size: var(--text-body);
+    box-shadow:    var(--shadow-medium);
+    padding:       1.5rem;
+    width:         90%;
+    max-height:    90vh;
+    overflow-y:    auto;
+    position:      relative;
+    color:         var(--dark-gray);
+    font-family:   'Poppins', sans-serif;
+    font-size:     var(--text-body);
 }
 
-/* Custom Scrollbar for all modals */
-.modal-content::-webkit-scrollbar {
-    width: 6px;
-}
+/* Custom scrollbar for all modals */
+.modal-content::-webkit-scrollbar { width: 6px; }
 
 .modal-content::-webkit-scrollbar-track {
-    background: transparent;
+    background:    transparent;
     border-radius: var(--radius-sm);
-    margin: 16px 0;
+    margin:        16px 0;
 }
 
 .modal-content::-webkit-scrollbar-thumb {
-    background: var(--light-gray);
+    background:    var(--light-gray);
     border-radius: var(--radius-sm);
 }
 
-.modal-content::-webkit-scrollbar-thumb:hover {
-    background: var(--medium-gray);
-}
+.modal-content::-webkit-scrollbar-thumb:hover { background: var(--medium-gray); }
 
-/* Shared Close Button Style */
+/* ── Close Button ───────────────────────────────────────────── */
 .close-modal {
-    position: sticky;
-    top: 0px;
-    float: right;
-    background: white;
-    margin-top: -5px;
-    margin-right: -5px;
+    position:      sticky;
+    top:           0;
+    float:         right;
+    background:    white;
+    margin-top:    -5px;
+    margin-right:  -5px;
     margin-bottom: -36px;
-    border: 3px solid transparent;
-    cursor: pointer;
-    width: 36px;
-    height: 36px;
+    border:        3px solid transparent;
+    cursor:        pointer;
+    width:         36px;
+    height:        36px;
     border-radius: var(--radius-circle);
-    display: flex;
-    align-items: center;
+    display:       flex;
+    align-items:   center;
     justify-content: center;
     transition:
-            box-shadow   var(--dur-base) var(--ease-standard),
-            border-color var(--dur-base) var(--ease-standard),
-            color        var(--dur-base) var(--ease-standard);
-    box-shadow: var(--shadow-medium);
-    line-height: 1;
-    padding: 0;
-    z-index: var(--z-close-btn);
+        box-shadow   var(--dur-base) var(--ease-standard),
+        border-color var(--dur-base) var(--ease-standard),
+        color        var(--dur-base) var(--ease-standard);
+    box-shadow:    var(--shadow-medium);
+    line-height:   1;
+    padding:       0;
+    z-index:       var(--z-close-btn);
 }
 
 .close-modal i {
-    font-size: 1.3em;
-    line-height: 1;
-    color: var(--medium-gray);
+    font-size:      1.3em;
+    line-height:    1;
+    color:          var(--medium-gray);
     pointer-events: none;
 }
 
 .close-modal:hover {
-    box-shadow: var(--shadow-hover);
+    box-shadow:   var(--shadow-hover);
     border-color: var(--dark-gray);
 }
 
-.close-modal:hover i {
-    color: var(--dark-gray);
-}
+.close-modal:hover i { color: var(--dark-gray); }
 
-/* Shared tablet tweaks */
+/* ── Responsive: Tablet (≤ 768 px) ─────────────────────────── */
 @media (max-width: 768px) {
     .modal-content {
-        max-width: none;
-        padding: 1.2rem;
+        max-width:  none;
+        padding:    1.2rem;
         max-height: 85vh;
         box-shadow: var(--shadow-small);
     }
 
     .close-modal {
-        width: 30px;
+        width:  30px;
         height: 30px;
-        top: 8px;
-        right: 8px;
+        top:    8px;
+        right:  8px;
     }
 }
 
-/* Shared mobile tweaks */
+/* ── Responsive: Mobile (≤ 480 px) ─────────────────────────── */
 @media (max-width: 480px) {
     .modal-content {
-        padding: 1rem;
+        padding:    1rem;
         max-height: 82vh;
     }
 
     .close-modal {
-        width: 28px;
+        width:  28px;
         height: 28px;
-        top: 6px;
-        right: 6px;
+        top:    6px;
+        right:  6px;
     }
 }

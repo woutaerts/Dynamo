@@ -1,9 +1,13 @@
-/* Algemene opmaak voor de archief content en sectietitels */
+/* ============================================================
+   ARCHIVE.CSS
+   ============================================================ */
+
+/* ── Content Section ────────────────────────────────────────── */
 .archive-content-section {
     padding: 2rem 0 4rem;
 }
 
-/* Force hero pipes to match archive branding */
+/* ── Hero Pipe / Underline Overrides ────────────────────────── */
 .archive-page .page-hero h1::before,
 .archive-page .page-hero h1::after {
     color: var(--dynamo-red);
@@ -17,138 +21,138 @@
     color: var(--dark-blue);
 }
 
+/* ── Subsections ────────────────────────────────────────────── */
 .archive-subsection {
     margin-top: 3.5rem;
 }
 
 .archive-subsection .section-title {
-    text-align: center;
+    text-align:    center;
     margin-bottom: 1.5rem;
 }
 
-/* Dropdown voor seizoensselectie en bijbehorende animaties */
+/* ── Season Selector Dropdown ───────────────────────────────── */
+/*
+ * #season-select is a custom-styled native select widget unique to
+ * the archive page. It mirrors the .custom-dropdown pattern but is
+ * scoped to its own ID to avoid selector conflicts.
+ */
 .season-selector-section {
-    padding: 1rem 0;
-    position: relative;
-    z-index: var(--z-dropdown);
+    padding:   1rem 0;
+    position:  relative;
+    z-index:   var(--z-dropdown);
 }
 
 .dropdown-container {
-    display: flex;
+    display:         flex;
     justify-content: center;
-    align-items: center;
-    gap: 1rem;
-    max-width: 100%;
-    position: relative;
-    z-index: 101;
-    opacity: 0;
-    transform: translateY(20px);
-    transition: var(--t-reveal);
-    visibility: hidden;
+    align-items:     center;
+    gap:             1rem;
+    max-width:       100%;
+    position:        relative;
+    z-index:         101;
+    opacity:         0;
+    transform:       translateY(20px);
+    transition:      var(--t-reveal);
+    visibility:      hidden;
 }
 
 .dropdown-container.reveal,
 .dropdown-container.animate-in {
-    opacity: 1;
-    transform: translateY(0);
+    opacity:    1;
+    transform:  translateY(0);
     visibility: visible;
 }
 
 .dropdown-container span {
     font-weight: 600;
-    color: var(--dark-gray);
+    color:       var(--dark-gray);
 }
 
 #season-select {
-    position: relative;
-    border: 3px solid var(--dynamo-red);
+    position:      relative;
+    border:        3px solid var(--dynamo-red);
     border-radius: var(--radius-pill);
-    background: white;
-    cursor: pointer;
-    box-shadow: var(--shadow-small);
-    user-select: none;
-    font-weight: 600;
-    color: var(--dark-gray);
-    transition: var(--t-hover);
-    min-width: 180px;
-    z-index: 102;
-    font-size: var(--text-body);
+    background:    white;
+    cursor:        pointer;
+    box-shadow:    var(--shadow-small);
+    user-select:   none;
+    font-weight:   600;
+    color:         var(--dark-gray);
+    transition:    var(--t-hover);
+    min-width:     180px;
+    z-index:       102;
+    font-size:     var(--text-body);
 }
 
 #season-select .selected {
-    padding: 0.6rem 2rem 0.6rem 1rem;
+    padding:       0.6rem 2rem 0.6rem 1rem;
     border-radius: var(--radius-pill);
-    width: auto;
-    box-sizing: border-box;
-    text-align: center;
-    position: relative;
-    transition: var(--t-bg);
+    box-sizing:    border-box;
+    text-align:    center;
+    position:      relative;
+    transition:    var(--t-bg);
 }
 
 #season-select .selected::after {
-    content: '\f0d7';
+    content:     '\f0d7';
     font-family: 'Font Awesome 6 Free', serif;
     font-weight: 900;
-    position: absolute;
-    right: 0.8rem;
-    top: 50%;
-    transform: translateY(-55%);
-    font-size: var(--text-lg);
-    color: var(--dark-gray);
-    transition: transform var(--dur-base) var(--ease-ui);
+    position:    absolute;
+    right:       0.8rem;
+    top:         50%;
+    transform:   translateY(-55%);
+    font-size:   var(--text-lg);
+    color:       var(--dark-gray);
+    transition:  transform var(--dur-base) var(--ease-ui);
 }
 
 #season-select.active .selected::after {
-    content: '\f0d8';
+    content:   '\f0d8';
     transform: translateY(-50%);
 }
 
 #season-select .options {
-    position: absolute;
-    top: 100%;
-    left: 50%;
-    transform: translateX(-50%);
-    background: white;
-    border: 3px solid var(--dynamo-red);
+    position:      absolute;
+    top:           100%;
+    left:          50%;
+    transform:     translateX(-50%);
+    background:    white;
+    border:        3px solid var(--dynamo-red);
     border-radius: var(--radius-md);
-    box-shadow: var(--shadow-medium);
-    list-style: none;
-    margin: 5px 0 0;
-    padding: 0;
-    display: none;
-    z-index: var(--z-dropdown);
-    width: 100%;
-    box-sizing: border-box;
-    overflow: hidden;
+    box-shadow:    var(--shadow-medium);
+    list-style:    none;
+    margin:        5px 0 0;
+    padding:       0;
+    display:       none;
+    z-index:       var(--z-dropdown);
+    width:         100%;
+    box-sizing:    border-box;
+    overflow:      hidden;
 }
 
 #season-select .options li {
-    padding: 0.6rem 1rem;
+    padding:    0.6rem 1rem;
     text-align: center;
     transition: var(--t-bg);
 }
 
 #season-select .options li:hover {
-    color: var(--dynamo-red);
+    color:       var(--dynamo-red);
     font-weight: 700;
 }
 
-#season-select.active .options {
-    display: block;
-}
+#season-select.active .options { display: block; }
 
-/* Grid lay-out en styling voor de statistiekenkaarten */
-.stats-grid {
-    display: grid;
+/* ── Archive Stats Grid ─────────────────────────────────────── */
+/* Overrides the base .stats-grid from general.css for 3-col layout */
+#archive-stats-grid {
     grid-template-columns: repeat(3, 1fr);
-    gap: 1.5rem;
-    margin-top: 2rem;
-    width: var(--content-width);
-    margin-left: auto;
-    margin-right: auto;
+    gap:                   1.5rem;
+    margin-top:            2rem;
 }
 
-/* Kleuren, tooltips en overschrijvingen specifiek voor de spelerstabel */
+/* ── Players Section Colour Overrides ───────────────────────── */
 #archive-players-section .section-title::after,
 #archive-players-section .table-header,
 #archive-players-section .player-rank,
@@ -156,81 +160,77 @@
     background-color: var(--dark-green);
 }
 
-#archive-players-section .player-rank {
-    color: white;
-}
+#archive-players-section .player-rank  { color: white; }
 
 #archive-players-section .player-name,
 #archive-players-section .custom-dropdown .options li:hover {
     color: var(--dark-green);
 }
 
-#archive-players-section .custom-dropdown,
-#archive-players-section .custom-dropdown .options {
-    border-color: var(--dark-green);
+/* Theme the .custom-dropdown in the archive players section */
+#archive-players-section {
+    --dropdown-border-color: var(--dark-green);
 }
 
+/* Remove tooltip arrow on position cells in archive */
 #archive-players-section .table-cell.player-position::after,
 #archive-players-section .table-cell.player-position:hover::after {
     display: none;
 }
 
-/* Opmaak en animaties voor de wedstrijden in het archief */
+/* ── Matches Section ─────────────────────────────────────────── */
 #archive-matches-section .section-title::after {
     background: var(--dark-yellow);
 }
 
 .archive-subsection .matches-grid {
-    width: var(--content-width);
+    width:  var(--content-width);
     margin: 0 auto;
 }
 
+/* Archive match cards use the standard scroll-reveal pattern */
 .archive-match-card {
-    opacity: 0;
-    transform: translateY(50px);
+    opacity:    0;
+    transform:  translateY(50px);
     transition: var(--t-reveal-card);
 }
 
 .archive-match-card.animate-in {
-    opacity: 1;
+    opacity:   1;
     transform: translateY(0);
 }
 
 .archive-match-card:hover {
-    transform: translateY(var(--hover-lift));
+    transform:  translateY(var(--hover-lift));
     box-shadow: var(--shadow-hover);
 }
 
 .archive-empty-msg {
     grid-column: 1 / -1;
-    text-align: center;
-    padding: 2rem;
-    color: var(--medium-gray);
+    text-align:  center;
+    padding:     2rem;
+    color:       var(--medium-gray);
     font-weight: 600;
-    font-size: var(--text-body);
+    font-size:   var(--text-body);
 }
 
-/* Responsieve weergave voor tablets en middelgrote schermen */
+/* ── Responsive: Tablet (≤ 768 px) ─────────────────────────── */
 @media (max-width: 768px) {
-    .dropdown-container {
-        flex-direction: column;
-        gap: 0.5rem;
-    }
+    .dropdown-container { flex-direction: column; gap: 0.5rem; }
 
+    /* Disable hover lift on touch */
     .archive-match-card:hover {
-        transform: translateY(0) !important;
+        transform:  translateY(0) !important;
         box-shadow: var(--shadow-hover);
     }
 
-    .stats-grid {
+    #archive-stats-grid {
         grid-template-columns: repeat(2, 1fr);
-        gap: 1rem;
+        gap:                   1rem;
     }
 }
 
-/* Responsieve weergave voor mobiele telefoons */
+/* ── Responsive: Mobile (≤ 480 px) ─────────────────────────── */
 @media (max-width: 480px) {
-    .stats-grid {
-        gap: 0.8rem;
-    }
+    #archive-stats-grid { gap: 0.8rem; }
 }

@@ -450,15 +450,7 @@ function initToggle() {
         animateOnScroll(animationElements.filter(el =>
             ['.section-title', '.section-subtitle', '.stat-card', '.record-category'].includes(el.selector)
         ));
-
-        const pageHeroH1 = document.querySelector('.page-hero h1');
-        if (pageHeroH1) {
-            pageHeroH1.classList.remove('animate-in');
-            setTimeout(() => {
-                pageHeroH1.classList.add('animate-in');
-            }, 100);
-        }
-    }, 300);
+        }, 300);
 
     // Helper to safely toggle via label
     const createLabelHandler = (toggle, desiredState) => {

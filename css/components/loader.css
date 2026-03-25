@@ -1,20 +1,20 @@
-/* Football Loader */
-.hidden {
-    display: none !important;
-}
+/* ============================================================
+   COMPONENTS/LOADER.CSS
+   NOTE: .hidden is now defined globally in general.css.
+   ============================================================ */
 
+/* ── Inline Football Loader ─────────────────────────────────── */
 .search-inline-loader {
-    text-align: center;
-    margin: 2rem 0;
-    font-family: 'Poppins', sans-serif;
-    color: var(--dark-gray);
+    text-align:  center;
+    margin:      2rem 0;
+    color:       var(--dark-gray);
 }
 
 .search-inline-loader .loader-text {
-    font-size: var(--text-lg);
-    font-weight: 500;
+    font-size:     var(--text-lg);
+    font-weight:   500;
     margin-bottom: 0.75rem;
-    color: var(--dark-gray);
+    color:         var(--dark-gray);
 }
 
 .search-inline-loader .football-loader {
@@ -22,19 +22,19 @@
 }
 
 .search-inline-loader .football-loader svg {
-    width: 48px;
-    height: 48px;
+    width:   48px;
+    height:  48px;
     display: block;
-    margin: 0 auto;
+    margin:  0 auto;
 }
 
 .search-inline-loader .football-loader path {
     animation: pulse var(--dur-loader) infinite;
-    fill: var(--dynamo-red);
-    opacity: 0.1;
+    fill:      var(--dynamo-red);
+    opacity:   0.1;
 }
 
-/* Loader Animation Timings */
+/* Staggered animation delays — each path lights up in sequence */
 .search-inline-loader .football-loader .path-0 { animation-delay: -0.125s; }
 .search-inline-loader .football-loader .path-1 { animation-delay: -0.25s; }
 .search-inline-loader .football-loader .path-2 { animation-delay: -0.375s; }
@@ -46,5 +46,5 @@
 
 @keyframes pulse {
     0%, 100% { opacity: 0.1; }
-    30%      { opacity: 0.9; }
+    30%       { opacity: 0.9; }
 }
