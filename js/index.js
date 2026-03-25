@@ -11,7 +11,7 @@ const animationElements = [
     { selector: '.contact-card', containerSelector: 'section' },
     { selector: '.countdown-block', containerSelector: null },
     { selector: '#home-match-sponsor', containerSelector: null },
-    { selector: '.sponsor-cta-section', containerSelector: null },
+    { selector: '.cta-section', containerSelector: null },
     { selector: '.form-result', containerSelector: null },
     { selector: '.map-container', containerSelector: null },
     { selector: '.section-title', containerSelector: 'section' },

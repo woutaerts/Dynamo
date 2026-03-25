@@ -27,11 +27,11 @@
 .result-icon:not(.win):not(.draw):not(.loss) { background: var(--dusty-blue); }
 
 /* ── Upcoming Matches Section ───────────────────────────────── */
-.upcoming-matches {
+.fixtures-section {
     margin-top: 4rem;
 }
 
-.upcoming-matches .section-title::after {
+.fixtures-section .section-title::after {
     background-color: var(--dusty-blue);
 }
 
@@ -193,18 +193,10 @@
     position:      relative;
     border-radius: var(--radius-lg);
     min-height:    220px;
-    scrollbar-width: thin;
-    scrollbar-color: var(--light-gray) var(--silver-mist);
     max-width:     var(--content-width);
     margin:        0 auto;
     transform:     translateX(0.3rem);
 }
-
-/* Horizontal scrollbar for timeline */
-.timeline-wrapper::-webkit-scrollbar        { height: 8px; }
-.timeline-wrapper::-webkit-scrollbar-track  { background: var(--silver-mist); border-radius: var(--radius-sm); }
-.timeline-wrapper::-webkit-scrollbar-thumb  { background: var(--light-gray);  border-radius: var(--radius-sm); }
-.timeline-wrapper::-webkit-scrollbar-thumb:hover { background: var(--medium-gray); }
 
 .timeline {
     display:         flex;
@@ -324,7 +316,7 @@
 }
 
 /* ── Sponsor Ticker ─────────────────────────────────────────── */
-.sponsors-ticker-section {
+.ticker-section {
     padding:  1rem 0;
     overflow: hidden;
 }
@@ -450,7 +442,7 @@
     .timeline-item small        { padding: 0.25rem 0.5rem; }
     .timeline-item::before      { width: 16px; height: 16px; }
 
-    .upcoming-matches     { margin-top: 0.8rem; }
+    .fixtures-section     { margin-top: 0.8rem; }
     .upcoming-match-name h3 { margin: 0.5rem 0; }
 
     .ticker-wrapper { padding: 1rem 0 0; }

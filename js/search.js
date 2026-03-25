@@ -44,7 +44,7 @@ async function fetchAndRenderMatches() {
     document.getElementById(errorId)?.classList.add('hidden');
     contentEl?.classList.add('hidden');
     searchMsg?.classList.add('hidden');
-    resultsHeader?.classList.add('results-header-hidden');
+    resultsHeader?.classList.add('hidden');
 
     try {
         // Fetch via service
@@ -55,10 +55,10 @@ async function fetchAndRenderMatches() {
         contentEl?.classList.remove('hidden');
 
         renderSearchResults(window.allMatches);
-        resultsHeader?.classList.remove('results-header-hidden');
+        resultsHeader?.classList.remove('hidden');
 
         const resultsDropdown = document.getElementById('results-sort');
-        if (resultsDropdown) initCustomDropdown(resultsDropdown);
+        if (resultsDropdown) initDropdown(resultsDropdown);
 
     } catch (error) {
         console.error('Error fetching matches:', error);
@@ -69,7 +69,7 @@ async function fetchAndRenderMatches() {
         FootballLoader.showError(errorId, 'Wedstrijden konden niet worden geladen. Probeer opnieuw.');
 
         contentEl?.classList.add('hidden');
-        resultsHeader?.classList.add('results-header-hidden');
+        resultsHeader?.classList.add('hidden');
     }
 }
 
@@ -93,13 +93,13 @@ function renderSearchResults(matches) {
             searchMessage.classList.remove('hidden');
         }
 
-        resultsHeader?.classList.add('results-header-hidden');
+        resultsHeader?.classList.add('hidden');
         resultsContent?.classList.add('hidden');
         return;
     }
 
     searchMessage?.classList.add('hidden');
-    resultsHeader?.classList.remove('results-header-hidden');
+    resultsHeader?.classList.remove('hidden');
     resultsContent?.classList.remove('hidden');
 
     matches.forEach(match => {
@@ -268,7 +268,7 @@ function setupSearch() {
 }
 
 /* Sort Dropdown */
-function initCustomDropdown(dropdownEl) {
+function initDropdown(dropdownEl) {
     const selected = dropdownEl.querySelector('.selected');
     const options = dropdownEl.querySelector('.options');
 

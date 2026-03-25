@@ -187,20 +187,20 @@
 }
 
 /* ── Match Details Container ────────────────────────────────── */
-.match-details-container {
+.modal-details {
     display:       flex;
     margin-bottom: 1.5rem;
     gap:           1.5rem;
 }
 
-.match-details-container .modal-section {
+.modal-details .modal-section {
     flex:   1;
     margin: 0;
 }
 
 /* ── Shared Nested Info Box ─────────────────────────────────── */
 /* Used for date/time/stadium/goalscorer items */
-.match-details-container .modal-section p,
+.modal-details .modal-section p,
 .date-box p,
 .time-box p,
 .goalscorer-item {
@@ -264,13 +264,6 @@
     font-size:   1.1em;
 }
 
-/* ── Timeline Scrollbar ─────────────────────────────────────── */
-/* Vertical scrollbar for the modal timeline wrapper */
-.timeline-wrapper::-webkit-scrollbar        { width: 8px; }
-.timeline-wrapper::-webkit-scrollbar-track  { background: var(--silver-mist); border-radius: var(--radius-sm); }
-.timeline-wrapper::-webkit-scrollbar-thumb  { background: var(--light-gray);  border-radius: var(--radius-sm); }
-.timeline-wrapper::-webkit-scrollbar-thumb:hover { background: var(--medium-gray); }
-
 /* Remove bottom margin from last child in modal */
 #matchCenterModal .modal-content > *:last-child { margin-bottom: 0 !important; }
 
@@ -323,7 +316,7 @@
     .date-box, .time-box { flex: 1; min-width: 0; }
 
     .modal-match-score      { margin-bottom: 1.2rem; }
-    .match-details-container { margin-bottom: 1.2rem; }
+    .modal-details { margin-bottom: 1.2rem; }
     .match-title-container  { margin-bottom: 1.2rem; }
 }
 
@@ -366,7 +359,7 @@
     .modal-match-score       { margin-bottom: 1rem; }
     .match-title-container   { margin-bottom: 1rem; }
 
-    .match-details-container {
+    .modal-details {
         flex-direction: column;
         gap:            1rem;
         margin-bottom:  1rem;

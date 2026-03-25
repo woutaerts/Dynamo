@@ -3,7 +3,7 @@
    ============================================================ */
 
 /* ── Content Section ────────────────────────────────────────── */
-.archive-content-section {
+.archive-section {
     padding: 2rem 0 4rem;
 }
 
@@ -34,16 +34,22 @@
 /* ── Season Selector Dropdown ───────────────────────────────── */
 /*
  * #season-select is a custom-styled native select widget unique to
- * the archive page. It mirrors the .custom-dropdown pattern but is
+ * the archive page. It mirrors the .dropdown pattern but is
  * scoped to its own ID to avoid selector conflicts.
  */
-.season-selector-section {
+.picker-section {
     padding:   1rem 0;
     position:  relative;
     z-index:   var(--z-dropdown);
 }
 
-.dropdown-container {
+.picker-section,
+.season-picker {
+    margin-bottom: 0;
+    padding-bottom: 0;
+}
+
+.season-picker {
     display:         flex;
     justify-content: center;
     align-items:     center;
@@ -57,14 +63,14 @@
     visibility:      hidden;
 }
 
-.dropdown-container.reveal,
-.dropdown-container.animate-in {
+.season-picker.reveal,
+.season-picker.animate-in {
     opacity:    1;
     transform:  translateY(0);
     visibility: visible;
 }
 
-.dropdown-container span {
+.season-picker span {
     font-weight: 600;
     color:       var(--dark-gray);
 }
@@ -163,11 +169,11 @@
 #archive-players-section .player-rank  { color: white; }
 
 #archive-players-section .player-name,
-#archive-players-section .custom-dropdown .options li:hover {
+#archive-players-section .dropdown .options li:hover {
     color: var(--dark-green);
 }
 
-/* Theme the .custom-dropdown in the archive players section */
+/* Theme the .dropdown in the archive players section */
 #archive-players-section {
     --dropdown-border-color: var(--dark-green);
 }
@@ -214,9 +220,71 @@
     font-size:   var(--text-body);
 }
 
+/* ── Archive Graph Tooltip ──────────────────────────────────── */
+.archive-graph-tooltip {
+    background:    white;
+    border:        3px solid var(--dark-blue);
+    border-radius: var(--radius-md);
+    padding:       10px 8px;
+    box-shadow:    0 4px 10px rgba(0,0,0,0.1);
+    width:         90px;
+    box-sizing:    border-box;
+    text-align:    center;
+    font-family:   'Poppins', sans-serif;
+}
+
+.archive-graph-tooltip-title {
+    margin:      0 0 6px;
+    font-size:   1.3rem;
+    font-weight: 800;
+    color:       var(--dark-blue);
+    line-height: 1;
+}
+
+.archive-graph-tooltip-row {
+    display:         flex;
+    justify-content: center;
+    align-items:     center;
+    gap:             8px;
+    margin-bottom:   6px;
+}
+
+.archive-graph-tooltip-row:last-child {
+    margin-bottom: 0;
+}
+
+.archive-graph-tooltip-icon {
+    display:         flex;
+    justify-content: center;
+    align-items:     center;
+    width:           22px;
+    height:          22px;
+    border-radius:   50%;
+    color:           white;
+    font-size:       11px;
+    line-height:     1;
+    font-weight:     900;
+}
+
+.archive-graph-tooltip-icon i {
+    transform: translateY(1px) translateX(0.5px);
+}
+
+.archive-graph-tooltip-icon.win  { background: var(--light-green); }
+.archive-graph-tooltip-icon.draw { background: var(--golden-yellow); }
+.archive-graph-tooltip-icon.loss { background: var(--soft-coral); }
+
+.archive-graph-tooltip-value {
+    font-size:   0.95rem;
+    font-weight: 600;
+    color:       var(--dark-gray);
+    width:       16px;
+    text-align:  left;
+}
+
 /* ── Responsive: Tablet (≤ 768 px) ─────────────────────────── */
 @media (max-width: 768px) {
-    .dropdown-container { flex-direction: column; gap: 0.5rem; }
+    .season-picker { flex-direction: column; gap: 0.5rem; }
 
     /* Disable hover lift on touch */
     .archive-match-card:hover {

@@ -91,14 +91,14 @@
         </div>
     </section>
 
-    <section class="toggle-section">
+    <section class="controls-section">
         <div class="container">
             <div class="toggles-container">
                 <div class="toggle-wrapper">
                     <span class="toggle-label active" id="label-team">Team</span>
                     <div class="toggle-button-container">
-                        <div class="toggle-button gd">
-                            <div class="btn btn-pill" id="team-player-toggle-btn">
+                        <div class="toggle-button">
+                            <div class="toggle-track" id="team-player-toggle-btn">
                                 <input type="checkbox" class="checkbox" id="team-player-toggle" />
                                 <div class="knob"></div>
                                 <div class="btn-bg"></div>
@@ -110,8 +110,8 @@
                 <div class="toggle-wrapper">
                     <span class="toggle-label active" id="label-season">Seizoen</span>
                     <div class="toggle-button-container">
-                        <div class="toggle-button gd">
-                            <div class="btn btn-pill" id="season-alltime-toggle-btn">
+                        <div class="toggle-button">
+                            <div class="toggle-track" id="season-alltime-toggle-btn">
                                 <input type="checkbox" class="checkbox" id="season-alltime-toggle" />
                                 <div class="knob"></div>
                                 <div class="btn-bg"></div>
@@ -127,7 +127,7 @@
     <section class="stats-section" id="team-season-stats">
         <div class="container">
             <h2 class="section-title" id="team-season-title">Teamprestaties ...</h2>
-            <div id="team-season-loading" class="search-inline-loader hidden"></div>
+            <div id="team-season-loading" class="loader hidden"></div>
             <div id="team-season-error" class="error-message hidden"></div>
 
             <div class="stats-grid" id="team-season-grid">
@@ -162,7 +162,7 @@
     <section class="detailed-stats" id="team-season-detailed">
         <div class="container">
             <h2 class="section-title" id="detailed-team-stats-title"> Gedetailleerde <br>Teamstatistieken<br> ... </h2>
-            <div id="team-season-detailed-loading" class="search-inline-loader hidden"></div>
+            <div id="team-season-detailed-loading" class="loader hidden"></div>
             <div id="team-season-detailed-error" class="error-message hidden"></div>
 
             <div class="stats-categories" id="team-season-detailed-stats">
@@ -301,7 +301,7 @@
             <div id="player-season-content">
                 <div class="sort-controls">
                     <span>Sorteren op:</span>
-                    <div class="custom-dropdown" id="season-sort">
+                    <div class="dropdown" id="season-sort">
                         <div class="selected" data-value="goals">Totaal Doelpunten</div>
                         <ul class="options">
                             <li data-value="goals">Totaal Doelpunten</li>
@@ -323,7 +323,7 @@
             <div id="player-alltime-content">
                 <div class="sort-controls">
                     <span>Sorteren op:</span>
-                    <div class="custom-dropdown" id="alltime-sort">
+                    <div class="dropdown" id="alltime-sort">
                         <div class="selected" data-value="goals">Totaal Doelpunten</div>
                         <ul class="options">
                             <li data-value="goals">Totaal Doelpunten</li>

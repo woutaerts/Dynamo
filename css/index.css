@@ -157,16 +157,16 @@
 }
 
 /* ── Stats Overview ─────────────────────────────────────────── */
-.stats-overview-section {
+.overview-section {
     padding: 1.5rem 0 2rem;
 }
 
-.stats-overview-section .section-title::after {
+.overview-section .section-title::after {
     background: var(--dark-blue);
 }
 
 /* Grid columns — overrides the base .stats-grid from general.css */
-.stats-overview-section .stats-grid {
+.overview-section .stats-grid {
     grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
     justify-content:       center;
     text-align:            center;
@@ -177,7 +177,7 @@
 }
 
 /* ── Sponsor CTA Section ────────────────────────────────────── */
-.sponsor-cta-section {
+.cta-section {
     padding:    2rem 0;
     background: var(--off-white);
     text-align: center;
@@ -189,27 +189,27 @@
     transition: var(--t-reveal);
 }
 
-.sponsor-cta-section .section-title::after { background: var(--dark-green); }
+.cta-section .section-title::after { background: var(--dark-green); }
 
-.sponsor-cta-section p {
+.cta-section p {
     max-width: 700px;
     margin:    0 auto 1.5rem;
     color:     var(--dark-gray);
 }
 
 /* Internal children also animate in with parent */
-.sponsor-cta-section .section-title,
-.sponsor-cta-section p,
-.sponsor-cta-section .btn-primary {
+.cta-section .section-title,
+.cta-section p,
+.cta-section .btn-primary {
     opacity:    0;
     transform:  translateY(50px);
     transition: var(--t-reveal);
 }
 
-.sponsor-cta-section.animate-in,
-.sponsor-cta-section.animate-in .section-title,
-.sponsor-cta-section.animate-in p,
-.sponsor-cta-section.animate-in .btn-primary {
+.cta-section.animate-in,
+.cta-section.animate-in .section-title,
+.cta-section.animate-in p,
+.cta-section.animate-in .btn-primary {
     opacity:   1;
     transform: translateY(0);
 }
@@ -290,7 +290,11 @@
     text-decoration: none;
     color:           inherit;
     display:         block;
-    /* Entrance animation handled by general.css .contact-card rule */
+    border:          3px solid transparent;
+}
+
+.contact-card:hover {
+    border-color:   var(--dark-yellow);
 }
 
 .contact-card i {
@@ -345,7 +349,7 @@
     }
 
     /* Disable hover lifts on touch */
-    .stats-overview-section .stat-card:hover,
+    .overview-section .stat-card:hover,
     .contact-section .contact-card:hover {
         transform:  translateY(0) !important;
         box-shadow: var(--shadow-hover);
@@ -357,9 +361,9 @@
     .carousel-section    { padding: 1.5rem 0; }
     .carousel-container  { max-width: 320px; }
 
-    .stats-overview-section { padding: 1.3rem 0 1.8rem; }
+    .overview-section { padding: 1.3rem 0 1.8rem; }
 
-    .stats-overview-section .stats-grid {
+    .overview-section .stats-grid {
         grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
     }
 
@@ -409,9 +413,9 @@
     .dot            { width: 6px; height: 6px; }
     .dot.active     { width: 20px; }
 
-    .stats-overview-section { padding: 1rem 0 1.8rem; }
+    .overview-section { padding: 1rem 0 1.8rem; }
 
-    .stats-overview-section .stats-grid {
+    .overview-section .stats-grid {
         grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
         gap: 0.6rem;
     }

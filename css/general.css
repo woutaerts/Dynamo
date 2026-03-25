@@ -129,7 +129,7 @@
     --hero-pipe-color: var(--dynamo-red);
 
     /*
-     * --dropdown-border-color: border/accent colour for .custom-dropdown.
+     * --dropdown-border-color: border/accent colour for .dropdown.
      *   Set on a parent scope (body, section) to theme dropdowns per-page.
      */
     --dropdown-border-color: var(--dark-blue);
@@ -169,6 +169,36 @@ body {
     margin:    0 auto;
     padding:   0 15px;
 }
+
+/* ── Custom Scrollbar Utilities ─────────────────────────────── */
+
+/* Vertical Scrollbar (Transparent track) */
+.scrollbar-y { scrollbar-width: thin; scrollbar-color: var(--light-gray) transparent; }
+.scrollbar-y::-webkit-scrollbar { width: 6px; }
+.scrollbar-y::-webkit-scrollbar-track {
+    background: transparent;
+    border-radius: var(--radius-sm);
+    margin: 16px 0;
+}
+.scrollbar-y::-webkit-scrollbar-thumb {
+    background: var(--light-gray);
+    border-radius: var(--radius-sm);
+}
+.scrollbar-y::-webkit-scrollbar-thumb:hover { background: var(--medium-gray); }
+
+
+/* Horizontal Scrollbar (Silver track) */
+.scrollbar-x { scrollbar-width: thin; scrollbar-color: var(--light-gray) var(--silver-mist); }
+.scrollbar-x::-webkit-scrollbar { height: 8px; }
+.scrollbar-x::-webkit-scrollbar-track {
+    background: var(--silver-mist);
+    border-radius: var(--radius-sm);
+}
+.scrollbar-x::-webkit-scrollbar-thumb {
+    background: var(--light-gray);
+    border-radius: var(--radius-sm);
+}
+.scrollbar-x::-webkit-scrollbar-thumb:hover { background: var(--medium-gray); }
 
 /* Accessibility — visually hidden but screen-reader accessible */
 .sr-only {
@@ -364,7 +394,7 @@ body {
 .stat-card:hover,
 .countdown-box:hover,
 .contact-section .contact-card:hover,
-.stats-overview-section .stat-card:hover {
+.overview-section .stat-card:hover {
     transform:  translateY(var(--hover-lift)) !important;
     box-shadow: var(--shadow-hover);
     transition: var(--t-hover);
@@ -398,7 +428,7 @@ body {
     margin:     0 auto 1.5rem;
 }
 
-/* ── Custom Dropdown (shared component) ─────────────────────── */
+/* ── Dropdown (shared component) ─────────────────────── */
 /*
  * Colour-agnostic dropdown. Set --dropdown-border-color on a
  * parent element to theme the border and hover highlight:
@@ -406,7 +436,7 @@ body {
  *   - statistics   → --dropdown-border-color: var(--underline-color)
  *   - archive      → on #archive-players-section: var(--dark-green)
  */
-.custom-dropdown {
+.dropdown {
     position:      relative;
     border:        3px solid var(--dropdown-border-color, var(--dark-blue));
     border-radius: var(--radius-pill);
@@ -420,7 +450,7 @@ body {
     font-size:     var(--text-sm);
 }
 
-.custom-dropdown .selected {
+.dropdown .selected {
     padding:       0.6rem 2rem 0.6rem 1rem;
     border-radius: var(--radius-pill);
     box-sizing:    border-box;
@@ -429,7 +459,7 @@ body {
     transition:    var(--t-bg);
 }
 
-.custom-dropdown .selected::after {
+.dropdown .selected::after {
     content:     '\f0d7';
     font-family: 'Font Awesome 6 Free', serif;
     font-weight: 900;
@@ -442,12 +472,12 @@ body {
     transition:  transform var(--dur-base) var(--ease-standard);
 }
 
-.custom-dropdown.active .selected::after {
+.dropdown.active .selected::after {
     content:   '\f0d8';
     transform: translateY(-50%);
 }
 
-.custom-dropdown .options {
+.dropdown .options {
     position:      absolute;
     top:           100%;
     left:          50%;
@@ -461,23 +491,23 @@ body {
     padding:       0;
     display:       none;
     z-index:       var(--z-dropdown);
-    width:         240px;
+    min-width:     101%;
     box-sizing:    border-box;
     overflow:      hidden;
 }
 
-.custom-dropdown .options li {
+.dropdown .options li {
     padding:    0.6rem 1rem;
     text-align: center;
     transition: var(--t-bg);
 }
 
-.custom-dropdown .options li:hover {
+.dropdown .options li:hover {
     color:       var(--dropdown-border-color, var(--dark-blue));
     font-weight: 700;
 }
 
-.custom-dropdown.active .options {
+.dropdown.active .options {
     display: block;
 }
 
@@ -649,7 +679,7 @@ body {
 .search-input::placeholder { color: var(--medium-gray); opacity: 1; }
 
 /* ── Match Form ─────────────────────────────────────────────── */
-.match-form-section {
+.form-section {
     padding: 1.5rem 0;
 }
 
@@ -805,10 +835,10 @@ body {
     .search-input    { padding: 0.5rem 0.7rem 0.5rem 2rem; }
     .search-icon     { left: 0.7rem; }
 
-    /* Shared tablet tweaks for custom-dropdown */
-    .custom-dropdown .selected { padding: 0.5rem 1.8rem 0.5rem 0.8rem; }
-    .custom-dropdown .options  { width: 200px; }
-    .custom-dropdown .options li { padding: 0.5rem 0.8rem; }
+    /* Shared tablet tweaks for dropdown */
+    .dropdown .selected { padding: 0.5rem 1.8rem 0.5rem 0.8rem; }
+    .dropdown .options  { width: 200px; }
+    .dropdown .options li { padding: 0.5rem 0.8rem; }
 
     /* Sort controls stack vertically on tablet */
     .sort-controls {
@@ -858,9 +888,9 @@ body {
     .form-result.loss:last-child { box-shadow: 0 0 0 2px var(--soft-coral); }
 
     /* Mobile dropdown sizing */
-    .custom-dropdown .selected   { padding: 0.4rem 1.6rem 0.4rem 0.7rem; }
-    .custom-dropdown .options    { width: 180px; }
-    .custom-dropdown .options li { padding: 0.4rem 0.7rem; }
+    .dropdown .selected   { padding: 0.4rem 1.6rem 0.4rem 0.7rem; }
+    .dropdown .options    { width: 180px; }
+    .dropdown .options li { padding: 0.4rem 0.7rem; }
 
     .sort-controls { gap: 0.6rem; }
 }
@@ -875,7 +905,7 @@ body {
     .stadium-section, .form-description, .match-sponsor-block,
     .section-title, .section-subtitle, .page-hero h1,
     .archive-match-card, .dropdown-container, .filter-section,
-    .carousel-container, .sponsor-cta-section, .toggles-container,
+    .carousel-container, .cta-section, .toggles-container,
     .search-container, .upcoming-match-name {
         opacity:    1 !important;
         transform:  none !important;
@@ -886,7 +916,7 @@ body {
 
     /* Cancel ticker and loader animations */
     .ticker-track.scrolling,
-    .search-inline-loader .football-loader path {
+    .loader .football-loader path {
         animation: none !important;
     }
 

@@ -2,12 +2,12 @@
 <link rel="stylesheet" href="/dynamo/css/components/modal-shared.css">
 
 <div id="playerModal" class="modal-overlay">
-    <div class="modal-content">
+    <div class="modal-content scrollbar-y">
         <button class="close-modal"><i class="fas fa-times"></i></button>
 
         <div class="player-header">
             <h2 id="modalPlayerName">...</h2>
-            <div class="position" id="playerPosition">...</div>
+            <div class="player-position" id="playerPosition">...</div>
             <img id="nationalityFlag" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="Flag" class="flag-icon">
         </div>
 
@@ -15,9 +15,11 @@
             <h3>Dit Seizoen</h3>
             <div class="stats-container">
                 <div class="stat-box">
-                    <p><i class="fas fa-shirt"></i> Wedstrijden: <span id="gamesThisSeason">-</span></p> </div>
+                    <p><i class="fas fa-shirt"></i> Wedstrijden: <span id="gamesThisSeason">-</span></p>
+                </div>
                 <div class="stat-box">
-                    <p><i class="fas fa-futbol"></i> Doelpunten: <span id="goalsThisSeason">-</span></p> </div>
+                    <p><i class="fas fa-futbol"></i> Doelpunten: <span id="goalsThisSeason">-</span></p>
+                </div>
             </div>
         </div>
 
@@ -25,9 +27,11 @@
             <h3>All Time</h3>
             <div class="stats-container">
                 <div class="stat-box">
-                    <p><i class="fas fa-shirt"></i> Wedstrijden: <span id="gamesTotal">-</span></p> </div>
+                    <p><i class="fas fa-shirt"></i> Wedstrijden: <span id="gamesTotal">-</span></p>
+                </div>
                 <div class="stat-box">
-                    <p><i class="fas fa-futbol"></i> Doelpunten: <span id="goalsTotal">-</span></p> </div>
+                    <p><i class="fas fa-futbol"></i> Doelpunten: <span id="goalsTotal">-</span></p>
+                </div>
             </div>
         </div>
     </div>

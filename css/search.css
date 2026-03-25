@@ -1,6 +1,6 @@
 /* ============================================================
    SEARCH.CSS
-   NOTE: .custom-dropdown base styles are now in general.css.
+   NOTE: .dropdown base styles are now in general.css.
          .sort-controls base layout is now in general.css.
          .match-card entrance animation is handled by general.css.
    ============================================================ */
@@ -11,8 +11,6 @@
     position: relative;
     z-index:  var(--z-dropdown);
 }
-
-.results-header-hidden { display: none !important; }
 
 /* ── Autocomplete List ──────────────────────────────────────── */
 .autocomplete-list {
@@ -51,6 +49,10 @@
 /* Base layout from general.css; this page centres the controls */
 .sort-controls { justify-content: center; }
 
+.dropdown .options {
+    width: max-content;
+}
+
 /* ── Match Season Label ─────────────────────────────────────── */
 .match-season {
     color:       var(--medium-gray);
@@ -69,6 +71,9 @@
  * .match-card base animation (opacity: 0, translateY) is handled
  * by general.css. Only search-specific overrides live here.
  */
+.matches-section .section-title::after{
+    background-color: var(--dark-blue);
+}
 .match-card.modern {
     cursor: default; /* not clickable in search results */
 }

@@ -98,11 +98,11 @@
     </section>
 
     <!-- Season Selector -->
-    <section class="season-selector-section">
+    <section class="picker-section">
         <div class="container">
-            <div class="sort-controls dropdown-container">
+            <div class="season-picker">
                 <span>Selecteer Seizoen:</span>
-                <div class="custom-dropdown" id="season-select">
+                <div class="dropdown" id="season-select">
                     <div class="selected" data-value="Vergelijking">Vergelijking</div>
                     <ul class="options">
                         <li data-value="Vergelijking">Vergelijking</li>
@@ -117,12 +117,12 @@
     </section>
 
     <!-- Archive Content -->
-    <section class="archive-content-section">
+    <section class="archive-section">
         <div class="container">
 
             <h2 class="section-title" id="archive-season-title">Seizoenen Vergelijken</h2>
 
-            <div id="archive-loading" class="search-inline-loader hidden"></div>
+            <div id="archive-loading" class="loader hidden"></div>
             <div id="archive-error" class="error-message hidden"></div>
 
             <!-- Content wrapper -->
@@ -140,7 +140,7 @@
                 <!-- ── Season archive view ── -->
                 <div id="archive-season-view" class="hidden">
 
-                    <div id="archive-season-loader" class="search-inline-loader hidden"></div>
+                    <div id="archive-season-loader" class="loader hidden"></div>
                     <div id="archive-season-error" class="error-message hidden"></div>
 
                     <!-- Season content -->
@@ -179,7 +179,7 @@
                             <h3 class="section-title">Spelersstatistieken</h3>
                             <div class="sort-controls">
                                 <span>Sorteren op:</span>
-                                <div class="custom-dropdown" id="archive-player-sort">
+                                <div class="dropdown" id="archive-player-sort">
                                     <div class="selected" data-value="goals">Totaal Doelpunten</div>
                                     <ul class="options">
                                         <li data-value="goals">Totaal Doelpunten</li>

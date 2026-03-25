@@ -84,7 +84,7 @@ document.addEventListener('DOMContentLoaded', () => {
     initToggle();
     initPlayerStats();
     initSortableHeaders();
-    initCustomDropdowns();
+    initDropdowns();
 
     // Observe static elements (Hero, Titles, and the Toggle Container)
     const staticElements = animationElements.filter(el =>
@@ -262,15 +262,15 @@ function updateAllTimePlayerStats(sortBy = document.querySelector('#alltime-sort
     renderPlayerTable(allTimePlayers, '.top-scorers-list', 'scorer-row', sortBy);
 }
 
-// Custom dropdown initializer
-function initCustomDropdowns() {
-    document.querySelectorAll('.custom-dropdown').forEach(dropdown => {
+// Dropdown initializer
+function initDropdowns() {
+    document.querySelectorAll('.dropdown').forEach(dropdown => {
         const selected = dropdown.querySelector('.selected');
         const options = dropdown.querySelector('.options');
         selected.addEventListener('click', () => {
             dropdown.classList.toggle('active');
             options.style.display = options.style.display === 'block' ? 'none' : 'block';
-            document.querySelectorAll('.custom-dropdown').forEach(otherDropdown => {
+            document.querySelectorAll('.dropdown').forEach(otherDropdown => {
                 if (otherDropdown !== dropdown) {
                     otherDropdown.classList.remove('active');
                     otherDropdown.querySelector('.options').style.display = 'none';
@@ -292,8 +292,8 @@ function initCustomDropdowns() {
         });
     });
     document.addEventListener('click', (e) => {
-        if (!e.target.closest('.custom-dropdown')) {
-            document.querySelectorAll('.custom-dropdown').forEach(dropdown => {
+        if (!e.target.closest('.dropdown')) {
+            document.querySelectorAll('.dropdown').forEach(dropdown => {
                 dropdown.classList.remove('active');
                 dropdown.querySelector('.options').style.display = 'none';
             });
@@ -301,7 +301,7 @@ function initCustomDropdowns() {
     });
 }
 
-// Keep sortable headers but hook them to custom dropdowns
+// Keep sortable headers but hook them to dropdowns
 function initSortableHeaders() {
     const seasonHeaderCells = document.querySelectorAll('#player-season-stats .table-header .table-cell');
     const allTimeHeaderCells = document.querySelectorAll('#player-alltime-stats .table-header .table-cell');

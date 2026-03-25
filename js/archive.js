@@ -18,7 +18,7 @@ import {
 const animationElements = [
     { selector: '.page-hero h1',         containerSelector: 'section' },
     { selector: '.section-title',        containerSelector: 'section' },
-    { selector: '.season-selector-section .dropdown-container', containerSelector: 'section' }
+    { selector: '.picker-section .season-picker', containerSelector: 'section' }
 ];
 
 /* Configuratie van alle seizoenen en hun spreadsheet parameters */
@@ -66,35 +66,31 @@ let archivePlayers = [];
 
 /* Genereer de HTML voor de grafiek tooltip */
 const getArchiveTooltipHTML = (d) => `
-    <div style="background:white; border:3px solid #3D5A80; border-radius:12px; padding:10px 8px;
-         box-shadow:0 4px 10px rgba(0,0,0,0.1); width:90px; box-sizing:border-box;
-         text-align:center; font-family:'Poppins',sans-serif;">
-        <h4 style="margin:0 0 6px; font-size:1.3rem; font-weight:800; color:#3D5A80; line-height:1;">${d.matches}</h4>
-        <div style="display:flex; justify-content:center; align-items:center; gap:8px; margin-bottom:6px;">
-            <span style="display:flex; justify-content:center; align-items:center; width:22px; height:22px;
-                  border-radius:50%; background:#648F5F; color:white; font-size:11px; line-height:1;
-                  font-weight:900;">
-                <i class="fas fa-check" style="transform: translateY(1px) translateX(0.5px);"></i>
+    <div class="archive-graph-tooltip">
+        <h4 class="archive-graph-tooltip-title">${d.matches}</h4>
+        
+        <div class="archive-graph-tooltip-row">
+            <span class="archive-graph-tooltip-icon win">
+                <i class="fas fa-check"></i>
             </span>
-            <span style="font-size:0.95rem; font-weight:600; color:#333; width:16px; text-align:left;">${d.winst}</span>
+            <span class="archive-graph-tooltip-value">${d.winst}</span>
         </div>
-        <div style="display:flex; justify-content:center; align-items:center; gap:8px; margin-bottom:6px;">
-            <span style="display:flex; justify-content:center; align-items:center; width:22px; height:22px;
-                  border-radius:50%; background:#E8B04B; color:white; font-size:11px; line-height:1;
-                  font-weight:900;">
-                <i class="fas fa-minus" style="transform: translateY(1px) translateX(0.5px);"></i>
+        
+        <div class="archive-graph-tooltip-row">
+            <span class="archive-graph-tooltip-icon draw">
+                <i class="fas fa-minus"></i>
             </span>
-            <span style="font-size:0.95rem; font-weight:600; color:#333; width:16px; text-align:left;">${d.gelijk}</span>
+            <span class="archive-graph-tooltip-value">${d.gelijk}</span>
         </div>
-        <div style="display:flex; justify-content:center; align-items:center; gap:8px;">
-            <span style="display:flex; justify-content:center; align-items:center; width:22px; height:22px;
-                  border-radius:50%; background:#E07A5F; color:white; font-size:11px; line-height:1;
-                  font-weight:900;">
-                <i class="fas fa-times" style="transform: translateY(1px) translateX(0.5px);"></i>
+        
+        <div class="archive-graph-tooltip-row">
+            <span class="archive-graph-tooltip-icon loss">
+                <i class="fas fa-times"></i>
             </span>
-            <span style="font-size:0.95rem; font-weight:600; color:#333; width:16px; text-align:left;">${d.verlies}</span>
+            <span class="archive-graph-tooltip-value">${d.verlies}</span>
         </div>
-    </div>`;
+    </div>
+`;
 
 /* Initialisatie van de pagina bij het laden */
 document.addEventListener('DOMContentLoaded', () => {
@@ -519,7 +515,7 @@ function initArchiveDropdown() {
     });
 }
 
-/* Configureer de custom dropdown voor speler-sortering */
+/* Configureer de dropdown voor speler-sortering */
 function initArchivePlayerSort() {
     const dropdown = document.getElementById('archive-player-sort');
     if (!dropdown) return;

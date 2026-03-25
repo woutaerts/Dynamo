@@ -1,7 +1,7 @@
 /* ============================================================
    STATISTICS.CSS
    Merged: statistics.css, team-season.css, team-all-time.css
-   NOTE: .custom-dropdown base, .sort-controls base layout,
+   NOTE: .dropdown base, .sort-controls base layout,
          and .hidden are defined in general.css.
    ============================================================ */
 
@@ -114,7 +114,7 @@ body.player-alltime .player-rank {
     border-radius: var(--radius-sm);
 }
 
-.btn {
+.toggle-track {
     position:      relative;
     top:           50%;
     width:         73px;
@@ -518,7 +518,7 @@ body.player-alltime .player-rank {
         margin:     5px;
         box-shadow: none;
     }
-    .btn {
+    .toggle-track {
         width:      80px;
         height:     40px;
         margin:     -20px auto 0;
@@ -603,7 +603,7 @@ body.player-alltime .player-rank {
     .toggle-wrapper    { gap: 0.6rem; max-width: 280px; }
     .toggle-button-container { width: 90px; height: 50px; }
     .toggle-button     { height: 45px; margin: 4px; }
-    .btn               { width: 70px; height: 35px; margin: -17.5px auto 0; }
+    .toggle-track               { width: 70px; height: 35px; margin: -17.5px auto 0; }
 
     #team-player-toggle-btn .knob:before,
     #season-alltime-toggle-btn .knob:before {

@@ -11,7 +11,7 @@ const animationElements = [
     { selector: '.timeline-start-knob', containerSelector: '.timeline-wrapper' },
     { selector: '.countdown-block', containerSelector: null },
     { selector: '#home-match-sponsor', containerSelector: null },
-    { selector: '.sponsor-cta-section', containerSelector: null },
+    { selector: '.cta-section', containerSelector: null },
     { selector: '.form-result', containerSelector: null },
     { selector: '.section-title', containerSelector: 'section' },
     { selector: '.section-subtitle', containerSelector: 'section' },
@@ -261,7 +261,7 @@ function renderSponsorsTicker(allMatches) {
     });
 
     if (uniqueSponsors.size === 0) {
-        const section = document.querySelector('.sponsors-ticker-section');
+        const section = document.querySelector('.ticker-section');
         if (section) section.style.display = 'none';
         return;
     }
