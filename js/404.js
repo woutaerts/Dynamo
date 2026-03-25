@@ -1,34 +1,14 @@
-/* Page Initialization */
+/**
+ * 404.js — Error page
+ *
+ * Changes:
+ *   - `setupCtaHoverEffect` → removed entirely.
+ *     The identical position-aware ripple logic now lives in
+ *     `utils/animations.js` as `initRippleEffect`. This file is reduced
+ *     to a single import + one-liner initialization.
+ */
+import { initRippleEffect } from './utils/animations.js';
+
 document.addEventListener('DOMContentLoaded', () => {
-    setupCtaHoverEffect();
+    initRippleEffect('.error-cta');
 });
-
-/* CTA Hover Effect */
-function setupCtaHoverEffect() {
-    const ctaButton = document.querySelector('.error-cta');
-    if (!ctaButton) return; // Guard clause in case button is missing
-
-    // Cache the hover effect element once
-    const hoverEffect = ctaButton.querySelector('.hover-effect');
-    if (!hoverEffect) return;
-
-    ctaButton.addEventListener('mouseenter', (e) => {
-        const rect = ctaButton.getBoundingClientRect();
-        const relX = e.clientX - rect.left;
-        const relY = e.clientY - rect.top;
-
-        // Use the cached variable
-        hoverEffect.style.top = relY + 'px';
-        hoverEffect.style.left = relX + 'px';
-    });
-
-    ctaButton.addEventListener('mouseleave', (e) => {
-        const rect = ctaButton.getBoundingClientRect();
-        const relX = e.clientX - rect.left;
-        const relY = e.clientY - rect.top;
-
-        // Use the cached variable
-        hoverEffect.style.top = relY + 'px';
-        hoverEffect.style.left = relX + 'px';
-    });
-}

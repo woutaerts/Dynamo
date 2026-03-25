@@ -11,7 +11,15 @@
 /* Width constraint for this modal specifically */
 .modal-content {
     max-width: 700px;
+    border: 3px solid var(--dusty-blue);
 }
+
+#matchCenterModal.win  .modal-content,
+#matchCenterModal:has(.result-icon.win)  .modal-content { border-color: var(--light-green)   !important; }
+#matchCenterModal.draw .modal-content,
+#matchCenterModal:has(.result-icon.draw) .modal-content { border-color: var(--golden-yellow) !important; }
+#matchCenterModal.loss .modal-content,
+#matchCenterModal:has(.result-icon.loss) .modal-content { border-color: var(--soft-coral)    !important; }
 
 /* ── Title Container ────────────────────────────────────────── */
 .match-title-container {

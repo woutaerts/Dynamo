@@ -1,12 +1,27 @@
-/* js/utils/animations.js */
+/**
+ * utils/animations.js
+ * Scroll-reveal, stagger animations, and shared interaction helpers.
+ *
+ * Changes:
+ *   - Private `getContainer` renamed to `resolveContainer` (more descriptive).
+ *   - New export `initRippleEffect(selector)` — consolidates the identical
+ *     position-aware hover ripple logic that was duplicated across:
+ *       404.js (setupCtaHoverEffect), index.js (initializePrimaryButtonHover),
+ *       players.js (initializePositionAwareHover), header.js (setupPositionAwareHoverEffect)
+ */
 
-/* Module-level variables to persist across multiple calls */
+// ── Singleton IntersectionObserver State ─────────────────────────────────────
+
 let sharedObserver = null;
 let observedSelectors = [];
 
+// ── Scroll-Based Animations ───────────────────────────────────────────────────
+
 /**
- * Scroll-Based Animations
- * Uses a singleton IntersectionObserver with a fixed site-wide configuration.
+ * Registers elements for staggered scroll-reveal using a singleton observer.
+ * Calling this multiple times safely de-duplicates entries.
+ *
+ * @param {{ selector: string, containerSelector: string|string[]|null }[]} elements
  */
 export function animateOnScroll(elements = []) {
     const newElements = elements.filter(el =>
@@ -15,31 +30,21 @@ export function animateOnScroll(elements = []) {
     observedSelectors = [...observedSelectors, ...newElements];
 
     if (!sharedObserver) {
-        const sharedOptions = {
-            root: null,
-            rootMargin: '0px',
-            threshold: 0.1
-        };
-
         sharedObserver = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    const elementType = observedSelectors.find(el => entry.target.matches(el.selector));
+                if (!entry.isIntersecting) return;
 
-                    if (elementType) {
-                        const container = getContainer(entry.target, elementType.containerSelector);
-                        const itemsInContainer = container.querySelectorAll(elementType.selector);
-                        const itemIndex = Array.from(itemsInContainer).indexOf(entry.target);
+                const elementType = observedSelectors.find(el => entry.target.matches(el.selector));
+                if (!elementType) return;
 
-                        setTimeout(() => {
-                            entry.target.classList.add('animate-in');
-                        }, itemIndex * 100);
+                const container       = resolveContainer(entry.target, elementType.containerSelector);
+                const itemsInContainer = container.querySelectorAll(elementType.selector);
+                const itemIndex       = Array.from(itemsInContainer).indexOf(entry.target);
 
-                        sharedObserver.unobserve(entry.target);
-                    }
-                }
+                setTimeout(() => entry.target.classList.add('animate-in'), itemIndex * 100);
+                sharedObserver.unobserve(entry.target);
             });
-        }, sharedOptions);
+        }, { root: null, rootMargin: '0px', threshold: 0.1 });
     }
 
     elements.forEach(el => {
@@ -49,21 +54,24 @@ export function animateOnScroll(elements = []) {
     });
 }
 
+// ── Player Card Stagger ───────────────────────────────────────────────────────
+
 /**
- * Player Card Animations (Staggered)
+ * Staggered entrance animation for player cards, respecting the grid container.
+ * Also re-observes on hash changes (position filter navigation).
  */
 export function animatePlayerCards() {
-    const observer = new IntersectionObserver((entries, observer) => {
+    const observer = new IntersectionObserver((entries, obs) => {
         entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                const container = entry.target.closest('.players-grid') || document;
-                const itemsInContainer = container.querySelectorAll('.player-card');
-                const itemIndex = Array.from(itemsInContainer).indexOf(entry.target);
+            if (!entry.isIntersecting) return;
 
-                entry.target.style.setProperty('--animation-delay', itemIndex);
-                entry.target.classList.add('animate-in');
-                observer.unobserve(entry.target);
-            }
+            const container       = entry.target.closest('.players-grid') || document;
+            const itemsInContainer = container.querySelectorAll('.player-card');
+            const itemIndex       = Array.from(itemsInContainer).indexOf(entry.target);
+
+            entry.target.style.setProperty('--animation-delay', itemIndex);
+            entry.target.classList.add('animate-in');
+            obs.unobserve(entry.target);
         });
     }, { root: null, rootMargin: '0px', threshold: 0.1 });
 
@@ -74,12 +82,12 @@ export function animatePlayerCards() {
     });
 }
 
-/**
- * Smooth Scrolling for Anchor Links
- */
+// ── Smooth Scrolling ──────────────────────────────────────────────────────────
+
+/** Enables smooth scrolling for all `<a href="#...">` anchor links on the page. */
 export function setupSmoothScrolling() {
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-        anchor.addEventListener('click', function (e) {
+        anchor.addEventListener('click', function(e) {
             const target = document.querySelector(this.getAttribute('href'));
             if (target) {
                 e.preventDefault();
@@ -89,10 +97,51 @@ export function setupSmoothScrolling() {
     });
 }
 
+// ── Ripple / Position-Aware Hover ─────────────────────────────────────────────
+
 /**
- * Private Helper (not exported)
+ * Attaches a position-aware ripple hover effect to every element matching
+ * `selector`. On mouseenter and mouseleave the `.hover-effect` child span
+ * is repositioned to where the cursor crossed the element's boundary,
+ * creating a directional fill animation.
+ *
+ * This replaces four separate (identical) implementations:
+ *   - 404.js         → setupCtaHoverEffect
+ *   - index.js       → initializePrimaryButtonHover
+ *   - players.js     → initializePositionAwareHover
+ *   - header.js      → setupPositionAwareHoverEffect (nav variant)
+ *
+ * @param {string} selector  CSS selector for the elements to enhance.
  */
-function getContainer(target, containerSelector) {
+export function initRippleEffect(selector) {
+    document.querySelectorAll(selector).forEach(el => {
+        // Ensure the ripple span exists
+        let hoverSpan = el.querySelector('.hover-effect, .ripple');
+        if (!hoverSpan) {
+            hoverSpan = document.createElement('span');
+            hoverSpan.className = 'hover-effect';
+            el.appendChild(hoverSpan);
+        }
+
+        ['mouseenter', 'mouseleave'].forEach(eventType => {
+            el.addEventListener(eventType, (e) => {
+                const rect = el.getBoundingClientRect();
+                hoverSpan.style.left = (e.clientX - rect.left) + 'px';
+                hoverSpan.style.top  = (e.clientY - rect.top)  + 'px';
+            });
+        });
+    });
+}
+
+// ── Private Helpers ───────────────────────────────────────────────────────────
+
+/**
+ * Walks up from `target` to find the nearest container matching `containerSelector`.
+ * Falls back to `document` if no match is found.
+ *
+ * Renamed from `getContainer` → `resolveContainer` to better describe the action.
+ */
+function resolveContainer(target, containerSelector) {
     if (!containerSelector) return document;
     if (Array.isArray(containerSelector)) {
         for (const selector of containerSelector) {
@@ -100,5 +149,5 @@ function getContainer(target, containerSelector) {
             if (container) return container;
         }
     }
-    return target.closest(containerSelector);
+    return target.closest(containerSelector) || document;
 }

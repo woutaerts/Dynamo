@@ -1,58 +1,58 @@
-// A temporary memory bank to hold requests that are currently in progress
+/**
+ * utils/fetchCsv.js
+ * Cached CSV fetcher with race-condition prevention and TTL-based invalidation.
+ * No renames required — API is clean and minimal.
+ */
+
+/** In-progress requests keyed by URL, prevents duplicate concurrent fetches. */
 const activeFetches = new Map();
 
-// Set how long the data should stay cached (e.g., 5 minutes in milliseconds)
+/** Cache time-to-live: 5 minutes in milliseconds. */
 const CACHE_TTL = 5 * 60 * 1000;
 
+/**
+ * Fetches a CSV from `url`, returning a cached copy if one exists and is fresh.
+ * Multiple simultaneous callers for the same URL share a single in-flight request.
+ *
+ * @param {string} url
+ * @returns {Promise<string>} Raw CSV text
+ */
 export async function fetchCsvCached(url) {
-    // 1. Check if it's already in sessionStorage AND hasn't expired yet
+    // 1. Return from sessionStorage if the entry is still within TTL
     const cachedItem = sessionStorage.getItem(url);
     if (cachedItem) {
         try {
             const { timestamp, data } = JSON.parse(cachedItem);
-            const now = Date.now();
-
-            // If the cache is younger than 5 minutes, return it immediately!
-            if (now - timestamp < CACHE_TTL) {
-                return data;
-            }
+            if (Date.now() - timestamp < CACHE_TTL) return data;
         } catch (e) {
-            // If JSON parsing fails, just ignore it and fetch fresh data
-            console.warn('Cache parsing failed, fetching fresh data.');
+            console.warn('Cache parse failed, fetching fresh data.');
         }
     }
 
-    // 2. Prevent the "Race Condition"
-    if (activeFetches.has(url)) {
-        return activeFetches.get(url);
-    }
+    // 2. Piggyback on an existing in-flight fetch for the same URL
+    if (activeFetches.has(url)) return activeFetches.get(url);
 
-    // 3. Start the actual download
+    // 3. Start a new fetch and register it while it is in flight
     const fetchPromise = (async () => {
         const res = await fetch(url);
         if (!res.ok) throw new Error(`HTTP ${res.status}`);
 
         const text = await res.text();
 
-        // 4. Safely save to storage (Prevents the "Quota Crash")
         try {
-            const cacheData = JSON.stringify({ timestamp: Date.now(), data: text });
-            sessionStorage.setItem(url, cacheData);
+            sessionStorage.setItem(url, JSON.stringify({ timestamp: Date.now(), data: text }));
         } catch (e) {
-            console.warn('SessionStorage is full or unavailable. Skipping cache.');
+            console.warn('SessionStorage full or unavailable — cache skipped.');
         }
 
         return text;
     })();
 
-    // Store the active promise so other callers can piggyback on it
     activeFetches.set(url, fetchPromise);
 
     try {
-        // Wait for the download to finish and return the text
         return await fetchPromise;
     } finally {
-        // Clean up our tracker once the download is completely finished (or fails)
         activeFetches.delete(url);
     }
 }

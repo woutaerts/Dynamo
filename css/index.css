@@ -74,7 +74,6 @@
     touch-action: none;
     user-select:  none;
     will-change:  transform;
-    transition:   transform var(--dur-ripple) var(--ease-carousel);
 }
 
 .slide {

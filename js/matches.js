@@ -1,50 +1,60 @@
+/**
+ * matches.js — Matches page
+ *
+ * Changes:
+ *   - `fetchAndRenderMatches` → `loadMatches`
+ *   - `setupMatchInteractions` → `bindMatchCardClicks`
+ *   - `renderForm` → REMOVED (moved to general.js, imported from there)
+ *   - `updateCountdown`        → `setCountdownData` (import rename)
+ *   - `FootballLoader.init`    → `FootballLoader.show` (loader rename)
+ *   - result/icon ternaries    → `resultToClass` / `resultToIcon` from helpers
+ */
 import { animateOnScroll } from './utils/animations.js';
-import { initializeCountdown, updateCountdown } from './general.js';
+import { initCountdown, setCountdownData, renderForm } from './general.js';
 import { fetchCurrentSeasonMatches } from './utils/dataService.js';
-import { FootballLoader } from './components/loader.js'; // Ensure this matches your new component path
+import { FootballLoader } from './components/loader.js';
+import { resultToClass, resultToIcon } from './utils/helpers.js';
 
-// Define animation elements
 const animationElements = [
-    { selector: '.match-card', containerSelector: 'section' },
-    { selector: '.timeline', containerSelector: 'section' },
-    { selector: '.timeline-item', containerSelector: ['section', '.container'] },
+    { selector: '.match-card',          containerSelector: 'section' },
+    { selector: '.timeline',            containerSelector: 'section' },
+    { selector: '.timeline-item',       containerSelector: ['section', '.container'] },
     { selector: '.timeline-start-knob', containerSelector: '.timeline-wrapper' },
-    { selector: '.countdown-block', containerSelector: null },
-    { selector: '#home-match-sponsor', containerSelector: null },
-    { selector: '.cta-section', containerSelector: null },
-    { selector: '.form-result', containerSelector: null },
-    { selector: '.section-title', containerSelector: 'section' },
-    { selector: '.section-subtitle', containerSelector: 'section' },
-    { selector: '.page-hero h1', containerSelector: 'section' },
+    { selector: '.countdown-block',     containerSelector: null },
+    { selector: '#home-match-sponsor',  containerSelector: null },
+    { selector: '.form-result',         containerSelector: null },
+    { selector: '.section-title',       containerSelector: 'section' },
+    { selector: '.section-subtitle',    containerSelector: 'section' },
+    { selector: '.page-hero h1',        containerSelector: 'section' },
     { selector: '.upcoming-match-name', containerSelector: null },
-    { selector: '.form-description', containerSelector: null }
+    { selector: '.form-description',    containerSelector: null }
 ];
 
-// Matches page initialization
+// ── Page Initialization ───────────────────────────────────────────────────────
+
 document.addEventListener('DOMContentLoaded', async () => {
-    await fetchAndRenderMatches();
+    await loadMatches();
     animateOnScroll(animationElements);
     scrollTimelineToEnd();
 });
 
-/* Fetch and Render Matches */
-async function fetchAndRenderMatches() {
-    const loaderId = 'matches-global-loader';
-    const errorId = 'matches-error';
-    const loaderContainer = document.getElementById(loaderId);
+// ── Data Loading ──────────────────────────────────────────────────────────────
 
-    // 1. Initialize the modular loader
-    if (loaderContainer) {
-        loaderContainer.classList.remove('hidden');
-        FootballLoader.init(loaderId, 'Wedstrijden worden geladen...');
+async function loadMatches() {
+    const loaderId      = 'matches-global-loader';
+    const errorId       = 'matches-error';
+    const loaderEl      = document.getElementById(loaderId);
+    const knob          = document.querySelector('.timeline-start-knob');
+
+    if (loaderEl) {
+        loaderEl.classList.remove('hidden');
+        FootballLoader.show(loaderId, 'Wedstrijden worden geladen...');
     }
 
-    const knob = document.querySelector('.timeline-start-knob');
     if (knob) knob.style.opacity = '0';
 
-    // Hide grids during load for a cleaner transition
     document.querySelectorAll('.matches-grid, #form-results, #season-timeline').forEach(el => {
-        el.style.opacity = '0';
+        el.style.opacity   = '0';
         el.style.transition = 'opacity 0.4s ease';
     });
 
@@ -56,74 +66,57 @@ async function fetchAndRenderMatches() {
         renderSeasonTimeline(matches.all);
         renderForm(matches.form);
         renderSponsorsTicker(matches.all);
-        updateCountdown(matches.upcoming);
-        setupMatchInteractions();
+        setCountdownData(matches.upcoming);
+        bindMatchCardClicks();
 
-        // 2. Hide loader on success
-        if (loaderContainer) loaderContainer.classList.add('hidden');
+        if (loaderEl) loaderEl.classList.add('hidden');
 
-        // Fade in content
         document.querySelectorAll('.matches-grid, #form-results, #season-timeline').forEach(el => {
             el.style.opacity = '1';
         });
 
         if (knob) knob.style.opacity = '';
 
-        initializeCountdown();
+        initCountdown();
         scrollTimelineToEnd();
-
     } catch (error) {
         console.error('Error fetching or parsing CSV:', error);
 
-        // 3. Use modular error display
-        if (loaderContainer) loaderContainer.classList.add('hidden');
+        if (loaderEl) loaderEl.classList.add('hidden');
         FootballLoader.showError(errorId, 'Wedstrijden konden niet worden geladen. Probeer opnieuw.');
 
-        const titleEl = document.getElementById('next-match-title');
+        const titleEl    = document.getElementById('next-match-title');
         const countdownEl = document.getElementById('countdown');
         if (titleEl && countdownEl) {
-            titleEl.textContent = 'Geen wedstrijden beschikbaar.';
+            titleEl.textContent       = 'Geen wedstrijden beschikbaar.';
             countdownEl.style.display = 'none';
         }
     }
 }
 
-// Render upcoming matches
+// ── Rendering ─────────────────────────────────────────────────────────────────
+
 function renderUpcomingMatches(upcomingMatches) {
     const grid = document.getElementById('upcoming-matches-grid');
     grid.innerHTML = '';
 
     if (upcomingMatches.length === 0) {
         grid.classList.add('no-matches');
-        const noMatchWrapper = document.createElement('div');
-        noMatchWrapper.className = 'upcoming-match-name';
-
-        const heading = document.createElement('h3');
+        const wrapper  = document.createElement('div');
+        wrapper.className = 'upcoming-match-name';
+        const heading  = document.createElement('h3');
         heading.textContent = 'Geen wedstrijden gepland in de nabije toekomst.';
-
-        noMatchWrapper.appendChild(heading);
-        grid.appendChild(noMatchWrapper);
-
-        setTimeout(() => {
-            noMatchWrapper.classList.add('animate-in');
-        }, 100);
-
+        wrapper.appendChild(heading);
+        grid.appendChild(wrapper);
+        setTimeout(() => wrapper.classList.add('animate-in'), 100);
         return;
     }
 
     grid.classList.remove('no-matches');
 
-    const limitedMatches = upcomingMatches.slice(0, 6);
-
-    limitedMatches.forEach(match => {
+    upcomingMatches.slice(0, 6).forEach(match => {
         const card = document.createElement('div');
         card.className = 'match-card modern';
-        card.setAttribute('data-venue', match.stadium);
-        card.setAttribute('data-match-title', match.title);
-        card.setAttribute('data-match-date', match.dateTime.date);
-        card.setAttribute('data-match-time', match.dateTime.time);
-        card.setAttribute('data-match-season', match.season);
-        card.setAttribute('data-sponsor', JSON.stringify(match.sponsor || null));
         card.setAttribute('data-match-data', JSON.stringify(match));
 
         const [homeTeam, awayTeam] = match.title.split(' vs ');
@@ -137,10 +130,7 @@ function renderUpcomingMatches(upcomingMatches) {
                 </div>
                 <div class="match-score">${match.dateTime.displayDate} — ${match.dateTime.time}</div>
                 <div class="match-details">
-                    <div class="match-venue">
-                        <i class="fas fa-map-marker-alt"></i>
-                        ${match.stadium}
-                    </div>
+                    <div class="match-venue"><i class="fas fa-map-marker-alt"></i> ${match.stadium}</div>
                 </div>
             </div>
         `;
@@ -148,50 +138,34 @@ function renderUpcomingMatches(upcomingMatches) {
     });
 }
 
-// Render recent matches
 function renderRecentMatches(pastMatches) {
     const grid = document.getElementById('recent-matches-grid');
     grid.innerHTML = '';
 
     if (pastMatches.length === 0) {
         grid.classList.add('no-matches');
-        const noMatchWrapper = document.createElement('div');
-        noMatchWrapper.className = 'upcoming-match-name';
-
-        const heading = document.createElement('h3');
+        const wrapper   = document.createElement('div');
+        wrapper.className = 'upcoming-match-name';
+        const heading   = document.createElement('h3');
         heading.textContent = 'Geen recente wedstrijden beschikbaar.';
-
-        noMatchWrapper.appendChild(heading);
-        grid.appendChild(noMatchWrapper);
-
-        setTimeout(() => {
-            noMatchWrapper.classList.add('animate-in');
-        }, 100);
-
+        wrapper.appendChild(heading);
+        grid.appendChild(wrapper);
+        setTimeout(() => wrapper.classList.add('animate-in'), 100);
         return;
     }
 
     grid.classList.remove('no-matches');
 
-    const reversedPastMatches = [...pastMatches].reverse().slice(0, 6); // Limit to 6 recent matches
-
-    reversedPastMatches.forEach(match => {
+    [...pastMatches].reverse().slice(0, 6).forEach(match => {
+        const cls  = resultToClass(match.result);
+        const icon = resultToIcon(cls);
         const card = document.createElement('div');
-        const resultClass = match.result === 'winst' ? 'win' : match.result === 'gelijk' ? 'draw' : 'loss';
-        card.className = `match-card modern result`;
-        card.setAttribute('data-venue', match.stadium);
-        card.setAttribute('data-match-title', match.title);
-        card.setAttribute('data-score', match.score);
-        card.setAttribute('data-match-date', match.dateTime.date);
-        card.setAttribute('data-match-time', match.dateTime.time);
-        card.setAttribute('data-match-season', match.season);
-        card.setAttribute('data-goalscorers', JSON.stringify(match.goalscorers));
-        card.setAttribute('data-sponsor', JSON.stringify(match.sponsor || null));
+        card.className = 'match-card modern result';
         card.setAttribute('data-match-data', JSON.stringify(match));
 
         const [homeTeam, awayTeam] = match.title.split(' vs ');
         card.innerHTML = `
-            <div class="result-icon ${resultClass}"><span><i class="fas fa-${resultClass === 'win' ? 'check' : resultClass === 'draw' ? 'minus' : 'times'}"></i></span></div>
+            <div class="result-icon ${cls}"><span><i class="fas fa-${icon}"></i></span></div>
             <div class="match-body">
                 <div class="match-teams">
                     <div class="home-team">${homeTeam}</div>
@@ -208,44 +182,27 @@ function renderRecentMatches(pastMatches) {
     });
 }
 
-// Render season timeline
 function renderSeasonTimeline(matches) {
     const timeline = document.getElementById('season-timeline');
     timeline.innerHTML = '';
 
-    const pastMatches = matches.filter(match => match.result);
-
-    pastMatches.forEach((match, index) => {
+    matches.filter(m => m.result).forEach((match, index) => {
+        const cls  = resultToClass(match.result);
+        const icon = resultToIcon(cls);
         const item = document.createElement('div');
-        const resultClass = match.result ? (match.result === 'winst' ? 'win' : match.result === 'gelijk' ? 'draw' : 'loss') : '';
-        item.className = `timeline-item ${resultClass}`;
+        item.className = `timeline-item ${cls}`;
         item.setAttribute('data-match', `match${index + 1}`);
         item.setAttribute('data-match-data', JSON.stringify(match));
         item.innerHTML = `
-            <span class="result-icon"><i class="fas fa-${resultClass === 'win' ? 'check' : resultClass === 'draw' ? 'minus' : 'times'}"></i></span>
+            <span class="result-icon"><i class="fas fa-${icon}"></i></span>
             <small>${match.dateTime.displayDate}</small>
         `;
         timeline.appendChild(item);
     });
 }
 
-// Render form display
-function renderForm(form) {
-    const formResults = document.getElementById('form-results');
-    formResults.innerHTML = '';
-
-    form.forEach(result => {
-        const span = document.createElement('span');
-        const resultClass = result === 'winst' ? 'win' : result === 'gelijk' ? 'draw' : 'loss';
-        span.className = `form-result ${resultClass}`;
-        span.innerHTML = `<i class="fas fa-${resultClass === 'win' ? 'check' : resultClass === 'draw' ? 'minus' : 'times'}"></i>`;
-        formResults.appendChild(span);
-    });
-}
-
-// Render Sponsors Ticker
 function renderSponsorsTicker(allMatches) {
-    const track = document.getElementById('sponsor-ticker-track');
+    const track   = document.getElementById('sponsor-ticker-track');
     const wrapper = document.getElementById('sponsor-ticker-wrapper');
     if (!track || !wrapper) return;
 
@@ -253,10 +210,8 @@ function renderSponsorsTicker(allMatches) {
 
     const uniqueSponsors = new Map();
     allMatches.forEach(match => {
-        if (match.sponsor && match.sponsor.name && match.sponsor.logo) {
-            if (!uniqueSponsors.has(match.sponsor.name)) {
-                uniqueSponsors.set(match.sponsor.name, match.sponsor);
-            }
+        if (match.sponsor?.name && match.sponsor?.logo && !uniqueSponsors.has(match.sponsor.name)) {
+            uniqueSponsors.set(match.sponsor.name, match.sponsor);
         }
     });
 
@@ -266,39 +221,31 @@ function renderSponsorsTicker(allMatches) {
         return;
     }
 
-    const createSponsorHTML = (sponsor) => `
+    const sponsorHTML = sponsor => `
         <a href="${sponsor.url}" target="_blank" rel="noopener" class="sponsor-item" title="${sponsor.name}">
             <img src="${sponsor.logo}" alt="${sponsor.name}" class="sponsor-logo" loading="lazy">
         </a>
     `;
 
     let logosHTML = '';
-    uniqueSponsors.forEach(sponsor => {
-        logosHTML += createSponsorHTML(sponsor);
-    });
-
+    uniqueSponsors.forEach(sponsor => { logosHTML += sponsorHTML(sponsor); });
     track.innerHTML = logosHTML;
 
-    const images = track.querySelectorAll('img');
-    let imagesLoaded = 0;
-    const totalImages = images.length;
+    const images       = track.querySelectorAll('img');
+    let imagesLoaded   = 0;
+    const totalImages  = images.length;
 
-    const checkDimensionsAndStart = () => {
+    const startTicker = () => {
         requestAnimationFrame(() => {
-            const trackWidth = track.scrollWidth;
+            const trackWidth   = track.scrollWidth;
             const wrapperWidth = wrapper.offsetWidth;
-            const threshold = wrapperWidth * 0.7; // 70% regel
-
             track.classList.remove('centered', 'scrolling');
 
-            if (trackWidth > threshold) {
+            if (trackWidth > wrapperWidth * 0.7) {
                 track.innerHTML += logosHTML;
                 track.classList.add('scrolling');
-
                 setTimeout(() => {
-                    if (track.scrollWidth < wrapperWidth * 2) {
-                        track.innerHTML += logosHTML;
-                    }
+                    if (track.scrollWidth < wrapperWidth * 2) track.innerHTML += logosHTML;
                 }, 50);
             } else {
                 track.classList.add('centered');
@@ -306,89 +253,60 @@ function renderSponsorsTicker(allMatches) {
         });
     };
 
-    if (totalImages === 0) {
-        checkDimensionsAndStart();
-        return;
-    }
+    if (totalImages === 0) { startTicker(); return; }
 
     images.forEach(img => {
         if (img.complete) {
             imagesLoaded++;
         } else {
-            img.addEventListener('load', () => {
-                imagesLoaded++;
-                if (imagesLoaded === totalImages) checkDimensionsAndStart();
-            });
-            img.addEventListener('error', () => {
-                imagesLoaded++;
-                if (imagesLoaded === totalImages) checkDimensionsAndStart();
-            });
+            img.addEventListener('load',  () => { if (++imagesLoaded === totalImages) startTicker(); });
+            img.addEventListener('error', () => { if (++imagesLoaded === totalImages) startTicker(); });
         }
     });
 
-    if (imagesLoaded === totalImages) {
-        checkDimensionsAndStart();
-    }
+    if (imagesLoaded === totalImages) startTicker();
 }
 
-// Match interactions
-function setupMatchInteractions() {
-    // 1. Single loop for all match cards (both upcoming and past)
+// ── Interactions ──────────────────────────────────────────────────────────────
+
+function bindMatchCardClicks() {
     document.querySelectorAll('.match-card.modern').forEach(card => {
         card.addEventListener('click', () => {
-            const matchDataRaw = card.getAttribute('data-match-data');
-            if (!matchDataRaw) return;
-
-            let matchData;
+            const raw = card.getAttribute('data-match-data');
+            if (!raw) return;
             try {
-                matchData = JSON.parse(matchDataRaw);
-            } catch (error) {
-                console.warn('Failed to parse match data:', error);
-                return;
-            }
-
-            matchData.isUpcoming = !card.classList.contains('result');
-
-            if (window.matchModal) {
-                window.matchModal.show(matchData);
-            } else {
-                console.error('MatchModal not initialized');
+                const matchData = JSON.parse(raw);
+                matchData.isUpcoming = !card.classList.contains('result');
+                window.matchModal?.show(matchData);
+            } catch (err) {
+                console.warn('Failed to parse match data:', err);
             }
         });
     });
 
-    // 2. Timeline items loop
     document.querySelectorAll('.timeline-item').forEach(item => {
         item.addEventListener('click', () => {
-            const matchDataRaw = item.getAttribute('data-match-data');
+            const raw = item.getAttribute('data-match-data');
             let matchData;
             try {
-                matchData = JSON.parse(matchDataRaw);
-            } catch (error) {
-                console.warn('Failed to parse match data:', error);
+                matchData = JSON.parse(raw);
+            } catch (err) {
                 matchData = {
-                    title: `Match ${item.dataset.match}`,
-                    dateTime: { date: item.querySelector('small')?.textContent || 'TBD', time: 'TBD' },
-                    season: '2025-2026',
-                    stadium: 'Onbekend Stadion',
-                    score: null,
+                    title:       `Match ${item.dataset.match}`,
+                    dateTime:    { date: item.querySelector('small')?.textContent || 'TBD', time: 'TBD' },
+                    season:      '2025-2026',
+                    stadium:     'Onbekend Stadion',
+                    score:       null,
                     goalscorers: []
                 };
             }
             matchData.isUpcoming = !matchData.score;
-            if (window.matchModal) {
-                window.matchModal.show(matchData);
-            } else {
-                console.error('MatchModal not initialized');
-            }
+            window.matchModal?.show(matchData);
         });
     });
 }
 
-// Timeline scroller
 function scrollTimelineToEnd() {
-    const timelineWrapper = document.querySelector('.timeline-wrapper');
-    if (timelineWrapper) {
-        timelineWrapper.scrollLeft = timelineWrapper.scrollWidth;
-    }
+    const wrapper = document.querySelector('.timeline-wrapper');
+    if (wrapper) wrapper.scrollLeft = wrapper.scrollWidth;
 }

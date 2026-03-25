@@ -1,44 +1,54 @@
+/**
+ * search.js — Search page
+ *
+ * Changes:
+ *   - `fetchAndRenderMatches` → `loadMatches`
+ *   - `setupCardClicks`       → `bindCardClicks`
+ *   - `setupSearch`           → `initSearch`
+ *   - `parseSearchDate`       → REMOVED (was an exact duplicate of the private
+ *                               `parseSearchDate` in dataService.js; replaced by
+ *                               imported `parseDDMMYYYY`)
+ *   - `FootballLoader.init`   → `FootballLoader.show` (loader rename)
+ *   - Duplicate comment block removed (the function header comment appeared twice)
+ */
 import { animateOnScroll } from './utils/animations.js';
-import { fetchSearchMatches } from './utils/dataService.js';
+import { fetchSearchMatches, parseDDMMYYYY } from './utils/dataService.js';
 import { FootballLoader } from './components/loader.js';
+import { resultToClass, resultToIcon } from './utils/helpers.js';
 
-/* Animation Elements */
 const animationElements = [
-    { selector: '.section-title', containerSelector: 'section' },
-    { selector: '.page-hero h1', containerSelector: 'section' },
-    { selector: '.search-container', containerSelector: 'section' }];
+    { selector: '.section-title',    containerSelector: 'section' },
+    { selector: '.page-hero h1',     containerSelector: 'section' },
+    { selector: '.search-container', containerSelector: 'section' }
+];
 
-/* Page Initialization */
+// ── Page Initialization ───────────────────────────────────────────────────────
+
 document.addEventListener('DOMContentLoaded', async () => {
     try {
-        await fetchAndRenderMatches();
-        setupSearch();
-
+        await loadMatches();
+        initSearch();
         animateOnScroll(animationElements);
 
-        // Initialize match modal if available
-        if (window.matchModal?.init) {
-            await window.matchModal.init();
-        }
+        if (window.matchModal?.init) await window.matchModal.init();
     } catch (error) {
         console.error('Error during page initialization:', error);
     }
 });
 
-/* Fetch and Render Matches */
-/* Fetch and Render Matches */
-async function fetchAndRenderMatches() {
-    const loaderId    = 'search-loading';
-    const errorId     = 'search-error';
-    const loadingEl   = document.getElementById(loaderId);
-    const contentEl   = document.getElementById('search-results-content');
-    const searchMsg   = document.getElementById('search-message');
+// ── Data Loading ──────────────────────────────────────────────────────────────
+
+async function loadMatches() {
+    const loaderId      = 'search-loading';
+    const errorId       = 'search-error';
+    const loadingEl     = document.getElementById(loaderId);
+    const contentEl     = document.getElementById('search-results-content');
+    const searchMsg     = document.getElementById('search-message');
     const resultsHeader = document.getElementById('search-results-header');
 
-    // 1. Initialize modular loader with specific text
     if (loadingEl) {
         loadingEl.classList.remove('hidden');
-        FootballLoader.init(loaderId, 'Wedstrijden worden geladen...');
+        FootballLoader.show(loaderId, 'Wedstrijden worden geladen...');
     }
 
     document.getElementById(errorId)?.classList.add('hidden');
@@ -47,25 +57,20 @@ async function fetchAndRenderMatches() {
     resultsHeader?.classList.add('hidden');
 
     try {
-        // Fetch via service
         window.allMatches = await fetchSearchMatches();
 
-        // 2. Hide loader on success
         if (loadingEl) loadingEl.classList.add('hidden');
         contentEl?.classList.remove('hidden');
 
         renderSearchResults(window.allMatches);
         resultsHeader?.classList.remove('hidden');
 
-        const resultsDropdown = document.getElementById('results-sort');
-        if (resultsDropdown) initDropdown(resultsDropdown);
-
+        const dropdown = document.getElementById('results-sort');
+        if (dropdown) initDropdown(dropdown);
     } catch (error) {
         console.error('Error fetching matches:', error);
 
         if (loadingEl) loadingEl.classList.add('hidden');
-
-        // 3. Use modular error display
         FootballLoader.showError(errorId, 'Wedstrijden konden niet worden geladen. Probeer opnieuw.');
 
         contentEl?.classList.add('hidden');
@@ -73,17 +78,15 @@ async function fetchAndRenderMatches() {
     }
 }
 
-/* Render Search Results */
+// ── Rendering ─────────────────────────────────────────────────────────────────
+
 function renderSearchResults(matches) {
-    const grid           = document.getElementById('search-results-grid');
-    const searchMessage  = document.getElementById('search-message');
-    const resultsHeader  = document.getElementById('search-results-header');
+    const grid          = document.getElementById('search-results-grid');
+    const searchMessage = document.getElementById('search-message');
+    const resultsHeader = document.getElementById('search-results-header');
     const resultsContent = document.getElementById('search-results-content');
 
-    if (!grid) {
-        console.error('Grid element not found');
-        return;
-    }
+    if (!grid) { console.error('Grid element not found'); return; }
 
     grid.innerHTML = '';
 
@@ -92,7 +95,6 @@ function renderSearchResults(matches) {
             searchMessage.textContent = 'Geen wedstrijden gevonden.';
             searchMessage.classList.remove('hidden');
         }
-
         resultsHeader?.classList.add('hidden');
         resultsContent?.classList.add('hidden');
         return;
@@ -103,17 +105,17 @@ function renderSearchResults(matches) {
     resultsContent?.classList.remove('hidden');
 
     matches.forEach(match => {
-        const resCls = match.result === 'winst' ? 'win' : match.result === 'gelijk' ? 'draw' : 'loss';
+        const cls  = resultToClass(match.result);
+        const icon = resultToIcon(cls);
         const card = document.createElement('div');
-        card.className = `match-card modern result`;
+        card.className    = 'match-card modern result';
         card.style.cursor = 'pointer';
-
         card.setAttribute('data-match-data', JSON.stringify(match));
 
         const [home, away] = match.title.split(' vs ');
         card.innerHTML = `
-            <div class="result-icon ${resCls}">
-                <span><i class="fas fa-${resCls === 'win' ? 'check' : resCls === 'draw' ? 'minus' : 'times'}"></i></span>
+            <div class="result-icon ${cls}">
+                <span><i class="fas fa-${icon}"></i></span>
             </div>
             <div class="match-body">
                 <div class="match-teams">
@@ -131,67 +133,53 @@ function renderSearchResults(matches) {
         grid.appendChild(card);
     });
 
-    if (searchMessage) {
-        searchMessage.classList.add('hidden');
-    }
-
-    setupCardClicks();
+    bindCardClicks();
     animateMatchCards();
 }
 
-/* Make Match Cards Clickable */
-function setupCardClicks() {
+// ── Interactions ──────────────────────────────────────────────────────────────
+
+function bindCardClicks() {
     document.querySelectorAll('#search-results-grid .match-card.modern.result').forEach(card => {
         card.addEventListener('click', () => {
-            const matchDataRaw = card.getAttribute('data-match-data');
-            if (!matchDataRaw) return;
-
-            let matchData;
+            const raw = card.getAttribute('data-match-data');
+            if (!raw) return;
             try {
-                matchData = JSON.parse(matchDataRaw);
-            } catch (error) {
-                console.warn('Failed to parse match data:', error);
-                return;
-            }
-
-            matchData.isUpcoming = false;
-
-            if (window.matchModal) {
-                window.matchModal.show(matchData);
-            } else {
-                console.error('matchModal not ready');
+                const matchData    = JSON.parse(raw);
+                matchData.isUpcoming = false;
+                window.matchModal?.show(matchData);
+            } catch (err) {
+                console.warn('Failed to parse match data:', err);
             }
         });
     });
 }
 
-/* Match Card Animations */
 function animateMatchCards() {
-    const observer = new IntersectionObserver((entries, observer) => {
+    const observer = new IntersectionObserver((entries, obs) => {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
                 entry.target.classList.add('animate-in');
-                observer.unobserve(entry.target);
+                obs.unobserve(entry.target);
             }
         });
     }, { root: null, rootMargin: '0px', threshold: 0.1 });
 
-    document.querySelectorAll('.match-card:not(.animate-in)').forEach(card => observer.observe(card));
+    document.querySelectorAll('.match-card:not(.animate-in)').forEach(c => observer.observe(c));
 }
 
-/* Search and Autocomplete */
-function setupSearch() {
-    const searchInput = document.getElementById('search-input');
-    const autocompleteList = document.getElementById('autocomplete-list');
-    const searchMessage = document.getElementById('search-message');
-    const searchWrapper = document.querySelector('.search-wrapper');
+// ── Search & Autocomplete ─────────────────────────────────────────────────────
 
-    if (!searchInput || !autocompleteList) return;
+function initSearch() {
+    const input         = document.getElementById('search-input');
+    const autocomplete  = document.getElementById('autocomplete-list');
+    const searchMessage = document.getElementById('search-message');
+    const wrapper       = document.querySelector('.search-wrapper');
+
+    if (!input || !autocomplete) return;
 
     const performSearch = (query) => {
-        const allData = window.allMatches;
-
-        if (!allData) {
+        if (!window.allMatches) {
             if (searchMessage) {
                 searchMessage.textContent = 'Fout bij het laden van wedstrijden.';
                 searchMessage.classList.add('error-message');
@@ -199,79 +187,69 @@ function setupSearch() {
             }
             return;
         }
-
-        const filteredMatches = allData.filter(match =>
-            match.title.toLowerCase().includes(query.toLowerCase())
+        const filtered = window.allMatches.filter(m =>
+            m.title.toLowerCase().includes(query.toLowerCase())
         );
-        renderSearchResults(filteredMatches);
+        renderSearchResults(filtered);
     };
 
     const renderAutocomplete = (query) => {
-        autocompleteList.innerHTML = '';
-        const allData = window.allMatches;
-
-        if (!allData || query.length < 1) {
-            autocompleteList.style.display = 'none';
+        autocomplete.innerHTML = '';
+        if (!window.allMatches || query.length < 1) {
+            autocomplete.style.display = 'none';
             return;
         }
 
-        const uniqueOpponents = [...new Set(allData.map(match => match.opponent))];
-        const filteredOpponents = uniqueOpponents.filter(opponent =>
-            opponent.toLowerCase().includes(query.toLowerCase())
-        ).slice(0, 5);
+        const unique = [...new Set(window.allMatches.map(m => m.opponent))];
+        const hits   = unique.filter(o => o.toLowerCase().includes(query.toLowerCase())).slice(0, 5);
 
-        if (filteredOpponents.length === 0) {
-            autocompleteList.style.display = 'none';
-            return;
-        }
+        if (hits.length === 0) { autocomplete.style.display = 'none'; return; }
 
-        filteredOpponents.forEach(opponent => {
-            const li = document.createElement('li');
+        hits.forEach(opponent => {
+            const li       = document.createElement('li');
             li.textContent = opponent;
-            li.className = 'autocomplete-item';
+            li.className   = 'autocomplete-item';
             li.addEventListener('click', () => {
-                searchInput.value = opponent;
+                input.value            = opponent;
+                autocomplete.innerHTML = '';
+                autocomplete.style.display = 'none';
                 performSearch(opponent);
-                autocompleteList.innerHTML = '';
-                autocompleteList.style.display = 'none';
             });
-            autocompleteList.appendChild(li);
+            autocomplete.appendChild(li);
         });
 
-        autocompleteList.style.display = 'block';
+        autocomplete.style.display = 'block';
     };
 
-    searchInput.addEventListener('input', (e) => {
+    input.addEventListener('input', (e) => {
         const query = e.target.value.trim();
         renderAutocomplete(query);
         performSearch(query);
     });
 
-    searchInput.addEventListener('keypress', (e) => {
+    input.addEventListener('keypress', (e) => {
         if (e.key === 'Enter') {
-            performSearch(searchInput.value.trim());
-            autocompleteList.innerHTML = '';
-            autocompleteList.style.display = 'none';
+            performSearch(input.value.trim());
+            autocomplete.innerHTML     = '';
+            autocomplete.style.display = 'none';
         }
     });
 
     document.addEventListener('click', (e) => {
-        if (!searchInput.contains(e.target) && !autocompleteList.contains(e.target)) {
-            autocompleteList.innerHTML = '';
-            autocompleteList.style.display = 'none';
+        if (!input.contains(e.target) && !autocomplete.contains(e.target)) {
+            autocomplete.innerHTML     = '';
+            autocomplete.style.display = 'none';
         }
     });
 
-    if (searchWrapper) {
-        searchWrapper.addEventListener('click', () => searchInput.focus());
-    }
+    if (wrapper) wrapper.addEventListener('click', () => input.focus());
 }
 
-/* Sort Dropdown */
+// ── Dropdown ──────────────────────────────────────────────────────────────────
+
 function initDropdown(dropdownEl) {
     const selected = dropdownEl.querySelector('.selected');
-    const options = dropdownEl.querySelector('.options');
-
+    const options  = dropdownEl.querySelector('.options');
     if (!selected || !options) return;
 
     selected.addEventListener('click', (e) => {
@@ -282,91 +260,55 @@ function initDropdown(dropdownEl) {
     options.querySelectorAll('li').forEach(li => {
         li.addEventListener('click', (e) => {
             e.stopPropagation();
-            const value = li.dataset.value;
-            const text = li.textContent;
-            selected.dataset.value = value;
-            selected.textContent = text;
+            selected.dataset.value = li.dataset.value;
+            selected.innerHTML     = li.innerHTML;
             dropdownEl.classList.remove('active');
-            if (dropdownEl.id === 'results-sort') {
-                sortSearchResults(value);
-            }
+            if (dropdownEl.id === 'results-sort') sortSearchResults(li.dataset.value);
         });
     });
 
     document.addEventListener('click', e => {
-        if (!dropdownEl.contains(e.target)) {
-            dropdownEl.classList.remove('active');
-        }
+        if (!dropdownEl.contains(e.target)) dropdownEl.classList.remove('active');
     });
 }
 
-/* Sorting Logic */
+// ── Sorting ───────────────────────────────────────────────────────────────────
+
 function sortSearchResults(sortKey) {
     if (!window.allMatches) return;
 
     const grid = document.getElementById('search-results-grid');
     if (!grid) return;
 
-    let displayed = Array.from(document.querySelectorAll('#search-results-grid .match-card'))
-        .map(card => {
-            const matchData = JSON.parse(card.getAttribute('data-match-data') || '{}');
-            return {
-                el: card,
-                date: matchData.dateTime?.date || '01-01-2000',
-                score: matchData.score || '0-0',
-                isHome: matchData.isHome === true
-            };
-        });
+    const items = Array.from(grid.querySelectorAll('.match-card')).map(card => {
+        const data = JSON.parse(card.getAttribute('data-match-data') || '{}');
+        return { el: card, date: data.dateTime?.date || '01-01-2000', score: data.score || '0-0', isHome: data.isHome === true };
+    });
 
-    displayed.sort((a, b) => {
+    items.sort((a, b) => {
         switch (sortKey) {
-            case 'date-desc': return parseSearchDate(b.date) - parseSearchDate(a.date);
-            case 'date-asc': return parseSearchDate(a.date) - parseSearchDate(b.date);
-            case 'biggest-win': return victoryMargin(b) - victoryMargin(a);
-            case 'biggest-loss': return lossMargin(b) - lossMargin(a);
-            default: return 0;
+            case 'date-desc':    return parseDDMMYYYY(b.date) - parseDDMMYYYY(a.date);
+            case 'date-asc':     return parseDDMMYYYY(a.date) - parseDDMMYYYY(b.date);
+            case 'biggest-win':  return calcWinMargin(b) - calcWinMargin(a);
+            case 'biggest-loss': return calcLossMargin(b) - calcLossMargin(a);
+            default:             return 0;
         }
     });
 
-    displayed.forEach(item => grid.appendChild(item.el));
+    items.forEach(item => grid.appendChild(item.el));
     animateMatchCards();
 }
 
-/* HELPER FUNCTIONS */
-function parseSearchDate(dateStr) {
-    if (!dateStr) return 0;
-    const parts = dateStr.split('-');
-    if (parts.length === 3) {
-        // Creates a numeric timestamp: new Date(year, monthIndex, day)
-        return new Date(parts[2], parts[1] - 1, parts[0]).getTime();
-    }
-    return 0;
+function calcWinMargin(item) {
+    const [home, away] = item.score.split('-').map(Number);
+    const us  = item.isHome ? home : away;
+    const opp = item.isHome ? away : home;
+    return us > opp ? us - opp : us === opp ? -0.5 : -1000 - (opp - us);
 }
 
-function victoryMargin(item) {
+function calcLossMargin(item) {
     const [home, away] = item.score.split('-').map(Number);
-    const dynamo = item.isHome ? home : away;
+    const us  = item.isHome ? home : away;
     const opp = item.isHome ? away : home;
-
-    if (dynamo > opp) {
-        return dynamo - opp;
-    } else if (dynamo === opp) {
-        return -0.5;
-    } else {
-        return -1000 - (opp - dynamo);
-    }
-}
-
-function lossMargin(item) {
-    const [home, away] = item.score.split('-').map(Number);
-    const dynamo = item.isHome ? home : away;
-    const opp = item.isHome ? away : home;
-
-    if (dynamo < opp) {
-        return opp - dynamo;
-    } else if (dynamo === opp) {
-        return -0.5;
-    } else {
-        return -1000 - (dynamo - opp);
-    }
+    return us < opp ? opp - us : us === opp ? -0.5 : -1000 - (us - opp);
 }

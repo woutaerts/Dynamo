@@ -1,19 +1,29 @@
-/* Match Modal Component */
+/**
+ * components/matchModal.js
+ *
+ * Changes:
+ *   - `setupEventListeners` → `bindEvents`       (bind* for event attachment)
+ *   - `scrollToSelf`        → `scrollModalIntoView` (avoids clash with native scrollIntoView)
+ *   - `updateContent`       → `renderContent`    (render* for DOM population)
+ *   - `updateGoalscorers`   → `renderGoalscorers` (consistent render* pattern)
+ */
+
 class MatchModal {
     constructor() {
-        this.modal = null;
-        this.isInitialized = false;
-        this.scrollPosition = 0; // Store scroll position
+        this.modal          = null;
+        this.isInitialized  = false;
+        this.scrollPosition = 0;
     }
 
-    /* Initialization */
+    // ── Initialization ────────────────────────────────────────────────────────
+
     async init() {
         if (this.isInitialized) return;
 
         const placeholder = document.getElementById('match-modal-placeholder');
         if (!placeholder) return;
 
-        placeholder.style.opacity = '0';
+        placeholder.style.opacity    = '0';
         placeholder.style.visibility = 'hidden';
 
         try {
@@ -23,10 +33,10 @@ class MatchModal {
             this.modal = document.getElementById('matchCenterModal');
             if (this.modal) {
                 this.modal.style.display = 'none';
-                this.setupEventListeners();
+                this.bindEvents();
                 this.isInitialized = true;
 
-                placeholder.style.opacity = '1';
+                placeholder.style.opacity    = '1';
                 placeholder.style.visibility = 'visible';
             }
         } catch (error) {
@@ -34,41 +44,31 @@ class MatchModal {
         }
     }
 
-    /* Event Listeners */
-    setupEventListeners() {
+    // ── Event Binding ─────────────────────────────────────────────────────────
+
+    bindEvents() {
         if (!this.modal) return;
 
         const closeBtn = this.modal.querySelector('.close-modal');
-        if (closeBtn) {
-            closeBtn.addEventListener('click', () => this.close());
-        }
+        if (closeBtn) closeBtn.addEventListener('click', () => this.close());
 
         this.modal.addEventListener('click', (e) => {
-            if (e.target === e.currentTarget) {
-                this.close();
-            }
+            if (e.target === e.currentTarget) this.close();
         });
 
         document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape' && this.modal.classList.contains('show')) {
-                this.close();
-            }
+            if (e.key === 'Escape' && this.modal.classList.contains('show')) this.close();
         });
     }
 
-    /* Scroll to Self */
-    scrollToSelf() {
-        if (this.modal) {
-            const rect = this.modal.getBoundingClientRect();
-            const scrollTop = window.scrollY || document.documentElement.scrollTop;
-            const targetPosition = rect.top + scrollTop - 50; // Adjust offset as needed
-            window.scrollTo({
-                top: targetPosition,
-                behavior: 'smooth'
-            });
-        } else {
-            console.warn('Match modal not found for autoscroll');
-        }
+    // ── Modal Control ─────────────────────────────────────────────────────────
+
+    scrollModalIntoView() {
+        if (!this.modal) { console.warn('Match modal not found for auto-scroll'); return; }
+
+        const rect        = this.modal.getBoundingClientRect();
+        const scrollTop   = window.scrollY || document.documentElement.scrollTop;
+        window.scrollTo({ top: rect.top + scrollTop - 50, behavior: 'smooth' });
     }
 
     show(matchData = {}) {
@@ -77,16 +77,16 @@ class MatchModal {
         this.scrollPosition = window.scrollY || document.documentElement.scrollTop;
 
         const {
-            title = 'Match Details',
-            dateTime = {date: 'TBD', time: 'TBD', displayDate: 'TBD'},
-            season = 'Current Season',
-            stadium = 'Home Stadium',
+            title       = 'Match Details',
+            dateTime    = { date: 'TBD', time: 'TBD', displayDate: 'TBD' },
+            season      = 'Current Season',
+            stadium     = 'Home Stadium',
             goalscorers = [],
-            score = null,
-            result = null,
-            isUpcoming = false,
-            isHome = true,
-            sponsor = null
+            score       = null,
+            result      = null,
+            isUpcoming  = false,
+            isHome      = true,
+            sponsor     = null
         } = matchData;
 
         document.body.classList.add('modal-open');
@@ -96,40 +96,37 @@ class MatchModal {
             : '';
 
         this.modal.classList.remove('win', 'draw', 'loss');
-        if (resultClass) {
-            this.modal.classList.add(resultClass);
-        }
+        if (resultClass) this.modal.classList.add(resultClass);
 
-        // Update content first
         const modalContent = this.modal.querySelector('.modal-content');
         if (modalContent) {
             modalContent.classList.toggle('upcoming-match', isUpcoming);
-            this.updateContent(title, dateTime, season, stadium, goalscorers, score, isUpcoming, isHome, sponsor);
+            this.renderContent(title, dateTime, season, stadium, goalscorers, score, isUpcoming, isHome, sponsor);
         }
 
-        // Now show modal
         this.modal.style.display = 'flex';
-        this.modal.classList.add('show');  // triggers fade-in
+        this.modal.classList.add('show');
 
-        // Animation & scroll
         if (modalContent) {
             modalContent.scrollTop = 0;
-            const sections = modalContent.querySelectorAll('.modal-match-score, .goalscorers-section, .date-time-section, .stadium-section');
-            sections.forEach(section => section.classList.remove('animate-in'));
-            sections.forEach((section, index) => {
-                if ((section.matches('.modal-match-score') && (isUpcoming || !score)) ||
-                    (section.matches('.goalscorers-section') && isUpcoming)) {
-                    section.style.display = 'none';
+            const sections = modalContent.querySelectorAll(
+                '.modal-match-score, .goalscorers-section, .date-time-section, .stadium-section'
+            );
+            sections.forEach(s => s.classList.remove('animate-in'));
+            sections.forEach((s, i) => {
+                if ((s.matches('.modal-match-score') && (isUpcoming || !score)) ||
+                    (s.matches('.goalscorers-section') && isUpcoming)) {
+                    s.style.display = 'none';
                 } else {
-                    section.style.display = section.matches('.modal-match-score') ? 'flex' : 'block';
-                    setTimeout(() => section.classList.add('animate-in'), index * 100);
+                    s.style.display = s.matches('.modal-match-score') ? 'flex' : 'block';
+                    setTimeout(() => s.classList.add('animate-in'), i * 100);
                 }
             });
         } else {
             console.warn('Modal content not found');
         }
 
-        setTimeout(() => this.scrollToSelf(), 100);
+        setTimeout(() => this.scrollModalIntoView(), 100);
     }
 
     close() {
@@ -140,128 +137,108 @@ class MatchModal {
 
         setTimeout(() => {
             this.modal.style.display = 'none';
-            window.scrollTo({
-                top: this.scrollPosition,
-                behavior: 'smooth'
-            });
-        }, 300); // match CSS transition duration
+            window.scrollTo({ top: this.scrollPosition, behavior: 'smooth' });
+        }, 300);
     }
 
-    /* Content Updates */
-    updateContent(title, dateTime, season, stadium, goalscorers, score, isUpcoming, isHome, sponsor) {
+    // ── Content Population ────────────────────────────────────────────────────
+
+    renderContent(title, dateTime, season, stadium, goalscorers, score, isUpcoming, isHome, sponsor) {
+        // Title (home team / away team)
         const titleEl = this.modal.querySelector('#modalMatchTitle');
         if (titleEl) {
-            const [homeTeam, awayTeam] = title.split(' vs ').map(team => team.trim());
-            const homeTeamEl = titleEl.querySelector('.home-team');
-            const awayTeamEl = titleEl.querySelector('.away-team');
-            if (homeTeamEl && awayTeamEl) {
-                homeTeamEl.textContent = homeTeam || 'Home Team';
-                awayTeamEl.textContent = awayTeam || 'Away Team';
+            const [homeTeam, awayTeam] = title.split(' vs ').map(t => t.trim());
+            const homeEl  = titleEl.querySelector('.home-team');
+            const awayEl  = titleEl.querySelector('.away-team');
+            if (homeEl && awayEl) {
+                homeEl.textContent = homeTeam || 'Home Team';
+                awayEl.textContent = awayTeam || 'Away Team';
             }
         }
 
-        const scoreEl = this.modal.querySelector('#modalMatchScore');
+        // Score
+        const scoreEl        = this.modal.querySelector('#modalMatchScore');
         const scoreDisplayEl = this.modal.querySelector('.score-display');
         if (scoreEl && scoreDisplayEl) {
             scoreEl.style.display = isUpcoming ? 'none' : 'flex';
-            if (score && !isUpcoming) {
-                scoreDisplayEl.textContent = score;
-            }
+            if (score && !isUpcoming) scoreDisplayEl.textContent = score;
         }
 
+        // Date & Time
         const dateEl = this.modal.querySelector('#matchDate');
         const timeEl = this.modal.querySelector('#matchTime');
         if (dateEl && timeEl) {
-            // Simplified: Direct assignment from the data object
-            const dateValue = dateTime.displayDate || 'TBD';
-            const timeValue = dateTime.time || 'TBD';
-
-            dateEl.innerHTML = `<i class="fas fa-calendar"></i> ${dateValue}`;
-            timeEl.innerHTML = `<i class="fas fa-clock"></i> ${timeValue}`;
+            dateEl.innerHTML = `<i class="fas fa-calendar"></i> ${dateTime.displayDate || 'TBD'}`;
+            timeEl.innerHTML = `<i class="fas fa-clock"></i> ${dateTime.time || 'TBD'}`;
         }
 
+        // Season label
         const seasonEl = this.modal.querySelector('#matchSeason');
         if (seasonEl) seasonEl.textContent = season;
 
+        // Stadium
         const stadiumEl = this.modal.querySelector('#stadiumName');
-        if (stadiumEl) {
-            stadiumEl.innerHTML = `<i class="fas fa-map-marker-alt"></i> ${stadium}`;
-        }
+        if (stadiumEl) stadiumEl.innerHTML = `<i class="fas fa-map-marker-alt"></i> ${stadium}`;
 
+        // Goalscorers
         const goalscorersSection = this.modal.querySelector('.goalscorers-section');
         if (goalscorersSection) {
             goalscorersSection.style.display = isUpcoming ? 'none' : 'block';
-            if (!isUpcoming) {
-                this.updateGoalscorers(goalscorers);
-            }
+            if (!isUpcoming) this.renderGoalscorers(goalscorers);
         }
 
+        // Sponsor
         const sponsorSection = this.modal.querySelector('#modalMatchSponsor');
-        const sponsorLogo = this.modal.querySelector('#modalSponsorLogo');
-        const sponsorLink = this.modal.querySelector('#modalSponsorLink');
-        const sponsorName = this.modal.querySelector('#modalSponsorName');
-
         if (sponsorSection) {
-            if (sponsor && sponsor.name && sponsor.logo) {
+            if (sponsor?.name && sponsor?.logo) {
                 sponsorSection.style.display = 'block';
 
-                if (sponsorLogo) {
-                    sponsorLogo.src = sponsor.logo;
-                    sponsorLogo.alt = `Sponsor: ${sponsor.name}`;
-                }
+                const sponsorLogo = this.modal.querySelector('#modalSponsorLogo');
+                if (sponsorLogo) { sponsorLogo.src = sponsor.logo; sponsorLogo.alt = `Sponsor: ${sponsor.name}`; }
 
-                if (sponsorLink) {
-                    sponsorLink.href = sponsor.url || '#';
-                    sponsorLink.title = `Bezoek ${sponsor.name}`;
-                }
+                const sponsorLink = this.modal.querySelector('#modalSponsorLink');
+                if (sponsorLink) { sponsorLink.href = sponsor.url || '#'; sponsorLink.title = `Bezoek ${sponsor.name}`; }
 
-                if (sponsorName) {
-                    sponsorName.textContent = sponsor.name;
-                }
+                const sponsorName = this.modal.querySelector('#modalSponsorName');
+                if (sponsorName) sponsorName.textContent = sponsor.name;
             } else {
                 sponsorSection.style.display = 'none';
             }
         }
     }
 
-    /* Goalscorers Update */
-    updateGoalscorers(goalscorers) {
-        const goalscorersList = this.modal.querySelector('#goalscorersList');
-        if (!goalscorersList) return;
+    renderGoalscorers(goalscorers) {
+        const list = this.modal.querySelector('#goalscorersList');
+        if (!list) return;
 
         if (goalscorers.length === 0) {
-            goalscorersList.innerHTML = '<li class="goalscorer-item">Geen doelpuntenmakers</li>';
+            list.innerHTML = '<li class="goalscorer-item">Geen doelpuntenmakers</li>';
             return;
         }
 
-        goalscorersList.innerHTML = '';
-        const scorerCounts = {};
+        list.innerHTML = '';
+        const counts = {};
 
         if (typeof goalscorers[0] === 'object') {
-            goalscorers.forEach(scorer => {
-                const playerName = scorer.player || scorer.name;
-                const goals = scorer.goals || 1;
-                scorerCounts[playerName] = (scorerCounts[playerName] || 0) + goals;
+            goalscorers.forEach(s => {
+                const name = s.player || s.name;
+                counts[name] = (counts[name] || 0) + (s.goals || 1);
             });
-        } else if (typeof goalscorers[0] === 'string') {
-            goalscorers.forEach(player => {
-                scorerCounts[player] = (scorerCounts[player] || 0) + 1;
-            });
+        } else {
+            goalscorers.forEach(name => { counts[name] = (counts[name] || 0) + 1; });
         }
 
-        Object.entries(scorerCounts).forEach(([player, goals]) => {
-            const li = document.createElement('li');
-            li.className = 'goalscorer-item';
-
-            const footballIcons = '<i class="fas fa-futbol"></i> '.repeat(goals);
-
-            li.innerHTML = `${footballIcons}${player}`;
-            goalscorersList.appendChild(li);
+        Object.entries(counts).forEach(([player, goals]) => {
+            const li       = document.createElement('li');
+            li.className   = 'goalscorer-item';
+            li.innerHTML   = `${'<i class="fas fa-futbol"></i> '.repeat(goals)}${player}`;
+            list.appendChild(li);
         });
     }
 }
 
-/* Global Instance */
+// ── Global Instance ───────────────────────────────────────────────────────────
+
 window.matchModal = new MatchModal();
 
 document.addEventListener('DOMContentLoaded', () => {

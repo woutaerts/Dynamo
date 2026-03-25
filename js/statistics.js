@@ -1,244 +1,234 @@
+/**
+ * statistics.js — Statistics page
+ *
+ * Changes:
+ *   - `updateTeamSeasonStats`  → `renderSeasonStats`
+ *   - `updateTeamAllTimeStats` → `renderAllTimeStats`
+ *   - `initPlayerStats`        → `loadStats`
+ *   - `updateSeasonPlayerStats`→ `renderSeasonPlayers`
+ *   - `updateAllTimePlayerStats`→ `renderAllTimePlayers`
+ *   - `FootballLoader.init`    → `FootballLoader.show` (loader rename)
+ *   - Updated imports to use renamed constants
+ */
 import { animateOnScroll } from './utils/animations.js';
-import { PLAYER_TABLE_HEADER_HTML, positionIcons, positionDisplayMap } from './utils/helpers.js';
-import { fetchTeamSeasonStats, fetchTeamAllTimeStats, fetchSeasonRecords, fetchSeasonPlayers, fetchAllTimePlayers} from './utils/dataService.js';
+import { PLAYER_TABLE_HEADER_HTML, POSITION_ICON_MAP, POSITION_LABEL_MAP } from './utils/helpers.js';
+import {
+    fetchTeamSeasonStats, fetchTeamAllTimeStats, fetchSeasonRecords,
+    fetchSeasonPlayers, fetchAllTimePlayers
+} from './utils/dataService.js';
 import { FootballLoader } from './components/loader.js';
 
-// Variables
-let seasonPlayers = [];
-let allTimePlayers = [];
+// ── Module State ──────────────────────────────────────────────────────────────
+
+let seasonPlayers   = [];
+let allTimePlayers  = [];
 let teamSeasonStats = {};
 let teamAllTimeStats = {};
-let seasonRecords = {};
-let isLoading = false;
+let seasonRecords   = {};
+let isLoading       = false;
 
+// ── Animation Registry ────────────────────────────────────────────────────────
 
-
-// Function to update team season stats display
-function updateTeamSeasonStats() {
-    document.getElementById('team-matches-played').textContent = teamSeasonStats.matchesPlayed || 0;
-    document.getElementById('team-wins').textContent = teamSeasonStats.wins || 0;
-    document.getElementById('team-draws').textContent = teamSeasonStats.draws || 0;
-    document.getElementById('team-losses').textContent = teamSeasonStats.losses || 0;
-    document.getElementById('team-goals-scored').textContent = teamSeasonStats.goalsScored || 0;
-    document.getElementById('team-goals-conceded').textContent = teamSeasonStats.goalsConceded || 0;
-
-    document.getElementById('team-goals-scored-detailed').textContent = teamSeasonStats.goalsScored || 0;
-    document.getElementById('team-goals-per-match').textContent = (teamSeasonStats.goalsPerMatch || 0).toFixed(2);
-    document.getElementById('team-largest-win').textContent = teamSeasonStats.largestWinScore || '0-0';
-
-    document.getElementById('team-goals-conceded-detailed').textContent = teamSeasonStats.goalsConceded || 0;
-    document.getElementById('team-goals-conceded-per-match').textContent = (teamSeasonStats.goalsConcededPerMatch || 0).toFixed(2);
-    document.getElementById('team-clean-sheets').textContent = teamSeasonStats.cleanSheets || 0;
-
-    const goalDiff = teamSeasonStats.goalDifference || 0;
-    document.getElementById('team-goal-difference').textContent = goalDiff >= 0 ? `+${goalDiff}` : goalDiff;
-    document.getElementById('team-win-rate').textContent = `${(teamSeasonStats.winRate || 0).toFixed(0)}%`;
-    document.getElementById('team-points').textContent = teamSeasonStats.points || 0;
-
-    animateOnScroll([
-        { selector: '.stat-card', containerSelector: 'section' },
-        { selector: '.stat-category', containerSelector: 'section' }
-    ]);
-}
-
-// Function to update team all-time stats display
-function updateTeamAllTimeStats() {
-    document.getElementById('team-alltime-matches-played').textContent = teamAllTimeStats.matchesPlayed || 0;
-    document.getElementById('team-alltime-wins').textContent = teamAllTimeStats.wins || 0;
-    document.getElementById('team-alltime-draws').textContent = teamAllTimeStats.draws || 0;
-    document.getElementById('team-alltime-losses').textContent = teamAllTimeStats.losses || 0;
-    document.getElementById('team-alltime-goals-scored').textContent = teamAllTimeStats.goalsScored || 0;
-    document.getElementById('team-alltime-goals-conceded').textContent = teamAllTimeStats.goalsConceded || 0;
-
-    document.getElementById('alltime-most-wins').innerHTML = `${seasonRecords.mostWins.value} <small>(${seasonRecords.mostWins.season})</small>`;
-    document.getElementById('alltime-most-goals').innerHTML = `${seasonRecords.mostGoals.value} <small>(${seasonRecords.mostGoals.season})</small>`;
-    document.getElementById('alltime-best-goal-difference').innerHTML = `${seasonRecords.bestGoalDifference.value >= 0 ? '+' : ''}${seasonRecords.bestGoalDifference.value} <small>(${seasonRecords.bestGoalDifference.season})</small>`;
-    document.getElementById('alltime-most-clean-sheets').innerHTML = `${seasonRecords.mostCleanSheets.value} <small>(${seasonRecords.mostCleanSheets.season})</small>`;
-
-    document.getElementById('alltime-longest-win-streak').textContent = teamAllTimeStats.longestWinStreak || 0;
-    document.getElementById('alltime-longest-unbeaten').textContent = teamAllTimeStats.longestUnbeatenRun || 0;
-    document.getElementById('alltime-total-matches').textContent = teamAllTimeStats.matchesPlayed || 0;
-    document.getElementById('alltime-different-goalscorers').textContent = teamAllTimeStats.differentGoalscorers || 0;
-
-    animateOnScroll([
-        { selector: '.stat-card', containerSelector: 'section' },
-        { selector: '.record-category', containerSelector: 'section' }
-    ]);
-}
-
-// Define animation elements
 const animationElements = [
-    { selector: '.stat-card', containerSelector: 'section' },
-    { selector: '.record-category', containerSelector: 'section' },
-    { selector: '.scorer-row', containerSelector: 'section' },
-    { selector: '.player-row', containerSelector: 'section' },
-    { selector: '.stat-category', containerSelector: 'section' },
-    { selector: '.section-title', containerSelector: 'section' },
-    { selector: '.section-subtitle', containerSelector: 'section' },
-    { selector: '.page-hero h1', containerSelector: 'section' },
+    { selector: '.stat-card',         containerSelector: 'section' },
+    { selector: '.record-category',   containerSelector: 'section' },
+    { selector: '.scorer-row',        containerSelector: 'section' },
+    { selector: '.player-row',        containerSelector: 'section' },
+    { selector: '.stat-category',     containerSelector: 'section' },
+    { selector: '.section-title',     containerSelector: 'section' },
+    { selector: '.section-subtitle',  containerSelector: 'section' },
+    { selector: '.page-hero h1',      containerSelector: 'section' },
     { selector: '.toggles-container', containerSelector: null }
 ];
 
-// DOM initialization
+// ── Page Initialization ───────────────────────────────────────────────────────
+
 document.addEventListener('DOMContentLoaded', () => {
     initToggle();
-    initPlayerStats();
+    loadStats();
     initSortableHeaders();
     initDropdowns();
 
-    // Observe static elements (Hero, Titles, and the Toggle Container)
     const staticElements = animationElements.filter(el =>
         !['.player-row', '.scorer-row'].includes(el.selector)
     );
     animateOnScroll(staticElements);
-
-    // Initialize the specialized observer for dynamic table rows
     initRowObserver();
 });
 
-// Initialize player stats and team stats
-// Initialize player stats and team stats
-async function initPlayerStats() {
+// ── Data Loading ──────────────────────────────────────────────────────────────
+
+async function loadStats() {
     isLoading = true;
 
-    // Define the specific loaders we want to use modularly
     const loaders = [
-        { id: 'team-season-loading', text: 'Teamstatistieken worden geladen...' },
+        { id: 'team-season-loading',          text: 'Teamstatistieken worden geladen...' },
         { id: 'team-season-detailed-loading', text: 'Teamstatistieken worden geladen...' }
     ];
-
-    const errorIds = ['team-season-error', 'team-season-detailed-error'];
+    const errorIds   = ['team-season-error', 'team-season-detailed-error'];
     const contentIds = ['team-season-grid', 'team-season-detailed-stats'];
 
-    // 1. Initialize Modular Loaders
-    loaders.forEach(loader => {
-        const el = document.getElementById(loader.id);
-        if (el) {
-            el.classList.remove('hidden');
-            FootballLoader.init(loader.id, loader.text);
-        }
+    loaders.forEach(({ id, text }) => {
+        const el = document.getElementById(id);
+        if (el) { el.classList.remove('hidden'); FootballLoader.show(id, text); }
     });
 
-    // 2. Hide existing errors and content containers
     errorIds.forEach(id => document.getElementById(id)?.classList.add('hidden'));
     contentIds.forEach(id => document.getElementById(id)?.classList.add('hidden'));
 
-    // UI Guard: Disable toggles during load
-    const teamPlayerToggle = document.getElementById('team-player-toggle');
+    const teamPlayerToggle  = document.getElementById('team-player-toggle');
     const seasonAlltimeToggle = document.getElementById('season-alltime-toggle');
     [teamPlayerToggle, seasonAlltimeToggle].forEach(t => t && (t.disabled = true));
     document.querySelectorAll('.toggle-label').forEach(l => l.style.pointerEvents = 'none');
 
     try {
-        // Fetch all data in parallel
-        const [seasonStats, allTimeStats, records, sPlayers, aPlayers] = await Promise.all([
-            fetchTeamSeasonStats(),
-            fetchTeamAllTimeStats(),
-            fetchSeasonRecords(),
-            fetchSeasonPlayers(),
-            fetchAllTimePlayers()
+        const [sStats, atStats, records, sPlayers, atPlayers] = await Promise.all([
+            fetchTeamSeasonStats(), fetchTeamAllTimeStats(), fetchSeasonRecords(),
+            fetchSeasonPlayers(), fetchAllTimePlayers()
         ]);
 
-        const currentSeasonLabel = "2025-2026";
-        const teamTitle = document.getElementById('team-season-title');
-        const detailedTitle = document.getElementById('detailed-team-stats-title');
-        const playerTitle = document.getElementById('player-season-title');
+        const season = '2025-2026';
+        const setTitle = (id, text) => { const el = document.getElementById(id); if (el) el.innerHTML = text; };
+        setTitle('team-season-title',       `Teamprestaties ${season}`);
+        setTitle('detailed-team-stats-title', `Gedetailleerde <br>Teamstatistieken<br> ${season}`);
+        setTitle('player-season-title',     `Spelersstatistieken<br> ${season}`);
 
-        if (teamTitle) teamTitle.textContent = `Teamprestaties ${currentSeasonLabel}`;
-        if (detailedTitle) detailedTitle.innerHTML = `Gedetailleerde <br>Teamstatistieken<br> ${currentSeasonLabel}`;
-        if (playerTitle) playerTitle.innerHTML = `Spelersstatistieken<br> ${currentSeasonLabel}`;
+        teamSeasonStats  = sStats;
+        teamAllTimeStats = atStats;
+        seasonRecords    = records;
+        seasonPlayers    = sPlayers;
+        allTimePlayers   = atPlayers;
 
-        // Assign global data
-        teamSeasonStats = seasonStats;
-        teamAllTimeStats = allTimeStats;
-        seasonRecords = records;
-        seasonPlayers = sPlayers;
-        allTimePlayers = aPlayers;
+        renderSeasonStats();
+        renderAllTimeStats();
+        renderSeasonPlayers();
+        renderAllTimePlayers();
 
-        // Render displays
-        updateTeamSeasonStats();
-        updateTeamAllTimeStats();
-        updateSeasonPlayerStats();
-        updateAllTimePlayerStats();
-
-        // 3. Success: Hide loaders and reveal content
-        loaders.forEach(l => document.getElementById(l.id)?.classList.add('hidden'));
+        loaders.forEach(({ id }) => document.getElementById(id)?.classList.add('hidden'));
         contentIds.forEach(id => document.getElementById(id)?.classList.remove('hidden'));
-
     } catch (error) {
         console.error('Error initializing statistics:', error);
 
-        // 4. Error: Hide loaders and show modular error messages
-        loaders.forEach(l => document.getElementById(l.id)?.classList.add('hidden'));
-
+        loaders.forEach(({ id }) => document.getElementById(id)?.classList.add('hidden'));
         errorIds.forEach(id => {
             FootballLoader.showError(id, 'Teamstatistieken konden niet worden geladen. Probeer opnieuw.');
         });
     } finally {
         isLoading = false;
-        if (teamPlayerToggle) teamPlayerToggle.disabled = false;
+        if (teamPlayerToggle)    teamPlayerToggle.disabled  = false;
         if (seasonAlltimeToggle) seasonAlltimeToggle.disabled = false;
-        document.querySelectorAll('.toggle-label').forEach(label => label.style.pointerEvents = '');
+        document.querySelectorAll('.toggle-label').forEach(l => l.style.pointerEvents = '');
 
-        // Final check to ensure UI reflects the correct toggle state
         const event = new Event('change');
         teamPlayerToggle?.dispatchEvent(event);
     }
 }
 
-/**
- * Shared sorting logic for player arrays
- */
+// ── Stat Display Renderers ────────────────────────────────────────────────────
+
+function renderSeasonStats() {
+    const setText = (id, val) => { const el = document.getElementById(id); if (el) el.textContent = val; };
+
+    setText('team-matches-played', teamSeasonStats.matchesPlayed || 0);
+    setText('team-wins',           teamSeasonStats.wins           || 0);
+    setText('team-draws',          teamSeasonStats.draws          || 0);
+    setText('team-losses',         teamSeasonStats.losses         || 0);
+    setText('team-goals-scored',   teamSeasonStats.goalsScored    || 0);
+    setText('team-goals-conceded', teamSeasonStats.goalsConceded  || 0);
+
+    setText('team-goals-scored-detailed',     teamSeasonStats.goalsScored           || 0);
+    setText('team-goals-per-match',           (teamSeasonStats.goalsPerMatch         || 0).toFixed(2));
+    setText('team-largest-win',               teamSeasonStats.largestWinScore        || '0-0');
+    setText('team-goals-conceded-detailed',   teamSeasonStats.goalsConceded          || 0);
+    setText('team-goals-conceded-per-match',  (teamSeasonStats.goalsConcededPerMatch || 0).toFixed(2));
+    setText('team-clean-sheets',              teamSeasonStats.cleanSheets            || 0);
+
+    const diff = teamSeasonStats.goalDifference || 0;
+    setText('team-goal-difference', diff >= 0 ? `+${diff}` : diff);
+    setText('team-win-rate',        `${(teamSeasonStats.winRate || 0).toFixed(0)}%`);
+    setText('team-points',          teamSeasonStats.points || 0);
+
+    animateOnScroll([
+        { selector: '.stat-card',    containerSelector: 'section' },
+        { selector: '.stat-category', containerSelector: 'section' }
+    ]);
+}
+
+function renderAllTimeStats() {
+    const setText  = (id, val) => { const el = document.getElementById(id); if (el) el.textContent = val; };
+    const setHTML  = (id, val) => { const el = document.getElementById(id); if (el) el.innerHTML  = val; };
+    const recHTML  = (rec) => `${rec.value} <small>(${rec.season})</small>`;
+
+    setText('team-alltime-matches-played', teamAllTimeStats.matchesPlayed     || 0);
+    setText('team-alltime-wins',           teamAllTimeStats.wins              || 0);
+    setText('team-alltime-draws',          teamAllTimeStats.draws             || 0);
+    setText('team-alltime-losses',         teamAllTimeStats.losses            || 0);
+    setText('team-alltime-goals-scored',   teamAllTimeStats.goalsScored       || 0);
+    setText('team-alltime-goals-conceded', teamAllTimeStats.goalsConceded     || 0);
+
+    setHTML('alltime-most-wins',             recHTML(seasonRecords.mostWins));
+    setHTML('alltime-most-goals',            recHTML(seasonRecords.mostGoals));
+    setHTML('alltime-best-goal-difference',
+        `${seasonRecords.bestGoalDifference.value >= 0 ? '+' : ''}${seasonRecords.bestGoalDifference.value} <small>(${seasonRecords.bestGoalDifference.season})</small>`
+    );
+    setHTML('alltime-most-clean-sheets',     recHTML(seasonRecords.mostCleanSheets));
+
+    setText('alltime-longest-win-streak',    teamAllTimeStats.longestWinStreak    || 0);
+    setText('alltime-longest-unbeaten',      teamAllTimeStats.longestUnbeatenRun  || 0);
+    setText('alltime-total-matches',         teamAllTimeStats.matchesPlayed       || 0);
+    setText('alltime-different-goalscorers', teamAllTimeStats.differentGoalscorers || 0);
+
+    animateOnScroll([
+        { selector: '.stat-card',      containerSelector: 'section' },
+        { selector: '.record-category', containerSelector: 'section' }
+    ]);
+}
+
+// ── Player Table Shared Utilities ─────────────────────────────────────────────
+
 function sortPlayers(players, sortBy) {
     return [...players].sort((a, b) => {
         const aRatio = a.matches === 0 ? 0 : a.goals / a.matches;
         const bRatio = b.matches === 0 ? 0 : b.goals / b.matches;
 
         if (sortBy === 'goals') {
-            if (a.goals !== b.goals) return b.goals - a.goals;
-            if (aRatio !== bRatio) return bRatio - aRatio;
-            return a.matches !== b.matches ? b.matches - a.matches : a.name.localeCompare(b.name);
-        } else if (sortBy === 'matches') {
-            if (a.matches !== b.matches) return b.matches - a.matches;
-            if (a.goals !== b.goals) return b.goals - a.goals;
-            return aRatio !== bRatio ? bRatio - aRatio : a.name.localeCompare(b.name);
-        } else {
-            if (aRatio !== bRatio) return bRatio - aRatio;
-            if (a.goals !== b.goals) return b.goals - a.goals;
+            if (a.goals   !== b.goals)   return b.goals   - a.goals;
+            if (aRatio    !== bRatio)     return bRatio    - aRatio;
             return a.matches !== b.matches ? b.matches - a.matches : a.name.localeCompare(b.name);
         }
+        if (sortBy === 'matches') {
+            if (a.matches !== b.matches) return b.matches - a.matches;
+            if (a.goals   !== b.goals)   return b.goals   - a.goals;
+            return aRatio !== bRatio ? bRatio - aRatio : a.name.localeCompare(b.name);
+        }
+        // avg-goals
+        if (aRatio    !== bRatio)   return bRatio    - aRatio;
+        if (a.goals   !== b.goals)  return b.goals   - a.goals;
+        return a.matches !== b.matches ? b.matches - a.matches : a.name.localeCompare(b.name);
     });
 }
 
-/**
- * Shared renderer for player tables
- */
 function renderPlayerTable(players, listSelector, rowClass, sortBy) {
-    const listPlaceholder = document.querySelector(listSelector);
-    const tableContainer = listPlaceholder ? listPlaceholder.closest('.player-stats-table, .top-scorers-table') : null;
-    if (!tableContainer) return;
+    const listEl    = document.querySelector(listSelector);
+    const container = listEl?.closest('.player-stats-table, .top-scorers-table');
+    if (!container) return;
 
-    const prefix = rowClass.split('-')[0];
-    const sortedPlayers = sortPlayers(players, sortBy);
-
-    // 1. Wipe and Rebuild (Header + List Shell)
+    const prefix        = rowClass.split('-')[0];
+    const sorted        = sortPlayers(players, sortBy);
     const listClassName = listSelector.replace('.', '');
-    tableContainer.innerHTML = `
-        ${PLAYER_TABLE_HEADER_HTML}
-        <div class="${listClassName}"></div>
-    `;
 
-    // 2. Fill the list
-    const newList = tableContainer.querySelector(listSelector);
-    sortedPlayers.forEach((player, index) => {
+    container.innerHTML = `${PLAYER_TABLE_HEADER_HTML}<div class="${listClassName}"></div>`;
+
+    const newList = container.querySelector(listSelector);
+    sorted.forEach((player, index) => {
         const avg = player.matches === 0 ? '0.00' : (player.goals / player.matches).toFixed(2);
         const row = document.createElement('div');
         row.className = rowClass;
         row.innerHTML = `
             <div class="table-cell ${prefix}-rank">${index + 1}</div>
             <div class="table-cell ${prefix}-position">
-                ${positionIcons[player.position]}
-                <span class="tooltip">${positionDisplayMap[player.position]}</span>
+                ${POSITION_ICON_MAP[player.position]}
+                <span class="tooltip">${POSITION_LABEL_MAP[player.position]}</span>
             </div>
             <div class="table-cell ${prefix}-name">${player.name}</div>
             <div class="table-cell ${prefix}-goals">${player.goals}</div>
@@ -248,236 +238,195 @@ function renderPlayerTable(players, listSelector, rowClass, sortBy) {
         newList.appendChild(row);
     });
 
-    // 3. Re-bind header click listeners (Critical!)
     initSortableHeaders();
 }
 
-// Update season player stats display
-function updateSeasonPlayerStats(sortBy = document.querySelector('#season-sort .selected')?.dataset.value || 'goals') {
+function renderSeasonPlayers(sortBy = document.querySelector('#season-sort .selected')?.dataset.value || 'goals') {
     renderPlayerTable(seasonPlayers, '.player-stats-list', 'player-row', sortBy);
 }
 
-// Update all-time player stats display
-function updateAllTimePlayerStats(sortBy = document.querySelector('#alltime-sort .selected')?.dataset.value || 'goals') {
+function renderAllTimePlayers(sortBy = document.querySelector('#alltime-sort .selected')?.dataset.value || 'goals') {
     renderPlayerTable(allTimePlayers, '.top-scorers-list', 'scorer-row', sortBy);
 }
 
-// Dropdown initializer
+// ── Dropdowns ─────────────────────────────────────────────────────────────────
+
 function initDropdowns() {
     document.querySelectorAll('.dropdown').forEach(dropdown => {
         const selected = dropdown.querySelector('.selected');
-        const options = dropdown.querySelector('.options');
+        const options  = dropdown.querySelector('.options');
+        if (!selected || !options) return;
+
         selected.addEventListener('click', () => {
             dropdown.classList.toggle('active');
             options.style.display = options.style.display === 'block' ? 'none' : 'block';
-            document.querySelectorAll('.dropdown').forEach(otherDropdown => {
-                if (otherDropdown !== dropdown) {
-                    otherDropdown.classList.remove('active');
-                    otherDropdown.querySelector('.options').style.display = 'none';
+            // Close all other dropdowns
+            document.querySelectorAll('.dropdown').forEach(other => {
+                if (other !== dropdown) {
+                    other.classList.remove('active');
+                    const otherOpts = other.querySelector('.options');
+                    if (otherOpts) otherOpts.style.display = 'none';
                 }
             });
         });
-        options.querySelectorAll('li').forEach(option => {
-            option.addEventListener('click', () => {
-                selected.textContent = option.textContent;
-                selected.dataset.value = option.dataset.value;
+
+        options.querySelectorAll('li').forEach(opt => {
+            opt.addEventListener('click', () => {
+                selected.textContent   = opt.textContent;
+                selected.dataset.value = opt.dataset.value;
                 dropdown.classList.remove('active');
-                options.style.display = 'none';
-                if (dropdown.id === 'season-sort') {
-                    updateSeasonPlayerStats(selected.dataset.value);
-                } else if (dropdown.id === 'alltime-sort') {
-                    updateAllTimePlayerStats(selected.dataset.value);
-                }
+                options.style.display  = 'none';
+
+                if (dropdown.id === 'season-sort')  renderSeasonPlayers(selected.dataset.value);
+                if (dropdown.id === 'alltime-sort') renderAllTimePlayers(selected.dataset.value);
             });
         });
     });
+
     document.addEventListener('click', (e) => {
         if (!e.target.closest('.dropdown')) {
-            document.querySelectorAll('.dropdown').forEach(dropdown => {
-                dropdown.classList.remove('active');
-                dropdown.querySelector('.options').style.display = 'none';
+            document.querySelectorAll('.dropdown').forEach(d => {
+                d.classList.remove('active');
+                const opts = d.querySelector('.options');
+                if (opts) opts.style.display = 'none';
             });
         }
     });
 }
 
-// Keep sortable headers but hook them to dropdowns
+// ── Sortable Table Headers ────────────────────────────────────────────────────
+
 function initSortableHeaders() {
-    const seasonHeaderCells = document.querySelectorAll('#player-season-stats .table-header .table-cell');
-    const allTimeHeaderCells = document.querySelectorAll('#player-alltime-stats .table-header .table-cell');
-    seasonHeaderCells.forEach((cell, index) => {
+    bindHeaderSort('#player-season-stats', '#season-sort', renderSeasonPlayers);
+    bindHeaderSort('#player-alltime-stats', '#alltime-sort', renderAllTimePlayers);
+}
+
+function bindHeaderSort(tableSelector, dropdownSelector, renderFn) {
+    document.querySelectorAll(`${tableSelector} .table-header .table-cell`).forEach((cell, index) => {
         const key = getSortKeyFromIndex(index);
-        if (key) {
-            cell.style.cursor = 'pointer';
-            cell.addEventListener('click', () => {
-                const selected = document.querySelector('#season-sort .selected');
-                if (selected) {
-                    selected.dataset.value = key;
-                    selected.textContent = getLabelFromKey(key);
-                }
-                updateSeasonPlayerStats(key);
-            });
-        }
-    });
-    allTimeHeaderCells.forEach((cell, index) => {
-        const key = getSortKeyFromIndex(index);
-        if (key) {
-            cell.style.cursor = 'pointer';
-            cell.addEventListener('click', () => {
-                const selected = document.querySelector('#alltime-sort .selected');
-                if (selected) {
-                    selected.dataset.value = key;
-                    selected.textContent = getLabelFromKey(key);
-                }
-                updateAllTimePlayerStats(key);
-            });
-        }
+        if (!key) return;
+
+        cell.style.cursor = 'pointer';
+        cell.addEventListener('click', () => {
+            const selected = document.querySelector(`${dropdownSelector} .selected`);
+            if (selected) { selected.dataset.value = key; selected.textContent = getLabelFromKey(key); }
+            renderFn(key);
+        });
     });
 }
 
 function getSortKeyFromIndex(index) {
-    switch (index) {
-        case 3: return 'goals';
-        case 4: return 'matches';
-        case 5: return 'avg-goals';
-        default: return null;
-    }
+    if (index === 3) return 'goals';
+    if (index === 4) return 'matches';
+    if (index === 5) return 'avg-goals';
+    return null;
 }
 
 function getLabelFromKey(key) {
-    switch (key) {
-        case 'goals': return 'Totaal Doelpunten';
-        case 'matches': return 'Gespeelde Wedstrijden';
-        case 'avg-goals': return 'Gemiddelde Doelpunten per Wedstrijd';
-        default: return '';
-    }
+    if (key === 'goals')     return 'Totaal Doelpunten';
+    if (key === 'matches')   return 'Gespeelde Wedstrijden';
+    if (key === 'avg-goals') return 'Gemiddelde Doelpunten per Wedstrijd';
+    return '';
 }
 
-// Debounce function to limit toggle frequency
-function debounce(func, wait) {
+// ── Toggle ────────────────────────────────────────────────────────────────────
+
+function debounce(fn, wait) {
     let timeout;
-    return function executedFunction(...args) {
-        const later = () => {
-            clearTimeout(timeout);
-            func(...args);
-        };
+    return function(...args) {
         clearTimeout(timeout);
-        timeout = setTimeout(later, wait);
+        timeout = setTimeout(() => fn(...args), wait);
     };
 }
 
-/**
- * Manages visibility for loading, error, and content element groups
- * @param {HTMLElement} loading - The loading spinner/text element
- * @param {HTMLElement} error - The error message element
- * @param {HTMLElement} content - The main data container
- * @param {string} state - 'loading' | 'success' | 'error'
- */
 function setElementState(loading, error, content, state) {
     if (!loading || !error || !content) return;
-
     loading.classList.toggle('hidden', state !== 'loading');
-    error.classList.toggle('hidden', state !== 'error');
+    error.classList.toggle('hidden',   state !== 'error');
     content.classList.toggle('hidden', state !== 'success');
 }
 
-// Toggle system for team/player and season/all-time views
 function initToggle() {
     const toggles = {
-        teamPlayer: document.getElementById('team-player-toggle'),
+        teamPlayer:    document.getElementById('team-player-toggle'),
         seasonAlltime: document.getElementById('season-alltime-toggle')
     };
     const labels = {
-        team: document.getElementById('label-team'),
-        player: document.getElementById('label-player'),
-        season: document.getElementById('label-season'),
+        team:    document.getElementById('label-team'),
+        player:  document.getElementById('label-player'),
+        season:  document.getElementById('label-season'),
         alltime: document.getElementById('label-alltime')
     };
     const sections = {
-        teamSeason: document.getElementById('team-season-stats'),
-        teamSeasonDetailed: document.getElementById('team-season-detailed'),
+        teamSeason:            document.getElementById('team-season-stats'),
+        teamSeasonDetailed:    document.getElementById('team-season-detailed'),
         teamAlltimePerformance: document.getElementById('team-alltime-performance'),
-        teamAlltime: document.getElementById('team-alltime-stats'),
-        playerSeason: document.getElementById('player-season-stats'),
-        playerAlltime: document.getElementById('player-alltime-stats')
+        teamAlltime:           document.getElementById('team-alltime-stats'),
+        playerSeason:          document.getElementById('player-season-stats'),
+        playerAlltime:         document.getElementById('player-alltime-stats')
     };
 
     const updateView = debounce(() => {
         if (isLoading) return;
 
-        const isPlayer = toggles.teamPlayer?.checked;
+        const isPlayer  = toggles.teamPlayer?.checked;
         const isAlltime = toggles.seasonAlltime?.checked;
+
         labels.team?.classList.toggle('active', !isPlayer);
         labels.player?.classList.toggle('active', isPlayer);
         labels.season?.classList.toggle('active', !isAlltime);
         labels.alltime?.classList.toggle('active', isAlltime);
 
-        // Hide all sections
-        Object.values(sections).forEach(section => section?.classList.add('hidden'));
+        Object.values(sections).forEach(s => s?.classList.add('hidden'));
         document.body.classList.remove('team-season', 'team-alltime', 'player-season', 'player-alltime');
 
-        // Reset animations
-        document.querySelectorAll('.section-title, .section-subtitle, .stat-card, .record-category').forEach(el => {
-            el.classList.remove('animate-in');
-        });
+        document.querySelectorAll('.section-title, .section-subtitle, .stat-card, .record-category')
+            .forEach(el => el.classList.remove('animate-in'));
 
-        let sectionsToShow;
+        let toShow;
         if (!isPlayer && !isAlltime) {
-            sectionsToShow = [sections.teamSeason, sections.teamSeasonDetailed];
+            toShow = [sections.teamSeason, sections.teamSeasonDetailed];
             document.body.classList.add('team-season');
-            updateTeamSeasonStats();
+            renderSeasonStats();
         } else if (!isPlayer && isAlltime) {
-            sectionsToShow = [sections.teamAlltimePerformance, sections.teamAlltime];
+            toShow = [sections.teamAlltimePerformance, sections.teamAlltime];
             document.body.classList.add('team-alltime');
-            updateTeamAllTimeStats();
+            renderAllTimeStats();
         } else if (isPlayer && !isAlltime) {
-            sectionsToShow = [sections.playerSeason];
+            toShow = [sections.playerSeason];
             document.body.classList.add('player-season');
-            updateSeasonPlayerStats();
+            renderSeasonPlayers();
         } else {
-            sectionsToShow = [sections.playerAlltime];
+            toShow = [sections.playerAlltime];
             document.body.classList.add('player-alltime');
-            updateAllTimePlayerStats();
+            renderAllTimePlayers();
         }
 
-        sectionsToShow.forEach(section => {
-            if (section) {
-                section.classList.remove('hidden');
-            }
-        });
+        toShow.forEach(s => s?.classList.remove('hidden'));
 
-        // Re-trigger the animation observer for the newly visible section titles/cards
         animateOnScroll(animationElements.filter(el =>
             ['.section-title', '.section-subtitle', '.stat-card', '.record-category'].includes(el.selector)
         ));
-        }, 300);
+    }, 300);
 
-    // Helper to safely toggle via label
-    const createLabelHandler = (toggle, desiredState) => {
-        return () => {
-            if (isLoading) return;
-            if (toggle.checked !== desiredState) {
-                toggle.checked = desiredState;
-                toggle.dispatchEvent(new Event('change'));
-            }
-        };
+    const createLabelHandler = (toggle, desiredState) => () => {
+        if (isLoading || toggle.checked === desiredState) return;
+        toggle.checked = desiredState;
+        toggle.dispatchEvent(new Event('change'));
     };
 
-    // Attach label handlers with loading guard
-    labels.team?.addEventListener('click', createLabelHandler(toggles.teamPlayer, false));
-    labels.player?.addEventListener('click', createLabelHandler(toggles.teamPlayer, true));
-    labels.season?.addEventListener('click', createLabelHandler(toggles.seasonAlltime, false));
+    labels.team?.addEventListener('click',    createLabelHandler(toggles.teamPlayer, false));
+    labels.player?.addEventListener('click',  createLabelHandler(toggles.teamPlayer, true));
+    labels.season?.addEventListener('click',  createLabelHandler(toggles.seasonAlltime, false));
     labels.alltime?.addEventListener('click', createLabelHandler(toggles.seasonAlltime, true));
 
-    // Initial view
     updateView();
     toggles.teamPlayer?.addEventListener('change', updateView);
     toggles.seasonAlltime?.addEventListener('change', updateView);
 }
 
-/**
- * Creates one single observer for dynamic table rows
- */
+// ── Row Animation Observer ────────────────────────────────────────────────────
+
 function initRowObserver() {
     const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
@@ -488,9 +437,7 @@ function initRowObserver() {
         });
     }, { threshold: 0.1 });
 
-    // Use MutationObserver to watch the containers for new rows
-    const tables = document.querySelectorAll('.player-stats-table, .top-scorers-table');
-    tables.forEach(table => {
+    document.querySelectorAll('.player-stats-table, .top-scorers-table').forEach(table => {
         const mutator = new MutationObserver(() => {
             table.querySelectorAll('.player-row, .scorer-row').forEach(row => {
                 if (!row.classList.contains('animate-in')) observer.observe(row);

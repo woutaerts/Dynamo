@@ -6,6 +6,7 @@
 /* Width constraint for this modal specifically */
 .modal-content {
     max-width: 500px;
+    border: 3px solid var(--modal-theme);
 }
 
 /* ── Position-based Theme Variables ─────────────────────────── */

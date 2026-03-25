@@ -1,26 +1,34 @@
-import { positionDisplayMap } from '../utils/helpers.js';
+/**
+ * components/playerModal.js
+ *
+ * Changes:
+ *   - `setupEventListeners` → `bindEvents`    (bind* for event attachment)
+ *   - `updateContent`       → `renderContent` (render* for DOM population)
+ *   - Updated import to use renamed `POSITION_LABEL_MAP`
+ */
+import { POSITION_LABEL_MAP } from '../utils/helpers.js';
 
-/* Player Modal Component */
 class PlayerModal {
     constructor() {
-        this.modal = null;
-        this.isInitialized = false;
-        this.scrollPosition = 0; // Store scroll position
+        this.modal          = null;
+        this.isInitialized  = false;
+        this.scrollPosition = 0;
     }
 
-    /* Initialization */
+    // ── Initialization ────────────────────────────────────────────────────────
+
     async init() {
         if (this.isInitialized) return;
 
         try {
-            const response = await fetch('/dynamo/html/components/playerModal.html');
+            const response  = await fetch('/dynamo/html/components/playerModal.html');
             const modalHTML = await response.text();
 
             const placeholder = document.getElementById('player-modal-placeholder');
             if (placeholder) {
                 placeholder.innerHTML = modalHTML;
                 this.modal = document.getElementById('playerModal');
-                this.setupEventListeners();
+                this.bindEvents();
                 this.isInitialized = true;
             }
         } catch (error) {
@@ -28,43 +36,38 @@ class PlayerModal {
         }
     }
 
-    /* Event Listeners */
-    setupEventListeners() {
+    // ── Event Binding ─────────────────────────────────────────────────────────
+
+    bindEvents() {
         if (!this.modal) return;
 
         const closeBtn = this.modal.querySelector('.close-modal');
-        if (closeBtn) {
-            closeBtn.addEventListener('click', () => this.close());
-        }
+        if (closeBtn) closeBtn.addEventListener('click', () => this.close());
 
         this.modal.addEventListener('click', (e) => {
-            if (e.target === e.currentTarget) {
-                this.close();
-            }
+            if (e.target === e.currentTarget) this.close();
         });
 
         document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape' && this.modal.classList.contains('show')) {
-                this.close();
-            }
+            if (e.key === 'Escape' && this.modal.classList.contains('show')) this.close();
         });
     }
 
-    /* Modal Control */
+    // ── Modal Control ─────────────────────────────────────────────────────────
+
     show(playerData = {}) {
         if (!this.modal) return;
 
-        // Save current scroll position
         this.scrollPosition = window.scrollY || document.documentElement.scrollTop;
 
         const {
-            name = 'Player Name',
-            position = 'Unknown',
-            flagSrc = '../img/icons/flags/belgium.svg',
+            name            = 'Player Name',
+            position        = 'Unknown',
+            flagSrc         = '../img/icons/flags/belgium.svg',
             gamesThisSeason = 0,
-            gamesTotal = 0,
+            gamesTotal      = 0,
             goalsThisSeason = 0,
-            goalsTotal = 0
+            goalsTotal      = 0
         } = playerData;
 
         document.body.classList.add('modal-open');
@@ -73,7 +76,7 @@ class PlayerModal {
         if (modalContent) {
             modalContent.classList.remove('goalkeeper', 'defender', 'midfielder', 'attacker');
             modalContent.classList.add(position.toLowerCase());
-            this.updateContent(name, position, flagSrc, gamesThisSeason, gamesTotal, goalsThisSeason, goalsTotal);
+            this.renderContent(name, position, flagSrc, gamesThisSeason, gamesTotal, goalsThisSeason, goalsTotal);
         }
 
         this.modal.classList.add('show');
@@ -81,10 +84,10 @@ class PlayerModal {
         if (modalContent) {
             modalContent.scrollTop = 0;
             const sections = modalContent.querySelectorAll('.season-stats-section, .all-time-stats-section');
-            sections.forEach(section => section.classList.remove('animate-in'));
-            sections.forEach((section, index) => {
-                section.style.display = 'block';
-                setTimeout(() => section.classList.add('animate-in'), index * 100);
+            sections.forEach(s => s.classList.remove('animate-in'));
+            sections.forEach((s, i) => {
+                s.style.display = 'block';
+                setTimeout(() => s.classList.add('animate-in'), i * 100);
             });
         } else {
             console.warn('Modal content not found');
@@ -103,19 +106,17 @@ class PlayerModal {
         }, 300);
     }
 
-    /* Content Updates */
-    updateContent(name, position, flagSrc, gamesThisSeason, gamesTotal, goalsThisSeason, goalsTotal) {
+    // ── Content Population ────────────────────────────────────────────────────
+
+    renderContent(name, position, flagSrc, gamesThisSeason, gamesTotal, goalsThisSeason, goalsTotal) {
         const nameEl = this.modal.querySelector('#modalPlayerName');
         if (nameEl) nameEl.textContent = name;
 
         const positionEl = this.modal.querySelector('#playerPosition');
-        if (positionEl) positionEl.textContent = positionDisplayMap[position.toLowerCase()] || position;
+        if (positionEl) positionEl.textContent = POSITION_LABEL_MAP[position.toLowerCase()] || position;
 
         const flagEl = this.modal.querySelector('#nationalityFlag');
-        if (flagEl) {
-            flagEl.src = flagSrc;
-            flagEl.alt = `Nationality Flag`;
-        }
+        if (flagEl) { flagEl.src = flagSrc; flagEl.alt = 'Nationality Flag'; }
 
         const gamesThisSeasonEl = this.modal.querySelector('#gamesThisSeason');
         if (gamesThisSeasonEl) gamesThisSeasonEl.textContent = gamesThisSeason;
@@ -131,7 +132,8 @@ class PlayerModal {
     }
 }
 
-/* Global Instance */
+// ── Global Instance ───────────────────────────────────────────────────────────
+
 window.playerModal = new PlayerModal();
 
 document.addEventListener('DOMContentLoaded', () => {

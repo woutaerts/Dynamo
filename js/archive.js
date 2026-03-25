@@ -1,4 +1,18 @@
-/* Imports van externe modules */
+/**
+ * archive.js — Archive page
+ *
+ * Changes:
+ *   - `col`                         → `colIndex`  (more descriptive: converts col letter to index)
+ *   - `cell`                        → `cellText`  (returns text content of a cell)
+ *   - `intCell`                     → `cellInt`   (returns integer value of a cell)
+ *   - `initArchiveDropdown`         → `initSeasonDropdown`
+ *   - `initArchivePlayerSort`       → `initPlayerSortDropdown`
+ *   - `initGlobalDropdownCloser`    → `bindDropdownClose`
+ *   - `initArchiveSortableHeaders`  → `initSortHeaders`
+ *   - `setupArchiveMatchInteractions` → `bindArchiveMatchClicks`
+ *   - `FootballLoader.init`         → `FootballLoader.show` (loader rename)
+ *   - Updated imports for renamed helpers
+ */
 import { animateOnScroll } from './utils/animations.js';
 import { LineGraph } from './components/lineGraph.js';
 import { Papa, SHEET_URLS } from './utils/dataService.js';
@@ -6,107 +20,101 @@ import { fetchCsvCached } from './utils/fetchCsv.js';
 import { FootballLoader } from './components/loader.js';
 import {
     PLAYER_TABLE_HEADER_HTML,
-    positionIcons,
-    positionDisplayMap,
-    positionMap,
-    monthMapEnglishToDutch,
+    POSITION_ICON_MAP,
+    POSITION_LABEL_MAP,
+    POSITION_CODE_MAP,
+    MONTH_EN_TO_NL,
     parseGoalscorers,
     parseDate
 } from './utils/helpers.js';
 
-/* Configuratie voor animaties */
+// ── Animation Registry ────────────────────────────────────────────────────────
+
 const animationElements = [
-    { selector: '.page-hero h1',         containerSelector: 'section' },
-    { selector: '.section-title',        containerSelector: 'section' },
-    { selector: '.picker-section .season-picker', containerSelector: 'section' }
+    { selector: '.page-hero h1',                          containerSelector: 'section' },
+    { selector: '.section-title',                         containerSelector: 'section' },
+    { selector: '.picker-section .season-picker',         containerSelector: 'section' }
 ];
 
-/* Configuratie van alle seizoenen en hun spreadsheet parameters */
+// ── Season Configuration ──────────────────────────────────────────────────────
+
 const SEASON_CONFIG = {
     '2024-2025': {
-        label: '2024-2025',
-        url: SHEET_URLS.season2425,
-        matchCols:    { first: col('F'), last: col('AA') },
-        matchRows:    { opponent: 1, date: 2, time: 3, stadium: 4, homeAway: 5, goalsFor: 75, goalsAgainst: 76, goalscorers: 78 },
-        playerRows:   { first: 7, last: 51 },
-        playerCols:   { name: col('B'), position: col('D'), goals: col('AD'), matches: col('AE') },
-        statsCell:    { played: [78, col('AE')], wins: [76, col('AG')], draws: [77, col('AG')], losses: [78, col('AG')], goalsFor: [75, col('AE')], goalsAgainst: [76, col('AE')] },
+        label: '2024-2025', url: SHEET_URLS.season2425,
+        matchCols:  { first: colIndex('F'), last: colIndex('AA') },
+        matchRows:  { opponent: 1, date: 2, time: 3, stadium: 4, homeAway: 5, goalsFor: 75, goalsAgainst: 76, goalscorers: 78 },
+        playerRows: { first: 7, last: 51 },
+        playerCols: { name: colIndex('B'), position: colIndex('D'), goals: colIndex('AD'), matches: colIndex('AE') },
+        statsCell:  { played: [78, colIndex('AE')], wins: [76, colIndex('AG')], draws: [77, colIndex('AG')], losses: [78, colIndex('AG')], goalsFor: [75, colIndex('AE')], goalsAgainst: [76, colIndex('AE')] },
     },
     '2023-2024': {
-        label: '2023-2024',
-        url: SHEET_URLS.season2324,
-        matchCols:    { first: col('F'), last: col('Z') },
-        matchRows:    { opponent: 1, date: 2, time: 3, stadium: 4, homeAway: 5, goalsFor: 64, goalsAgainst: 65, goalscorers: 67 },
-        playerRows:   { first: 7, last: 50 },
-        playerCols:   { name: col('B'), position: col('D'), goals: col('AC'), matches: col('AD') },
-        statsCell:    { played: [67, col('AD')], wins: [65, col('AF')], draws: [66, col('AF')], losses: [67, col('AF')], goalsFor: [64, col('AD')], goalsAgainst: [65, col('AD')] },
+        label: '2023-2024', url: SHEET_URLS.season2324,
+        matchCols:  { first: colIndex('F'), last: colIndex('Z') },
+        matchRows:  { opponent: 1, date: 2, time: 3, stadium: 4, homeAway: 5, goalsFor: 64, goalsAgainst: 65, goalscorers: 67 },
+        playerRows: { first: 7, last: 50 },
+        playerCols: { name: colIndex('B'), position: colIndex('D'), goals: colIndex('AC'), matches: colIndex('AD') },
+        statsCell:  { played: [67, colIndex('AD')], wins: [65, colIndex('AF')], draws: [66, colIndex('AF')], losses: [67, colIndex('AF')], goalsFor: [64, colIndex('AD')], goalsAgainst: [65, colIndex('AD')] },
     },
     '2022-2023': {
-        label: '2022-2023',
-        url: SHEET_URLS.season2223,
-        matchCols:    { first: col('F'), last: col('W') },
-        matchRows:    { opponent: 1, date: 2, time: 3, stadium: 4, homeAway: 5, goalsFor: 73, goalsAgainst: 74, goalscorers: 76 },
-        playerRows:   { first: 7, last: 52 },
-        playerCols:   { name: col('B'), position: col('D'), goals: col('Z'), matches: col('AA') },
-        statsCell:    { played: [76, col('AA')], wins: [74, col('AC')], draws: [75, col('AC')], losses: [76, col('AC')], goalsFor: [73, col('AA')], goalsAgainst: [74, col('AA')] },
+        label: '2022-2023', url: SHEET_URLS.season2223,
+        matchCols:  { first: colIndex('F'), last: colIndex('W') },
+        matchRows:  { opponent: 1, date: 2, time: 3, stadium: 4, homeAway: 5, goalsFor: 73, goalsAgainst: 74, goalscorers: 76 },
+        playerRows: { first: 7, last: 52 },
+        playerCols: { name: colIndex('B'), position: colIndex('D'), goals: colIndex('Z'), matches: colIndex('AA') },
+        statsCell:  { played: [76, colIndex('AA')], wins: [74, colIndex('AC')], draws: [75, colIndex('AC')], losses: [76, colIndex('AC')], goalsFor: [73, colIndex('AA')], goalsAgainst: [74, colIndex('AA')] },
     },
     '2021-2022': {
-        label: '2021-2022',
-        url: SHEET_URLS.season2122,
-        matchCols:    { first: col('F'), last: col('X') },
-        matchRows:    { opponent: 1, date: 2, time: 3, stadium: 4, homeAway: 5, goalsFor: 56, goalsAgainst: 57, goalscorers: 59 },
-        playerRows:   { first: 7, last: 47 },
-        playerCols:   { name: col('B'), position: col('D'), goals: col('AA'), matches: col('AB') },
-        statsCell:    { played: [59, col('AB')], wins: [57, col('AD')], draws: [58, col('AD')], losses: [59, col('AD')], goalsFor: [56, col('AB')], goalsAgainst: [57, col('AB')] },
+        label: '2021-2022', url: SHEET_URLS.season2122,
+        matchCols:  { first: colIndex('F'), last: colIndex('X') },
+        matchRows:  { opponent: 1, date: 2, time: 3, stadium: 4, homeAway: 5, goalsFor: 56, goalsAgainst: 57, goalscorers: 59 },
+        playerRows: { first: 7, last: 47 },
+        playerCols: { name: colIndex('B'), position: colIndex('D'), goals: colIndex('AA'), matches: colIndex('AB') },
+        statsCell:  { played: [59, colIndex('AB')], wins: [57, colIndex('AD')], draws: [58, colIndex('AD')], losses: [59, colIndex('AD')], goalsFor: [56, colIndex('AB')], goalsAgainst: [57, colIndex('AB')] },
     },
 };
 
-/* Globale status voor archiefspelers */
-let archivePlayers = [];
+// ── Module State ──────────────────────────────────────────────────────────────
 
-/* Genereer de HTML voor de grafiek tooltip */
-const getArchiveTooltipHTML = (d) => `
+let archivePlayers = [];
+let isPlayersExpanded = false;
+
+// ── Tooltip Template ──────────────────────────────────────────────────────────
+
+const getTooltipHTML = (d) => `
     <div class="archive-graph-tooltip">
         <h4 class="archive-graph-tooltip-title">${d.matches}</h4>
-        
         <div class="archive-graph-tooltip-row">
-            <span class="archive-graph-tooltip-icon win">
-                <i class="fas fa-check"></i>
-            </span>
+            <span class="archive-graph-tooltip-icon win"><i class="fas fa-check"></i></span>
             <span class="archive-graph-tooltip-value">${d.winst}</span>
         </div>
-        
         <div class="archive-graph-tooltip-row">
-            <span class="archive-graph-tooltip-icon draw">
-                <i class="fas fa-minus"></i>
-            </span>
+            <span class="archive-graph-tooltip-icon draw"><i class="fas fa-minus"></i></span>
             <span class="archive-graph-tooltip-value">${d.gelijk}</span>
         </div>
-        
         <div class="archive-graph-tooltip-row">
-            <span class="archive-graph-tooltip-icon loss">
-                <i class="fas fa-times"></i>
-            </span>
+            <span class="archive-graph-tooltip-icon loss"><i class="fas fa-times"></i></span>
             <span class="archive-graph-tooltip-value">${d.verlies}</span>
         </div>
     </div>
 `;
 
-/* Initialisatie van de pagina bij het laden */
+// ── Page Initialization ───────────────────────────────────────────────────────
+
 document.addEventListener('DOMContentLoaded', () => {
-    initArchiveDropdown();
-    initArchivePlayerSort();
-    initGlobalDropdownCloser();
-    initArchiveSortableHeaders();
+    initSeasonDropdown();
+    initPlayerSortDropdown();
+    bindDropdownClose();
+    initSortHeaders();
     animateOnScroll(animationElements);
     const initialSeason = document.querySelector('#season-select .selected').dataset.value;
     loadSeason(initialSeason);
 });
 
-/* Bepaal en wissel tussen seizoensweergave of vergelijking */
+// ── Season Loading ────────────────────────────────────────────────────────────
+
 async function loadSeason(seasonString) {
-    const loadingId     = 'archive-loading';
-    const errorId       = 'archive-error';
+    const loadingId      = 'archive-loading';
+    const errorId        = 'archive-error';
     const loadingEl      = document.getElementById(loadingId);
     const contentEl      = document.getElementById('archive-content');
     const errorEl        = document.getElementById(errorId);
@@ -124,7 +132,7 @@ async function loadSeason(seasonString) {
 
     if (loadingEl) {
         loadingEl.classList.remove('hidden');
-        FootballLoader.init(loadingId, 'Gegevens worden geladen...');
+        FootballLoader.show(loadingId, 'Gegevens worden geladen...');
     }
 
     try {
@@ -133,50 +141,48 @@ async function loadSeason(seasonString) {
             comparisonView.classList.remove('hidden');
 
             const allData = await fetchAllSeasonsData();
-            loadingEl.classList.add('hidden');
+            loadingEl?.classList.add('hidden');
             contentEl.style.display = 'block';
 
             const graphConfigs = [
                 {
-                    id: '#matches-graph', title: 'Aantal gespeelde wedstrijden', color: '#7B96B7', dotColor: '#3D5A80', hideLine: true,
+                    id: '#matches-graph', title: 'Aantal gespeelde wedstrijden',
+                    color: '#7B96B7', dotColor: '#3D5A80', hideLine: true,
                     mapFn: d => ({
-                        label: d.seasonLabel, value: d.matches, tooltipHTML: getArchiveTooltipHTML(d),
+                        label: d.seasonLabel, value: d.matches, tooltipHTML: getTooltipHTML(d),
                         stacked: [
-                            { value: d.winst, color: '#648F5F' },
-                            { value: d.gelijk, color: '#E8B04B' },
+                            { value: d.winst,   color: '#648F5F' },
+                            { value: d.gelijk,  color: '#E8B04B' },
                             { value: d.verlies, color: '#E07A5F' }
                         ]
                     })
                 },
-                { id: '#total-voor-graph', title: 'Aantal gescoorde doelpunten', color: '#84B281', dotColor: '#648F5F', mapFn: d => ({ label: d.seasonLabel, value: d.totalVoor }) },
-                { id: '#total-tegen-graph', title: 'Aantal tegendoelpunten', color: '#E07A5F', dotColor: '#B90A0A', mapFn: d => ({ label: d.seasonLabel, value: d.totalTegen }) },
-                { id: '#avg-voor-graph', title: 'Gemiddeld aantal gescoorde doelpunten per wedstrijd', color: '#84B281', dotColor: '#648F5F', mapFn: d => ({ label: d.seasonLabel, value: d.avgVoor }) },
-                { id: '#avg-tegen-graph', title: 'Gemiddeld aantal tegendoelpunten per wedstrijd', color: '#E07A5F', dotColor: '#B90A0A', mapFn: d => ({ label: d.seasonLabel, value: d.avgTegen }) }
+                { id: '#total-voor-graph',  title: 'Aantal gescoorde doelpunten',                        color: '#84B281', dotColor: '#648F5F', mapFn: d => ({ label: d.seasonLabel, value: d.totalVoor  }) },
+                { id: '#total-tegen-graph', title: 'Aantal tegendoelpunten',                              color: '#E07A5F', dotColor: '#B90A0A', mapFn: d => ({ label: d.seasonLabel, value: d.totalTegen }) },
+                { id: '#avg-voor-graph',    title: 'Gemiddeld aantal gescoorde doelpunten per wedstrijd', color: '#84B281', dotColor: '#648F5F', mapFn: d => ({ label: d.seasonLabel, value: d.avgVoor    }) },
+                { id: '#avg-tegen-graph',   title: 'Gemiddeld aantal tegendoelpunten per wedstrijd',     color: '#E07A5F', dotColor: '#B90A0A', mapFn: d => ({ label: d.seasonLabel, value: d.avgTegen   }) }
             ];
 
-            graphConfigs.forEach(config => {
-                const el = document.querySelector(config.id);
+            graphConfigs.forEach(({ id, title, color, dotColor, hideLine, mapFn }) => {
+                const el = document.querySelector(id);
                 if (el) {
                     el.innerHTML = '';
-                    new LineGraph(config.id, {
-                        title: config.title,
-                        hideLineAndDots: config.hideLine || false,
-                        color: config.color,
-                        dotColor: config.dotColor,
-                        data: allData.map(config.mapFn)
+                    new LineGraph(id, {
+                        title, color, dotColor,
+                        hideLineAndDots: hideLine || false,
+                        data: allData.map(mapFn)
                     });
                 }
             });
         } else {
             comparisonView.classList.add('hidden');
             seasonView.classList.remove('hidden');
-            loadingEl.classList.add('hidden');
+            loadingEl?.classList.add('hidden');
             contentEl.style.display = 'block';
             await loadSeasonData(seasonString);
         }
 
         setTimeout(() => titleEl.classList.add('animate-in'), 100);
-
     } catch (err) {
         console.error('Error loading data:', err);
         if (loadingEl) loadingEl.classList.add('hidden');
@@ -184,17 +190,16 @@ async function loadSeason(seasonString) {
     }
 }
 
-/* Verwerk en weergave van data voor een specifiek seizoen */
 async function loadSeasonData(seasonString) {
-    const config        = SEASON_CONFIG[seasonString];
-    const innerLoaderId = 'archive-season-loader';
-    const innerErrorId  = 'archive-season-error';
-    const innerLoader   = document.getElementById(innerLoaderId);
-    const innerContent  = document.getElementById('archive-season-content');
+    const config       = SEASON_CONFIG[seasonString];
+    const innerLoadId  = 'archive-season-loader';
+    const innerErrorId = 'archive-season-error';
+    const innerLoader  = document.getElementById(innerLoadId);
+    const innerContent = document.getElementById('archive-season-content');
 
     if (innerLoader) {
         innerLoader.classList.remove('hidden');
-        FootballLoader.init(innerLoaderId, 'Seizoensgegevens worden geladen...');
+        FootballLoader.show(innerLoadId, 'Seizoensgegevens worden geladen...');
     }
 
     document.getElementById(innerErrorId)?.classList.add('hidden');
@@ -205,30 +210,28 @@ async function loadSeasonData(seasonString) {
 
     try {
         const csvText = await fetchCsvCached(config.url);
-        const parsed = Papa.parse(csvText, { skipEmptyLines: false, delimiter: ',' });
-        const rows = parsed.data;
+        const rows    = Papa.parse(csvText, { skipEmptyLines: false, delimiter: ',' }).data;
 
-        const stats  = parseSeasonStats(rows, config);
+        const stats   = parseSeasonStats(rows, config);
         const players = parseSeasonPlayers(rows, config);
         const matches = parseSeasonMatches(rows, config, seasonString);
 
         renderSeasonStats(stats);
         archivePlayers = players;
+        isPlayersExpanded = false;
         renderArchivePlayers('goals');
         renderSeasonMatches(matches);
-        setupArchiveMatchInteractions();
+        bindArchiveMatchClicks();
 
         if (innerLoader)  innerLoader.classList.add('hidden');
         if (innerContent) innerContent.classList.remove('hidden');
 
         animateArchiveMatches();
-
         animateOnScroll([
-            { selector: '.stat-card',                        containerSelector: 'section' },
-            { selector: '.archive-player-row',               containerSelector: 'section' },
-            { selector: '.archive-subsection .section-title', containerSelector: 'section' },
+            { selector: '.stat-card',                         containerSelector: 'section' },
+            { selector: '.archive-player-row',                containerSelector: 'section' },
+            { selector: '.archive-subsection .section-title', containerSelector: 'section' }
         ]);
-
     } catch (err) {
         console.error('Error loading season data:', err);
         if (innerLoader) innerLoader.classList.add('hidden');
@@ -236,15 +239,15 @@ async function loadSeasonData(seasonString) {
     }
 }
 
-/* Haal overzichtsdata op van alle seizoenen */
+// ── Data Fetching ─────────────────────────────────────────────────────────────
+
 async function fetchAllSeasonsData() {
     const csvText = await fetchCsvCached(SHEET_URLS.seasonRecords);
-    const parsed  = Papa.parse(csvText, { skipEmptyLines: true, delimiter: ',' });
-    const rows    = parsed.data;
+    const rows    = Papa.parse(csvText, { skipEmptyLines: true, delimiter: ',' }).data;
 
-    const cleanLabel   = str => str ? str.replace(/[="]/g, '').trim() : '';
-    const toDecimal    = (val, abs = false) => { let n = parseFloat(val); if (isNaN(n)) return 0; if (abs) n = Math.abs(n); return parseFloat(n.toFixed(2)); };
-    const toInt        = (val, abs = false) => { let n = parseInt(val); if (isNaN(n)) return 0; return abs ? Math.abs(n) : n; };
+    const cleanLabel = str => str ? str.replace(/[="]/g, '').trim() : '';
+    const toDecimal  = (val, abs = false) => { let n = parseFloat(val); if (isNaN(n)) return 0; if (abs) n = Math.abs(n); return parseFloat(n.toFixed(2)); };
+    const toInt      = (val, abs = false) => { let n = parseInt(val);   if (isNaN(n)) return 0; return abs ? Math.abs(n) : n; };
 
     return [3, 5, 7, 9, 11].map(rowIndex => {
         const row = rows[rowIndex];
@@ -262,94 +265,86 @@ async function fetchAllSeasonsData() {
     });
 }
 
-/* Zet kolomletters om naar een 0-gebaseerde array index */
-function col(letters) {
+// ── Cell Helpers ──────────────────────────────────────────────────────────────
+
+/** Converts a spreadsheet column letter (e.g. "AF") to a 0-based array index. */
+function colIndex(letters) {
     letters = letters.toUpperCase();
     let n = 0;
     for (const ch of letters) n = n * 26 + (ch.charCodeAt(0) - 64);
     return n - 1;
 }
 
-/* Haal de tekstwaarde van een specifieke cel op */
-function cell(rows, rowIdx, colIdx) {
-    return rows[rowIdx]?.[colIdx]?.toString().trim().replace(/^["=]+|["]+$/g, '') || '';
+/** Returns the trimmed string value of a cell, stripping quotes and `=` signs. */
+function cellText(rows, rowIdx, colIdx) {
+    return rows[rowIdx]?.[colIdx]?.toString().trim().replace(/^[="]+|["+$]/g, '') || '';
 }
 
-/* Haal de absolute integerwaarde van een specifieke cel op */
-function intCell(rows, rowIdx, colIdx) {
-    return Math.abs(parseInt(cell(rows, rowIdx, colIdx), 10)) || 0;
+/** Returns the absolute integer value of a cell (defaults to 0). */
+function cellInt(rows, rowIdx, colIdx) {
+    return Math.abs(parseInt(cellText(rows, rowIdx, colIdx), 10)) || 0;
 }
 
-/* Verwerk de globale teamstatistieken uit de spreadsheet */
+// ── Parsing ───────────────────────────────────────────────────────────────────
+
 function parseSeasonStats(rows, config) {
     const s = config.statsCell;
     return {
-        matches:      intCell(rows, s.played[0],       s.played[1]),
-        wins:         intCell(rows, s.wins[0],          s.wins[1]),
-        draws:        intCell(rows, s.draws[0],         s.draws[1]),
-        losses:       intCell(rows, s.losses[0],        s.losses[1]),
-        goalsFor:     intCell(rows, s.goalsFor[0],      s.goalsFor[1]),
-        goalsAgainst: intCell(rows, s.goalsAgainst[0],  s.goalsAgainst[1]),
+        matches:      cellInt(rows, s.played[0],      s.played[1]),
+        wins:         cellInt(rows, s.wins[0],         s.wins[1]),
+        draws:        cellInt(rows, s.draws[0],        s.draws[1]),
+        losses:       cellInt(rows, s.losses[0],       s.losses[1]),
+        goalsFor:     cellInt(rows, s.goalsFor[0],     s.goalsFor[1]),
+        goalsAgainst: cellInt(rows, s.goalsAgainst[0], s.goalsAgainst[1]),
     };
 }
 
-/* Verwerk de spelersstatistieken uit de spreadsheet */
 function parseSeasonPlayers(rows, config) {
     const { first, last } = config.playerRows;
-    const pc = config.playerCols;
+    const pc        = config.playerCols;
     const titleRows = ['keeper', 'verdedigers', 'middenvelders', 'aanvallers'];
-    const players = [];
+    const players   = [];
 
     for (let r = first; r <= last; r++) {
-        const name     = cell(rows, r, pc.name);
-        const posCode  = cell(rows, r, pc.position);
-        const goalsStr = cell(rows, r, pc.goals);
-        const matchStr = cell(rows, r, pc.matches);
+        const name      = cellText(rows, r, pc.name);
+        const posCode   = cellText(rows, r, pc.position);
+        const goals     = parseInt(cellText(rows, r, pc.goals),   10);
+        const matches   = parseInt(cellText(rows, r, pc.matches), 10);
 
         if (!name || titleRows.includes(name.toLowerCase())) continue;
-
-        const position = positionMap[posCode];
-        if (!position) continue;
-
-        const goals   = parseInt(goalsStr, 10);
-        const matches = parseInt(matchStr, 10);
-        if (isNaN(goals) || isNaN(matches)) continue;
+        const position = POSITION_CODE_MAP[posCode];
+        if (!position || isNaN(goals) || isNaN(matches)) continue;
 
         players.push({ name, position, goals, matches });
     }
     return players.sort((a, b) => b.goals - a.goals);
 }
 
-/* Verwerk alle gespeelde wedstrijden uit de spreadsheet */
 function parseSeasonMatches(rows, config, seasonString) {
-    const mc = config.matchCols;
-    const mr = config.matchRows;
+    const mc          = config.matchCols;
+    const mr          = config.matchRows;
     const seasonLabel = config.label || seasonString;
-    const matches = [];
+    const matches     = [];
 
     for (let c = mc.first; c <= mc.last; c++) {
-        const opponent    = cell(rows, mr.opponent,     c);
-        const dateRaw     = cell(rows, mr.date,         c);
-        const time        = cell(rows, mr.time,         c);
-        const stadium     = cell(rows, mr.stadium,      c);
-        const homeAway    = cell(rows, mr.homeAway,     c).toLowerCase();
-        const gfRaw       = cell(rows, mr.goalsFor,     c);
-        const gaRaw       = cell(rows, mr.goalsAgainst, c);
-        const gsRaw       = cell(rows, mr.goalscorers,  c);
+        const opponent  = cellText(rows, mr.opponent,     c);
+        const dateRaw   = cellText(rows, mr.date,         c);
+        const time      = cellText(rows, mr.time,         c);
+        const stadium   = cellText(rows, mr.stadium,      c);
+        const homeAway  = cellText(rows, mr.homeAway,     c).toLowerCase();
+        const gfRaw     = cellText(rows, mr.goalsFor,     c);
+        const gaRaw     = cellText(rows, mr.goalsAgainst, c);
+        const gsRaw     = cellText(rows, mr.goalscorers,  c);
 
         if (!opponent || !dateRaw) continue;
 
-        const isHome = homeAway === 'thuis';
-
+        const isHome     = homeAway === 'thuis';
         const dateParts  = dateRaw.split(' ');
         const day        = dateParts[0] || '';
         const monthEn    = (dateParts[1] || '').toLowerCase();
-        const monthDutch = monthMapEnglishToDutch[monthEn] || monthEn;
+        const monthDutch = MONTH_EN_TO_NL[monthEn] || monthEn;
         const displayDate = `${day} ${monthDutch}`;
-
-        const title = isHome
-            ? `Dynamo Beirs vs ${opponent}`
-            : `${opponent} vs Dynamo Beirs`;
+        const title      = isHome ? `Dynamo Beirs vs ${opponent}` : `${opponent} vs Dynamo Beirs`;
 
         const gf = parseInt(gfRaw, 10);
         const ga = parseInt(gaRaw, 10);
@@ -357,26 +352,19 @@ function parseSeasonMatches(rows, config, seasonString) {
 
         const score  = isHome ? `${gf}-${ga}` : `${ga}-${gf}`;
         const result = gf > ga ? 'winst' : gf < ga ? 'verlies' : 'gelijk';
-        const goalscorers = parseGoalscorers(gsRaw);
 
         matches.push({
-            title,
-            displayDate,
-            dateRaw,
-            score,
-            result,
-            stadium,
-            time,
-            goalscorers,
-            season: seasonLabel,
+            title, displayDate, dateRaw, score, result, stadium, time,
+            goalscorers: parseGoalscorers(gsRaw),
+            season: seasonLabel
         });
     }
 
-    matches.sort((a, b) => parseDate(a.dateRaw) - parseDate(b.dateRaw));
-    return matches;
+    return matches.sort((a, b) => parseDate(a.dateRaw) - parseDate(b.dateRaw));
 }
 
-/* Toon de globale statistieken op de pagina */
+// ── Rendering ─────────────────────────────────────────────────────────────────
+
 function renderSeasonStats(stats) {
     const map = {
         'arch-stat-matches':       stats.matches,
@@ -392,39 +380,42 @@ function renderSeasonStats(stats) {
     });
 }
 
-/* Toon en sorteer de spelers in de archieftabel */
 function renderArchivePlayers(sortBy = 'goals') {
     const tableContainer = document.querySelector('.player-stats-table');
     if (!tableContainer) return;
 
+    const existingToggle = document.querySelector('.table-toggle-container');
+    if (existingToggle) existingToggle.remove();
+
     const sorted = [...archivePlayers].sort((a, b) => {
         const aR = a.matches === 0 ? 0 : a.goals / a.matches;
         const bR = b.matches === 0 ? 0 : b.goals / b.matches;
-        if (sortBy === 'goals') return b.goals - a.goals || bR - aR || b.matches - a.matches;
+        if (sortBy === 'goals')   return b.goals - a.goals || bR - aR || b.matches - a.matches;
         if (sortBy === 'matches') return b.matches - a.matches || b.goals - a.goals;
         return bR - aR || b.goals - a.goals;
     });
 
-    tableContainer.innerHTML = `
-        ${PLAYER_TABLE_HEADER_HTML}
-        <div id="archive-player-list"></div>
-    `;
-
+    tableContainer.innerHTML = `${PLAYER_TABLE_HEADER_HTML}<div id="archive-player-list"></div>`;
     const list = document.getElementById('archive-player-list');
+
     if (sorted.length === 0) {
         list.innerHTML = '<div class="archive-empty-msg">Geen data beschikbaar.</div>';
         return;
     }
 
-    sorted.forEach((player, index) => {
+    // Determine how many players to show (10 or all)
+    const limit = 10;
+    const visiblePlayers = isPlayersExpanded ? sorted : sorted.slice(0, limit);
+
+    visiblePlayers.forEach((player, index) => {
         const avg = player.matches === 0 ? '0.00' : (player.goals / player.matches).toFixed(2);
         const row = document.createElement('div');
         row.className = 'player-row archive-player-row';
         row.innerHTML = `
             <div class="table-cell player-rank">${index + 1}</div>
             <div class="table-cell player-position">
-                ${positionIcons[player.position] || ''}
-                <span class="tooltip">${positionDisplayMap[player.position] || ''}</span>
+                ${POSITION_ICON_MAP[player.position] || ''}
+                <span class="tooltip">${POSITION_LABEL_MAP[player.position] || ''}</span>
             </div>
             <div class="table-cell player-name">${player.name}</div>
             <div class="table-cell player-goals">${player.goals}</div>
@@ -434,10 +425,35 @@ function renderArchivePlayers(sortBy = 'goals') {
         list.appendChild(row);
     });
 
-    initArchiveSortableHeaders();
+    // Append the "Show More / Less" button if there are more than 10 players
+    if (sorted.length > limit) {
+        const toggleContainer = document.createElement('div');
+        toggleContainer.className = 'table-toggle-container';
+
+        const toggleBtn = document.createElement('button');
+        toggleBtn.className = 'btn-toggle-table';
+        toggleBtn.innerHTML = isPlayersExpanded
+            ? 'Toon minder <i class="fas fa-chevron-up"></i>'
+            : `Toon alle ${sorted.length} spelers <i class="fas fa-chevron-down"></i>`;
+
+        toggleBtn.addEventListener('click', () => {
+            const wasExpanded = isPlayersExpanded; // Remember previous state
+            isPlayersExpanded = !isPlayersExpanded;
+            renderArchivePlayers(sortBy); // Re-render with current sort
+
+            // If we just collapsed the table, scroll it smoothly back into view
+            if (wasExpanded) {
+                tableContainer.scrollIntoView({ behavior: 'smooth', block: 'end' });
+            }
+        });
+
+        toggleContainer.appendChild(toggleBtn);
+        tableContainer.insertAdjacentElement('afterend', toggleContainer);
+    }
+
+    initSortHeaders();
 }
 
-/* Toon alle seizoenswedstrijden als interactieve kaarten */
 function renderSeasonMatches(matches) {
     const grid = document.getElementById('archive-matches-grid');
     if (!grid) return;
@@ -449,18 +465,14 @@ function renderSeasonMatches(matches) {
     }
 
     matches.forEach(match => {
-        const resultClass = match.result === 'winst' ? 'win'
-            : match.result === 'gelijk' ? 'draw' : 'loss';
-        const icon = resultClass === 'win' ? 'check'
-            : resultClass === 'draw' ? 'minus' : 'times';
-
+        const cls  = match.result === 'winst' ? 'win' : match.result === 'gelijk' ? 'draw' : 'loss';
+        const icon = cls === 'win' ? 'check' : cls === 'draw' ? 'minus' : 'times';
         const parts    = match.title.split(' vs ');
         const homeTeam = parts[0] || match.title;
         const awayTeam = parts[1] || '';
 
         const card = document.createElement('div');
         card.className = 'match-card modern result archive-match-card';
-
         card.setAttribute('data-match-title',  match.title);
         card.setAttribute('data-venue',        match.stadium);
         card.setAttribute('data-score',        match.score);
@@ -468,12 +480,10 @@ function renderSeasonMatches(matches) {
         card.setAttribute('data-match-time',   match.time);
         card.setAttribute('data-match-season', match.season);
         card.setAttribute('data-goalscorers',  JSON.stringify(match.goalscorers));
-        card.setAttribute('data-result', match.result);
+        card.setAttribute('data-result',       match.result);
 
         card.innerHTML = `
-            <div class="result-icon ${resultClass}">
-                <span><i class="fas fa-${icon}"></i></span>
-            </div>
+            <div class="result-icon ${cls}"><span><i class="fas fa-${icon}"></i></span></div>
             <div class="match-body">
                 <div class="match-teams">
                     <div class="home-team">${homeTeam}</div>
@@ -482,9 +492,7 @@ function renderSeasonMatches(matches) {
                 </div>
                 <div class="match-score">${match.score}</div>
                 <div class="match-details">
-                    <span class="match-date">
-                        <i class="fas fa-calendar"></i> ${match.displayDate}
-                    </span>
+                    <span class="match-date"><i class="fas fa-calendar"></i> ${match.displayDate}</span>
                 </div>
             </div>
         `;
@@ -492,8 +500,9 @@ function renderSeasonMatches(matches) {
     });
 }
 
-/* Configureer de dropdown voor seizoenselectie */
-function initArchiveDropdown() {
+// ── Dropdowns ─────────────────────────────────────────────────────────────────
+
+function initSeasonDropdown() {
     const dropdownEl = document.getElementById('season-select');
     if (!dropdownEl) return;
     const selected = dropdownEl.querySelector('.selected');
@@ -515,8 +524,7 @@ function initArchiveDropdown() {
     });
 }
 
-/* Configureer de dropdown voor speler-sortering */
-function initArchivePlayerSort() {
+function initPlayerSortDropdown() {
     const dropdown = document.getElementById('archive-player-sort');
     if (!dropdown) return;
     const selected = dropdown.querySelector('.selected');
@@ -540,8 +548,7 @@ function initArchivePlayerSort() {
     });
 }
 
-/* Eén globale listener om alle actieve dropdowns te sluiten */
-function initGlobalDropdownCloser() {
+function bindDropdownClose() {
     document.addEventListener('click', e => {
         const seasonDropdown = document.getElementById('season-select');
         if (seasonDropdown && !seasonDropdown.contains(e.target)) {
@@ -557,41 +564,31 @@ function initGlobalDropdownCloser() {
     });
 }
 
-/* Maak specifieke tabelkoppen sorteerbaar */
-function initArchiveSortableHeaders() {
-    const headerCells = document.querySelectorAll('#archive-players-section .table-header .table-cell');
+// ── Sortable Headers ──────────────────────────────────────────────────────────
 
-    headerCells.forEach((cell, index) => {
-        let key = null;
-        let label = '';
+function initSortHeaders() {
+    document.querySelectorAll('#archive-players-section .table-header .table-cell').forEach((cell, index) => {
+        const keyMap = { 3: 'goals', 4: 'matches', 5: 'avg-goals' };
+        const lblMap = {
+            3: 'Totaal Doelpunten',
+            4: 'Gespeelde Wedstrijden',
+            5: 'Gemiddelde Doelpunten per Wedstrijd'
+        };
+        const key = keyMap[index];
+        if (!key) return;
 
-        if (index === 3) {
-            key = 'goals';
-            label = 'Totaal Doelpunten';
-        } else if (index === 4) {
-            key = 'matches';
-            label = 'Gespeelde Wedstrijden';
-        } else if (index === 5) {
-            key = 'avg-goals';
-            label = 'Gemiddelde Doelpunten per Wedstrijd';
-        }
-
-        if (key) {
-            cell.style.cursor = 'pointer';
-            cell.addEventListener('click', () => {
-                const sortSel = document.querySelector('#archive-player-sort .selected');
-                if (sortSel) {
-                    sortSel.dataset.value = key;
-                    sortSel.textContent = label;
-                }
-                renderArchivePlayers(key);
-            });
-        }
+        cell.style.cursor = 'pointer';
+        cell.addEventListener('click', () => {
+            const sortSel = document.querySelector('#archive-player-sort .selected');
+            if (sortSel) { sortSel.dataset.value = key; sortSel.textContent = lblMap[index]; }
+            renderArchivePlayers(key);
+        });
     });
 }
 
-/* Verbind de klik-events op wedstrijdkaarten aan de modal */
-function setupArchiveMatchInteractions() {
+// ── Match Interactions ────────────────────────────────────────────────────────
+
+function bindArchiveMatchClicks() {
     document.querySelectorAll('#archive-matches-grid .archive-match-card').forEach(card => {
         card.style.cursor = 'pointer';
 
@@ -599,26 +596,23 @@ function setupArchiveMatchInteractions() {
             const matchDate = card.getAttribute('data-match-date') || 'TBD';
             const matchTime = card.getAttribute('data-match-time') || 'TBD';
 
-            const dateParts  = matchDate.split(' ');
-            const day        = dateParts[0] || '';
-            const monthEn    = (dateParts[1] || '').toLowerCase();
-            const monthDutch = monthMapEnglishToDutch[monthEn] || monthEn;
-            const displayDate = `${day} ${monthDutch}`;
+            const dateParts   = matchDate.split(' ');
+            const day         = dateParts[0] || '';
+            const monthEn     = (dateParts[1] || '').toLowerCase();
+            const displayDate = `${day} ${MONTH_EN_TO_NL[monthEn] || monthEn}`;
 
             let goalscorers = [];
-            try {
-                goalscorers = JSON.parse(card.getAttribute('data-goalscorers') || '[]');
-            } catch (e) {}
+            try { goalscorers = JSON.parse(card.getAttribute('data-goalscorers') || '[]'); } catch (e) {}
 
             const matchData = {
                 title:      card.getAttribute('data-match-title') || 'Wedstrijddetails',
                 stadium:    card.getAttribute('data-venue')        || 'Onbekend stadion',
                 score:      card.getAttribute('data-score'),
-                result: card.getAttribute('data-result') || null,
+                result:     card.getAttribute('data-result')       || null,
                 season:     card.getAttribute('data-match-season') || '',
                 isUpcoming: false,
                 goalscorers,
-                dateTime: { date: matchDate, time: matchTime, displayDate },
+                dateTime: { date: matchDate, time: matchTime, displayDate }
             };
 
             if (window.matchModal) {
@@ -630,23 +624,21 @@ function setupArchiveMatchInteractions() {
     });
 }
 
-/* Initialiseer intersection observer voor getrapte animaties */
+// ── Match Card Animations ─────────────────────────────────────────────────────
+
 function animateArchiveMatches() {
-    const observer = new IntersectionObserver((entries, observer) => {
+    const observer = new IntersectionObserver((entries, obs) => {
         entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                const container = entry.target.closest('#archive-matches-grid');
-                const items = Array.from(container.querySelectorAll('.archive-match-card'));
-                const index = items.indexOf(entry.target);
+            if (!entry.isIntersecting) return;
 
-                setTimeout(() => {
-                    entry.target.classList.add('animate-in');
-                }, index * 30);
+            const container = entry.target.closest('#archive-matches-grid');
+            const items     = Array.from(container.querySelectorAll('.archive-match-card'));
+            const index     = items.indexOf(entry.target);
 
-                observer.unobserve(entry.target);
-            }
+            setTimeout(() => entry.target.classList.add('animate-in'), index * 30);
+            obs.unobserve(entry.target);
         });
     }, { root: null, rootMargin: '0px', threshold: 0.1 });
 
-    document.querySelectorAll('.archive-match-card:not(.animate-in)').forEach(card => observer.observe(card));
+    document.querySelectorAll('.archive-match-card:not(.animate-in)').forEach(c => observer.observe(c));
 }
