@@ -3,7 +3,6 @@
  *
  * Changes:
  *   - `initializeCarousel`          → `initCarousel`
- *   - `initializePrimaryButtonHover`→ removed; replaced by shared `initRippleEffect`
  *   - `fetchAndRenderData`          → `loadPageData`
  *   - `fetchAndRenderMatches`       → `loadMatches`
  *   - `fetchAndRenderTeamStats`     → `loadTeamStats`
@@ -12,7 +11,7 @@
  *   - `renderForm`                  → REMOVED (moved to general.js, imported from there)
  *   - `updateCountdown`             → `setCountdownData` (import rename)
  */
-import { animateOnScroll, setupSmoothScrolling, initRippleEffect } from './utils/animations.js';
+import { animateOnScroll, setupSmoothScrolling} from './utils/animations.js';
 import { initCountdown, setCountdownData, renderForm } from './general.js';
 import { fetchCurrentSeasonMatches, fetchTeamSeasonStats } from './utils/dataService.js';
 
@@ -40,7 +39,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     await loadPageData();
     initCountdown();
     initCarousel();
-    initRippleEffect('.btn-primary');   // replaces initializePrimaryButtonHover
     setupSmoothScrolling();
 
     const hero = document.querySelector('.hero');

@@ -1,32 +1,8 @@
 /* ============================================================
-   MATCHES.CSS
+   MATCHES.CSS (Page-specific logic only)
    ============================================================ */
 
-/* ── Result Icons ───────────────────────────────────────────── */
-.result-icon {
-    display:         flex;
-    justify-content: center;
-    align-items:     center;
-    width:           50px;
-    height:          50px;
-    border-radius:   var(--radius-circle);
-    font-size:       1.6rem;
-    color:           var(--off-white);
-    box-shadow:      var(--shadow-medium);
-    transition:      var(--t-reveal-card);
-    position:        relative;
-    z-index:         3;
-}
-
-/* Result colour — single declarations, no redundant grouping */
-.win  .result-icon, .result-icon.win,  .timeline-item.win::before  { background: var(--light-green)   !important; }
-.draw .result-icon, .result-icon.draw, .timeline-item.draw::before { background: var(--golden-yellow) !important; }
-.loss .result-icon, .result-icon.loss, .timeline-item.loss::before { background: var(--soft-coral)    !important; }
-
-/* Default colour for upcoming/neutral matches */
-.result-icon:not(.win):not(.draw):not(.loss) { background: var(--dusty-blue); }
-
-/* ── Upcoming Matches Section ───────────────────────────────── */
+/* ── Section Headers ────────────────────────────────────────── */
 .fixtures-section {
     margin-top: 4rem;
 }
@@ -35,155 +11,8 @@
     background-color: var(--dusty-blue);
 }
 
-/* ── Match Cards Grid ───────────────────────────────────────── */
-.matches-grid {
-    display:               grid;
-    grid-template-columns: repeat(2, minmax(260px, 1fr));
-    gap:                   1rem;
-    width:                 var(--content-width);
-    margin:                0 auto;
-    padding:               0;
-}
-
-.matches-grid.no-matches {
-    width:     100%;
-    max-width: 1200px;
-    padding:   0 15px;
-}
-
-.matches-grid.no-matches .upcoming-match-name {
-    grid-column:  1 / -1;
-    justify-self: center;
-    align-self:   center;
-    margin:       4rem auto;
-    max-width:    600px;
-}
-
-/* ── Match Card ─────────────────────────────────────────────── */
-.match-card.modern {
-    background:    white;
-    border-radius: var(--radius-lg);
-    box-shadow:    var(--shadow-medium);
-    cursor:        pointer;
-    border:        3px solid transparent;
-    position:      relative;
-    transition:    var(--t-reveal-card);
-}
-
-.match-card.modern:hover {
-    box-shadow:  var(--shadow-hover);
-    transform:   translateY(var(--hover-lift)) !important;
-    border-color: var(--dusty-blue);
-    transition:  var(--t-hover);
-}
-
-/* Result-state border overrides on hover */
-.match-card.modern:has(.result-icon.win):hover,
-.match-card.modern.win:hover  { border-color: var(--light-green)   !important; }
-.match-card.modern:has(.result-icon.draw):hover,
-.match-card.modern.draw:hover { border-color: var(--golden-yellow) !important; }
-.match-card.modern:has(.result-icon.loss):hover,
-.match-card.modern.loss:hover { border-color: var(--soft-coral)    !important; }
-
-/* Positioned result icon badge */
-.match-card.modern .result-icon {
-    display:  flex;
-    position: absolute;
-    top:      16px;
-    right:    16px;
-    line-height: 1;
-    justify-content: center;
-    align-items:     center;
-}
-
-.match-card.modern .result-icon i {
-    display:   block;
-    line-height: 1;
-    transform: translateY(1px);
-}
-
-/* ── Match Card Body ────────────────────────────────────────── */
-.match-body {
-    padding:         20px 24px 24px;
-    display:         flex;
-    flex-direction:  column;
-    align-items:     center;
-    text-align:      center;
-}
-
-.match-teams {
-    margin: 0 0 20px;
-    width:  100%;
-}
-
-/* .home-team and .away-team classes are shared with matchModal.css;
-   the values here are intentionally scoped to .match-body context */
-.match-body .home-team,
-.match-body .away-team {
-    font-size:   var(--text-lg);
-    color:       var(--dark-gray);
-    font-family: 'Poppins', sans-serif;
-    font-weight: 600;
-    line-height: 1;
-    margin:      4px 0;
-}
-
-.vs-divider {
-    color:       var(--medium-gray);
-    font-size:   var(--text-sm);
-    font-weight: 500;
-    margin:      8px 0;
-}
-
-.match-score {
-    background:    var(--off-white);
-    padding:       12px 20px;
-    border-radius: var(--radius-pill);
-    font-size:     2rem;
-    font-weight:   700;
-    color:         var(--dark-gray);
-    font-family:   'Poppins', sans-serif;
-    border:        3px solid var(--dusty-blue);
-    margin:        10px 0 20px;
-    box-shadow:    var(--shadow-medium);
-    transition:    var(--t-reveal-card);
-}
-
-/* Result-state score border overrides */
-.match-card.modern:has(.result-icon.win)  .match-score,
-.match-card.modern.win  .match-score { border-color: var(--light-green)   !important; }
-.match-card.modern:has(.result-icon.draw) .match-score,
-.match-card.modern.draw .match-score { border-color: var(--golden-yellow) !important; }
-.match-card.modern:has(.result-icon.loss) .match-score,
-.match-card.modern.loss .match-score { border-color: var(--soft-coral)    !important; }
-
-/* Upcoming (no result) score has smaller font */
-.match-card.modern:not(.result) .match-score { font-size: 1.3rem; }
-
-.match-details {
-    display:        flex;
-    flex-direction: column;
-    gap:            8px;
-    align-items:    center;
-    width:          100%;
-}
-
-.match-date,
-.match-venue {
-    color:       var(--medium-gray);
-    font-size:   var(--text-sm);
-    font-family: 'Poppins', sans-serif;
-    font-weight: 500;
-    display:     flex;
-    align-items: center;
-    gap:         6px;
-}
-
-.match-date i,
-.match-venue i {
-    font-size:  0.9em;
-    opacity:    0.8;
-    line-height: 1;
+.matches-section .section-title::after {
+    background-color: var(--dark-yellow);
 }
 
 /* ── Timeline ───────────────────────────────────────────────── */
@@ -209,7 +38,6 @@
     min-width:       100%;
 }
 
-/* Start knob */
 .timeline-start-knob {
     position:      absolute;
     top:           47.3%;
@@ -227,7 +55,6 @@
 
 .timeline-start-knob.animate-in { opacity: 1; }
 
-/* Connecting line — animates in via scaleX */
 .timeline::before {
     content:          '';
     position:         absolute;
@@ -246,7 +73,6 @@
 
 .timeline.animate-in::before { transform: translateY(-2px) scaleX(1); }
 
-/* Arrow at the end of the line */
 .timeline::after {
     content:        '\f054';
     font-family:    'Font Awesome 6 Free', serif;
@@ -277,11 +103,19 @@
     transition:      var(--t-hover);
 }
 
+.timeline-item .result-icon {
+    font-size:     1.3rem;
+    margin-bottom: 1.5rem;
+    z-index:       4;
+}
+
+.timeline-item.win::before { background: var(--light-green); }
+.timeline-item.draw::before { background: var(--golden-yellow); }
+.timeline-item.loss::before { background: var(--soft-coral); }
+
 .timeline-item:hover               { transform: translateY(var(--hover-lift)); transition: var(--t-hover); }
-.timeline-item .result-icon        { margin-bottom: 1.5rem; z-index: 4; }
 .timeline-item:hover .result-icon  { box-shadow: var(--shadow-hover); transform: translateY(-10px); transition: var(--t-hover); }
 
-/* Centre dot on the line */
 .timeline-item::before {
     content:       '';
     position:      absolute;
@@ -363,88 +197,27 @@
     object-fit: contain;
     filter:     grayscale(100%);
     opacity:    0.7;
-    transition:
-        filter  var(--dur-base) var(--ease-standard),
-        opacity var(--dur-base) var(--ease-standard);
+    transition: filter var(--dur-base) var(--ease-standard), opacity var(--dur-base) var(--ease-standard);
 }
 
-.sponsor-item:hover .sponsor-logo {
-    filter:  grayscale(0%);
-    opacity: 1;
-}
+.sponsor-item:hover .sponsor-logo { filter: grayscale(0%); opacity: 1; }
 
 /* ── Responsive: Tablet (≤ 768 px) ─────────────────────────── */
 @media (max-width: 768px) {
-    .matches-grid {
-        grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
-    }
-
-    .match-card.modern {
-        box-shadow: var(--shadow-small);
-        border:     none;
-    }
-
-    .match-card.modern:hover {
-        box-shadow: var(--shadow-medium);
-        transform:  translateY(0) !important;
-    }
-
-    .match-body   { padding: 16px; }
-    .match-teams  { margin-bottom: 12px; }
-    .vs-divider   { margin: 6px 0; }
-
-    .match-score {
-        font-size: 1.2rem;
-        padding:   8px 14px;
-        border:    1px solid var(--silver-mist);
-        box-shadow: var(--shadow-small);
-        margin:    8px 0 12px;
-    }
-
-    .match-card.modern:not(.result) .match-score { font-size: 1rem; }
-
-    .match-card.modern .result-icon {
-        width:     30px;
-        height:    30px;
-        font-size: 1rem;
-        top:       -8px;
-        right:     -8px;
-        box-shadow: var(--shadow-small);
-    }
-
-    .match-date,
-    .match-venue { gap: 5px; }
-
-    .timeline-wrapper {
-        min-height: 160px;
-        margin:     0.8rem auto;
-    }
-
-    .timeline {
-        min-height: 160px;
-        padding:    0;
-    }
-
+    .timeline-wrapper { min-height: 160px; margin: 0.8rem auto; }
+    .timeline { min-height: 160px; padding: 0; }
     .timeline-start-knob { width: 10px; height: 10px; }
-
     .timeline::before { height: 3px; right: 0.8rem; }
     .timeline::after  { font-size: 20px; top: 49.7%; transform: translate(50%, -49%); }
 
-    .timeline-item {
-        min-width: 100px;
-        padding:   0 8px;
-    }
+    .timeline-item { min-width: 100px; padding: 0 8px; }
+    .timeline-item:hover, .timeline-item:hover .result-icon { transform: translateY(0) !important; }
+    .timeline-item .result-icon { font-size: 0.85rem; margin-bottom: 1rem; }
+    .timeline-item small { padding: 0.25rem 0.5rem; }
+    .timeline-item::before { width: 16px; height: 16px; }
 
-    .timeline-item:hover,
-    .timeline-item:hover .result-icon { transform: translateY(0) !important; }
-
-    .timeline-item .result-icon { width: 30px; height: 30px; font-size: 1rem; margin-bottom: 1rem; }
-    .timeline-item small        { padding: 0.25rem 0.5rem; }
-    .timeline-item::before      { width: 16px; height: 16px; }
-
-    .fixtures-section     { margin-top: 0.8rem; }
+    .fixtures-section { margin-top: 0.8rem; }
     .upcoming-match-name h3 { margin: 0.5rem 0; }
-
     .ticker-wrapper { padding: 1rem 0 0; }
     .ticker-track   { gap: 2rem; }
     .sponsor-logo   { height: 60px; }
@@ -452,44 +225,17 @@
 
 /* ── Responsive: Mobile (≤ 480 px) ─────────────────────────── */
 @media (max-width: 480px) {
-    .matches-grid {
-        grid-template-columns: repeat(2, minmax(160px, 1fr));
-        gap: 0.8rem;
-    }
-
-    /* Negate extra space the form-results strip causes */
     .form-results  { margin-bottom: -1.5rem; }
     .form-display  { margin-bottom: 0; }
 
-    .match-card.modern { box-shadow: var(--shadow-medium); }
-
-    .match-body  { padding: 14px; }
-    .vs-divider  { margin: 5px 0; }
-
-    .match-score { font-size: 1.1rem; padding: 7px 12px; }
-    .match-card.modern:not(.result) .match-score { font-size: 0.9rem; }
-    .match-card.modern .result-icon { box-shadow: var(--shadow-medium); z-index: 3; }
-
-    .timeline-wrapper {
-        min-height: 140px;
-        margin:     0.6rem auto;
-        transform:  translateX(0.3rem);
-    }
-
-    .timeline {
-        min-height: 140px;
-        transform:  translateY(10px);
-    }
-
+    .timeline-wrapper { min-height: 140px; margin: 0.6rem auto; transform: translateX(0.3rem); }
+    .timeline { min-height: 140px; transform: translateY(10px); }
     .timeline-start-knob { width: 8px; height: 8px; }
-
     .timeline::before { top: 50.5%; height: 2px; right: 0.6rem; }
     .timeline::after  { top: 49.5%; font-size: 18px; }
 
     .timeline-item { min-width: 90px; padding: 0 6px; }
-    .timeline-item .result-icon { margin-bottom: 0.8rem; }
-    .timeline-item small        { padding: 0.2rem 0.4rem; }
-    .timeline-item::before      { width: 14px; height: 14px; }
-
+    .timeline-item small { padding: 0.2rem 0.4rem; }
+    .timeline-item::before { width: 14px; height: 14px; }
     .sponsor-logo { height: 50px; }
 }

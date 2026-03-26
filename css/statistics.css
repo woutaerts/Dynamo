@@ -348,124 +348,6 @@ body.player-alltime .player-rank {
 
 .stat-number { color: var(--primary-theme-color); }
 
-/* ── Tables ─────────────────────────────────────────────────── */
-.top-scorers-table,
-.player-stats-table {
-    background:    white;
-    border-radius: var(--radius-lg);
-    box-shadow:    var(--shadow-medium);
-    overflow:      hidden;
-    max-width:     var(--content-width);
-    margin:        0 auto;
-}
-
-.table-header,
-.scorer-row,
-.player-row {
-    display:               grid;
-    grid-template-columns: 50px 80px 1fr 100px 100px 100px;
-    gap:                   1rem;
-    padding:               1rem;
-    align-items:           center;
-}
-
-.table-header {
-    background:     var(--primary-theme-color);
-    color:          white;
-    font-weight:    700;
-    text-transform: uppercase;
-    font-size:      var(--text-sm);
-}
-
-.table-header .table-cell:first-child {
-    display:         flex;
-    align-items:     center;
-    justify-content: center;
-}
-
-.scorer-row,
-.player-row {
-    border-bottom: 1px solid var(--light-gray);
-    transition:    var(--t-bg);
-}
-
-.scorer-row:hover,
-.player-row:hover { background: var(--light-gray); }
-
-.table-cell { text-align: center; }
-
-.scorer-rank,
-.player-rank {
-    background:      var(--primary-theme-color);
-    color:           white;
-    width:           30px;
-    height:          30px;
-    border-radius:   var(--radius-circle);
-    display:         flex;
-    align-items:     center;
-    justify-content: center;
-    font-weight:     700;
-    margin:          0 auto;
-    padding:         0;
-    font-size:       var(--text-body);
-    line-height:     normal;
-}
-
-.scorer-position i,
-.player-position i { font-size: 1.2rem; }
-
-.scorer-name,
-.player-name {
-    font-size:   var(--text-lg);
-    font-weight: 700;
-    color:       var(--primary-theme-color);
-}
-
-.scorer-goals, .scorer-matches, .scorer-avg-goals,
-.player-goals, .player-matches, .player-avg-goals {
-    font-size:   var(--text-body);
-    font-weight: 700;
-}
-
-/* Tooltips */
-.table-cell.player-position,
-.table-cell.scorer-position {
-    position: relative;
-    cursor:   pointer;
-}
-
-.table-cell.player-position .tooltip,
-.table-cell.scorer-position .tooltip {
-    visibility:       hidden;
-    position:         absolute;
-    bottom:           100%;
-    left:             50%;
-    transform:        translateX(-50%);
-    background-color: var(--primary-theme-color);
-    color:            white;
-    padding:          0.5rem 1rem;
-    border-radius:    var(--radius-sm);
-    font-size:        var(--text-sm);
-    white-space:      nowrap;
-    z-index:          var(--z-dropdown);
-    opacity:          0;
-    transition:       var(--t-tooltip);
-}
-
-.table-cell.player-position:hover .tooltip,
-.table-cell.scorer-position:hover .tooltip {
-    visibility: visible;
-    opacity:    1;
-}
-
-/* ── Responsive: Desktop (> 768 px) ────────────────────────── */
-@media (min-width: 769px) {
-    .section-title br { display: none; }
-    .desktop-only     { display: inline-block !important; }
-    .mobile-only      { display: none !important; }
-    .header-icon      { display: none; }
-}
-
 /* ── Responsive: Tablet (≤ 768 px) ─────────────────────────── */
 @media (max-width: 768px) {
     .desktop-only { display: none !important; }
@@ -542,30 +424,6 @@ body.player-alltime .player-rank {
     .toggle-label { top: 0; }
     .toggle-label:first-child { justify-self: end; text-align: right; }
     .toggle-label:last-child  { justify-self: start; text-align: left; }
-
-    /* Tables Mobile Tweaks */
-    .table-header,
-    .scorer-row,
-    .player-row {
-        grid-template-columns: 33px 1fr 50px 50px 50px;
-        gap:                   0.8rem;
-        padding:               0.8rem;
-    }
-    .table-header .table-cell:nth-child(2),
-    .scorer-position,
-    .player-position { display: none; }
-
-    .scorer-name,
-    .player-name { font-size: 0.85rem; }
-
-    .scorer-rank,
-    .player-rank { width: 22px; height: 22px; font-size: 0.75rem; }
-
-    .header-icon {
-        display:     inline-block;
-        font-size:   0.9rem;
-        line-height: 1;
-    }
 }
 
 /* ── Responsive: Mobile (≤ 480 px) ─────────────────────────── */
@@ -619,16 +477,4 @@ body.player-alltime .player-rank {
     #season-alltime-toggle-btn .checkbox:active + .knob:before { width: 36px; }
     #team-player-toggle-btn .checkbox:checked:active + .knob:before,
     #season-alltime-toggle-btn .checkbox:checked:active + .knob:before { margin-left: -12px; }
-
-    /* Tables Tweaks */
-    .table-header,
-    .scorer-row,
-    .player-row {
-        grid-template-columns: 35px 1fr 45px 45px 45px;
-        gap:                   0.2rem;
-        padding:               0.6rem;
-    }
-    .scorer-rank,
-    .player-rank { width: 22px; height: 22px; }
-    .header-icon { font-size: 1.2em; }
 }

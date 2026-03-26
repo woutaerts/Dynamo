@@ -124,7 +124,7 @@ body {
     letter-spacing: 1px;
     font-size:      var(--text-body);
     cursor:         pointer;
-    transition:     var(--t-color), var(--t-bg);
+    transition:     all var(--dur-base) var(--ease-ui);
     display:        flex;
     align-items:    center;
     justify-content: center;
@@ -157,29 +157,10 @@ body {
     margin-left: 8px;
 }
 
-/* Ripple fill on hover */
-.nav-link span.ripple {
-    position:         absolute;
-    display:          block;
-    width:            0;
-    height:           0;
-    border-radius:    var(--radius-circle);
-    background-color: var(--dynamo-red);
-    transition:       var(--t-ripple);
-    transform:        translate(-50%, -50%);
-    z-index:          -1;
-}
-
-.nav-link:hover { color: var(--off-white); }
-
-.nav-link:hover span.ripple,
-.nav-link:focus span.ripple {
-    width:  200%;
-    height: 165px;
-}
-
-.nav-link.active,
-.nav-link:focus {
+/* Clean solid background fade on hover/focus/active */
+.nav-link:hover,
+.nav-link:focus,
+.nav-link.active {
     color:      var(--off-white);
     background: var(--dynamo-red);
 }
@@ -363,24 +344,23 @@ body {
         justify-content: center;
     }
 
-    /* Disable ripple on touch — use solid bg instead */
-    .nav-link:hover span.ripple,
-    .nav-link:focus span.ripple {
-        width:      0 !important;
-        height:     0 !important;
-        transition: none !important;
-    }
-
+    /* Prevent sticky hover states on touch devices */
     .nav-link:hover,
     .nav-link:focus {
         color:      var(--dark-gray);
         background: transparent;
     }
 
-    .mobile-search-link:hover,
-    .mobile-menu-toggle:hover {
-        transform:  none !important;
-        background: rgba(255, 255, 255, 0.5);
+    /* Ensure the active page still highlights */
+    .nav-link.active {
+        color:      var(--off-white);
+        background: var(--dynamo-red);
+    }
+
+    /* Hide icon-only nav links; show text labels via span.nav-text */
+    .nav-link.search-link,
+    .nav-link i {
+        display: none;
     }
 
     /* Hide icon-only nav links; show text labels via span.nav-text */
@@ -462,7 +442,6 @@ body {
 
     .header,
     .nav-link,
-    .nav-link span.ripple,
     .scroll-progress-bar,
     .mobile-menu-toggle span,
     .nav-links {

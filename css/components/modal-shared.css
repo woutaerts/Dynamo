@@ -28,9 +28,9 @@ body.modal-open {
 }
 
 .modal-overlay.show {
-    opacity:        1;
-    visibility:     visible;
-    pointer-events: auto;
+    opacity:        1 !important;
+    visibility:     visible !important;
+    pointer-events: auto !important;
 }
 
 /* ── Modal Content ──────────────────────────────────────────── */

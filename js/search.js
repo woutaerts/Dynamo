@@ -108,7 +108,7 @@ function renderSearchResults(matches) {
         const cls  = resultToClass(match.result);
         const icon = resultToIcon(cls);
         const card = document.createElement('div');
-        card.className    = 'match-card modern result';
+        card.className    = 'match-card result';
         card.style.cursor = 'pointer';
         card.setAttribute('data-match-data', JSON.stringify(match));
 
@@ -140,7 +140,7 @@ function renderSearchResults(matches) {
 // ── Interactions ──────────────────────────────────────────────────────────────
 
 function bindCardClicks() {
-    document.querySelectorAll('#search-results-grid .match-card.modern.result').forEach(card => {
+    document.querySelectorAll('#search-results-grid .match-card.result').forEach(card => {
         card.addEventListener('click', () => {
             const raw = card.getAttribute('data-match-data');
             if (!raw) return;

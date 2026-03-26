@@ -74,11 +74,11 @@
 .matches-section .section-title::after{
     background-color: var(--dark-blue);
 }
-.match-card.modern {
-    cursor: default; /* not clickable in search results */
+.match-card {
+    cursor: default;
 }
 
-.match-card.modern:hover {
+.match-card:hover {
     box-shadow: var(--shadow-hover);
     transform:  translateY(var(--hover-lift));
 }
@@ -92,7 +92,7 @@
     .match-season { gap: 5px; }
 
     /* Disable hover lift on touch */
-    .match-card.modern:hover {
+    .match-card:hover {
         transform:  translateY(0) !important;
         box-shadow: var(--shadow-hover);
     }

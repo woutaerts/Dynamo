@@ -23,9 +23,6 @@ class MatchModal {
         const placeholder = document.getElementById('match-modal-placeholder');
         if (!placeholder) return;
 
-        placeholder.style.opacity    = '0';
-        placeholder.style.visibility = 'hidden';
-
         try {
             const response = await fetch('/dynamo/html/components/matchModal.html');
             placeholder.innerHTML = await response.text();
@@ -35,8 +32,6 @@ class MatchModal {
                 this.bindEvents();
                 this.isInitialized = true;
 
-                placeholder.style.opacity    = '1';
-                placeholder.style.visibility = 'visible';
             }
         } catch (error) {
             console.error('Failed to load match modal:', error);

@@ -116,7 +116,7 @@ function renderUpcomingMatches(upcomingMatches) {
 
     upcomingMatches.slice(0, 6).forEach(match => {
         const card = document.createElement('div');
-        card.className = 'match-card modern';
+        card.className = 'match-card';
         card.setAttribute('data-match-data', JSON.stringify(match));
 
         const [homeTeam, awayTeam] = match.title.split(' vs ');
@@ -160,7 +160,7 @@ function renderRecentMatches(pastMatches) {
         const cls  = resultToClass(match.result);
         const icon = resultToIcon(cls);
         const card = document.createElement('div');
-        card.className = 'match-card modern result';
+        card.className = 'match-card result';
         card.setAttribute('data-match-data', JSON.stringify(match));
 
         const [homeTeam, awayTeam] = match.title.split(' vs ');
@@ -270,7 +270,7 @@ function renderSponsorsTicker(allMatches) {
 // ── Interactions ──────────────────────────────────────────────────────────────
 
 function bindMatchCardClicks() {
-    document.querySelectorAll('.match-card.modern').forEach(card => {
+    document.querySelectorAll('.match-card').forEach(card => {
         card.addEventListener('click', () => {
             const raw = card.getAttribute('data-match-data');
             if (!raw) return;

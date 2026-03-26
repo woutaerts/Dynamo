@@ -36,7 +36,9 @@ import {
 const animationElements = [
     { selector: '.page-hero h1',                          containerSelector: 'section' },
     { selector: '.section-title',                         containerSelector: 'section' },
-    { selector: '.picker-section .season-picker',         containerSelector: 'section' }
+    { selector: '.section-subtitle',                      containerSelector: 'section' },
+    { selector: '.picker-section .season-picker',         containerSelector: 'section' },
+    { selector: '.podium-step',                           containerSelector: '.podium-container' }
 ];
 
 // ── Season Configuration ──────────────────────────────────────────────────────
@@ -49,6 +51,7 @@ const SEASON_CONFIG = {
         playerRows: { first: 4, last: 51 },
         playerCols: { name: colIndex('B'), position: colIndex('D'), goals: colIndex('AD'), matches: colIndex('AE') },
         statsCell:  { played: [77, colIndex('AE')], wins: [75, colIndex('AG')], draws: [76, colIndex('AG')], losses: [77, colIndex('AG')], goalsFor: [74, colIndex('AE')], goalsAgainst: [75, colIndex('AE')] },
+        goldenShoe: { col: colIndex('AD'), gold: 84, silver: 85, bronze: 86 }
     },
     '2024-2025': {
         label: '2024-2025', url: SHEET_URLS.season2425,
@@ -57,6 +60,7 @@ const SEASON_CONFIG = {
         playerRows: { first: 7, last: 51 },
         playerCols: { name: colIndex('B'), position: colIndex('D'), goals: colIndex('AD'), matches: colIndex('AE') },
         statsCell:  { played: [78, colIndex('AE')], wins: [76, colIndex('AG')], draws: [77, colIndex('AG')], losses: [78, colIndex('AG')], goalsFor: [75, colIndex('AE')], goalsAgainst: [76, colIndex('AE')] },
+        goldenShoe: { col: colIndex('AD'), gold: 84, silver: 85, bronze: 86 }
     },
     '2023-2024': {
         label: '2023-2024', url: SHEET_URLS.season2324,
@@ -65,6 +69,7 @@ const SEASON_CONFIG = {
         playerRows: { first: 7, last: 50 },
         playerCols: { name: colIndex('B'), position: colIndex('D'), goals: colIndex('AC'), matches: colIndex('AD') },
         statsCell:  { played: [67, colIndex('AD')], wins: [65, colIndex('AF')], draws: [66, colIndex('AF')], losses: [67, colIndex('AF')], goalsFor: [64, colIndex('AD')], goalsAgainst: [65, colIndex('AD')] },
+        goldenShoe: { col: colIndex('AC'), gold: 70, silver: 71, bronze: 72 }
     },
     '2022-2023': {
         label: '2022-2023', url: SHEET_URLS.season2223,
@@ -73,6 +78,7 @@ const SEASON_CONFIG = {
         playerRows: { first: 7, last: 52 },
         playerCols: { name: colIndex('B'), position: colIndex('D'), goals: colIndex('Z'), matches: colIndex('AA') },
         statsCell:  { played: [76, colIndex('AA')], wins: [74, colIndex('AC')], draws: [75, colIndex('AC')], losses: [76, colIndex('AC')], goalsFor: [73, colIndex('AA')], goalsAgainst: [74, colIndex('AA')] },
+        goldenShoe: { col: colIndex('Z'), gold: 79, silver: 80, bronze: 81 }
     },
     '2021-2022': {
         label: '2021-2022', url: SHEET_URLS.season2122,
@@ -81,6 +87,7 @@ const SEASON_CONFIG = {
         playerRows: { first: 7, last: 47 },
         playerCols: { name: colIndex('B'), position: colIndex('D'), goals: colIndex('AA'), matches: colIndex('AB') },
         statsCell:  { played: [59, colIndex('AB')], wins: [57, colIndex('AD')], draws: [58, colIndex('AD')], losses: [59, colIndex('AD')], goalsFor: [56, colIndex('AB')], goalsAgainst: [57, colIndex('AB')] },
+        goldenShoe: { col: colIndex('AA'), gold: 62, silver: 63, bronze: 64 }
     },
 };
 
@@ -233,7 +240,9 @@ async function loadSeasonData(seasonString) {
         const stats   = parseSeasonStats(rows, config);
         const players = parseSeasonPlayers(rows, config);
         const matches = parseSeasonMatches(rows, config, seasonString);
+        const shoeData = parseGoldenShoe(rows, config);
 
+        renderGoldenShoe(shoeData);
         renderSeasonStats(stats);
         archivePlayers = players;
         resetTableState('archive-players');
@@ -383,6 +392,35 @@ function parseSeasonMatches(rows, config, seasonString) {
 }
 
 // ── Rendering ─────────────────────────────────────────────────────────────────
+function parseGoldenShoe(rows, config) {
+    if (!config.goldenShoe) return null;
+    const { col, gold, silver, bronze } = config.goldenShoe;
+    const goldName = cellText(rows, gold, col);
+
+    // If the cell is empty or '0', it means the season hasn't awarded the shoe yet
+    if (!goldName || goldName === '0') return null;
+
+    return {
+        gold:   goldName,
+        silver: cellText(rows, silver, col) || '-',
+        bronze: cellText(rows, bronze, col) || '-'
+    };
+}
+
+function renderGoldenShoe(shoeData) {
+    const section = document.getElementById('archive-golden-shoe-section');
+    if (!section) return;
+
+    if (!shoeData) {
+        section.classList.add('hidden');
+        return;
+    }
+
+    section.classList.remove('hidden');
+    document.getElementById('shoe-gold-name').textContent   = shoeData.gold;
+    document.getElementById('shoe-silver-name').textContent = shoeData.silver;
+    document.getElementById('shoe-bronze-name').textContent = shoeData.bronze;
+}
 
 function renderSeasonStats(stats) {
     const map = {
@@ -461,7 +499,7 @@ function renderSeasonMatches(matches) {
         const awayTeam = parts[1] || '';
 
         const card = document.createElement('div');
-        card.className = 'match-card modern result archive-match-card';
+        card.className = 'match-card result archive-match-card';
         card.setAttribute('data-match-title',  match.title);
         card.setAttribute('data-venue',        match.stadium);
         card.setAttribute('data-score',        match.score);

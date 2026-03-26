@@ -159,29 +159,127 @@
 }
 
 /* ── Players Section Colour Overrides ───────────────────────── */
-#archive-players-section .section-title::after,
-#archive-players-section .table-header,
-#archive-players-section .player-rank,
-#archive-players-section .table-cell.player-position .tooltip {
+
+#archive-players-section .sort-controls {
+    justify-content: flex-end;
+}
+
+#archive-players-section {
+    --dropdown-border-color: var(--dark-green);
+    --primary-theme-color:   var(--dark-green);
+}
+
+#archive-players-section .section-title::after {
     background-color: var(--dark-green);
 }
 
-#archive-players-section .player-rank  { color: white; }
-
-#archive-players-section .player-name,
-#archive-players-section .dropdown .options li:hover {
-    color: var(--dark-green);
+/* ── Golden Shoe ───────────────────────────────────── */
+#archive-golden-shoe-section .section-subtitle::after {
+    background: var(--dynamo-red);
 }
 
-/* Theme the .dropdown in the archive players section */
-#archive-players-section {
-    --dropdown-border-color: var(--dark-green);
+.podium-container {
+    display:         flex;
+    align-items:     flex-end;
+    justify-content: center;
+    gap:             1rem;
+    margin:          1rem auto 0;
+    padding:         1rem 0;
+    width:           var(--content-width);
 }
 
-/* Remove tooltip arrow on position cells in archive */
-#archive-players-section .table-cell.player-position::after,
-#archive-players-section .table-cell.player-position:hover::after {
-    display: none;
+.podium-step {
+    flex:           1;
+    max-width:      160px;
+    display:        flex;
+    flex-direction: column;
+    align-items:    center;
+    opacity:        0;
+    transform:      translateY(30px);
+    transition:     var(--t-reveal-card);
+}
+
+.podium-step.animate-in {
+    opacity:   1;
+    transform: translateY(0);
+}
+
+/* Stagger entrances natively in CSS based on standard class additions */
+.podium-step.silver { transition-delay: 0.1s; }
+.podium-step.gold   { transition-delay: 0.2s; }
+.podium-step.bronze { transition-delay: 0.3s; }
+
+.podium-player {
+    font-size:     var(--text-body);
+    font-weight:   700;
+    color:         var(--dark-gray);
+    text-align:    center;
+    margin-bottom: 0.4rem;
+    font-family:   'Poppins', sans-serif;
+    line-height:   1.2;
+}
+
+.podium-block {
+    width:            100%;
+    background:       white;
+    box-shadow:       var(--shadow-medium);
+    border-radius:    var(--radius-md) var(--radius-md) 0 0;
+    display:          flex;
+    flex-direction:   column;
+    align-items:      center;
+    justify-content:  flex-end;
+    gap:              1rem;
+    padding:          1rem 0.5rem;
+    position:         relative;
+    transition:       var(--t-hover);
+}
+
+.podium-block:hover{
+    transform:  translateY(var(--hover-lift));
+    box-shadow:  var(--shadow-hover);
+}
+
+.podium-block i {
+    font-size: 1.8rem;
+    opacity:   0.9;
+}
+
+.podium-shoe-name {
+    font-size:      0.75rem;
+    font-weight:    800;
+    text-transform: uppercase;
+    text-align:     center;
+    line-height:    1.2;
+    font-family:    'Poppins', sans-serif;
+}
+
+
+/* Podium Heights & Accent Colors */
+.podium-step.gold .podium-block {
+    height:     160px;
+    border-top: 6px solid #D4AF37;
+}
+.podium-step.gold .podium-block i,
+.podium-step.gold .podium-shoe-name {
+    color: #D4AF37;
+}
+
+.podium-step.silver .podium-block {
+    height:     130px;
+    border-top: 6px solid #C0C0C0;
+}
+.podium-step.silver .podium-block i,
+.podium-step.silver .podium-shoe-name {
+    color: #A0A0A0;
+}
+
+.podium-step.bronze .podium-block {
+    height:     100px;
+    border-top: 6px solid #CD7F32;
+}
+.podium-step.bronze .podium-block i,
+.podium-step.bronze .podium-shoe-name {
+    color: #CD7F32;
 }
 
 /* ── Matches Section ─────────────────────────────────────────── */
@@ -312,7 +410,18 @@
     }
 }
 
-/* ── Responsive: Mobile (≤ 480 px) ─────────────────────────── */
+/* Responsive tweaks for mobile */
 @media (max-width: 480px) {
+    .podium-container { gap: 0.5rem; }
+    .podium-player { font-size: var(--text-sm); }
+    .podium-block { padding: 0.8rem 0.3rem; }
+    .podium-block i { font-size: 1.4rem; }
+    .podium-shoe-name { font-size: 0.65rem; }
+
+    .podium-step.gold .podium-block { height: 130px; }
+    .podium-step.silver .podium-block { height: 105px; }
+    .podium-step.bronze .podium-block { height: 80px; }
+
     #archive-stats-grid { gap: 0.8rem; }
+
 }
