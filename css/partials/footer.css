@@ -92,7 +92,7 @@
 /* Cross-fade between grey and red logo on hover */
 .footer-logo-grey,
 .footer-logo-red {
-    transition: opacity var(--dur-base) var(--ease-standard);
+    transition: opacity var(--dur-base) var(--ease-ui);
 }
 
 .footer-logo-grey { opacity: 1; }

@@ -85,7 +85,7 @@
     user-select:   none;
     font-weight:   600;
     color:         var(--dark-gray);
-    transition:    var(--t-hover);
+    transition:    var(--t-interact);
     min-width:     180px;
     z-index:       102;
     font-size:     var(--text-body);
@@ -97,7 +97,7 @@
     box-sizing:    border-box;
     text-align:    center;
     position:      relative;
-    transition:    var(--t-bg);
+    transition:    var(--t-color);
 }
 
 #season-select .selected::after {
@@ -140,7 +140,7 @@
 #season-select .options li {
     padding:    0.6rem 1rem;
     text-align: center;
-    transition: var(--t-bg);
+    transition: var(--t-color);
 }
 
 #season-select .options li:hover {
@@ -196,7 +196,7 @@
     align-items:    center;
     opacity:        0;
     transform:      translateY(30px);
-    transition:     var(--t-reveal-card);
+    transition:     var(--t-reveal);
 }
 
 .podium-step.animate-in {
@@ -231,11 +231,11 @@
     gap:              1rem;
     padding:          1rem 0.5rem;
     position:         relative;
-    transition:       var(--t-hover);
+    transition:       var(--t-interact);
 }
 
 .podium-block:hover{
-    transform:  translateY(var(--hover-lift));
+    transform:  scale(var(--hover-scale));
     box-shadow:  var(--shadow-hover);
 }
 
@@ -310,17 +310,12 @@
 .archive-match-card {
     opacity:    0;
     transform:  translateY(50px);
-    transition: var(--t-reveal-card);
+    transition: var(--t-reveal);
 }
 
 .archive-match-card.animate-in {
     opacity:   1;
     transform: translateY(0);
-}
-
-.archive-match-card:hover {
-    transform:  translateY(var(--hover-lift));
-    box-shadow: var(--shadow-hover);
 }
 
 .archive-empty-msg {

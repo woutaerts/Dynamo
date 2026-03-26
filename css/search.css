@@ -36,7 +36,7 @@
     font-size:   var(--text-sm);
     color:       var(--dark-gray);
     cursor:      pointer;
-    transition:  var(--t-bg), var(--t-color);
+    transition:  var(--t-color), var(--t-color);
 }
 
 .autocomplete-item:hover,
@@ -76,11 +76,6 @@
 }
 .match-card {
     cursor: default;
-}
-
-.match-card:hover {
-    box-shadow: var(--shadow-hover);
-    transform:  translateY(var(--hover-lift));
 }
 
 /* ── Responsive: Tablet (≤ 768 px) ─────────────────────────── */

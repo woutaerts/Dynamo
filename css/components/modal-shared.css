@@ -67,9 +67,9 @@ body.modal-open {
     align-items:   center;
     justify-content: center;
     transition:
-        box-shadow   var(--dur-base) var(--ease-standard),
-        border-color var(--dur-base) var(--ease-standard),
-        color        var(--dur-base) var(--ease-standard);
+        box-shadow   var(--dur-base) var(--ease-ui),
+        border-color var(--dur-base) var(--ease-ui),
+        color        var(--dur-base) var(--ease-ui);
     box-shadow:    var(--shadow-medium);
     line-height:   1;
     padding:       0;

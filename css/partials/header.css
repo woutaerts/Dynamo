@@ -21,8 +21,8 @@ body {
     backdrop-filter: blur(25px);
     box-shadow:    var(--shadow-medium);
     border-radius: var(--radius-pill);
-    transition:    var(--t-hover);
-    animation:     slideDown var(--dur-enter) var(--ease-ui);
+    transition:    var(--t-interact);
+    animation:     slideDown var(--dur-slow) var(--ease-ui);
     padding:       8px 12px;
     will-change:   transform, background, box-shadow, opacity;
 }
@@ -67,7 +67,7 @@ body {
     height:        100%;
     width:         0;
     background:    var(--dynamo-red);
-    transition:    width var(--dur-instant) var(--ease-out);
+    transition:    width var(--dur-fast) var(--ease-out);
     box-shadow:    var(--shadow-medium);
     position:      relative;
     border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
@@ -185,8 +185,8 @@ body {
     padding:         8px 10px;
     backdrop-filter: blur(10px);
     transition:
-        background var(--dur-base) var(--ease-standard),
-        transform  var(--dur-base) var(--ease-standard);
+        background var(--dur-base) var(--ease-ui),
+        transform  var(--dur-base) var(--ease-ui);
     display:         flex;
     align-items:     center;
     text-decoration: none;
@@ -211,8 +211,8 @@ body {
     border-radius:   var(--radius-sm);
     backdrop-filter: blur(10px);
     transition:
-        background var(--dur-base) var(--ease-standard),
-        transform  var(--dur-base) var(--ease-standard);
+        background var(--dur-base) var(--ease-ui),
+        transform  var(--dur-base) var(--ease-ui);
     isolation:       isolate;
 }
 
@@ -228,8 +228,8 @@ body {
     margin:           2px 0;
     border-radius:    var(--radius-sm);
     transition:
-        transform var(--dur-micro) var(--ease-ui),
-        opacity   var(--dur-micro) var(--ease-ui);
+        transform var(--dur-fast) var(--ease-ui),
+        opacity   var(--dur-fast) var(--ease-ui);
     transform-origin: center center;
     will-change:      transform, opacity;
 }
@@ -318,10 +318,10 @@ body {
         gap:              9px;
         box-shadow:       var(--shadow-medium);
         transition:
-            transform   var(--dur-micro) var(--ease-ui),
-            opacity     var(--dur-micro) var(--ease-ui),
-            visibility  var(--dur-micro) var(--ease-ui),
-            max-height  var(--dur-micro) var(--ease-ui);
+            transform   var(--dur-fast) var(--ease-ui),
+            opacity     var(--dur-fast) var(--ease-ui),
+            visibility  var(--dur-fast) var(--ease-ui),
+            max-height  var(--dur-fast) var(--ease-ui);
         transform:        translateY(-20px);
         opacity:          0;
         visibility:       hidden;

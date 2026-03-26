@@ -55,7 +55,7 @@ main .page-hero h1 { margin: 0 auto; }
     letter-spacing: 1px;
     font-size:      var(--text-sm);
     cursor:         pointer;
-    transition:     var(--t-color), var(--t-bg), box-shadow var(--dur-base) var(--ease-standard);
+    transition:     var(--t-color), var(--t-color), box-shadow var(--dur-base) var(--ease-ui);
     display:        flex;
     align-items:    center;
     gap:            0.4rem;
@@ -150,14 +150,14 @@ main .page-hero h1 { margin: 0 auto; }
     border:        3px solid transparent;
     position:      relative;
     overflow:      visible;
-    transition:    var(--t-reveal-card);
+    transition:    var(--t-reveal);
     will-change:   transform, box-shadow, border-color;
 }
 
 .player-card:hover {
     box-shadow: var(--shadow-hover);
-    transform:  translateY(var(--hover-lift)) !important;
-    transition: var(--t-hover);
+    transform:  scale(var(--hover-scale)) !important;
+    transition: var(--t-interact);
 }
 
 /* Position-specific hover border colours */

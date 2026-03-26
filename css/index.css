@@ -45,7 +45,7 @@
     height:           8px;
     background:       var(--dynamo-red);
     border-radius:    var(--radius-sm);
-    transition:       transform var(--dur-reveal) var(--ease-out) var(--delay-stagger);
+    transition:       transform var(--dur-slow) var(--ease-out) var(--delay-stagger);
 }
 
 .hero.animate-in .hero-content::after { transform: translateX(-50%) scaleX(1); }
@@ -86,7 +86,7 @@
     height:     100%;
     object-fit: cover;
     display:    block;
-    transition: transform var(--dur-enter) var(--ease-standard);
+    transition: transform var(--dur-slow) var(--ease-ui);
 }
 
 .slide:hover img { transform: scale(1.05); }
@@ -109,7 +109,7 @@
     display:         flex;
     align-items:     center;
     justify-content: center;
-    transition:      var(--t-hover);
+    transition:      var(--t-interact);
     z-index:         10;
     opacity:         0;
     pointer-events:  auto;
@@ -145,7 +145,7 @@
     height:        8px;
     border-radius: var(--radius-circle);
     background:    rgba(255, 255, 255, 0.4);
-    transition:    all var(--dur-ripple) var(--ease-ui);
+    transition:    all var(--dur-base) var(--ease-ui);
     cursor:        pointer;
 }
 
@@ -235,12 +235,12 @@
 /* ── Sponsor Ticker Logos ────────────────────────────────────── */
 .sponsor-logo {
     transition:
-            filter  var(--dur-base) var(--ease-standard),
-            opacity var(--dur-base) var(--ease-standard);
+            filter  var(--dur-base) var(--ease-ui),
+            opacity var(--dur-base) var(--ease-ui);
 }
 
 .sponsor-item {
-    transition: transform var(--dur-base) var(--ease-standard);
+    transition: transform var(--dur-base) var(--ease-ui);
 }
 
 /* ── Contact Section ────────────────────────────────────────── */
