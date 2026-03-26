@@ -277,7 +277,7 @@ function bindMatchCardClicks() {
             try {
                 const matchData = JSON.parse(raw);
                 matchData.isUpcoming = !card.classList.contains('result');
-                window.matchModal?.show(matchData);
+                window.matchModal?.show(matchData, card);
             } catch (err) {
                 console.warn('Failed to parse match data:', err);
             }
@@ -301,7 +301,7 @@ function bindMatchCardClicks() {
                 };
             }
             matchData.isUpcoming = !matchData.score;
-            window.matchModal?.show(matchData);
+            window.matchModal?.show(matchData, item);
         });
     });
 }

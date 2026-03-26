@@ -147,7 +147,7 @@ function bindCardClicks() {
             try {
                 const matchData    = JSON.parse(raw);
                 matchData.isUpcoming = false;
-                window.matchModal?.show(matchData);
+                window.matchModal?.show(matchData, card);
             } catch (err) {
                 console.warn('Failed to parse match data:', err);
             }

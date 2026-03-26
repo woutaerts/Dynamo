@@ -114,7 +114,7 @@ function renderPlayerCards(players) {
         card.addEventListener('click', (e) => {
             e.preventDefault();
             if (window.playerModal) {
-                window.playerModal.show(player);
+                window.playerModal.show(player, card);
             } else {
                 console.error('PlayerModal not initialized');
                 alert('Spelerdetails zijn momenteel niet beschikbaar. Probeer het later opnieuw.');

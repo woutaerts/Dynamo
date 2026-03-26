@@ -3,15 +3,11 @@
    Requires: modal-shared.css
    ============================================================ */
 
-/* ── Modal Display Default ──────────────────────────────────── */
-#matchCenterModal {
-    display: none;
-}
-
 /* Width constraint for this modal specifically */
 .modal-content {
     max-width: 700px;
     border: 3px solid var(--dusty-blue);
+    transform-origin: center center;
 }
 
 #matchCenterModal.win  .modal-content,
@@ -116,6 +112,7 @@
 #matchCenterModal:has(.result-icon.loss) .score-display { border-color: var(--soft-coral)    !important; }
 
 /* ── Shared Card Sections ───────────────────────────────────── */
+/* ── Shared Card Sections ───────────────────────────────────── */
 .modal-section,
 .goalscorers-section {
     margin-bottom: 1.5rem;
@@ -127,11 +124,15 @@
     transition:    var(--t-hover);
 }
 
+/* Remove bottom margin from last child in modal */
+#matchCenterModal .modal-content > *:last-child { margin-bottom: 0 !important; }
+
+/* .animate-in state removed; keep standard hover */
 .modal-section:hover,
 .goalscorers-section:hover,
 .score-display:hover,
 #modalSponsorLink:hover {
-    transform:  translateY(-3px) !important;
+    transform:  translateY(-3px);
     box-shadow: var(--shadow-hover);
 }
 
@@ -271,9 +272,6 @@
     margin-right: 8px;
     font-size:   1.1em;
 }
-
-/* Remove bottom margin from last child in modal */
-#matchCenterModal .modal-content > *:last-child { margin-bottom: 0 !important; }
 
 /* ── Responsive: Tablet (≤ 768 px) ─────────────────────────── */
 @media (max-width: 768px) {

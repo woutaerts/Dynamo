@@ -348,10 +348,6 @@ body {
 .stat-category,
 .match-card,
 .timeline-item,
-.modal-match-score,
-.goalscorers-section,
-.date-time-section,
-.stadium-section,
 .form-description,
 .match-sponsor-block {
     opacity:    0;
@@ -624,6 +620,35 @@ body {
     width:         auto;
     display:       block;
     border-radius: var(--radius-md);
+}
+
+/* ── Table Toggle Button ────────────────────────────── */
+.table-toggle-container {
+    display: flex;
+    justify-content: center;
+    padding-top: 1.5rem;
+    background: transparent;
+}
+
+.btn-toggle-table {
+    background: white;
+    border: 3px solid var(--dark-green);
+    color: var(--dark-green);
+    padding: 0.6rem 1.5rem;
+    border-radius: var(--radius-pill);
+    font-family: 'Poppins', sans-serif;
+    font-weight: 600;
+    font-size: var(--text-body);
+    cursor: pointer;
+    transition: all var(--dur-base) var(--ease-ui);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.btn-toggle-table:hover {
+    background: var(--dark-green);
+    color: white;
 }
 
 /* ── Search / Input Components ──────────────────────────────── */

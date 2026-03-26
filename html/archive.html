@@ -106,6 +106,7 @@
                     <div class="selected" data-value="Vergelijking">Vergelijking</div>
                     <ul class="options">
                         <li data-value="Vergelijking">Vergelijking</li>
+                        <li data-value="2025-2026">2025-2026</li>
                         <li data-value="2024-2025">2024-2025</li>
                         <li data-value="2023-2024">2023-2024</li>
                         <li data-value="2022-2023">2022-2023</li>
@@ -194,6 +195,19 @@
                         <!-- 3. Matches -->
                         <div class="archive-subsection" id="archive-matches-section">
                             <h3 class="section-title">Wedstrijden</h3>
+
+                            <div class="sort-controls">
+                                <span>Sorteren op:</span>
+                                <div class="dropdown" id="archive-match-sort">
+                                    <div class="selected" data-value="date-asc">Datum (oud <i class="fas fa-arrow-right-long"></i> nieuw)</div>
+                                    <ul class="options">
+                                        <li data-value="date-asc">Datum (oud <i class="fas fa-arrow-right-long"></i> nieuw)</li>
+                                        <li data-value="date-desc">Datum (nieuw <i class="fas fa-arrow-right-long"></i> oud)</li>
+                                        <li data-value="biggest-win">Grootste overwinning</li>
+                                        <li data-value="biggest-loss">Grootste nederlaag</li>
+                                    </ul>
+                                </div>
+                            </div>
                             <div class="matches-grid" id="archive-matches-grid"></div>
                         </div>
 

@@ -6,8 +6,6 @@
 /* ── Scroll Lock ────────────────────────────────────────────── */
 body.modal-open {
     overflow:  hidden;
-    position:  fixed;
-    width:     100%;
 }
 
 /* ── Overlay ────────────────────────────────────────────────── */
@@ -18,35 +16,37 @@ body.modal-open {
     width:           100vw;
     height:          100vh;
     background:      rgba(0, 0, 0, 0.5);
-    display:         none;
+    display:         flex;
     justify-content: center;
     align-items:     center;
     z-index:         var(--z-modal);
     backdrop-filter: blur(3px);
-    visibility:      hidden;
     opacity:         0;
-    transition:      var(--t-modal);
+    visibility:      hidden;
+    pointer-events:  none;
+    transition:      opacity 0.3s ease, visibility 0.3s ease;
 }
 
 .modal-overlay.show {
-    display:    flex !important;
-    visibility: visible;
-    opacity:    1;
+    opacity:        1;
+    visibility:     visible;
+    pointer-events: auto;
 }
 
 /* ── Modal Content ──────────────────────────────────────────── */
 .modal-content {
-    background:    var(--off-white);
+    background: var(--off-white);
     border-radius: var(--radius-lg);
-    box-shadow:    var(--shadow-medium);
-    padding:       1.5rem;
-    width:         90%;
-    max-height:    90vh;
-    overflow-y:    auto;
-    position:      relative;
-    color:         var(--dark-gray);
-    font-family:   'Poppins', sans-serif;
-    font-size:     var(--text-body);
+    box-shadow: var(--shadow-medium);
+    padding: 1.5rem;
+    width: 90%;
+    max-height: 90vh;
+    overflow-y: auto;
+    position: relative;
+    color: var(--dark-gray);
+    font-family: 'Poppins', sans-serif;
+    font-size: var(--text-body);
+    transform-origin: center center;
 }
 
 /* ── Close Button ───────────────────────────────────────────── */

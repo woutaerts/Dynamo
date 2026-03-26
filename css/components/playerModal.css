@@ -70,28 +70,19 @@
     border-radius: var(--radius-lg);
     border:        1px solid transparent;
     box-shadow:    var(--shadow-medium);
-    opacity:       0;
-    transform:     translateY(20px);
-    transition:    var(--t-reveal-card);
+    transition:    var(--t-hover);
+}
+
+.season-stats-section:hover,
+.all-time-stats-section:hover {
+    transform:  translateY(-3px) !important;
+    box-shadow: var(--shadow-hover);
 }
 
 /* Remove bottom margin from last stat section */
 .modal-content > .all-time-stats-section:last-of-type,
 .modal-content > .season-stats-section:last-child {
     margin-bottom: 0;
-}
-
-.season-stats-section.animate-in,
-.all-time-stats-section.animate-in {
-    opacity:   1;
-    transform: translateY(0);
-}
-
-.season-stats-section.animate-in:hover,
-.all-time-stats-section.animate-in:hover {
-    transform:  translateY(-3px) !important;
-    box-shadow: var(--shadow-hover);
-    transition: var(--t-hover);
 }
 
 /* ── Section Headings ───────────────────────────────────────── */

@@ -25,7 +25,10 @@ import {
     POSITION_CODE_MAP,
     MONTH_EN_TO_NL,
     parseGoalscorers,
-    parseDate
+    parseDate,
+    resetTableState,
+    sliceForTable,
+    appendTableToggle
 } from './utils/helpers.js';
 
 // ── Animation Registry ────────────────────────────────────────────────────────
@@ -39,6 +42,14 @@ const animationElements = [
 // ── Season Configuration ──────────────────────────────────────────────────────
 
 const SEASON_CONFIG = {
+    '2025-2026': {
+        label: '2025-2026', url: SHEET_URLS.currentSeason,
+        matchCols:  { first: colIndex('F'), last: colIndex('AA') },
+        matchRows:  { opponent: 1, date: 2, time: 3, stadium: 4, homeAway: 5, goalsFor: 74, goalsAgainst: 75, goalscorers: 77 },
+        playerRows: { first: 4, last: 51 },
+        playerCols: { name: colIndex('B'), position: colIndex('D'), goals: colIndex('AD'), matches: colIndex('AE') },
+        statsCell:  { played: [77, colIndex('AE')], wins: [75, colIndex('AG')], draws: [76, colIndex('AG')], losses: [77, colIndex('AG')], goalsFor: [74, colIndex('AE')], goalsAgainst: [75, colIndex('AE')] },
+    },
     '2024-2025': {
         label: '2024-2025', url: SHEET_URLS.season2425,
         matchCols:  { first: colIndex('F'), last: colIndex('AA') },
@@ -76,7 +87,7 @@ const SEASON_CONFIG = {
 // ── Module State ──────────────────────────────────────────────────────────────
 
 let archivePlayers = [];
-let isPlayersExpanded = false;
+let archiveMatches = [];
 
 // ── Tooltip Template ──────────────────────────────────────────────────────────
 
@@ -105,6 +116,7 @@ document.addEventListener('DOMContentLoaded', () => {
     initPlayerSortDropdown();
     bindDropdownClose();
     initSortHeaders();
+    initMatchSortDropdown();
     animateOnScroll(animationElements);
     const initialSeason = document.querySelector('#season-select .selected').dataset.value;
     loadSeason(initialSeason);
@@ -208,6 +220,12 @@ async function loadSeasonData(seasonString) {
     const sortSel = document.querySelector('#archive-player-sort .selected');
     if (sortSel) { sortSel.textContent = 'Totaal Doelpunten'; sortSel.dataset.value = 'goals'; }
 
+    const matchSortSel = document.querySelector('#archive-match-sort .selected');
+    if (matchSortSel) {
+        matchSortSel.innerHTML = 'Datum (oud <i class="fas fa-arrow-right-long"></i> nieuw)';
+        matchSortSel.dataset.value = 'date-asc';
+    }
+
     try {
         const csvText = await fetchCsvCached(config.url);
         const rows    = Papa.parse(csvText, { skipEmptyLines: false, delimiter: ',' }).data;
@@ -218,10 +236,10 @@ async function loadSeasonData(seasonString) {
 
         renderSeasonStats(stats);
         archivePlayers = players;
-        isPlayersExpanded = false;
+        resetTableState('archive-players');
         renderArchivePlayers('goals');
-        renderSeasonMatches(matches);
-        bindArchiveMatchClicks();
+        archiveMatches = matches;
+        renderSortedMatches('date-asc');
 
         if (innerLoader)  innerLoader.classList.add('hidden');
         if (innerContent) innerContent.classList.remove('hidden');
@@ -356,7 +374,8 @@ function parseSeasonMatches(rows, config, seasonString) {
         matches.push({
             title, displayDate, dateRaw, score, result, stadium, time,
             goalscorers: parseGoalscorers(gsRaw),
-            season: seasonLabel
+            season: seasonLabel,
+            isHome
         });
     }
 
@@ -384,9 +403,6 @@ function renderArchivePlayers(sortBy = 'goals') {
     const tableContainer = document.querySelector('.player-stats-table');
     if (!tableContainer) return;
 
-    const existingToggle = document.querySelector('.table-toggle-container');
-    if (existingToggle) existingToggle.remove();
-
     const sorted = [...archivePlayers].sort((a, b) => {
         const aR = a.matches === 0 ? 0 : a.goals / a.matches;
         const bR = b.matches === 0 ? 0 : b.goals / b.matches;
@@ -403,9 +419,7 @@ function renderArchivePlayers(sortBy = 'goals') {
         return;
     }
 
-    // Determine how many players to show (10 or all)
-    const limit = 10;
-    const visiblePlayers = isPlayersExpanded ? sorted : sorted.slice(0, limit);
+    const visiblePlayers = sliceForTable(sorted, 'archive-players', 10);
 
     visiblePlayers.forEach((player, index) => {
         const avg = player.matches === 0 ? '0.00' : (player.goals / player.matches).toFixed(2);
@@ -425,32 +439,7 @@ function renderArchivePlayers(sortBy = 'goals') {
         list.appendChild(row);
     });
 
-    // Append the "Show More / Less" button if there are more than 10 players
-    if (sorted.length > limit) {
-        const toggleContainer = document.createElement('div');
-        toggleContainer.className = 'table-toggle-container';
-
-        const toggleBtn = document.createElement('button');
-        toggleBtn.className = 'btn-toggle-table';
-        toggleBtn.innerHTML = isPlayersExpanded
-            ? 'Toon minder <i class="fas fa-chevron-up"></i>'
-            : `Toon alle ${sorted.length} spelers <i class="fas fa-chevron-down"></i>`;
-
-        toggleBtn.addEventListener('click', () => {
-            const wasExpanded = isPlayersExpanded; // Remember previous state
-            isPlayersExpanded = !isPlayersExpanded;
-            renderArchivePlayers(sortBy); // Re-render with current sort
-
-            // If we just collapsed the table, scroll it smoothly back into view
-            if (wasExpanded) {
-                tableContainer.scrollIntoView({ behavior: 'smooth', block: 'end' });
-            }
-        });
-
-        toggleContainer.appendChild(toggleBtn);
-        tableContainer.insertAdjacentElement('afterend', toggleContainer);
-    }
-
+    appendTableToggle(tableContainer, 'archive-players', sorted.length, 10, () => renderArchivePlayers(sortBy));
     initSortHeaders();
 }
 
@@ -561,6 +550,67 @@ function bindDropdownClose() {
             const options = sortDropdown.querySelector('.options');
             if (options) options.style.display = 'none';
         }
+
+        const matchSortDropdown = document.getElementById('archive-match-sort');
+        if (matchSortDropdown && !matchSortDropdown.contains(e.target)) {
+            matchSortDropdown.classList.remove('active');
+            const options = matchSortDropdown.querySelector('.options');
+            if (options) options.style.display = 'none';
+        }
+    });
+}
+
+// ── Match Sorting & Dropdown ──────────────────────────────────────────────────
+
+function renderSortedMatches(sortKey = 'date-asc') {
+    const sorted = [...archiveMatches].sort((a, b) => {
+        if (sortKey === 'date-desc') return parseDate(b.dateRaw) - parseDate(a.dateRaw);
+        if (sortKey === 'date-asc')  return parseDate(a.dateRaw) - parseDate(b.dateRaw);
+
+        const getMargin = (m, type) => {
+            const [home, away] = m.score.split('-').map(Number);
+            const us  = m.isHome ? home : away;
+            const opp = m.isHome ? away : home;
+            if (type === 'win')  return us > opp ? us - opp : us === opp ? -0.5 : -1000 - (opp - us);
+            if (type === 'loss') return us < opp ? opp - us : us === opp ? -0.5 : -1000 - (us - opp);
+        };
+
+        if (sortKey === 'biggest-win')  return getMargin(b, 'win') - getMargin(a, 'win') || parseDate(b.dateRaw) - parseDate(a.dateRaw);
+        if (sortKey === 'biggest-loss') return getMargin(b, 'loss') - getMargin(a, 'loss') || parseDate(b.dateRaw) - parseDate(a.dateRaw);
+
+        return 0;
+    });
+
+    renderSeasonMatches(sorted);
+    bindArchiveMatchClicks();
+
+    // Only re-trigger the entrance animation if the section is already visible
+    if (!document.getElementById('archive-season-content').classList.contains('hidden')) {
+        animateArchiveMatches();
+    }
+}
+
+function initMatchSortDropdown() {
+    const dropdown = document.getElementById('archive-match-sort');
+    if (!dropdown) return;
+    const selected = dropdown.querySelector('.selected');
+    const options  = dropdown.querySelector('.options');
+
+    selected.addEventListener('click', (e) => {
+        e.stopPropagation();
+        dropdown.classList.toggle('active');
+        options.style.display = options.style.display === 'block' ? 'none' : 'block';
+    });
+
+    options.querySelectorAll('li').forEach(opt => {
+        opt.addEventListener('click', (e) => {
+            e.stopPropagation();
+            selected.innerHTML     = opt.innerHTML; // Using innerHTML to preserve the font-awesome arrow
+            selected.dataset.value = opt.dataset.value;
+            dropdown.classList.remove('active');
+            options.style.display  = 'none';
+            renderSortedMatches(opt.dataset.value);
+        });
     });
 }
 
@@ -616,7 +666,7 @@ function bindArchiveMatchClicks() {
             };
 
             if (window.matchModal) {
-                window.matchModal.show(matchData);
+                window.matchModal.show(matchData, card);
             } else {
                 console.error('MatchModal not initialized');
             }

@@ -11,7 +11,7 @@
  *   - Updated imports to use renamed constants
  */
 import { animateOnScroll } from './utils/animations.js';
-import { PLAYER_TABLE_HEADER_HTML, POSITION_ICON_MAP, POSITION_LABEL_MAP } from './utils/helpers.js';
+import { PLAYER_TABLE_HEADER_HTML, POSITION_ICON_MAP, POSITION_LABEL_MAP, sliceForTable, appendTableToggle } from './utils/helpers.js';
 import {
     fetchTeamSeasonStats, fetchTeamAllTimeStats, fetchSeasonRecords,
     fetchSeasonPlayers, fetchAllTimePlayers
@@ -213,14 +213,20 @@ function renderPlayerTable(players, listSelector, rowClass, sortBy) {
     const container = listEl?.closest('.player-stats-table, .top-scorers-table');
     if (!container) return;
 
+    // Create a unique ID for this specific table (e.g. 'player-stats-list')
+    const tableId = listSelector.replace('.', '');
+
     const prefix        = rowClass.split('-')[0];
     const sorted        = sortPlayers(players, sortBy);
     const listClassName = listSelector.replace('.', '');
 
     container.innerHTML = `${PLAYER_TABLE_HEADER_HTML}<div class="${listClassName}"></div>`;
-
     const newList = container.querySelector(listSelector);
-    sorted.forEach((player, index) => {
+
+    // --- USE HELPER TO SLICE ---
+    const visiblePlayers = sliceForTable(sorted, tableId, 10);
+
+    visiblePlayers.forEach((player, index) => {
         const avg = player.matches === 0 ? '0.00' : (player.goals / player.matches).toFixed(2);
         const row = document.createElement('div');
         row.className = rowClass;
@@ -236,6 +242,10 @@ function renderPlayerTable(players, listSelector, rowClass, sortBy) {
             <div class="table-cell ${prefix}-avg-goals">${avg}</div>
         `;
         newList.appendChild(row);
+    });
+
+    appendTableToggle(container, tableId, sorted.length, 10, () => {
+        renderPlayerTable(players, listSelector, rowClass, sortBy);
     });
 
     initSortableHeaders();

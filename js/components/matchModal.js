@@ -32,7 +32,6 @@ class MatchModal {
 
             this.modal = document.getElementById('matchCenterModal');
             if (this.modal) {
-                this.modal.style.display = 'none';
                 this.bindEvents();
                 this.isInitialized = true;
 
@@ -63,18 +62,8 @@ class MatchModal {
 
     // ── Modal Control ─────────────────────────────────────────────────────────
 
-    scrollModalIntoView() {
-        if (!this.modal) { console.warn('Match modal not found for auto-scroll'); return; }
-
-        const rect        = this.modal.getBoundingClientRect();
-        const scrollTop   = window.scrollY || document.documentElement.scrollTop;
-        window.scrollTo({ top: rect.top + scrollTop - 50, behavior: 'smooth' });
-    }
-
-    show(matchData = {}) {
+    show(matchData = {}, originEl = null) {
         if (!this.modal) return;
-
-        this.scrollPosition = window.scrollY || document.documentElement.scrollTop;
 
         const {
             title       = 'Match Details',
@@ -89,6 +78,10 @@ class MatchModal {
             sponsor     = null
         } = matchData;
 
+        // Cancel any animation still running from a previous open/close
+        this._clearAnimations();
+        this.originEl = originEl;
+
         document.body.classList.add('modal-open');
 
         const resultClass = !isUpcoming && result
@@ -102,43 +95,113 @@ class MatchModal {
         if (modalContent) {
             modalContent.classList.toggle('upcoming-match', isUpcoming);
             this.renderContent(title, dateTime, season, stadium, goalscorers, score, isUpcoming, isHome, sponsor);
-        }
-
-        this.modal.style.display = 'flex';
-        this.modal.classList.add('show');
-
-        if (modalContent) {
             modalContent.scrollTop = 0;
-            const sections = modalContent.querySelectorAll(
-                '.modal-match-score, .goalscorers-section, .date-time-section, .stadium-section'
-            );
-            sections.forEach(s => s.classList.remove('animate-in'));
-            sections.forEach((s, i) => {
+
+            // Instantly show/hide sections based on match type (No more staggered animations)
+            const sections = modalContent.querySelectorAll('.modal-match-score, .goalscorers-section, .date-time-section, .stadium-section');
+            sections.forEach(s => {
                 if ((s.matches('.modal-match-score') && (isUpcoming || !score)) ||
                     (s.matches('.goalscorers-section') && isUpcoming)) {
                     s.style.display = 'none';
                 } else {
                     s.style.display = s.matches('.modal-match-score') ? 'flex' : 'block';
-                    setTimeout(() => s.classList.add('animate-in'), i * 100);
                 }
             });
-        } else {
-            console.warn('Modal content not found');
         }
 
-        setTimeout(() => this.scrollModalIntoView(), 100);
+        // Adding .show triggers the CSS overlay fade-in
+        this.modal.classList.add('show');
+
+        if (!modalContent) return;
+
+        // ── FLIP: First & Last ────────────────────────────────
+        const contentRect = modalContent.getBoundingClientRect();
+        const toRadius    = getComputedStyle(modalContent).borderRadius;
+        let fromKF;
+
+        if (originEl) {
+            const cardRect = originEl.getBoundingClientRect();
+            const dx     = cardRect.left + cardRect.width  / 2 - (contentRect.left + contentRect.width  / 2);
+            const dy     = cardRect.top  + cardRect.height / 2 - (contentRect.top  + contentRect.height / 2);
+            const scaleX = cardRect.width  / contentRect.width;
+            const scaleY = cardRect.height / contentRect.height;
+
+            fromKF = {
+                transform:    `translate(${dx}px, ${dy}px) scale(${scaleX}, ${scaleY})`,
+                opacity:      '0',
+                borderRadius: getComputedStyle(originEl).borderRadius
+            };
+        } else {
+            // Fallback
+            fromKF = { transform: 'scale(0.92) translateY(14px)', opacity: '0', borderRadius: toRadius };
+        }
+
+        // ── FLIP: Invert & Play ───────────────────────────────
+        modalContent.animate(
+            [fromKF, { transform: 'none', opacity: '1', borderRadius: toRadius }],
+            {
+                duration: originEl ? 480 : 280,
+                easing:   originEl
+                    ? 'cubic-bezier(0.34, 1.56, 0.64, 1)'
+                    : 'cubic-bezier(0.16, 1, 0.3, 1)',
+                fill: 'backwards'
+            }
+        );
     }
 
     close() {
-        if (!this.modal) return;
+        if (!this.modal || !this.modal.classList.contains('show')) return;
+
+        const modalContent = this.modal.querySelector('.modal-content');
+        if (!modalContent) return;
+
+        this._clearAnimations();
+
+        const fromRadius = getComputedStyle(modalContent).borderRadius;
+        const originEl   = this.originEl;
+        let toKF;
+        let duration = 280;
+
+        if (originEl) {
+            const cardRect    = originEl.getBoundingClientRect();
+            const contentRect = modalContent.getBoundingClientRect();
+
+            const dx     = cardRect.left + cardRect.width  / 2 - (contentRect.left + contentRect.width  / 2);
+            const dy     = cardRect.top  + cardRect.height / 2 - (contentRect.top  + contentRect.height / 2);
+            const scaleX = cardRect.width  / contentRect.width;
+            const scaleY = cardRect.height / contentRect.height;
+
+            toKF = {
+                transform:    `translate(${dx}px, ${dy}px) scale(${scaleX}, ${scaleY})`,
+                opacity:      '0',
+                borderRadius: getComputedStyle(originEl).borderRadius
+            };
+            duration = 360;
+        } else {
+            toKF = { transform: 'scale(0.92) translateY(14px)', opacity: '0', borderRadius: fromRadius };
+        }
 
         this.modal.classList.remove('show');
-        document.body.classList.remove('modal-open');
 
-        setTimeout(() => {
-            this.modal.style.display = 'none';
-            window.scrollTo({ top: this.scrollPosition, behavior: 'smooth' });
-        }, 300);
+        const anim = modalContent.animate(
+            [{ transform: 'none', opacity: '1', borderRadius: fromRadius }, toKF],
+            { duration, easing: 'cubic-bezier(0.4, 0, 0.2, 1)', fill: 'forwards' }
+        );
+
+        anim.onfinish = () => {
+            document.body.classList.remove('modal-open');
+            this._clearAnimations();
+            this.originEl = null;
+        };
+    }
+
+    // ── Private Helpers ───────────────────────────────────────────────────────
+
+    _clearAnimations() {
+        if (!this.modal) return;
+        this.modal.getAnimations().forEach(a => a.cancel());
+        const content = this.modal.querySelector('.modal-content');
+        if (content) content.getAnimations().forEach(a => a.cancel());
     }
 
     // ── Content Population ────────────────────────────────────────────────────

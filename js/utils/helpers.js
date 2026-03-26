@@ -139,3 +139,55 @@ export const PLAYER_TABLE_HEADER_HTML = `
         </div>
     </div>
 `;
+
+// ── Table Toggle Manager ──────────────────────────────────────────────────────
+
+export const tableStates = {};
+
+/** Resets a specific table back to its collapsed state. */
+export function resetTableState(tableId) {
+    tableStates[tableId] = false;
+}
+
+/** Returns either the sliced 10-item array or the full array based on current state. */
+export function sliceForTable(items, tableId, limit = 10) {
+    if (!(tableId in tableStates)) tableStates[tableId] = false;
+    return tableStates[tableId] ? items : items.slice(0, limit);
+}
+
+/** Handles cleanup, creation, and event binding of the toggle button. */
+export function appendTableToggle(tableContainer, tableId, totalItems, limit, renderCallback) {
+    // 1. Clean up any existing button container after this table
+    const nextEl = tableContainer.nextElementSibling;
+    if (nextEl && nextEl.classList.contains('table-toggle-container')) {
+        nextEl.remove();
+    }
+
+    // 2. If we have 10 or fewer items, we don't need a button
+    if (totalItems <= limit) return;
+
+    // 3. Create the new button container
+    const isExpanded = tableStates[tableId];
+    const toggleContainer = document.createElement('div');
+    toggleContainer.className = 'table-toggle-container';
+
+    const toggleBtn = document.createElement('button');
+    toggleBtn.className = 'btn-toggle-table';
+    toggleBtn.innerHTML = isExpanded
+        ? 'Toon minder <i class="fas fa-chevron-up"></i>'
+        : `Toon alle ${totalItems} spelers <i class="fas fa-chevron-down"></i>`;
+
+    // 4. Bind the click event
+    toggleBtn.addEventListener('click', () => {
+        tableStates[tableId] = !isExpanded; // Flip the state
+        renderCallback();                   // Fire the parent's render function
+
+        // Scroll back to the bottom of the table if we just collapsed it
+        if (isExpanded) {
+            tableContainer.scrollIntoView({ behavior: 'smooth', block: 'end' });
+        }
+    });
+
+    toggleContainer.appendChild(toggleBtn);
+    tableContainer.insertAdjacentElement('afterend', toggleContainer);
+}

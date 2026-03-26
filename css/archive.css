@@ -184,35 +184,6 @@
     display: none;
 }
 
-/* ── Archive Table Toggle Button ────────────────────────────── */
-.table-toggle-container {
-    display: flex;
-    justify-content: center;
-    padding-top: 1.5rem;
-    background: transparent;
-}
-
-.btn-toggle-table {
-    background: white;
-    border: 2px solid var(--dark-green);
-    color: var(--dark-green);
-    padding: 0.6rem 1.5rem;
-    border-radius: var(--radius-pill);
-    font-family: 'Poppins', sans-serif;
-    font-weight: 600;
-    font-size: var(--text-sm);
-    cursor: pointer;
-    transition: all var(--dur-base) var(--ease-ui);
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-}
-
-.btn-toggle-table:hover {
-    background: var(--dark-green);
-    color: white;
-}
-
 /* ── Matches Section ─────────────────────────────────────────── */
 #archive-matches-section .section-title::after {
     background: var(--dark-yellow);
@@ -221,6 +192,20 @@
 .archive-subsection .matches-grid {
     width:  var(--content-width);
     margin: 0 auto;
+}
+
+/* Theme the dropdown in the archive matches section */
+#archive-matches-section {
+    --dropdown-border-color: var(--dark-yellow);
+}
+
+#archive-matches-section .sort-controls {
+    justify-content: center;
+    margin-bottom:   2rem;
+}
+
+.dropdown .options {
+    width: max-content;
 }
 
 /* Archive match cards use the standard scroll-reveal pattern */
