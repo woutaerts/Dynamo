@@ -39,7 +39,6 @@ async function initHeader() {
         initMobileMenu();
         initScrollProgress();
         initScrollEffect();
-        initNavHover();
     } catch (error) {
         console.error('Error loading header:', error);
         renderFallbackHeader();
@@ -61,12 +60,12 @@ function renderFallbackHeader() {
                     </a>
                 </div>
                 <ul class="nav-links" id="nav-links">
-                    <li><a href="/dynamo/index.html" class="nav-link" data-page="home"><i class="fa-solid fa-house"></i><span class="nav-text">Home</span><span class="ripple"></span></a></li>
-                    <li><a href="/dynamo/html/players.html" class="nav-link" data-page="players">Spelers<span class="ripple"></span></a></li>
-                    <li><a href="/dynamo/html/statistics.html" class="nav-link" data-page="statistics">Statistieken<span class="ripple"></span></a></li>
-                    <li><a href="/dynamo/html/matches.html" class="nav-link" data-page="matches">Wedstrijden<span class="ripple"></span></a></li>
-                    <li><a href="/dynamo/html/archive.html" class="nav-link" data-page="archive">Archief<span class="ripple"></span></a></li>
-                    <li><a href="/dynamo/html/search.html" class="nav-link search-link" data-page="search"><i class="fa-solid fa-magnifying-glass"></i><span class="ripple"></span></a></li>
+                    <li><a href="/dynamo/index.html" class="nav-link" data-page="home"><i class="fa-solid fa-house"></i><span class="nav-text">Home</span></a></li>
+                    <li><a href="/dynamo/html/players.html" class="nav-link" data-page="players">Spelers</a></li>
+                    <li><a href="/dynamo/html/statistics.html" class="nav-link" data-page="statistics">Statistieken</a></li>
+                    <li><a href="/dynamo/html/matches.html" class="nav-link" data-page="matches">Wedstrijden</a></li>
+                    <li><a href="/dynamo/html/archive.html" class="nav-link" data-page="archive">Archief</a></li>
+                    <li><a href="/dynamo/html/search.html" class="nav-link search-link" data-page="search"><i class="fa-solid fa-magnifying-glass"></i></a></li>
                 </ul>
                 <div class="mobile-search-container">
                     <a href="/dynamo/html/search.html" class="mobile-search-link" aria-label="Search">
@@ -91,7 +90,6 @@ function renderFallbackHeader() {
     initMobileMenu();
     initScrollProgress();
     initScrollEffect();
-    initNavHover();
 }
 
 // ── Active Nav Link ───────────────────────────────────────────────────────────
@@ -195,31 +193,4 @@ function initScrollEffect() {
     }
 
     window.addEventListener('scroll', onHeaderScroll, { passive: true });
-}
-
-// ── Nav Ripple Hover ──────────────────────────────────────────────────────────
-
-function initNavHover() {
-    // Only applies to desktop — touch devices use the solid-fill fallback
-    if (!window.matchMedia('(min-width: 769px)').matches) return;
-
-    document.querySelectorAll('.nav-link').forEach(link => {
-        // Ensure the ripple span exists (links not in the active state need one)
-        if (!link.querySelector('span.ripple')) {
-            const span = document.createElement('span');
-            span.className = 'ripple';
-            link.appendChild(span);
-        }
-
-        ['mouseenter', 'mouseleave'].forEach(eventType => {
-            link.addEventListener(eventType, function(e) {
-                if (!this.classList.contains('active')) {
-                    const rect = this.getBoundingClientRect();
-                    const span = this.querySelector('span.ripple');
-                    span.style.left = (e.clientX - rect.left) + 'px';
-                    span.style.top  = (e.clientY - rect.top)  + 'px';
-                }
-            });
-        });
-    });
 }

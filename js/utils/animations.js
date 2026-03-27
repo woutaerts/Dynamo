@@ -91,42 +91,6 @@ export function setupSmoothScrolling() {
     });
 }
 
-// ── Ripple / Position-Aware Hover ─────────────────────────────────────────────
-
-/**
- * Attaches a position-aware ripple hover effect to every element matching
- * `selector`. On mouseenter and mouseleave the `.hover-effect` child span
- * is repositioned to where the cursor crossed the element's boundary,
- * creating a directional fill animation.
- *
- * This replaces four separate (identical) implementations:
- *   - 404.js         → setupCtaHoverEffect
- *   - index.js       → initializePrimaryButtonHover
- *   - players.js     → initializePositionAwareHover
- *   - header.js      → setupPositionAwareHoverEffect (nav variant)
- *
- * @param {string} selector  CSS selector for the elements to enhance.
- */
-export function initRippleEffect(selector) {
-    document.querySelectorAll(selector).forEach(el => {
-        // Ensure the ripple span exists
-        let hoverSpan = el.querySelector('.hover-effect, .ripple');
-        if (!hoverSpan) {
-            hoverSpan = document.createElement('span');
-            hoverSpan.className = 'hover-effect';
-            el.appendChild(hoverSpan);
-        }
-
-        ['mouseenter', 'mouseleave'].forEach(eventType => {
-            el.addEventListener(eventType, (e) => {
-                const rect = el.getBoundingClientRect();
-                hoverSpan.style.left = (e.clientX - rect.left) + 'px';
-                hoverSpan.style.top  = (e.clientY - rect.top)  + 'px';
-            });
-        });
-    });
-}
-
 // ── Private Helpers ───────────────────────────────────────────────────────────
 
 /**

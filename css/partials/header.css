@@ -114,10 +114,10 @@ body {
 }
 
 .nav-link {
-    background:     transparent;
-    border:         none;
+    background:     white;
+    border:         3px solid transparent;
     color:          var(--dark-gray);
-    padding:        8px 16px;
+    padding:        5px 13px;
     border-radius:  var(--radius-pill);
     font-family:    'Poppins', sans-serif;
     font-weight:    600;
@@ -133,7 +133,7 @@ body {
     z-index:        1;
     text-decoration: none;
     min-height:     44px;
-    will-change:    transform, color;
+    will-change:    transform, color, background-color, border-color;
 }
 
 .nav-link i {
@@ -161,8 +161,9 @@ body {
 .nav-link:hover,
 .nav-link:focus,
 .nav-link.active {
-    color:      var(--off-white);
-    background: var(--dynamo-red);
+    color:        var(--off-white);
+    background:   var(--dynamo-red);
+    border-color: var(--dynamo-red);
 }
 
 .nav-link:focus { outline: none; }
@@ -365,8 +366,7 @@ body {
 
     /* Hide icon-only nav links; show text labels via span.nav-text */
     .nav-link.search-link,
-    .nav-link i,
-    .nav-link span.ripple {
+    .nav-link i {
         display: none;
     }
 

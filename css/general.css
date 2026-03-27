@@ -117,11 +117,6 @@
             color            var(--dur-base) var(--ease-ui),
             background-color var(--dur-base) var(--ease-ui);
 
-    /* Ripple element expansion inside filter/nav buttons */
-    --t-ripple:
-            width  var(--dur-base) var(--ease-ui),
-            height var(--dur-base) var(--ease-ui);
-
     /* Scroll-triggered entrances (opacity + subtle vertical slide) */
     --t-reveal:
             opacity   var(--dur-slow) var(--ease-out),

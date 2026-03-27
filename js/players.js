@@ -1,7 +1,7 @@
 /**
  * players.js — Players page
  */
-import { animateOnScroll, animatePlayerCards, initRippleEffect } from './utils/animations.js';
+import { animateOnScroll, animatePlayerCards } from './utils/animations.js';
 import { POSITION_LABEL_MAP } from './utils/helpers.js';
 import { fetchSeasonPlayers } from './utils/dataService.js';
 import { FootballLoader } from './components/loader.js';
@@ -35,7 +35,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     initKeyboardNav();
     animatePlayerCards();
     animateOnScroll(animationElements);
-    initRippleEffect('.filter-btn');   // replaces initializePositionAwareHover
     setTimeout(applyHashFilter, 100);
 });
 

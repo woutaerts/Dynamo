@@ -8,8 +8,6 @@ import { fetchCsvCached } from './utils/fetchCsv.js';
 import { FootballLoader } from './components/loader.js';
 import {
     PLAYER_TABLE_HEADER_HTML,
-    POSITION_ICON_MAP,
-    POSITION_LABEL_MAP,
     POSITION_CODE_MAP,
     MONTH_EN_TO_NL,
     parseGoalscorers,
@@ -20,7 +18,9 @@ import {
     calcLossMargin,
     resetTableState,
     sliceForTable,
-    appendTableToggle
+    appendTableToggle,
+    bindSortableHeaders,
+    buildPlayerRow
 } from './utils/helpers.js';
 import { initDropdown, bindDropdownClose } from './utils/dropdown.js';
 import { animateMatchCards } from './utils/match-cards.js';
@@ -465,24 +465,14 @@ function renderArchivePlayers(sortBy = 'goals') {
 
     const visiblePlayers = sliceForTable(sorted, 'archive-players', 10);
 
+    // Replaced inline markup with our new helper
     visiblePlayers.forEach((player, index) => {
-        const avg = player.matches === 0 ? '0.00' : (player.goals / player.matches).toFixed(2);
-        const row = document.createElement('div');
-        row.className = 'player-row archive-player-row';
-        row.innerHTML = `
-            <div class="table-cell player-rank">${index + 1}</div>
-            <div class="table-cell player-position">
-                ${POSITION_ICON_MAP[player.position] || ''}
-                <span class="tooltip">${POSITION_LABEL_MAP[player.position] || ''}</span>
-            </div>
-            <div class="table-cell player-name">${player.name}</div>
-            <div class="table-cell player-goals">${player.goals}</div>
-            <div class="table-cell player-matches">${player.matches}</div>
-            <div class="table-cell player-avg-goals">${avg}</div>
-        `;
+        const row = buildPlayerRow(player, index, 'player-row archive-player-row', 'player');
         list.appendChild(row);
     });
 
+    appendTableToggle(tableContainer, 'archive-players', sorted.length, 10, () => renderArchivePlayers(sortBy));
+    initSortHeaders();
     appendTableToggle(tableContainer, 'archive-players', sorted.length, 10, () => renderArchivePlayers(sortBy));
     initSortHeaders();
 }
@@ -565,23 +555,7 @@ function renderSortedMatches(sortKey = 'date-asc') {
 // ── Sortable Table Headers ────────────────────────────────────────────────────
 
 function initSortHeaders() {
-    document.querySelectorAll('#archive-players-section .table-header .table-cell').forEach((cell, index) => {
-        const keyMap = { 3: 'goals', 4: 'matches', 5: 'avg-goals' };
-        const lblMap = {
-            3: 'Totaal Doelpunten',
-            4: 'Gespeelde Wedstrijden',
-            5: 'Gemiddelde Doelpunten per Wedstrijd'
-        };
-        const key = keyMap[index];
-        if (!key) return;
-
-        cell.style.cursor = 'pointer';
-        cell.addEventListener('click', () => {
-            const sortSel = document.querySelector('#archive-player-sort .selected');
-            if (sortSel) { sortSel.dataset.value = key; sortSel.innerHTML = lblMap[index]; }
-            renderArchivePlayers(key);
-        });
-    });
+    bindSortableHeaders('#archive-players-section', '#archive-player-sort', renderArchivePlayers);
 }
 
 // ── Match Interactions ────────────────────────────────────────────────────────

@@ -39,73 +39,51 @@ main .page-hero h1 { margin: 0 auto; }
     justify-content: center;
     gap:             0.8rem;
     flex-wrap:       wrap;
+    width:           70%;
     max-width:       var(--content-width);
-    margin: 0 auto;
+    min-width:       420px;
+    margin:          0 auto;
 }
 
 /* ── Filter Buttons ─────────────────────────────────────────── */
+
+/* 1. Assign position-specific colors to a local variable */
+.filter-btn[data-position="all"]        { --btn-color: var(--medium-gray); }
+.filter-btn[data-position="goalkeeper"] { --btn-color: var(--dark-blue); }
+.filter-btn[data-position="defender"]   { --btn-color: var(--dark-green); }
+.filter-btn[data-position="midfielder"] { --btn-color: var(--dark-yellow); }
+.filter-btn[data-position="attacker"]   { --btn-color: var(--dynamo-red); }
+
+/* 2. Base Button Styling */
 .filter-btn {
     background:     white;
-    border:         none;
-    color:          var(--medium-gray);
-    padding:        0.6rem 1.2rem;
+    border:         3px solid var(--btn-color);
+    color:          var(--btn-color);
+    padding:        0.5rem 0.988rem;
     border-radius:  var(--radius-pill);
     font-family:    'Poppins', sans-serif;
     font-weight:    700;
     letter-spacing: 1px;
     font-size:      var(--text-sm);
     cursor:         pointer;
-    transition:     var(--t-color), var(--t-color), box-shadow var(--dur-base) var(--ease-ui);
+    transition:     all var(--dur-base) var(--ease-ui);
     display:        flex;
     align-items:    center;
-    gap:            0.4rem;
-    box-shadow:     var(--shadow-medium);
-    position:       relative;
-    overflow:       hidden;
-    z-index:        1;
+    justify-content: center;
+    gap:            0.5rem;
+    box-shadow:     var(--shadow-small);
     min-height:     44px;
 }
 
 .filter-btn i {
     font-size: 0.9rem;
-    z-index:   2;
-    position:  relative;
 }
 
-/* Ripple element */
-.filter-btn .hover-effect {
-    position:      absolute;
-    display:       block;
-    width:         0;
-    height:        0;
-    border-radius: var(--radius-circle);
-    transition:    var(--t-ripple);
-    transform:     translate(-50%, -50%);
-    z-index:       -1;
-}
-
-/* Position-specific ripple and active background colours */
-.filter-btn[data-position="goalkeeper"] .hover-effect,
-.filter-btn.active[data-position="goalkeeper"] { background-color: var(--dark-blue); }
-
-.filter-btn[data-position="defender"] .hover-effect,
-.filter-btn.active[data-position="defender"]   { background-color: var(--dark-green); }
-
-.filter-btn[data-position="midfielder"] .hover-effect,
-.filter-btn.active[data-position="midfielder"] { background-color: var(--dark-yellow); }
-
-.filter-btn[data-position="attacker"] .hover-effect,
-.filter-btn.active[data-position="attacker"]   { background-color: var(--dynamo-red); }
-
-.filter-btn[data-position="all"] .hover-effect,
-.filter-btn.active[data-position="all"]        { background-color: var(--medium-gray); }
-
+/* 3. Hover & Active States */
 .filter-btn:hover,
-.filter-btn.active { color: var(--off-white); }
-
-.filter-btn:hover .hover-effect {
-    width:  225%;
-    height: 180px;
+.filter-btn.active {
+    background: var(--btn-color);
+    color:      white;
 }
 
 /* ── Search Bar ─────────────────────────────────────────────── */

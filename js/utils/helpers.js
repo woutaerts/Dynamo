@@ -212,3 +212,87 @@ export function calcLossMargin(item) {
     const opp = item.isHome ? away : home;
     return us < opp ? opp - us : us === opp ? -0.5 : -1000 - (us - opp);
 }
+
+
+// ── Table Sorting Manager ─────────────────────────────────────────────────────
+
+/**
+ * Binds click events to table headers for sorting, updates the associated dropdown,
+ * and triggers a re-render.
+ *
+ * @param {string} tableSelector - CSS selector for the table container.
+ * @param {string} dropdownSelector - CSS selector for the dropdown to update.
+ * @param {function} renderFn - Callback function to re-render the table, passed the sort key.
+ */
+export function bindSortableHeaders(tableSelector, dropdownSelector, renderFn) {
+    const keyMap = { 3: 'goals', 4: 'matches', 5: 'avg-goals' };
+    const lblMap = {
+        'goals': 'Totaal Doelpunten',
+        'matches': 'Gespeelde Wedstrijden',
+        'avg-goals': 'Gemiddelde Doelpunten per Wedstrijd'
+    };
+
+    document.querySelectorAll(`${tableSelector} .table-header .table-cell`).forEach((cell, index) => {
+        const key = keyMap[index];
+        if (!key) return;
+
+        cell.style.cursor = 'pointer';
+        cell.addEventListener('click', () => {
+            const selected = document.querySelector(`${dropdownSelector} .selected`);
+            if (selected) {
+                selected.dataset.value = key;
+                selected.innerHTML = lblMap[key];
+            }
+            renderFn(key);
+        });
+    });
+}
+
+
+// ── Table Row Builder ─────────────────────────────────────────────────────────
+
+/**
+ * Builds a standardized DOM element for a player table row.
+ * * @param {Object} player - The player data object { name, position, goals, matches }.
+ * @param {number} index - The current index for the rank (0-based).
+ * @param {string} rowClass - The full CSS class string to apply to the row wrapper.
+ * @param {string} [prefix='player'] - The prefix to use for internal cell classes (e.g., 'player', 'scorer').
+ * @returns {HTMLElement} The constructed row element.
+ */
+export function buildPlayerRow(player, index, rowClass, prefix = 'player') {
+    const avg = player.matches === 0 ? '0.00' : (player.goals / player.matches).toFixed(2);
+    const row = document.createElement('div');
+    row.className = rowClass;
+
+    row.innerHTML = `
+        <div class="table-cell ${prefix}-rank">${index + 1}</div>
+        <div class="table-cell ${prefix}-position">
+            ${POSITION_ICON_MAP[player.position] || ''}
+            <span class="tooltip">${POSITION_LABEL_MAP[player.position] || ''}</span>
+        </div>
+        <div class="table-cell ${prefix}-name">${player.name}</div>
+        <div class="table-cell ${prefix}-goals">${player.goals}</div>
+        <div class="table-cell ${prefix}-matches">${player.matches}</div>
+        <div class="table-cell ${prefix}-avg-goals">${avg}</div>
+    `;
+
+    return row;
+}
+
+// ── General Utilities ─────────────────────────────────────────────────────────
+
+/**
+ * Creates a debounced function that delays invoking the provided function until after
+ * `wait` milliseconds have elapsed since the last time the debounced function was invoked.
+ *
+ * @param {Function} fn - The function to debounce.
+ * @param {number} wait - The number of milliseconds to delay.
+ * @returns {Function} The new debounced function.
+ */
+export function debounce(fn, wait) {
+    let timeout;
+    return function(...args) {
+        clearTimeout(timeout);
+        timeout = setTimeout(() => fn(...args), wait);
+    };
+}

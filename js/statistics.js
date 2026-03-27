@@ -2,8 +2,7 @@
  * statistics.js — Statistics page
  */
 import { animateOnScroll } from './utils/animations.js';
-import { PLAYER_TABLE_HEADER_HTML, POSITION_ICON_MAP, POSITION_LABEL_MAP, sliceForTable, appendTableToggle } from './utils/helpers.js';
-import {
+import { PLAYER_TABLE_HEADER_HTML, sliceForTable, appendTableToggle, bindSortableHeaders, buildPlayerRow, debounce } from './utils/helpers.js';import {
     fetchTeamSeasonStats, fetchTeamAllTimeStats, fetchSeasonRecords,
     fetchSeasonPlayers, fetchAllTimePlayers
 } from './utils/dataService.js';
@@ -224,21 +223,9 @@ function renderPlayerTable(players, listSelector, rowClass, sortBy) {
 
     const visiblePlayers = sliceForTable(sorted, tableId, 10);
 
+    // Replaced inline markup with our new helper
     visiblePlayers.forEach((player, index) => {
-        const avg = player.matches === 0 ? '0.00' : (player.goals / player.matches).toFixed(2);
-        const row = document.createElement('div');
-        row.className = rowClass;
-        row.innerHTML = `
-            <div class="table-cell ${prefix}-rank">${index + 1}</div>
-            <div class="table-cell ${prefix}-position">
-                ${POSITION_ICON_MAP[player.position]}
-                <span class="tooltip">${POSITION_LABEL_MAP[player.position]}</span>
-            </div>
-            <div class="table-cell ${prefix}-name">${player.name}</div>
-            <div class="table-cell ${prefix}-goals">${player.goals}</div>
-            <div class="table-cell ${prefix}-matches">${player.matches}</div>
-            <div class="table-cell ${prefix}-avg-goals">${avg}</div>
-        `;
+        const row = buildPlayerRow(player, index, rowClass, prefix);
         newList.appendChild(row);
     });
 
@@ -260,47 +247,11 @@ function renderAllTimePlayers(sortBy = document.querySelector('#alltime-sort .se
 // ── Sortable Table Headers ────────────────────────────────────────────────────
 
 function initSortableHeaders() {
-    bindHeaderSort('#player-season-stats',  '#season-sort',  renderSeasonPlayers);
-    bindHeaderSort('#player-alltime-stats', '#alltime-sort', renderAllTimePlayers);
-}
-
-function bindHeaderSort(tableSelector, dropdownSelector, renderFn) {
-    document.querySelectorAll(`${tableSelector} .table-header .table-cell`).forEach((cell, index) => {
-        const key = getSortKeyFromIndex(index);
-        if (!key) return;
-
-        cell.style.cursor = 'pointer';
-        cell.addEventListener('click', () => {
-            const selected = document.querySelector(`${dropdownSelector} .selected`);
-            if (selected) { selected.dataset.value = key; selected.textContent = getLabelFromKey(key); }
-            renderFn(key);
-        });
-    });
-}
-
-function getSortKeyFromIndex(index) {
-    if (index === 3) return 'goals';
-    if (index === 4) return 'matches';
-    if (index === 5) return 'avg-goals';
-    return null;
-}
-
-function getLabelFromKey(key) {
-    if (key === 'goals')     return 'Totaal Doelpunten';
-    if (key === 'matches')   return 'Gespeelde Wedstrijden';
-    if (key === 'avg-goals') return 'Gemiddelde Doelpunten per Wedstrijd';
-    return '';
+    bindSortableHeaders('#player-season-stats', '#season-sort', renderSeasonPlayers);
+    bindSortableHeaders('#player-alltime-stats', '#alltime-sort', renderAllTimePlayers);
 }
 
 // ── Toggle ────────────────────────────────────────────────────────────────────
-
-function debounce(fn, wait) {
-    let timeout;
-    return function(...args) {
-        clearTimeout(timeout);
-        timeout = setTimeout(() => fn(...args), wait);
-    };
-}
 
 function initToggle() {
     const toggles = {

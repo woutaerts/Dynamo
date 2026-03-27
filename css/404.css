@@ -87,7 +87,6 @@
         min-height: 44px;
     }
 
-    /* Disable ripple on touch; use solid fill instead */
     .error-cta:hover .hover-effect {
         width:      0 !important;
         height:     0 !important;
