@@ -2,19 +2,6 @@
  * partials/header.js
  * Loads the header partial, sets the active nav link, and initialises all
  * header-related interactions.
- *
- * Changes:
- *   - `loadHeader`                    → `initHeader`
- *   - `loadFallbackHeader`            → `renderFallbackHeader`
- *   - `highlightCurrentPage`          → `setActiveNavLink`
- *   - `initializeMobileMenu`          → `initMobileMenu`
- *   - `initializeScrollProgress`      → `initScrollProgress`
- *   - `setupHeaderScrollEffect`       → `initScrollEffect`
- *   - `setupPositionAwareHoverEffect` → `initNavHover`
- *   - Inner `calculateDimensions`     → `calcScrollMax`
- *   - Inner `updateScrollProgress`    → `updateProgress`
- *   - Inner `throttledUpdateScrollProgress` → `onScroll` (scoped to the function)
- *   - Inner `handleScroll`            → `onHeaderScroll` (scoped to the function)
  */
 
 document.addEventListener('DOMContentLoaded', () => {

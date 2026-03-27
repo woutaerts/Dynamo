@@ -1,17 +1,5 @@
 /**
  * matches.js — Matches page
- *
- * Changes:
- *   - `fetchAndRenderMatches` → `loadMatches`
- *   - `setupMatchInteractions` → split into `bindMatchCardClicks` (imported) +
- *                                local `bindTimelineItemClicks`
- *   - `renderForm`            → REMOVED (moved to general.js, imported from there)
- *   - `updateCountdown`       → `setCountdownData` (import rename)
- *   - `FootballLoader.init`   → `FootballLoader.show` (loader rename)
- *   - result/icon ternaries   → `resultToClass` / `resultToIcon` from helpers
- *   - Card building in renderRecentMatches → `buildResultCard` from match-cards.js
- *   - Local animateMatchCards → imported from match-cards.js
- *   - Local bindMatchCardClicks (match-card half) → imported from match-cards.js
  */
 import { animateOnScroll } from './utils/animations.js';
 import { initCountdown, setCountdownData, renderForm } from './general.js';

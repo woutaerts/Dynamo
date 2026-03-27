@@ -5,11 +5,6 @@
  * Eliminates ~120 lines of byte-for-byte duplicate code shared between
  * matchModal.js and playerModal.js.
  *
- * Subclasses must:
- *   - Set `this.modal` to the overlay Element after loading the HTML partial.
- *   - Call `this.bindEvents()` once the modal DOM is ready.
- *   - Implement their own `show()` method that calls `this._animateOpen(originEl)`.
- *   - Implement their own `close()` method that calls `this._animateClose()`.
  */
 export class ModalBase {
     constructor() {

@@ -1,10 +1,5 @@
 /**
  * partials/footer.js
- *
- * Changes:
- *   - `loadFooter`         → `initFooter`
- *   - `loadFallbackFooter` → `renderFallbackFooter`
- *   - `configureFooter`    → `updateFooterYear` (describes exactly what it does)
  */
 
 document.addEventListener('DOMContentLoaded', () => {

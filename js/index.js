@@ -1,15 +1,5 @@
 /**
  * index.js — Homepage
- *
- * Changes:
- *   - `initializeCarousel`          → `initCarousel`
- *   - `fetchAndRenderData`          → `loadPageData`
- *   - `fetchAndRenderMatches`       → `loadMatches`
- *   - `fetchAndRenderTeamStats`     → `loadTeamStats`
- *   - `updateTeamStats`             → `renderTeamStats`
- *   - `handleErrorStates`           → `renderErrorState`
- *   - `renderForm`                  → REMOVED (moved to general.js, imported from there)
- *   - `updateCountdown`             → `setCountdownData` (import rename)
  */
 import { animateOnScroll, setupSmoothScrolling} from './utils/animations.js';
 import { initCountdown, setCountdownData, renderForm } from './general.js';

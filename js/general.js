@@ -1,18 +1,5 @@
 /**
  * general.js
- * Shared UI logic used by multiple pages.
- *
- * Changes:
- *   - `initializeCountdown` → `initCountdown`  (shorter, consistent init* pattern)
- *   - `updateCountdown`     → `setCountdownData` (describes the action precisely:
- *                              it stores data AND triggers a display update)
- *   - Inner `parseDateTime` → `parseMatchDateTime` (avoids confusion with
- *                              `parseDate` in helpers.js which has a different signature)
- *   - Inner `updateDisplay` → `tickCountdown` (clearer intent: one tick of the timer)
- *
- * New export:
- *   - `renderForm(form)` — moved here from index.js and matches.js where it was
- *                          an exact duplicate. Both files now import it from here.
  */
 import { MONTH_INDEX_MAP } from './utils/helpers.js';
 

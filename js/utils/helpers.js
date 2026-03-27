@@ -1,17 +1,6 @@
 /**
  * utils/helpers.js
  * Central source for shared constants, maps, and pure utility functions.
- *
- * Renames applied:
- *   monthMapEnglishToDutch → MONTH_EN_TO_NL   (consistent ALL_CAPS for constants)
- *   positionMap            → POSITION_CODE_MAP (explicit about what it maps: codes)
- *   positionDisplayMap     → POSITION_LABEL_MAP (explicit about what it stores: labels)
- *   positionIcons          → POSITION_ICON_MAP  (consistent with other map names)
- *
- * New additions:
- *   resultToClass(result)  → shared converter used across matches, search, archive
- *   calcWinMargin(item)    → moved from search.js / archive.js inline duplicate
- *   calcLossMargin(item)   → moved from search.js / archive.js inline duplicate
  */
 
 // ── Month Maps ────────────────────────────────────────────────────────────────

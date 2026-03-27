@@ -1,20 +1,5 @@
 /**
  * archive.js — Archive page
- *
- * Changes:
- *   - `col`                          → `colIndex`
- *   - `cell`                         → `cellText`
- *   - `intCell`                      → `cellInt`
- *   - `initArchiveDropdown`          → replaced by `initDropdown` (dropdown.js)
- *   - `initArchivePlayerSort`        → replaced by `initDropdown` (dropdown.js)
- *   - `initGlobalDropdownCloser`     → replaced by `bindDropdownClose` (dropdown.js)
- *   - `initArchiveSortableHeaders`   → `initSortHeaders`
- *   - `setupArchiveMatchInteractions`→ `bindArchiveMatchClicks`
- *   - `animateArchiveMatches`        → replaced by `animateMatchCards` (match-cards.js)
- *   - `FootballLoader.init`          → `FootballLoader.show`
- *   - Inline `getMargin` closure     → `calcWinMargin`/`calcLossMargin` (helpers.js)
- *   - Raw result/icon ternaries      → `resultToClass`/`resultToIcon` (helpers.js)
- *   - initMatchSortDropdown          → replaced by `initDropdown` (dropdown.js)
  */
 import { animateOnScroll } from './utils/animations.js';
 import { LineGraph } from './components/lineGraph.js';

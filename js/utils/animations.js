@@ -2,12 +2,6 @@
  * utils/animations.js
  * Scroll-reveal, stagger animations, and shared interaction helpers.
  *
- * Changes:
- *   - Private `getContainer` renamed to `resolveContainer` (more descriptive).
- *   - New export `initRippleEffect(selector)` — consolidates the identical
- *     position-aware hover ripple logic that was duplicated across:
- *       404.js (setupCtaHoverEffect), index.js (initializePrimaryButtonHover),
- *       players.js (initializePositionAwareHover), header.js (setupPositionAwareHoverEffect)
  */
 
 // ── Singleton IntersectionObserver State ─────────────────────────────────────

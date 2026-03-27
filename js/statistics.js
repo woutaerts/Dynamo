@@ -1,15 +1,5 @@
 /**
  * statistics.js — Statistics page
- *
- * Changes:
- *   - `updateTeamSeasonStats`   → `renderSeasonStats`
- *   - `updateTeamAllTimeStats`  → `renderAllTimeStats`
- *   - `initPlayerStats`         → `loadStats`
- *   - `updateSeasonPlayerStats` → `renderSeasonPlayers`
- *   - `updateAllTimePlayerStats`→ `renderAllTimePlayers`
- *   - `FootballLoader.init`     → `FootballLoader.show`
- *   - `initDropdowns`           → REMOVED; replaced by `initDropdown` +
- *                                  `bindDropdownClose` from dropdown.js
  */
 import { animateOnScroll } from './utils/animations.js';
 import { PLAYER_TABLE_HEADER_HTML, POSITION_ICON_MAP, POSITION_LABEL_MAP, sliceForTable, appendTableToggle } from './utils/helpers.js';

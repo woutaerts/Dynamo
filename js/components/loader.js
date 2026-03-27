@@ -1,10 +1,5 @@
 /**
  * components/loader.js
- *
- * Changes:
- *   - `FootballLoader.init`      → `FootballLoader.show`
- *     (the method injects and displays the loader — "show" is more accurate than "init")
- *   - `FootballLoader.showError` → unchanged (already descriptive)
  */
 
 export const FootballLoader = {

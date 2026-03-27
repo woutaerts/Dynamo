@@ -1,16 +1,5 @@
 /**
  * search.js — Search page
- *
- * Changes:
- *   - `fetchAndRenderMatches` → `loadMatches`
- *   - `setupCardClicks`       → `bindMatchCardClicks` (imported from match-cards.js)
- *   - `setupSearch`           → `initSearch`
- *   - `parseSearchDate`       → REMOVED (duplicate of exported `parseDDMMYYYY` in dataService.js)
- *   - `FootballLoader.init`   → `FootballLoader.show` (loader rename)
- *   - Local `animateMatchCards` → imported from match-cards.js
- *   - Local `calcWinMargin` / `calcLossMargin` → imported from helpers.js
- *   - Local `initDropdown`    → imported from dropdown.js
- *   - Card HTML in renderSearchResults → `buildResultCard` from match-cards.js
  */
 import { animateOnScroll } from './utils/animations.js';
 import { fetchSearchMatches, parseDDMMYYYY } from './utils/dataService.js';

@@ -2,14 +2,6 @@
  * utils/dropdown.js
  *
  * Generic custom-dropdown manager.
- * Replaces three hand-rolled dropdown functions in archive.js (initSeasonDropdown,
- * initPlayerSortDropdown, initMatchSortDropdown) and the monolithic initDropdowns()
- * in statistics.js.
- *
- * Exports:
- *   initDropdown(dropdownEl, onSelect)  — initialises one dropdown
- *   bindDropdownClose()                 — registers the global outside-click closer
- *                                         (idempotent — safe to call multiple times)
  */
 
 // ── Single Dropdown Init ──────────────────────────────────────────────────────

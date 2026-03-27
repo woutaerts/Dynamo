@@ -1,14 +1,5 @@
 /**
  * components/matchModal.js
- *
- * Extends ModalBase — FLIP open/close/clear and event binding are inherited.
- * This file owns only: HTML partial loading and content population.
- *
- * Removed (~60 lines of duplicate code):
- *   - bindEvents()       → ModalBase.bindEvents()
- *   - close()            → ModalBase._animateClose()
- *   - _clearAnimations() → ModalBase._clearAnimations()
- *   - FLIP geometry in show() → ModalBase._animateOpen(originEl)
  */
 import { ModalBase } from '../utils/modal-base.js';
 

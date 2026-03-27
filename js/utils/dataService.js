@@ -1,12 +1,6 @@
 /**
  * utils/dataService.js
  * All data-fetching and CSV-parsing logic.
- *
- * Changes:
- *   - Updated imports to use renamed helper constants (MONTH_EN_TO_NL,
- *     POSITION_CODE_MAP, POSITION_LABEL_MAP).
- *   - Private `parseSearchDate` is now exported as `parseDDMMYYYY`, eliminating
- *     the identical duplicate that existed in search.js.
  */
 import { fetchCsvCached } from './fetchCsv.js';
 import { MONTH_EN_TO_NL, parseDate, parseGoalscorers, POSITION_CODE_MAP } from './helpers.js';

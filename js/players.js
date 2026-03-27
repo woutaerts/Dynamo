@@ -1,17 +1,5 @@
 /**
  * players.js — Players page
- *
- * Changes:
- *   - `fetchAndRenderPlayers`       → `loadPlayers`
- *   - `initializeFilters`           → `initFilters`
- *   - `checkInitialHash`            → `applyHashFilter`
- *   - `addSearchFunctionality`      → `initSearch`
- *   - `handleSearch`                → `onSearch`
- *   - `initializeKeyboardNavigation`→ `initKeyboardNav`
- *   - `initializePositionAwareHover`→ removed; replaced by shared `initRippleEffect`
- *   - `updateHeroAccentColor`       → `setPositionTheme`
- *   - `FootballLoader.init`         → `FootballLoader.show` (loader rename)
- *   - Updated import to use renamed `POSITION_LABEL_MAP`
  */
 import { animateOnScroll, animatePlayerCards, initRippleEffect } from './utils/animations.js';
 import { POSITION_LABEL_MAP } from './utils/helpers.js';

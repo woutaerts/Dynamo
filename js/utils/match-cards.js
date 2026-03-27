@@ -4,10 +4,6 @@
  * Shared utilities for building, animating, and wiring up match cards.
  * Centralises logic that was duplicated across matches.js, search.js, archive.js.
  *
- * Exports:
- *   buildResultCard(match, opts)         — creates a result match-card element
- *   animateMatchCards(cardSel, contSel)  — stagger-reveals cards via IntersectionObserver
- *   bindMatchCardClicks(selector, isUpcoming) — wires cards to window.matchModal.show()
  */
 import { resultToClass, resultToIcon } from './helpers.js';
 
