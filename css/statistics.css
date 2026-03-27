@@ -78,7 +78,7 @@ body.player-alltime .player-rank {
     max-width:      500px;
     margin:         1rem auto 0;
     opacity:        0;
-    transform:      translateY(20px);
+    transform:      translateY(var(--reveal-lift));
     transition:     var(--t-reveal);
 }
 

@@ -92,6 +92,7 @@
      */
     --hover-scale: 1.02;
     --hover-lift: -5px;
+    --reveal-lift: 20px;
 
     /* ── Delays ──────────────────────────────────── */
     /*
@@ -252,9 +253,6 @@ body {
     font-family: 'Poppins', sans-serif;
     position:    relative;
     display:     inline-block;
-    opacity:     0;
-    transform:   translateY(20px);
-    transition:  var(--t-reveal);
 }
 
 /* Pipe decorators — colour driven by --hero-pipe-color (override per-page).
@@ -298,9 +296,6 @@ body {
     color:       var(--dark-gray);
     font-family: 'Poppins', sans-serif;
     position:    relative;
-    opacity:     0;
-    transform:   translateY(20px);
-    transition:  var(--t-reveal);
 }
 
 .section-title {
@@ -350,10 +345,13 @@ body {
 
 /* ── Scroll-Reveal Animation Defaults ──────────────────────── */
 /*
- * All elements below start invisible and rise from 16 px below —
+ * All elements below start invisible and rise from 25 px below —
  * a subtle, modern entrance vs the heavier 50 px used previously.
  * JS adds .animate-in to trigger the entrance via --t-reveal.
  */
+.page-hero h1,
+.section-title,
+.section-subtitle,
 .overview-card,
 .stat-card,
 .contact-card,
@@ -367,9 +365,11 @@ body {
 .match-card,
 .timeline-item,
 .form-description,
-.match-sponsor-block {
+.match-sponsor-block,
+.upcoming-match-name,
+.search-container {
     opacity:    0;
-    transform:  translateY(16px);
+    transform:  translateY(var(--reveal-lift));
     transition: var(--t-reveal);
 }
 
@@ -574,9 +574,6 @@ body {
 .upcoming-match-name {
     text-align: center;
     margin:     1rem 0;
-    opacity:    0;
-    transform:  translateY(16px);
-    transition: var(--t-reveal);
 }
 
 .upcoming-match-name h3 {
@@ -709,9 +706,6 @@ body {
 .search-container {
     margin:     0.8rem 0;
     text-align: center;
-    opacity:    0;
-    transform:  translateY(20px);
-    transition: var(--t-reveal);
 }
 
 .search-container.animate-in {

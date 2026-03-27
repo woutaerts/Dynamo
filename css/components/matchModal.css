@@ -132,7 +132,7 @@
 .goalscorers-section:hover,
 .score-display:hover,
 #modalSponsorLink:hover {
-    transform:  translateY(-3px);
+    transform:  scale(var(--hover-scale));
     box-shadow: var(--shadow-hover);
 }
 

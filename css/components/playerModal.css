@@ -75,7 +75,7 @@
 
 .season-stats-section:hover,
 .all-time-stats-section:hover {
-    transform:  translateY(-3px) !important;
+    transform:  scale(var(--hover-scale));
     box-shadow: var(--shadow-hover);
 }
 

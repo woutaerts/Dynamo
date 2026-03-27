@@ -58,7 +58,7 @@
     position:        relative;
     z-index:         101;
     opacity:         0;
-    transform:       translateY(20px);
+    transform:       translateY(var(--reveal-lift));
     transition:      var(--t-reveal);
     visibility:      hidden;
 }
@@ -309,7 +309,7 @@
 /* Archive match cards use the standard scroll-reveal pattern */
 .archive-match-card {
     opacity:    0;
-    transform:  translateY(50px);
+    transform:  translateY(var(--reveal-lift));
     transition: var(--t-reveal);
 }
 

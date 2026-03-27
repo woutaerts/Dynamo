@@ -25,7 +25,7 @@ main .page-hero h1 { margin: 0 auto; }
     padding:    1.5rem 0 0.8rem;
     background: var(--off-white);
     opacity:    0;
-    transform:  translateY(20px);
+    transform:  translateY(var(--reveal-lift));
     transition: var(--t-reveal);
 }
 

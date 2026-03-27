@@ -182,9 +182,8 @@
     text-align: center;
     width:      var(--content-width);
     margin:     0 auto;
-    /* Entrance animation */
     opacity:    0;
-    transform:  translateY(50px);
+    transform:  translateY(var(--reveal-lift));
     transition: var(--t-reveal);
 }
 
@@ -201,7 +200,7 @@
 .cta-section p,
 .cta-section .btn-primary {
     opacity:    0;
-    transform:  translateY(50px);
+    transform:  translateY(var(--reveal-lift));
     transition: var(--t-reveal);
 }
 
