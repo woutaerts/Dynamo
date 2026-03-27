@@ -360,26 +360,14 @@
     margin-bottom: 0;
 }
 
-.archive-graph-tooltip-icon {
-    display:         flex;
-    justify-content: center;
-    align-items:     center;
-    width:           22px;
-    height:          22px;
-    border-radius:   50%;
-    color:           white;
-    font-size:       11px;
-    line-height:     1;
-    font-weight:     900;
+.archive-graph-tooltip .result-icon {
+    font-size:  11px;
 }
 
-.archive-graph-tooltip-icon i {
-    transform: translateY(1px) translateX(0.5px);
+.archive-graph-tooltip .result-icon i {
+    line-height: 1;
+    transform:   translateY(1px) translateX(0.5px);
 }
-
-.archive-graph-tooltip-icon.win  { background: var(--light-green); }
-.archive-graph-tooltip-icon.draw { background: var(--golden-yellow); }
-.archive-graph-tooltip-icon.loss { background: var(--soft-coral); }
 
 .archive-graph-tooltip-value {
     font-size:   0.95rem;

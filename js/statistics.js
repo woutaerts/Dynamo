@@ -2,13 +2,14 @@
  * statistics.js — Statistics page
  *
  * Changes:
- *   - `updateTeamSeasonStats`  → `renderSeasonStats`
- *   - `updateTeamAllTimeStats` → `renderAllTimeStats`
- *   - `initPlayerStats`        → `loadStats`
- *   - `updateSeasonPlayerStats`→ `renderSeasonPlayers`
+ *   - `updateTeamSeasonStats`   → `renderSeasonStats`
+ *   - `updateTeamAllTimeStats`  → `renderAllTimeStats`
+ *   - `initPlayerStats`         → `loadStats`
+ *   - `updateSeasonPlayerStats` → `renderSeasonPlayers`
  *   - `updateAllTimePlayerStats`→ `renderAllTimePlayers`
- *   - `FootballLoader.init`    → `FootballLoader.show` (loader rename)
- *   - Updated imports to use renamed constants
+ *   - `FootballLoader.init`     → `FootballLoader.show`
+ *   - `initDropdowns`           → REMOVED; replaced by `initDropdown` +
+ *                                  `bindDropdownClose` from dropdown.js
  */
 import { animateOnScroll } from './utils/animations.js';
 import { PLAYER_TABLE_HEADER_HTML, POSITION_ICON_MAP, POSITION_LABEL_MAP, sliceForTable, appendTableToggle } from './utils/helpers.js';
@@ -17,15 +18,16 @@ import {
     fetchSeasonPlayers, fetchAllTimePlayers
 } from './utils/dataService.js';
 import { FootballLoader } from './components/loader.js';
+import { initDropdown, bindDropdownClose } from './utils/dropdown.js';
 
 // ── Module State ──────────────────────────────────────────────────────────────
 
-let seasonPlayers   = [];
-let allTimePlayers  = [];
-let teamSeasonStats = {};
+let seasonPlayers    = [];
+let allTimePlayers   = [];
+let teamSeasonStats  = {};
 let teamAllTimeStats = {};
-let seasonRecords   = {};
-let isLoading       = false;
+let seasonRecords    = {};
+let isLoading        = false;
 
 // ── Animation Registry ────────────────────────────────────────────────────────
 
@@ -47,7 +49,17 @@ document.addEventListener('DOMContentLoaded', () => {
     initToggle();
     loadStats();
     initSortableHeaders();
-    initDropdowns();
+
+    // Replace the old monolithic initDropdowns() with two typed calls
+    initDropdown(
+        document.getElementById('season-sort'),
+        (value) => renderSeasonPlayers(value)
+    );
+    initDropdown(
+        document.getElementById('alltime-sort'),
+        (value) => renderAllTimePlayers(value)
+    );
+    bindDropdownClose();    // one global outside-click closer for both dropdowns
 
     const staticElements = animationElements.filter(el =>
         !['.player-row', '.scorer-row'].includes(el.selector)
@@ -76,7 +88,7 @@ async function loadStats() {
     errorIds.forEach(id => document.getElementById(id)?.classList.add('hidden'));
     contentIds.forEach(id => document.getElementById(id)?.classList.add('hidden'));
 
-    const teamPlayerToggle  = document.getElementById('team-player-toggle');
+    const teamPlayerToggle    = document.getElementById('team-player-toggle');
     const seasonAlltimeToggle = document.getElementById('season-alltime-toggle');
     [teamPlayerToggle, seasonAlltimeToggle].forEach(t => t && (t.disabled = true));
     document.querySelectorAll('.toggle-label').forEach(l => l.style.pointerEvents = 'none');
@@ -87,11 +99,11 @@ async function loadStats() {
             fetchSeasonPlayers(), fetchAllTimePlayers()
         ]);
 
-        const season = '2025-2026';
+        const season   = '2025-2026';
         const setTitle = (id, text) => { const el = document.getElementById(id); if (el) el.innerHTML = text; };
-        setTitle('team-season-title',       `Teamprestaties ${season}`);
+        setTitle('team-season-title',        `Teamprestaties ${season}`);
         setTitle('detailed-team-stats-title', `Gedetailleerde <br>Teamstatistieken<br> ${season}`);
-        setTitle('player-season-title',     `Spelersstatistieken<br> ${season}`);
+        setTitle('player-season-title',      `Spelersstatistieken<br> ${season}`);
 
         teamSeasonStats  = sStats;
         teamAllTimeStats = atStats;
@@ -119,8 +131,7 @@ async function loadStats() {
         if (seasonAlltimeToggle) seasonAlltimeToggle.disabled = false;
         document.querySelectorAll('.toggle-label').forEach(l => l.style.pointerEvents = '');
 
-        const event = new Event('change');
-        teamPlayerToggle?.dispatchEvent(event);
+        teamPlayerToggle?.dispatchEvent(new Event('change'));
     }
 }
 
@@ -136,12 +147,12 @@ function renderSeasonStats() {
     setText('team-goals-scored',   teamSeasonStats.goalsScored    || 0);
     setText('team-goals-conceded', teamSeasonStats.goalsConceded  || 0);
 
-    setText('team-goals-scored-detailed',     teamSeasonStats.goalsScored           || 0);
-    setText('team-goals-per-match',           (teamSeasonStats.goalsPerMatch         || 0).toFixed(2));
-    setText('team-largest-win',               teamSeasonStats.largestWinScore        || '0-0');
-    setText('team-goals-conceded-detailed',   teamSeasonStats.goalsConceded          || 0);
-    setText('team-goals-conceded-per-match',  (teamSeasonStats.goalsConcededPerMatch || 0).toFixed(2));
-    setText('team-clean-sheets',              teamSeasonStats.cleanSheets            || 0);
+    setText('team-goals-scored-detailed',    teamSeasonStats.goalsScored            || 0);
+    setText('team-goals-per-match',          (teamSeasonStats.goalsPerMatch          || 0).toFixed(2));
+    setText('team-largest-win',              teamSeasonStats.largestWinScore         || '0-0');
+    setText('team-goals-conceded-detailed',  teamSeasonStats.goalsConceded           || 0);
+    setText('team-goals-conceded-per-match', (teamSeasonStats.goalsConcededPerMatch  || 0).toFixed(2));
+    setText('team-clean-sheets',             teamSeasonStats.cleanSheets             || 0);
 
     const diff = teamSeasonStats.goalDifference || 0;
     setText('team-goal-difference', diff >= 0 ? `+${diff}` : diff);
@@ -149,15 +160,15 @@ function renderSeasonStats() {
     setText('team-points',          teamSeasonStats.points || 0);
 
     animateOnScroll([
-        { selector: '.stat-card',    containerSelector: 'section' },
+        { selector: '.stat-card',     containerSelector: 'section' },
         { selector: '.stat-category', containerSelector: 'section' }
     ]);
 }
 
 function renderAllTimeStats() {
-    const setText  = (id, val) => { const el = document.getElementById(id); if (el) el.textContent = val; };
-    const setHTML  = (id, val) => { const el = document.getElementById(id); if (el) el.innerHTML  = val; };
-    const recHTML  = (rec) => `${rec.value} <small>(${rec.season})</small>`;
+    const setText = (id, val) => { const el = document.getElementById(id); if (el) el.textContent = val; };
+    const setHTML = (id, val) => { const el = document.getElementById(id); if (el) el.innerHTML  = val; };
+    const recHTML = (rec) => `${rec.value} <small>(${rec.season})</small>`;
 
     setText('team-alltime-matches-played', teamAllTimeStats.matchesPlayed     || 0);
     setText('team-alltime-wins',           teamAllTimeStats.wins              || 0);
@@ -166,20 +177,20 @@ function renderAllTimeStats() {
     setText('team-alltime-goals-scored',   teamAllTimeStats.goalsScored       || 0);
     setText('team-alltime-goals-conceded', teamAllTimeStats.goalsConceded     || 0);
 
-    setHTML('alltime-most-wins',             recHTML(seasonRecords.mostWins));
-    setHTML('alltime-most-goals',            recHTML(seasonRecords.mostGoals));
+    setHTML('alltime-most-wins',           recHTML(seasonRecords.mostWins));
+    setHTML('alltime-most-goals',          recHTML(seasonRecords.mostGoals));
     setHTML('alltime-best-goal-difference',
         `${seasonRecords.bestGoalDifference.value >= 0 ? '+' : ''}${seasonRecords.bestGoalDifference.value} <small>(${seasonRecords.bestGoalDifference.season})</small>`
     );
-    setHTML('alltime-most-clean-sheets',     recHTML(seasonRecords.mostCleanSheets));
+    setHTML('alltime-most-clean-sheets',   recHTML(seasonRecords.mostCleanSheets));
 
-    setText('alltime-longest-win-streak',    teamAllTimeStats.longestWinStreak    || 0);
-    setText('alltime-longest-unbeaten',      teamAllTimeStats.longestUnbeatenRun  || 0);
-    setText('alltime-total-matches',         teamAllTimeStats.matchesPlayed       || 0);
+    setText('alltime-longest-win-streak',    teamAllTimeStats.longestWinStreak     || 0);
+    setText('alltime-longest-unbeaten',      teamAllTimeStats.longestUnbeatenRun   || 0);
+    setText('alltime-total-matches',         teamAllTimeStats.matchesPlayed        || 0);
     setText('alltime-different-goalscorers', teamAllTimeStats.differentGoalscorers || 0);
 
     animateOnScroll([
-        { selector: '.stat-card',      containerSelector: 'section' },
+        { selector: '.stat-card',       containerSelector: 'section' },
         { selector: '.record-category', containerSelector: 'section' }
     ]);
 }
@@ -202,8 +213,8 @@ function sortPlayers(players, sortBy) {
             return aRatio !== bRatio ? bRatio - aRatio : a.name.localeCompare(b.name);
         }
         // avg-goals
-        if (aRatio    !== bRatio)   return bRatio    - aRatio;
-        if (a.goals   !== b.goals)  return b.goals   - a.goals;
+        if (aRatio    !== bRatio)  return bRatio    - aRatio;
+        if (a.goals   !== b.goals) return b.goals   - a.goals;
         return a.matches !== b.matches ? b.matches - a.matches : a.name.localeCompare(b.name);
     });
 }
@@ -213,9 +224,7 @@ function renderPlayerTable(players, listSelector, rowClass, sortBy) {
     const container = listEl?.closest('.player-stats-table, .top-scorers-table');
     if (!container) return;
 
-    // Create a unique ID for this specific table (e.g. 'player-stats-list')
-    const tableId = listSelector.replace('.', '');
-
+    const tableId       = listSelector.replace('.', '');
     const prefix        = rowClass.split('-')[0];
     const sorted        = sortPlayers(players, sortBy);
     const listClassName = listSelector.replace('.', '');
@@ -223,7 +232,6 @@ function renderPlayerTable(players, listSelector, rowClass, sortBy) {
     container.innerHTML = `${PLAYER_TABLE_HEADER_HTML}<div class="${listClassName}"></div>`;
     const newList = container.querySelector(listSelector);
 
-    // --- USE HELPER TO SLICE ---
     const visiblePlayers = sliceForTable(sorted, tableId, 10);
 
     visiblePlayers.forEach((player, index) => {
@@ -259,55 +267,10 @@ function renderAllTimePlayers(sortBy = document.querySelector('#alltime-sort .se
     renderPlayerTable(allTimePlayers, '.top-scorers-list', 'scorer-row', sortBy);
 }
 
-// ── Dropdowns ─────────────────────────────────────────────────────────────────
-
-function initDropdowns() {
-    document.querySelectorAll('.dropdown').forEach(dropdown => {
-        const selected = dropdown.querySelector('.selected');
-        const options  = dropdown.querySelector('.options');
-        if (!selected || !options) return;
-
-        selected.addEventListener('click', () => {
-            dropdown.classList.toggle('active');
-            options.style.display = options.style.display === 'block' ? 'none' : 'block';
-            // Close all other dropdowns
-            document.querySelectorAll('.dropdown').forEach(other => {
-                if (other !== dropdown) {
-                    other.classList.remove('active');
-                    const otherOpts = other.querySelector('.options');
-                    if (otherOpts) otherOpts.style.display = 'none';
-                }
-            });
-        });
-
-        options.querySelectorAll('li').forEach(opt => {
-            opt.addEventListener('click', () => {
-                selected.textContent   = opt.textContent;
-                selected.dataset.value = opt.dataset.value;
-                dropdown.classList.remove('active');
-                options.style.display  = 'none';
-
-                if (dropdown.id === 'season-sort')  renderSeasonPlayers(selected.dataset.value);
-                if (dropdown.id === 'alltime-sort') renderAllTimePlayers(selected.dataset.value);
-            });
-        });
-    });
-
-    document.addEventListener('click', (e) => {
-        if (!e.target.closest('.dropdown')) {
-            document.querySelectorAll('.dropdown').forEach(d => {
-                d.classList.remove('active');
-                const opts = d.querySelector('.options');
-                if (opts) opts.style.display = 'none';
-            });
-        }
-    });
-}
-
 // ── Sortable Table Headers ────────────────────────────────────────────────────
 
 function initSortableHeaders() {
-    bindHeaderSort('#player-season-stats', '#season-sort', renderSeasonPlayers);
+    bindHeaderSort('#player-season-stats',  '#season-sort',  renderSeasonPlayers);
     bindHeaderSort('#player-alltime-stats', '#alltime-sort', renderAllTimePlayers);
 }
 
@@ -349,13 +312,6 @@ function debounce(fn, wait) {
     };
 }
 
-function setElementState(loading, error, content, state) {
-    if (!loading || !error || !content) return;
-    loading.classList.toggle('hidden', state !== 'loading');
-    error.classList.toggle('hidden',   state !== 'error');
-    content.classList.toggle('hidden', state !== 'success');
-}
-
 function initToggle() {
     const toggles = {
         teamPlayer:    document.getElementById('team-player-toggle'),
@@ -368,12 +324,12 @@ function initToggle() {
         alltime: document.getElementById('label-alltime')
     };
     const sections = {
-        teamSeason:            document.getElementById('team-season-stats'),
-        teamSeasonDetailed:    document.getElementById('team-season-detailed'),
+        teamSeason:             document.getElementById('team-season-stats'),
+        teamSeasonDetailed:     document.getElementById('team-season-detailed'),
         teamAlltimePerformance: document.getElementById('team-alltime-performance'),
-        teamAlltime:           document.getElementById('team-alltime-stats'),
-        playerSeason:          document.getElementById('player-season-stats'),
-        playerAlltime:         document.getElementById('player-alltime-stats')
+        teamAlltime:            document.getElementById('team-alltime-stats'),
+        playerSeason:           document.getElementById('player-season-stats'),
+        playerAlltime:          document.getElementById('player-alltime-stats')
     };
 
     const updateView = debounce(() => {
@@ -383,7 +339,7 @@ function initToggle() {
         const isAlltime = toggles.seasonAlltime?.checked;
 
         labels.team?.classList.toggle('active', !isPlayer);
-        labels.player?.classList.toggle('active', isPlayer);
+        labels.player?.classList.toggle('active',  isPlayer);
         labels.season?.classList.toggle('active', !isAlltime);
         labels.alltime?.classList.toggle('active', isAlltime);
 

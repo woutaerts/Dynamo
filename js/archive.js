@@ -2,16 +2,19 @@
  * archive.js — Archive page
  *
  * Changes:
- *   - `col`                         → `colIndex`  (more descriptive: converts col letter to index)
- *   - `cell`                        → `cellText`  (returns text content of a cell)
- *   - `intCell`                     → `cellInt`   (returns integer value of a cell)
- *   - `initArchiveDropdown`         → `initSeasonDropdown`
- *   - `initArchivePlayerSort`       → `initPlayerSortDropdown`
- *   - `initGlobalDropdownCloser`    → `bindDropdownClose`
- *   - `initArchiveSortableHeaders`  → `initSortHeaders`
- *   - `setupArchiveMatchInteractions` → `bindArchiveMatchClicks`
- *   - `FootballLoader.init`         → `FootballLoader.show` (loader rename)
- *   - Updated imports for renamed helpers
+ *   - `col`                          → `colIndex`
+ *   - `cell`                         → `cellText`
+ *   - `intCell`                      → `cellInt`
+ *   - `initArchiveDropdown`          → replaced by `initDropdown` (dropdown.js)
+ *   - `initArchivePlayerSort`        → replaced by `initDropdown` (dropdown.js)
+ *   - `initGlobalDropdownCloser`     → replaced by `bindDropdownClose` (dropdown.js)
+ *   - `initArchiveSortableHeaders`   → `initSortHeaders`
+ *   - `setupArchiveMatchInteractions`→ `bindArchiveMatchClicks`
+ *   - `animateArchiveMatches`        → replaced by `animateMatchCards` (match-cards.js)
+ *   - `FootballLoader.init`          → `FootballLoader.show`
+ *   - Inline `getMargin` closure     → `calcWinMargin`/`calcLossMargin` (helpers.js)
+ *   - Raw result/icon ternaries      → `resultToClass`/`resultToIcon` (helpers.js)
+ *   - initMatchSortDropdown          → replaced by `initDropdown` (dropdown.js)
  */
 import { animateOnScroll } from './utils/animations.js';
 import { LineGraph } from './components/lineGraph.js';
@@ -26,10 +29,16 @@ import {
     MONTH_EN_TO_NL,
     parseGoalscorers,
     parseDate,
+    resultToClass,
+    resultToIcon,
+    calcWinMargin,
+    calcLossMargin,
     resetTableState,
     sliceForTable,
     appendTableToggle
 } from './utils/helpers.js';
+import { initDropdown, bindDropdownClose } from './utils/dropdown.js';
+import { animateMatchCards } from './utils/match-cards.js';
 
 // ── Animation Registry ────────────────────────────────────────────────────────
 
@@ -102,15 +111,15 @@ const getTooltipHTML = (d) => `
     <div class="archive-graph-tooltip">
         <h4 class="archive-graph-tooltip-title">${d.matches}</h4>
         <div class="archive-graph-tooltip-row">
-            <span class="archive-graph-tooltip-icon win"><i class="fas fa-check"></i></span>
+            <span class="result-icon win"><i class="fas fa-check"></i></span>
             <span class="archive-graph-tooltip-value">${d.winst}</span>
         </div>
         <div class="archive-graph-tooltip-row">
-            <span class="archive-graph-tooltip-icon draw"><i class="fas fa-minus"></i></span>
+            <span class="result-icon draw"><i class="fas fa-minus"></i></span>
             <span class="archive-graph-tooltip-value">${d.gelijk}</span>
         </div>
         <div class="archive-graph-tooltip-row">
-            <span class="archive-graph-tooltip-icon loss"><i class="fas fa-times"></i></span>
+            <span class="result-icon loss"><i class="fas fa-times"></i></span>
             <span class="archive-graph-tooltip-value">${d.verlies}</span>
         </div>
     </div>
@@ -119,12 +128,26 @@ const getTooltipHTML = (d) => `
 // ── Page Initialization ───────────────────────────────────────────────────────
 
 document.addEventListener('DOMContentLoaded', () => {
-    initSeasonDropdown();
-    initPlayerSortDropdown();
+    // Each dropdown gets a single typed callback — no more three separate functions
+    initDropdown(
+        document.getElementById('season-select'),
+        (value) => loadSeason(value)
+    );
+    initDropdown(
+        document.getElementById('archive-player-sort'),
+        (value) => { resetTableState('archive-players'); renderArchivePlayers(value); }
+    );
+    initDropdown(
+        document.getElementById('archive-match-sort'),
+        (value) => renderSortedMatches(value)
+    );
+
+    // One global outside-click closer covers all three dropdowns above
     bindDropdownClose();
+
     initSortHeaders();
-    initMatchSortDropdown();
     animateOnScroll(animationElements);
+
     const initialSeason = document.querySelector('#season-select .selected').dataset.value;
     loadSeason(initialSeason);
 });
@@ -224,12 +247,13 @@ async function loadSeasonData(seasonString) {
     document.getElementById(innerErrorId)?.classList.add('hidden');
     innerContent?.classList.add('hidden');
 
+    // Reset dropdown labels to defaults
     const sortSel = document.querySelector('#archive-player-sort .selected');
-    if (sortSel) { sortSel.textContent = 'Totaal Doelpunten'; sortSel.dataset.value = 'goals'; }
+    if (sortSel) { sortSel.innerHTML = 'Totaal Doelpunten'; sortSel.dataset.value = 'goals'; }
 
     const matchSortSel = document.querySelector('#archive-match-sort .selected');
     if (matchSortSel) {
-        matchSortSel.innerHTML = 'Datum (oud <i class="fas fa-arrow-right-long"></i> nieuw)';
+        matchSortSel.innerHTML    = 'Datum (oud <i class="fas fa-arrow-right-long"></i> nieuw)';
         matchSortSel.dataset.value = 'date-asc';
     }
 
@@ -237,9 +261,9 @@ async function loadSeasonData(seasonString) {
         const csvText = await fetchCsvCached(config.url);
         const rows    = Papa.parse(csvText, { skipEmptyLines: false, delimiter: ',' }).data;
 
-        const stats   = parseSeasonStats(rows, config);
-        const players = parseSeasonPlayers(rows, config);
-        const matches = parseSeasonMatches(rows, config, seasonString);
+        const stats    = parseSeasonStats(rows, config);
+        const players  = parseSeasonPlayers(rows, config);
+        const matches  = parseSeasonMatches(rows, config, seasonString);
         const shoeData = parseGoldenShoe(rows, config);
 
         renderGoldenShoe(shoeData);
@@ -253,7 +277,7 @@ async function loadSeasonData(seasonString) {
         if (innerLoader)  innerLoader.classList.add('hidden');
         if (innerContent) innerContent.classList.remove('hidden');
 
-        animateArchiveMatches();
+        animateMatchCards('.archive-match-card', '#archive-matches-grid');
         animateOnScroll([
             { selector: '.stat-card',                         containerSelector: 'section' },
             { selector: '.archive-player-row',                containerSelector: 'section' },
@@ -333,10 +357,10 @@ function parseSeasonPlayers(rows, config) {
     const players   = [];
 
     for (let r = first; r <= last; r++) {
-        const name      = cellText(rows, r, pc.name);
-        const posCode   = cellText(rows, r, pc.position);
-        const goals     = parseInt(cellText(rows, r, pc.goals),   10);
-        const matches   = parseInt(cellText(rows, r, pc.matches), 10);
+        const name    = cellText(rows, r, pc.name);
+        const posCode = cellText(rows, r, pc.position);
+        const goals   = parseInt(cellText(rows, r, pc.goals),   10);
+        const matches = parseInt(cellText(rows, r, pc.matches), 10);
 
         if (!name || titleRows.includes(name.toLowerCase())) continue;
         const position = POSITION_CODE_MAP[posCode];
@@ -354,24 +378,24 @@ function parseSeasonMatches(rows, config, seasonString) {
     const matches     = [];
 
     for (let c = mc.first; c <= mc.last; c++) {
-        const opponent  = cellText(rows, mr.opponent,     c);
-        const dateRaw   = cellText(rows, mr.date,         c);
-        const time      = cellText(rows, mr.time,         c);
-        const stadium   = cellText(rows, mr.stadium,      c);
-        const homeAway  = cellText(rows, mr.homeAway,     c).toLowerCase();
-        const gfRaw     = cellText(rows, mr.goalsFor,     c);
-        const gaRaw     = cellText(rows, mr.goalsAgainst, c);
-        const gsRaw     = cellText(rows, mr.goalscorers,  c);
+        const opponent = cellText(rows, mr.opponent,     c);
+        const dateRaw  = cellText(rows, mr.date,         c);
+        const time     = cellText(rows, mr.time,         c);
+        const stadium  = cellText(rows, mr.stadium,      c);
+        const homeAway = cellText(rows, mr.homeAway,     c).toLowerCase();
+        const gfRaw    = cellText(rows, mr.goalsFor,     c);
+        const gaRaw    = cellText(rows, mr.goalsAgainst, c);
+        const gsRaw    = cellText(rows, mr.goalscorers,  c);
 
         if (!opponent || !dateRaw) continue;
 
-        const isHome     = homeAway === 'thuis';
-        const dateParts  = dateRaw.split(' ');
-        const day        = dateParts[0] || '';
-        const monthEn    = (dateParts[1] || '').toLowerCase();
-        const monthDutch = MONTH_EN_TO_NL[monthEn] || monthEn;
+        const isHome      = homeAway === 'thuis';
+        const dateParts   = dateRaw.split(' ');
+        const day         = dateParts[0] || '';
+        const monthEn     = (dateParts[1] || '').toLowerCase();
+        const monthDutch  = MONTH_EN_TO_NL[monthEn] || monthEn;
         const displayDate = `${day} ${monthDutch}`;
-        const title      = isHome ? `Dynamo Beirs vs ${opponent}` : `${opponent} vs Dynamo Beirs`;
+        const title       = isHome ? `Dynamo Beirs vs ${opponent}` : `${opponent} vs Dynamo Beirs`;
 
         const gf = parseInt(gfRaw, 10);
         const ga = parseInt(gaRaw, 10);
@@ -391,13 +415,11 @@ function parseSeasonMatches(rows, config, seasonString) {
     return matches.sort((a, b) => parseDate(a.dateRaw) - parseDate(b.dateRaw));
 }
 
-// ── Rendering ─────────────────────────────────────────────────────────────────
 function parseGoldenShoe(rows, config) {
     if (!config.goldenShoe) return null;
     const { col, gold, silver, bronze } = config.goldenShoe;
     const goldName = cellText(rows, gold, col);
 
-    // If the cell is empty or '0', it means the season hasn't awarded the shoe yet
     if (!goldName || goldName === '0') return null;
 
     return {
@@ -407,14 +429,13 @@ function parseGoldenShoe(rows, config) {
     };
 }
 
+// ── Rendering ─────────────────────────────────────────────────────────────────
+
 function renderGoldenShoe(shoeData) {
     const section = document.getElementById('archive-golden-shoe-section');
     if (!section) return;
 
-    if (!shoeData) {
-        section.classList.add('hidden');
-        return;
-    }
+    if (!shoeData) { section.classList.add('hidden'); return; }
 
     section.classList.remove('hidden');
     document.getElementById('shoe-gold-name').textContent   = shoeData.gold;
@@ -492,14 +513,19 @@ function renderSeasonMatches(matches) {
     }
 
     matches.forEach(match => {
-        const cls  = match.result === 'winst' ? 'win' : match.result === 'gelijk' ? 'draw' : 'loss';
-        const icon = cls === 'win' ? 'check' : cls === 'draw' ? 'minus' : 'times';
+        // resultToClass / resultToIcon replace the inline ternaries that were here
+        const cls  = resultToClass(match.result);
+        const icon = resultToIcon(cls);
+
         const parts    = match.title.split(' vs ');
         const homeTeam = parts[0] || match.title;
         const awayTeam = parts[1] || '';
 
         const card = document.createElement('div');
         card.className = 'match-card result archive-match-card';
+
+        // Archive cards use individual data-* attributes so bindArchiveMatchClicks
+        // can reconstruct the matchData without relying on a single JSON blob.
         card.setAttribute('data-match-title',  match.title);
         card.setAttribute('data-venue',        match.stadium);
         card.setAttribute('data-score',        match.score);
@@ -527,94 +553,18 @@ function renderSeasonMatches(matches) {
     });
 }
 
-// ── Dropdowns ─────────────────────────────────────────────────────────────────
-
-function initSeasonDropdown() {
-    const dropdownEl = document.getElementById('season-select');
-    if (!dropdownEl) return;
-    const selected = dropdownEl.querySelector('.selected');
-    const options  = dropdownEl.querySelector('.options');
-
-    selected.addEventListener('click', e => {
-        e.stopPropagation();
-        dropdownEl.classList.toggle('active');
-    });
-
-    options.querySelectorAll('li').forEach(li => {
-        li.addEventListener('click', e => {
-            e.stopPropagation();
-            selected.dataset.value = li.dataset.value;
-            selected.textContent   = li.textContent;
-            dropdownEl.classList.remove('active');
-            loadSeason(li.dataset.value);
-        });
-    });
-}
-
-function initPlayerSortDropdown() {
-    const dropdown = document.getElementById('archive-player-sort');
-    if (!dropdown) return;
-    const selected = dropdown.querySelector('.selected');
-    const options  = dropdown.querySelector('.options');
-
-    selected.addEventListener('click', (e) => {
-        e.stopPropagation();
-        dropdown.classList.toggle('active');
-        options.style.display = options.style.display === 'block' ? 'none' : 'block';
-    });
-
-    options.querySelectorAll('li').forEach(opt => {
-        opt.addEventListener('click', (e) => {
-            e.stopPropagation();
-            selected.textContent   = opt.textContent;
-            selected.dataset.value = opt.dataset.value;
-            dropdown.classList.remove('active');
-            options.style.display  = 'none';
-            renderArchivePlayers(opt.dataset.value);
-        });
-    });
-}
-
-function bindDropdownClose() {
-    document.addEventListener('click', e => {
-        const seasonDropdown = document.getElementById('season-select');
-        if (seasonDropdown && !seasonDropdown.contains(e.target)) {
-            seasonDropdown.classList.remove('active');
-        }
-
-        const sortDropdown = document.getElementById('archive-player-sort');
-        if (sortDropdown && !sortDropdown.contains(e.target)) {
-            sortDropdown.classList.remove('active');
-            const options = sortDropdown.querySelector('.options');
-            if (options) options.style.display = 'none';
-        }
-
-        const matchSortDropdown = document.getElementById('archive-match-sort');
-        if (matchSortDropdown && !matchSortDropdown.contains(e.target)) {
-            matchSortDropdown.classList.remove('active');
-            const options = matchSortDropdown.querySelector('.options');
-            if (options) options.style.display = 'none';
-        }
-    });
-}
-
-// ── Match Sorting & Dropdown ──────────────────────────────────────────────────
+// ── Match Sorting ─────────────────────────────────────────────────────────────
 
 function renderSortedMatches(sortKey = 'date-asc') {
     const sorted = [...archiveMatches].sort((a, b) => {
         if (sortKey === 'date-desc') return parseDate(b.dateRaw) - parseDate(a.dateRaw);
         if (sortKey === 'date-asc')  return parseDate(a.dateRaw) - parseDate(b.dateRaw);
 
-        const getMargin = (m, type) => {
-            const [home, away] = m.score.split('-').map(Number);
-            const us  = m.isHome ? home : away;
-            const opp = m.isHome ? away : home;
-            if (type === 'win')  return us > opp ? us - opp : us === opp ? -0.5 : -1000 - (opp - us);
-            if (type === 'loss') return us < opp ? opp - us : us === opp ? -0.5 : -1000 - (us - opp);
-        };
-
-        if (sortKey === 'biggest-win')  return getMargin(b, 'win') - getMargin(a, 'win') || parseDate(b.dateRaw) - parseDate(a.dateRaw);
-        if (sortKey === 'biggest-loss') return getMargin(b, 'loss') - getMargin(a, 'loss') || parseDate(b.dateRaw) - parseDate(a.dateRaw);
+        // calcWinMargin / calcLossMargin replace the inline getMargin closure
+        if (sortKey === 'biggest-win')
+            return calcWinMargin(b)  - calcWinMargin(a)  || parseDate(b.dateRaw) - parseDate(a.dateRaw);
+        if (sortKey === 'biggest-loss')
+            return calcLossMargin(b) - calcLossMargin(a) || parseDate(b.dateRaw) - parseDate(a.dateRaw);
 
         return 0;
     });
@@ -622,37 +572,12 @@ function renderSortedMatches(sortKey = 'date-asc') {
     renderSeasonMatches(sorted);
     bindArchiveMatchClicks();
 
-    // Only re-trigger the entrance animation if the section is already visible
     if (!document.getElementById('archive-season-content').classList.contains('hidden')) {
-        animateArchiveMatches();
+        animateMatchCards('.archive-match-card', '#archive-matches-grid');
     }
 }
 
-function initMatchSortDropdown() {
-    const dropdown = document.getElementById('archive-match-sort');
-    if (!dropdown) return;
-    const selected = dropdown.querySelector('.selected');
-    const options  = dropdown.querySelector('.options');
-
-    selected.addEventListener('click', (e) => {
-        e.stopPropagation();
-        dropdown.classList.toggle('active');
-        options.style.display = options.style.display === 'block' ? 'none' : 'block';
-    });
-
-    options.querySelectorAll('li').forEach(opt => {
-        opt.addEventListener('click', (e) => {
-            e.stopPropagation();
-            selected.innerHTML     = opt.innerHTML; // Using innerHTML to preserve the font-awesome arrow
-            selected.dataset.value = opt.dataset.value;
-            dropdown.classList.remove('active');
-            options.style.display  = 'none';
-            renderSortedMatches(opt.dataset.value);
-        });
-    });
-}
-
-// ── Sortable Headers ──────────────────────────────────────────────────────────
+// ── Sortable Table Headers ────────────────────────────────────────────────────
 
 function initSortHeaders() {
     document.querySelectorAll('#archive-players-section .table-header .table-cell').forEach((cell, index) => {
@@ -668,7 +593,7 @@ function initSortHeaders() {
         cell.style.cursor = 'pointer';
         cell.addEventListener('click', () => {
             const sortSel = document.querySelector('#archive-player-sort .selected');
-            if (sortSel) { sortSel.dataset.value = key; sortSel.textContent = lblMap[index]; }
+            if (sortSel) { sortSel.dataset.value = key; sortSel.innerHTML = lblMap[index]; }
             renderArchivePlayers(key);
         });
     });
@@ -676,6 +601,11 @@ function initSortHeaders() {
 
 // ── Match Interactions ────────────────────────────────────────────────────────
 
+/**
+ * Archive cards use multiple individual data-* attributes (not a single JSON blob)
+ * because the archive data structure is parsed differently from current-season data.
+ * This keeps the click handler local rather than using the shared bindMatchCardClicks.
+ */
 function bindArchiveMatchClicks() {
     document.querySelectorAll('#archive-matches-grid .archive-match-card').forEach(card => {
         card.style.cursor = 'pointer';
@@ -693,12 +623,12 @@ function bindArchiveMatchClicks() {
             try { goalscorers = JSON.parse(card.getAttribute('data-goalscorers') || '[]'); } catch (e) {}
 
             const matchData = {
-                title:      card.getAttribute('data-match-title') || 'Wedstrijddetails',
-                stadium:    card.getAttribute('data-venue')        || 'Onbekend stadion',
-                score:      card.getAttribute('data-score'),
-                result:     card.getAttribute('data-result')       || null,
-                season:     card.getAttribute('data-match-season') || '',
-                isUpcoming: false,
+                title:       card.getAttribute('data-match-title') || 'Wedstrijddetails',
+                stadium:     card.getAttribute('data-venue')        || 'Onbekend stadion',
+                score:       card.getAttribute('data-score'),
+                result:      card.getAttribute('data-result')       || null,
+                season:      card.getAttribute('data-match-season') || '',
+                isUpcoming:  false,
                 goalscorers,
                 dateTime: { date: matchDate, time: matchTime, displayDate }
             };
@@ -710,23 +640,4 @@ function bindArchiveMatchClicks() {
             }
         });
     });
-}
-
-// ── Match Card Animations ─────────────────────────────────────────────────────
-
-function animateArchiveMatches() {
-    const observer = new IntersectionObserver((entries, obs) => {
-        entries.forEach(entry => {
-            if (!entry.isIntersecting) return;
-
-            const container = entry.target.closest('#archive-matches-grid');
-            const items     = Array.from(container.querySelectorAll('.archive-match-card'));
-            const index     = items.indexOf(entry.target);
-
-            setTimeout(() => entry.target.classList.add('animate-in'), index * 30);
-            obs.unobserve(entry.target);
-        });
-    }, { root: null, rootMargin: '0px', threshold: 0.1 });
-
-    document.querySelectorAll('.archive-match-card:not(.animate-in)').forEach(c => observer.observe(c));
 }

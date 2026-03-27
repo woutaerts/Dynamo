@@ -8,8 +8,10 @@
  *   positionDisplayMap     → POSITION_LABEL_MAP (explicit about what it stores: labels)
  *   positionIcons          → POSITION_ICON_MAP  (consistent with other map names)
  *
- * New addition:
+ * New additions:
  *   resultToClass(result)  → shared converter used across matches, search, archive
+ *   calcWinMargin(item)    → moved from search.js / archive.js inline duplicate
+ *   calcLossMargin(item)   → moved from search.js / archive.js inline duplicate
  */
 
 // ── Month Maps ────────────────────────────────────────────────────────────────
@@ -35,7 +37,7 @@ export const POSITION_CODE_MAP = {
 
 /** Maps internal English position keys to Dutch display labels. */
 export const POSITION_LABEL_MAP = {
-    'goalkeeper': 'Doelman',    'defender': 'Verdediger',
+    'goalkeeper': 'Doelman',      'defender': 'Verdediger',
     'midfielder': 'Middenvelder', 'attacker': 'Aanvaller'
 };
 
@@ -57,8 +59,8 @@ export const POSITION_ICON_MAP = {
  * @returns {'win' | 'draw' | 'loss'}
  */
 export function resultToClass(result) {
-    if (result === 'winst')   return 'win';
-    if (result === 'gelijk')  return 'draw';
+    if (result === 'winst')  return 'win';
+    if (result === 'gelijk') return 'draw';
     return 'loss';
 }
 
@@ -179,10 +181,9 @@ export function appendTableToggle(tableContainer, tableId, totalItems, limit, re
 
     // 4. Bind the click event
     toggleBtn.addEventListener('click', () => {
-        tableStates[tableId] = !isExpanded; // Flip the state
-        renderCallback();                   // Fire the parent's render function
+        tableStates[tableId] = !isExpanded;
+        renderCallback();
 
-        // Scroll back to the bottom of the table if we just collapsed it
         if (isExpanded) {
             tableContainer.scrollIntoView({ behavior: 'smooth', block: 'end' });
         }
@@ -190,4 +191,35 @@ export function appendTableToggle(tableContainer, tableId, totalItems, limit, re
 
     toggleContainer.appendChild(toggleBtn);
     tableContainer.insertAdjacentElement('afterend', toggleContainer);
+}
+
+// ── Match Sort Margin Helpers ─────────────────────────────────────────────────
+// Previously duplicated as inline closures in search.js and archive.js.
+
+/**
+ * Calculates the win-margin sort key for a match item.
+ * Wins return positive margin; draws return -0.5; losses return deeply negative.
+ *
+ * @param {{ score: string, isHome: boolean }} item
+ * @returns {number}
+ */
+export function calcWinMargin(item) {
+    const [home, away] = item.score.split('-').map(Number);
+    const us  = item.isHome ? home : away;
+    const opp = item.isHome ? away : home;
+    return us > opp ? us - opp : us === opp ? -0.5 : -1000 - (opp - us);
+}
+
+/**
+ * Calculates the loss-margin sort key for a match item.
+ * Losses return positive margin; draws return -0.5; wins return deeply negative.
+ *
+ * @param {{ score: string, isHome: boolean }} item
+ * @returns {number}
+ */
+export function calcLossMargin(item) {
+    const [home, away] = item.score.split('-').map(Number);
+    const us  = item.isHome ? home : away;
+    const opp = item.isHome ? away : home;
+    return us < opp ? opp - us : us === opp ? -0.5 : -1000 - (us - opp);
 }

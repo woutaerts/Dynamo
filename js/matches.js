@@ -3,17 +3,22 @@
  *
  * Changes:
  *   - `fetchAndRenderMatches` → `loadMatches`
- *   - `setupMatchInteractions` → `bindMatchCardClicks`
- *   - `renderForm` → REMOVED (moved to general.js, imported from there)
- *   - `updateCountdown`        → `setCountdownData` (import rename)
- *   - `FootballLoader.init`    → `FootballLoader.show` (loader rename)
- *   - result/icon ternaries    → `resultToClass` / `resultToIcon` from helpers
+ *   - `setupMatchInteractions` → split into `bindMatchCardClicks` (imported) +
+ *                                local `bindTimelineItemClicks`
+ *   - `renderForm`            → REMOVED (moved to general.js, imported from there)
+ *   - `updateCountdown`       → `setCountdownData` (import rename)
+ *   - `FootballLoader.init`   → `FootballLoader.show` (loader rename)
+ *   - result/icon ternaries   → `resultToClass` / `resultToIcon` from helpers
+ *   - Card building in renderRecentMatches → `buildResultCard` from match-cards.js
+ *   - Local animateMatchCards → imported from match-cards.js
+ *   - Local bindMatchCardClicks (match-card half) → imported from match-cards.js
  */
 import { animateOnScroll } from './utils/animations.js';
 import { initCountdown, setCountdownData, renderForm } from './general.js';
 import { fetchCurrentSeasonMatches } from './utils/dataService.js';
 import { FootballLoader } from './components/loader.js';
 import { resultToClass, resultToIcon } from './utils/helpers.js';
+import { buildResultCard, animateMatchCards, bindMatchCardClicks } from './utils/match-cards.js';
 
 const animationElements = [
     { selector: '.match-card',          containerSelector: 'section' },
@@ -41,10 +46,10 @@ document.addEventListener('DOMContentLoaded', async () => {
 // ── Data Loading ──────────────────────────────────────────────────────────────
 
 async function loadMatches() {
-    const loaderId      = 'matches-global-loader';
-    const errorId       = 'matches-error';
-    const loaderEl      = document.getElementById(loaderId);
-    const knob          = document.querySelector('.timeline-start-knob');
+    const loaderId = 'matches-global-loader';
+    const errorId  = 'matches-error';
+    const loaderEl = document.getElementById(loaderId);
+    const knob     = document.querySelector('.timeline-start-knob');
 
     if (loaderEl) {
         loaderEl.classList.remove('hidden');
@@ -67,7 +72,10 @@ async function loadMatches() {
         renderForm(matches.form);
         renderSponsorsTicker(matches.all);
         setCountdownData(matches.upcoming);
-        bindMatchCardClicks();
+
+        // Wire up cards and timeline items
+        bindMatchCardClicks('.match-card');     // imported — handles upcoming & result cards
+        bindTimelineItemClicks();               // local  — handles timeline items
 
         if (loaderEl) loaderEl.classList.add('hidden');
 
@@ -77,6 +85,8 @@ async function loadMatches() {
 
         if (knob) knob.style.opacity = '';
 
+        animateMatchCards('.match-card', 'section');    // imported stagger reveal
+
         initCountdown();
         scrollTimelineToEnd();
     } catch (error) {
@@ -85,7 +95,7 @@ async function loadMatches() {
         if (loaderEl) loaderEl.classList.add('hidden');
         FootballLoader.showError(errorId, 'Wedstrijden konden niet worden geladen. Probeer opnieuw.');
 
-        const titleEl    = document.getElementById('next-match-title');
+        const titleEl     = document.getElementById('next-match-title');
         const countdownEl = document.getElementById('countdown');
         if (titleEl && countdownEl) {
             titleEl.textContent       = 'Geen wedstrijden beschikbaar.';
@@ -156,29 +166,9 @@ function renderRecentMatches(pastMatches) {
 
     grid.classList.remove('no-matches');
 
+    // buildResultCard handles HTML, data attribute, cursor, resultToClass/Icon
     [...pastMatches].reverse().slice(0, 6).forEach(match => {
-        const cls  = resultToClass(match.result);
-        const icon = resultToIcon(cls);
-        const card = document.createElement('div');
-        card.className = 'match-card result';
-        card.setAttribute('data-match-data', JSON.stringify(match));
-
-        const [homeTeam, awayTeam] = match.title.split(' vs ');
-        card.innerHTML = `
-            <div class="result-icon ${cls}"><span><i class="fas fa-${icon}"></i></span></div>
-            <div class="match-body">
-                <div class="match-teams">
-                    <div class="home-team">${homeTeam}</div>
-                    <div class="vs-divider">vs</div>
-                    <div class="away-team">${awayTeam}</div>
-                </div>
-                <div class="match-score">${match.score}</div>
-                <div class="match-details">
-                    <span class="match-date"><i class="fas fa-calendar"></i> ${match.dateTime.displayDate}</span>
-                </div>
-            </div>
-        `;
-        grid.appendChild(card);
+        grid.appendChild(buildResultCard(match));
     });
 }
 
@@ -231,9 +221,9 @@ function renderSponsorsTicker(allMatches) {
     uniqueSponsors.forEach(sponsor => { logosHTML += sponsorHTML(sponsor); });
     track.innerHTML = logosHTML;
 
-    const images       = track.querySelectorAll('img');
-    let imagesLoaded   = 0;
-    const totalImages  = images.length;
+    const images      = track.querySelectorAll('img');
+    let imagesLoaded  = 0;
+    const totalImages = images.length;
 
     const startTicker = () => {
         requestAnimationFrame(() => {
@@ -269,21 +259,12 @@ function renderSponsorsTicker(allMatches) {
 
 // ── Interactions ──────────────────────────────────────────────────────────────
 
-function bindMatchCardClicks() {
-    document.querySelectorAll('.match-card').forEach(card => {
-        card.addEventListener('click', () => {
-            const raw = card.getAttribute('data-match-data');
-            if (!raw) return;
-            try {
-                const matchData = JSON.parse(raw);
-                matchData.isUpcoming = !card.classList.contains('result');
-                window.matchModal?.show(matchData, card);
-            } catch (err) {
-                console.warn('Failed to parse match data:', err);
-            }
-        });
-    });
-
+/**
+ * Timeline items use multiple data-attributes (not a single JSON blob) and
+ * fall back to constructed data when the attribute is missing, so they stay
+ * as a local function rather than using the shared bindMatchCardClicks.
+ */
+function bindTimelineItemClicks() {
     document.querySelectorAll('.timeline-item').forEach(item => {
         item.addEventListener('click', () => {
             const raw = item.getAttribute('data-match-data');
