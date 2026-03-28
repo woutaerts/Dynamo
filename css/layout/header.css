@@ -115,7 +115,6 @@ body {
 
 .nav-link {
     background:     white;
-    border:         3px solid transparent;
     color:          var(--dark-gray);
     padding:        5px 13px;
     border-radius:  var(--radius-pill);
@@ -318,11 +317,15 @@ body {
         padding:          18px;
         gap:              9px;
         box-shadow:       var(--shadow-medium);
+
+        /* ADD THIS LINE to fix the giant pill shape */
+        border-radius:    var(--radius-lg);
+
         transition:
-            transform   var(--dur-fast) var(--ease-ui),
-            opacity     var(--dur-fast) var(--ease-ui),
-            visibility  var(--dur-fast) var(--ease-ui),
-            max-height  var(--dur-fast) var(--ease-ui);
+                transform   var(--dur-fast) var(--ease-ui),
+                opacity     var(--dur-fast) var(--ease-ui),
+                visibility  var(--dur-fast) var(--ease-ui),
+                max-height  var(--dur-fast) var(--ease-ui);
         transform:        translateY(-20px);
         opacity:          0;
         visibility:       hidden;
@@ -398,15 +401,18 @@ body {
     }
 
     .mobile-menu-toggle {
-        padding: 8px 10px;
+        padding: 5px 8px; /* Slimmed down to fit inside the header's 6px padding */
         order:   1;
     }
 
     .mobile-menu-toggle span {
-        width:  24px;
-        height: 3px;
-        margin: 3px 0;
+        width:  22px;  /* Restored to desktop width */
+        height: 2px;   /* Restored to desktop thickness */
+        margin: 3px 0; /* Tighter vertical spacing */
     }
+
+    .mobile-menu-toggle.active span:nth-child(1) { transform: rotate(-45deg) translate(-6.5px, 5px); }
+    .mobile-menu-toggle.active span:nth-child(3) { transform: rotate(45deg) translate(-6.5px, -5px); }
 
     .header-logo-container {
         display:   flex;

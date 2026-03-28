@@ -337,7 +337,6 @@
 
     #modalMatchTitle::after {
         width:  35px;
-        height: 2px;
     }
 
     .season { font-size: 0.85rem; margin-bottom: 1rem; }
@@ -354,7 +353,7 @@
 
     .modal-section h3::after,
     .goalscorers-section h3::after,
-    .modal-sponsor-container h3::after { width: 25px; height: 2px; }
+    .modal-sponsor-container h3::after { width: 25px }
 
     .date-box p,
     .time-box p,

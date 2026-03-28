@@ -146,6 +146,7 @@
     --dropdown-border-color: var(--dark-blue);
 }
 
+
 /* ── Base Reset ─────────────────────────────────────────────── */
 * {
     margin: 0;
@@ -183,33 +184,34 @@ body {
 
 /* ── Custom Scrollbar Utilities ─────────────────────────────── */
 
-/* Vertical Scrollbar (Transparent track) */
-.scrollbar-y { scrollbar-width: thin; scrollbar-color: var(--light-gray) transparent; }
-.scrollbar-y::-webkit-scrollbar { width: 6px; }
-.scrollbar-y::-webkit-scrollbar-track {
-    background: transparent;
-    border-radius: var(--radius-sm);
-    margin: 16px 0;
-}
-.scrollbar-y::-webkit-scrollbar-thumb {
-    background: var(--light-gray);
-    border-radius: var(--radius-sm);
-}
-.scrollbar-y::-webkit-scrollbar-thumb:hover { background: var(--medium-gray); }
+@media (hover: hover) and (pointer: fine) {
+    /* Vertical Scrollbar (Transparent track) */
+    .scrollbar-y { scrollbar-width: thin; scrollbar-color: var(--light-gray) transparent; }
+    .scrollbar-y::-webkit-scrollbar { width: 6px; }
+    .scrollbar-y::-webkit-scrollbar-track {
+        background: transparent;
+        border-radius: var(--radius-sm);
+        margin: 16px 0;
+    }
+    .scrollbar-y::-webkit-scrollbar-thumb {
+        background: var(--light-gray);
+        border-radius: var(--radius-sm);
+    }
+    .scrollbar-y::-webkit-scrollbar-thumb:hover { background: var(--medium-gray); }
 
-
-/* Horizontal Scrollbar (Silver track) */
-.scrollbar-x { scrollbar-width: thin; scrollbar-color: var(--light-gray) var(--silver-mist); }
-.scrollbar-x::-webkit-scrollbar { height: 8px; }
-.scrollbar-x::-webkit-scrollbar-track {
-    background: var(--silver-mist);
-    border-radius: var(--radius-sm);
+    /* Horizontal Scrollbar (Silver track) */
+    .scrollbar-x { scrollbar-width: thin; scrollbar-color: var(--light-gray) var(--silver-mist); }
+    .scrollbar-x::-webkit-scrollbar { height: 8px; }
+    .scrollbar-x::-webkit-scrollbar-track {
+        background: var(--silver-mist);
+        border-radius: var(--radius-sm);
+    }
+    .scrollbar-x::-webkit-scrollbar-thumb {
+        background: var(--light-gray);
+        border-radius: var(--radius-sm);
+    }
+    .scrollbar-x::-webkit-scrollbar-thumb:hover { background: var(--medium-gray); }
 }
-.scrollbar-x::-webkit-scrollbar-thumb {
-    background: var(--light-gray);
-    border-radius: var(--radius-sm);
-}
-.scrollbar-x::-webkit-scrollbar-thumb:hover { background: var(--medium-gray); }
 
 /* Accessibility — visually hidden but screen-reader accessible */
 .sr-only {
@@ -963,6 +965,8 @@ body {
     border:        3px solid transparent;
     position:      relative;
     transition:    var(--t-reveal);
+    display:        flex;
+    flex-direction: column;
 }
 
 .match-card:hover {
@@ -1004,6 +1008,7 @@ body {
     flex-direction: column;
     align-items:    center;
     text-align:     center;
+    flex-grow:      1;
 }
 
 .match-teams {
@@ -1040,6 +1045,7 @@ body {
     margin:        10px 0 20px;
     box-shadow:    var(--shadow-medium);
     transition:    var(--t-reveal);
+    margin-top:    auto;
 }
 
 /* Result-state score border overrides */
@@ -1119,7 +1125,6 @@ body {
         --text-h3:   1.4rem;
         --text-lg:   1.1rem;
     }
-
     .desktop-only { display: none !important; }
     .mobile-only  { display: inline-block !important; }
 
@@ -1153,7 +1158,7 @@ body {
     .match-body   { padding: 16px; }
     .match-teams  { margin-bottom: 12px; }
     .vs-divider   { margin: 6px 0; }
-    .match-score { font-size: 1.2rem; padding: 8px 14px; border: 1px solid var(--silver-mist); box-shadow: var(--shadow-small); margin: 8px 0 12px; }
+    .match-score { font-size: 1.2rem; padding: 8px 14px; border: 3px solid var(--dusty-blue); box-shadow: var(--shadow-small); margin: auto 0 12px; }
     .match-card:not(.result) .match-score { font-size: 1rem; }
     .match-card .result-icon { font-size: 1rem; top: -8px; right: -8px; box-shadow: var(--shadow-small); }
     .match-date, .match-venue { gap: 5px; }
@@ -1240,7 +1245,6 @@ body {
         --text-body: 0.95rem;
         --text-sm:   0.8rem;
     }
-
     .table-header,
     .scorer-row,
     .player-row {

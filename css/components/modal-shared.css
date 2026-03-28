@@ -117,7 +117,7 @@ body.modal-open {
     .close-modal {
         width:  28px;
         height: 28px;
-        top:    6px;
-        right:  6px;
+        top:    0;
+        right:  0;
     }
 }

@@ -212,7 +212,7 @@
 
     .timeline-item { min-width: 100px; padding: 0 8px; }
     .timeline-item:hover, .timeline-item:hover .result-icon { transform: translateY(0) !important; }
-    .timeline-item .result-icon { font-size: 0.85rem; margin-bottom: 1rem; }
+    .timeline-item .result-icon { font-size: 0.85rem; margin-bottom: 0rem; }
     .timeline-item small { padding: 0.25rem 0.5rem; }
     .timeline-item::before { width: 16px; height: 16px; }
 
@@ -232,7 +232,7 @@
     .timeline { min-height: 140px; transform: translateY(10px); }
     .timeline-start-knob { width: 8px; height: 8px; }
     .timeline::before { top: 50.5%; height: 2px; right: 0.6rem; }
-    .timeline::after  { top: 49.5%; font-size: 18px; }
+    .timeline::after  { top: 50%; font-size: 18px; }
 
     .timeline-item { min-width: 90px; padding: 0 6px; }
     .timeline-item small { padding: 0.2rem 0.4rem; }
