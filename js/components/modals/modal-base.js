@@ -1,10 +1,8 @@
 /**
- * utils/modal-base.js
- *
+ * components/modals/modal-base.js
  * Abstract base class for FLIP-animated overlay modals.
- * Eliminates ~120 lines of byte-for-byte duplicate code shared between
- * matchModal.js and playerModal.js.
- *
+ * Moved from utils/ — a base class for UI components belongs with components,
+ * not in a general-purpose utilities folder.
  */
 export class ModalBase {
     constructor() {
@@ -49,14 +47,11 @@ export class ModalBase {
         this._clearAnimations();
         this.originEl = originEl;
 
-        // Adding .show triggers the CSS overlay fade-in (opacity 0 → 1)
         this.modal.classList.add('show');
 
         const modalContent = this.modal.querySelector('.modal-content');
         if (!modalContent) return;
 
-        // ── FLIP: First & Last ────────────────────────────────────────────────
-        // The modal is now visible in its final position — measure it.
         const contentRect = modalContent.getBoundingClientRect();
         const toRadius    = getComputedStyle(modalContent).borderRadius;
         let fromKF;
@@ -74,19 +69,17 @@ export class ModalBase {
                 borderRadius: getComputedStyle(originEl).borderRadius
             };
         } else {
-            // Fallback: simple scale-up from center
             fromKF = { transform: 'scale(0.92) translateY(14px)', opacity: '0', borderRadius: toRadius };
         }
 
-        // ── FLIP: Invert & Play ───────────────────────────────────────────────
         modalContent.animate(
             [fromKF, { transform: 'none', opacity: '1', borderRadius: toRadius }],
             {
                 duration: originEl ? 480 : 280,
                 easing:   originEl
-                    ? 'cubic-bezier(0.34, 1.56, 0.64, 1)'   // spring when from card
-                    : 'cubic-bezier(0.16, 1, 0.3, 1)',       // fast-out fallback
-                fill: 'backwards'   // hold fromKF until animation begins
+                    ? 'cubic-bezier(0.34, 1.56, 0.64, 1)'
+                    : 'cubic-bezier(0.16, 1, 0.3, 1)',
+                fill: 'backwards'
             }
         );
     }
@@ -128,7 +121,6 @@ export class ModalBase {
             toKF = { transform: 'scale(0.92) translateY(14px)', opacity: '0', borderRadius: fromRadius };
         }
 
-        // Removing .show triggers the CSS overlay fade-out (opacity 1 → 0)
         this.modal.classList.remove('show');
 
         const anim = modalContent.animate(
@@ -138,7 +130,7 @@ export class ModalBase {
 
         anim.onfinish = () => {
             document.body.classList.remove('modal-open');
-            this._clearAnimations();    // clear fill:'forwards' so next open is clean
+            this._clearAnimations();
             this.originEl = null;
         };
     }

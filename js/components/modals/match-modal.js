@@ -1,12 +1,13 @@
 /**
- * components/matchModal.js
+ * components/modals/match-modal.js
+ * Renamed from matchModal.js (camelCase → kebab-case).
+ * Moved from components/ into components/modals/ alongside its base class.
  */
-import { ModalBase } from '../utils/modal-base.js';
+import { ModalBase } from './modal-base.js';       // was: '../utils/modal-base.js'
 
 class MatchModal extends ModalBase {
     constructor() {
         super();
-        // this.modal, this.isInitialized, this.originEl inherited from ModalBase
     }
 
     // ── Initialization ────────────────────────────────────────────────────────
@@ -23,7 +24,7 @@ class MatchModal extends ModalBase {
 
             this.modal = document.getElementById('matchCenterModal');
             if (this.modal) {
-                this.bindEvents();          // inherited from ModalBase
+                this.bindEvents();
                 this.isInitialized = true;
             }
         } catch (error) {
@@ -49,7 +50,6 @@ class MatchModal extends ModalBase {
             sponsor     = null
         } = matchData;
 
-        // Apply result colour class to overlay
         const resultClass = !isUpcoming && result
             ? (result === 'winst' ? 'win' : result === 'gelijk' ? 'draw' : 'loss')
             : '';
@@ -75,17 +75,16 @@ class MatchModal extends ModalBase {
             });
         }
 
-        this._animateOpen(originEl);    // inherited FLIP open
+        this._animateOpen(originEl);
     }
 
     close() {
-        this._animateClose();           // inherited FLIP close
+        this._animateClose();
     }
 
     // ── Content Population ────────────────────────────────────────────────────
 
     renderContent(title, dateTime, season, stadium, goalscorers, score, isUpcoming, isHome, sponsor) {
-        // Title (home team / away team)
         const titleEl = this.modal.querySelector('#modalMatchTitle');
         if (titleEl) {
             const [homeTeam, awayTeam] = title.split(' vs ').map(t => t.trim());
@@ -97,7 +96,6 @@ class MatchModal extends ModalBase {
             }
         }
 
-        // Score
         const scoreEl        = this.modal.querySelector('#modalMatchScore');
         const scoreDisplayEl = this.modal.querySelector('.score-display');
         if (scoreEl && scoreDisplayEl) {
@@ -105,7 +103,6 @@ class MatchModal extends ModalBase {
             if (score && !isUpcoming) scoreDisplayEl.textContent = score;
         }
 
-        // Date & Time
         const dateEl = this.modal.querySelector('#matchDate');
         const timeEl = this.modal.querySelector('#matchTime');
         if (dateEl && timeEl) {
@@ -113,22 +110,18 @@ class MatchModal extends ModalBase {
             timeEl.innerHTML = `<i class="fas fa-clock"></i> ${dateTime.time || 'TBD'}`;
         }
 
-        // Season label
         const seasonEl = this.modal.querySelector('#matchSeason');
         if (seasonEl) seasonEl.textContent = season;
 
-        // Stadium
         const stadiumEl = this.modal.querySelector('#stadiumName');
         if (stadiumEl) stadiumEl.innerHTML = `<i class="fas fa-map-marker-alt"></i> ${stadium}`;
 
-        // Goalscorers
         const goalscorersSection = this.modal.querySelector('.goalscorers-section');
         if (goalscorersSection) {
             goalscorersSection.style.display = isUpcoming ? 'none' : 'block';
             if (!isUpcoming) this.renderGoalscorers(goalscorers);
         }
 
-        // Sponsor
         const sponsorSection = this.modal.querySelector('#modalMatchSponsor');
         if (sponsorSection) {
             if (sponsor?.name && sponsor?.logo) {

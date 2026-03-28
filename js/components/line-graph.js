@@ -1,5 +1,5 @@
 /**
- * components/lineGraph.js
+ * components/line-graph.js
  *
  * No renames applied. This is a self-contained GSAP-driven graph component
  * whose internal naming (boxLabel, graphDot, nullDot, dragger, etc.) mirrors

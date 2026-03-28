@@ -1,5 +1,5 @@
 /**
- * partials/header.js
+ * layout/header.js
  * Loads the header partial, sets the active nav link, and initialises all
  * header-related interactions.
  */
@@ -11,7 +11,7 @@ document.addEventListener('DOMContentLoaded', () => {
 // ── Header Loading ────────────────────────────────────────────────────────────
 
 async function initHeader() {
-    const headerPath = '/dynamo/html/partials/header.html';
+    const headerPath = '/dynamo/html/layout/header.html';
 
     try {
         const response = await fetch(headerPath);
@@ -142,7 +142,7 @@ function initScrollProgress() {
 
     function updateProgress() {
         if (cachedMaxScroll <= 0) { progressBar.style.width = '0%'; return; }
-        const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+        const scrollTop = window.scrollY;
         const pct       = Math.min(100, Math.max(0, (scrollTop / cachedMaxScroll) * 100));
         progressBar.style.width = pct + '%';
     }
@@ -179,7 +179,7 @@ function initScrollEffect() {
     let ticking = false;
 
     function onHeaderScroll() {
-        const currentScroll = window.pageYOffset || document.documentElement.scrollTop;
+        const currentScroll = window.scrollY;
 
         if (!ticking) {
             window.requestAnimationFrame(() => {

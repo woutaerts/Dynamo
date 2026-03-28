@@ -1,13 +1,12 @@
 /**
  * statistics.js — Statistics page
  */
-import { animateOnScroll } from './utils/animations.js';
-import { PLAYER_TABLE_HEADER_HTML, sliceForTable, appendTableToggle, bindSortableHeaders, buildPlayerRow, debounce } from './utils/helpers.js';import {
-    fetchTeamSeasonStats, fetchTeamAllTimeStats, fetchSeasonRecords,
-    fetchSeasonPlayers, fetchAllTimePlayers
-} from './utils/dataService.js';
-import { FootballLoader } from './components/loader.js';
-import { initDropdown, bindDropdownClose } from './utils/dropdown.js';
+import { animateOnScroll } from '../core/animations.js';
+import { debounce } from '../core/helpers.js';
+import { PLAYER_TABLE_HEADER_HTML, sliceForTable, buildPlayerRow, appendTableToggle, bindSortableHeaders } from '../components/player-table.js';
+import { fetchTeamSeasonStats, fetchTeamAllTimeStats, fetchSeasonRecords, fetchSeasonPlayers, fetchAllTimePlayers } from '../services/data-service.js';
+import { FootballLoader } from '../components/loader.js';
+import { initDropdown, bindDropdownClose } from '../components/dropdown.js';
 
 // ── Module State ──────────────────────────────────────────────────────────────
 
@@ -37,7 +36,6 @@ const animationElements = [
 document.addEventListener('DOMContentLoaded', () => {
     initToggle();
     loadStats();
-    initSortableHeaders();
 
     // Replace the old monolithic initDropdowns() with two typed calls
     initDropdown(
@@ -208,7 +206,7 @@ function sortPlayers(players, sortBy) {
     });
 }
 
-function renderPlayerTable(players, listSelector, rowClass, sortBy) {
+function renderPlayerTable(players, listSelector, rowClass, sortBy, tableSelector, dropdownSelector, renderFn) {
     const listEl    = document.querySelector(listSelector);
     const container = listEl?.closest('.player-stats-table, .top-scorers-table');
     if (!container) return;
@@ -223,32 +221,40 @@ function renderPlayerTable(players, listSelector, rowClass, sortBy) {
 
     const visiblePlayers = sliceForTable(sorted, tableId, 10);
 
-    // Replaced inline markup with our new helper
     visiblePlayers.forEach((player, index) => {
         const row = buildPlayerRow(player, index, rowClass, prefix);
         newList.appendChild(row);
     });
 
     appendTableToggle(container, tableId, sorted.length, 10, () => {
-        renderPlayerTable(players, listSelector, rowClass, sortBy);
+        renderPlayerTable(players, listSelector, rowClass, sortBy, tableSelector, dropdownSelector, renderFn);
     });
 
-    initSortableHeaders();
+    bindSortableHeaders(tableSelector, dropdownSelector, renderFn);
 }
 
 function renderSeasonPlayers(sortBy = document.querySelector('#season-sort .selected')?.dataset.value || 'goals') {
-    renderPlayerTable(seasonPlayers, '.player-stats-list', 'player-row', sortBy);
+    renderPlayerTable(
+        seasonPlayers,
+        '.player-stats-list',
+        'player-row',
+        sortBy,
+        '#player-season-stats', // tableSelector
+        '#season-sort',         // dropdownSelector
+        renderSeasonPlayers     // renderFn
+    );
 }
 
 function renderAllTimePlayers(sortBy = document.querySelector('#alltime-sort .selected')?.dataset.value || 'goals') {
-    renderPlayerTable(allTimePlayers, '.top-scorers-list', 'scorer-row', sortBy);
-}
-
-// ── Sortable Table Headers ────────────────────────────────────────────────────
-
-function initSortableHeaders() {
-    bindSortableHeaders('#player-season-stats', '#season-sort', renderSeasonPlayers);
-    bindSortableHeaders('#player-alltime-stats', '#alltime-sort', renderAllTimePlayers);
+    renderPlayerTable(
+        allTimePlayers,
+        '.top-scorers-list',
+        'scorer-row',
+        sortBy,
+        '#player-alltime-stats', // tableSelector
+        '#alltime-sort',         // dropdownSelector
+        renderAllTimePlayers     // renderFn
+    );
 }
 
 // ── Toggle ────────────────────────────────────────────────────────────────────

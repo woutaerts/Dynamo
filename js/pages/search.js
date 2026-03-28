@@ -1,12 +1,12 @@
 /**
  * search.js — Search page
  */
-import { animateOnScroll } from './utils/animations.js';
-import { fetchSearchMatches, parseDDMMYYYY } from './utils/dataService.js';
-import { FootballLoader } from './components/loader.js';
-import { calcWinMargin, calcLossMargin } from './utils/helpers.js';
-import { buildResultCard, animateMatchCards, bindMatchCardClicks } from './utils/match-cards.js';
-import { initDropdown, bindDropdownClose } from './utils/dropdown.js';
+import { animateOnScroll } from '../core/animations.js';
+import { fetchSearchMatches, parseDDMMYYYY } from '../services/data-service.js';
+import { FootballLoader } from '../components/loader.js';
+import { calcWinMargin, calcLossMargin } from '../core/helpers.js';
+import { buildResultCard, animateMatchCards, bindMatchCardClicks } from '../components/match-card.js';
+import { initDropdown, bindDropdownClose } from '../components/dropdown.js';
 
 const animationElements = [
     { selector: '.section-title',    containerSelector: 'section' },

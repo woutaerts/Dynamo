@@ -1,13 +1,14 @@
 /**
- * components/playerModal.js
+ * components/modals/player-modal.js
+ * Renamed from playerModal.js (camelCase → kebab-case).
+ * Moved from components/ into components/modals/ alongside its base class.
  */
-import { ModalBase } from '../utils/modal-base.js';
-import { POSITION_LABEL_MAP } from '../utils/helpers.js';
+import { ModalBase } from './modal-base.js';
+import { POSITION_LABEL_MAP } from '../../core/helpers.js';
 
 class PlayerModal extends ModalBase {
     constructor() {
         super();
-        // this.modal, this.isInitialized, this.originEl inherited from ModalBase
     }
 
     // ── Initialization ────────────────────────────────────────────────────────
@@ -23,7 +24,7 @@ class PlayerModal extends ModalBase {
             if (placeholder) {
                 placeholder.innerHTML = modalHTML;
                 this.modal = document.getElementById('playerModal');
-                this.bindEvents();          // inherited from ModalBase
+                this.bindEvents();
                 this.isInitialized = true;
             }
         } catch (error) {
@@ -36,8 +37,8 @@ class PlayerModal extends ModalBase {
     /**
      * Opens the modal, animating the content outward from `originEl` (FLIP).
      *
-     * @param {Object}      playerData  Player data object.
-     * @param {Element|null} originEl   The card that was clicked.
+     * @param {Object}       playerData  Player data object.
+     * @param {Element|null} originEl    The card that was clicked.
      */
     show(playerData = {}, originEl = null) {
         if (!this.modal) return;
@@ -60,11 +61,11 @@ class PlayerModal extends ModalBase {
             modalContent.scrollTop = 0;
         }
 
-        this._animateOpen(originEl);    // inherited FLIP open
+        this._animateOpen(originEl);
     }
 
     close() {
-        this._animateClose();           // inherited FLIP close
+        this._animateClose();
     }
 
     // ── Content Population ────────────────────────────────────────────────────

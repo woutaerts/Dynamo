@@ -1,5 +1,5 @@
 /**
- * partials/footer.js
+ * layout/footer.js
  */
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -9,7 +9,7 @@ document.addEventListener('DOMContentLoaded', () => {
 // ── Footer Loading ────────────────────────────────────────────────────────────
 
 async function initFooter() {
-    const footerPath = '/dynamo/html/partials/footer.html';
+    const footerPath = '/dynamo/html/layout/footer.html';
 
     try {
         const response = await fetch(footerPath);

@@ -1,12 +1,13 @@
 /**
  * matches.js — Matches page
  */
-import { animateOnScroll } from './utils/animations.js';
-import { initCountdown, setCountdownData, renderForm } from './general.js';
-import { fetchCurrentSeasonMatches } from './utils/dataService.js';
-import { FootballLoader } from './components/loader.js';
-import { resultToClass, resultToIcon } from './utils/helpers.js';
-import { buildResultCard, animateMatchCards, bindMatchCardClicks } from './utils/match-cards.js';
+import { animateOnScroll } from '../core/animations.js';
+import { initCountdown, setCountdownData } from '../components/countdown.js';
+import { renderForm } from '../components/form-strip.js';
+import { fetchCurrentSeasonMatches } from '../services/data-service.js';
+import { FootballLoader } from '../components/loader.js';
+import { resultToClass, resultToIcon } from '../core/helpers.js';
+import { buildResultCard, animateMatchCards, bindMatchCardClicks } from '../components/match-card.js';
 
 const animationElements = [
     { selector: '.match-card',          containerSelector: 'section' },
@@ -217,14 +218,18 @@ function renderSponsorsTicker(allMatches) {
         requestAnimationFrame(() => {
             const trackWidth   = track.scrollWidth;
             const wrapperWidth = wrapper.offsetWidth;
+            const needsScroll  = trackWidth > wrapperWidth * 0.7;
+            const needsDouble  = needsScroll && (trackWidth < wrapperWidth * 2);
+
             track.classList.remove('centered', 'scrolling');
 
-            if (trackWidth > wrapperWidth * 0.7) {
+            if (needsScroll) {
+                if (needsDouble) {
+                    track.innerHTML += logosHTML;
+                }
+
                 track.innerHTML += logosHTML;
                 track.classList.add('scrolling');
-                setTimeout(() => {
-                    if (track.scrollWidth < wrapperWidth * 2) track.innerHTML += logosHTML;
-                }, 50);
             } else {
                 track.classList.add('centered');
             }

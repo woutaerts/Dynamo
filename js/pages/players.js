@@ -1,10 +1,10 @@
 /**
  * players.js — Players page
  */
-import { animateOnScroll, animatePlayerCards } from './utils/animations.js';
-import { POSITION_LABEL_MAP } from './utils/helpers.js';
-import { fetchSeasonPlayers } from './utils/dataService.js';
-import { FootballLoader } from './components/loader.js';
+import { animateOnScroll, animatePlayerCards } from '../core/animations.js';
+import { POSITION_LABEL_MAP } from '../core/helpers.js';
+import { fetchSeasonPlayers } from '../services/data-service.js';
+import { FootballLoader } from '../components/loader.js';
 
 const animationElements = [
     { selector: '.section-title',    containerSelector: 'section' },
@@ -107,10 +107,6 @@ function renderPlayerCards(players) {
                 alert('Spelerdetails zijn momenteel niet beschikbaar. Probeer het later opnieuw.');
             }
         });
-
-        // Subtle hover lift (CSS also handles this, but JS override ensures smooth reset)
-        card.addEventListener('mouseenter', () => card.style.transform = 'translateY(-8px) scale(1.02)');
-        card.addEventListener('mouseleave', () => card.style.transform = 'translateY(0) scale(1)');
 
         player.element = card;
         grid.appendChild(card);

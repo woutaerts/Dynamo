@@ -1,9 +1,10 @@
 /**
- * index.js — Homepage
+ * home.js — Homepage
  */
-import { animateOnScroll, setupSmoothScrolling} from './utils/animations.js';
-import { initCountdown, setCountdownData, renderForm } from './general.js';
-import { fetchCurrentSeasonMatches, fetchTeamSeasonStats } from './utils/dataService.js';
+import { animateOnScroll, setupSmoothScrolling} from '../core/animations.js';
+import { initCountdown, setCountdownData } from '../components/countdown.js';
+import { renderForm } from '../components/form-strip.js';
+import { fetchCurrentSeasonMatches, fetchTeamSeasonStats } from '../services/data-service.js';
 
 // ── Animation Element Registry ────────────────────────────────────────────────
 

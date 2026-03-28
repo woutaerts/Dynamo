@@ -1,29 +1,15 @@
 /**
  * archive.js — Archive page
  */
-import { animateOnScroll } from './utils/animations.js';
-import { LineGraph } from './components/lineGraph.js';
-import { Papa, SHEET_URLS } from './utils/dataService.js';
-import { fetchCsvCached } from './utils/fetchCsv.js';
-import { FootballLoader } from './components/loader.js';
-import {
-    PLAYER_TABLE_HEADER_HTML,
-    POSITION_CODE_MAP,
-    MONTH_EN_TO_NL,
-    parseGoalscorers,
-    parseDate,
-    resultToClass,
-    resultToIcon,
-    calcWinMargin,
-    calcLossMargin,
-    resetTableState,
-    sliceForTable,
-    appendTableToggle,
-    bindSortableHeaders,
-    buildPlayerRow
-} from './utils/helpers.js';
-import { initDropdown, bindDropdownClose } from './utils/dropdown.js';
-import { animateMatchCards } from './utils/match-cards.js';
+import { animateOnScroll } from '../core/animations.js';
+import { LineGraph } from '../components/line-graph.js';
+import { SHEET_URLS, parseCsv } from '../services/data-service.js';
+import { fetchCsvCached } from '../services/fetch-csv.js';
+import { FootballLoader } from '../components/loader.js';
+import { POSITION_CODE_MAP, MONTH_EN_TO_NL, parseGoalscorers, parseDate, resultToClass, resultToIcon, calcWinMargin, calcLossMargin } from '../core/helpers.js';
+import { PLAYER_TABLE_HEADER_HTML, sliceForTable, resetTableState, buildPlayerRow, appendTableToggle, bindSortableHeaders } from '../components/player-table.js';
+import { initDropdown, bindDropdownClose } from '../components/dropdown.js';
+import { animateMatchCards } from '../components/match-card.js';
 
 // ── Animation Registry ────────────────────────────────────────────────────────
 
@@ -87,6 +73,7 @@ const SEASON_CONFIG = {
 
 // ── Module State ──────────────────────────────────────────────────────────────
 
+const _parsedSeasonCache = new Map();
 let archivePlayers = [];
 let archiveMatches = [];
 
@@ -243,13 +230,38 @@ async function loadSeasonData(seasonString) {
     }
 
     try {
+        if (_parsedSeasonCache.has(seasonString)) {
+            const cached = _parsedSeasonCache.get(seasonString);
+
+            renderGoldenShoe(cached.shoeData);
+            renderSeasonStats(cached.stats);
+            archivePlayers = cached.players;
+            resetTableState('archive-players');
+            renderArchivePlayers('goals');
+            archiveMatches = cached.matches;
+            renderSortedMatches('date-asc');
+
+            if (innerLoader)  innerLoader.classList.add('hidden');
+            if (innerContent) innerContent.classList.remove('hidden');
+
+            animateMatchCards('.archive-match-card', '#archive-matches-grid');
+            animateOnScroll([
+                { selector: '.stat-card',                         containerSelector: 'section' },
+                { selector: '.archive-player-row',                containerSelector: 'section' },
+                { selector: '.archive-subsection .section-title', containerSelector: 'section' }
+            ]);
+            return;
+        }
+
         const csvText = await fetchCsvCached(config.url);
-        const rows    = Papa.parse(csvText, { skipEmptyLines: false, delimiter: ',' }).data;
+        const rows    = parseCsv(csvText, { skipEmptyLines: false }).data;
 
         const stats    = parseSeasonStats(rows, config);
         const players  = parseSeasonPlayers(rows, config);
         const matches  = parseSeasonMatches(rows, config, seasonString);
         const shoeData = parseGoldenShoe(rows, config);
+
+        _parsedSeasonCache.set(seasonString, { stats, players, matches, shoeData });
 
         renderGoldenShoe(shoeData);
         renderSeasonStats(stats);
@@ -279,7 +291,7 @@ async function loadSeasonData(seasonString) {
 
 async function fetchAllSeasonsData() {
     const csvText = await fetchCsvCached(SHEET_URLS.seasonRecords);
-    const rows    = Papa.parse(csvText, { skipEmptyLines: true, delimiter: ',' }).data;
+    const rows    = parseCsv(csvText, { skipEmptyLines: true }).data;
 
     const cleanLabel = str => str ? str.replace(/[="]/g, '').trim() : '';
     const toDecimal  = (val, abs = false) => { let n = parseFloat(val); if (isNaN(n)) return 0; if (abs) n = Math.abs(n); return parseFloat(n.toFixed(2)); };
@@ -471,8 +483,6 @@ function renderArchivePlayers(sortBy = 'goals') {
         list.appendChild(row);
     });
 
-    appendTableToggle(tableContainer, 'archive-players', sorted.length, 10, () => renderArchivePlayers(sortBy));
-    initSortHeaders();
     appendTableToggle(tableContainer, 'archive-players', sorted.length, 10, () => renderArchivePlayers(sortBy));
     initSortHeaders();
 }

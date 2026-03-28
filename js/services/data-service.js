@@ -1,11 +1,10 @@
 /**
- * utils/dataService.js
+ * services/data-service.js
  * All data-fetching and CSV-parsing logic.
  */
-import { fetchCsvCached } from './fetchCsv.js';
-import { MONTH_EN_TO_NL, parseDate, parseGoalscorers, POSITION_CODE_MAP } from './helpers.js';
+import { fetchCsvCached } from './fetch-csv.js';
+import { MONTH_EN_TO_NL, parseDate, parseGoalscorers, POSITION_CODE_MAP } from '../core/helpers.js';
 
-export const Papa             = window.Papa;
 export const gsap             = window.gsap;
 export const Draggable        = window.Draggable;
 export const MotionPathPlugin = window.MotionPathPlugin;
@@ -55,7 +54,14 @@ export const CURRENT_SEASON_LAYOUT = {
     form: { row: 82, startCol: 28, count: 5 }
 };
 
-// ── 0. Current Season Matches (index.js & matches.js) ─────────────────────────
+/**
+ * Wraps the third-party CSV parser so consumers don't need to know about it.
+ */
+export function parseCsv(csvText, options = {}) {
+    return window.Papa.parse(csvText, { delimiter: ',', ...options });
+}
+
+// ── 0. Current Season Matches (home.js & matches.js) ─────────────────────────
 
 export async function fetchCurrentSeasonMatches() {
     const csvText = await fetchCsvCached(SHEET_URLS.currentSeason);
@@ -63,7 +69,7 @@ export async function fetchCurrentSeasonMatches() {
 }
 
 function parseMatchesCsv(csvText, layout) {
-    const parsed  = Papa.parse(csvText, { skipEmptyLines: true, delimiter: ',' });
+    const parsed  = parseCsv(csvText, { skipEmptyLines: true});
     const rows    = parsed.data;
     const matches = { upcoming: [], past: [], all: [], form: [] };
 
@@ -131,7 +137,7 @@ function parseMatchesCsv(csvText, layout) {
     return matches;
 }
 
-// ── 1. Team Stats & Records (statistics.js & index.js) ────────────────────────
+// ── 1. Team Stats & Records (statistics.js & home.js) ────────────────────────
 
 export async function fetchTeamSeasonStats() {
     const csvText = await fetchCsvCached(SHEET_URLS.teamSeasonStats);
@@ -284,7 +290,7 @@ export async function fetchAllTimePlayers() {
 
 export async function fetchSearchMatches() {
     const csvText   = await fetchCsvCached(SHEET_URLS.searchAll);
-    const parsed    = Papa.parse(csvText, { skipEmptyLines: true, delimiter: ',' });
+    const parsed  = parseCsv(csvText, { skipEmptyLines: true});
     const rows      = parsed.data;
     const matches   = [];
     const now       = new Date();

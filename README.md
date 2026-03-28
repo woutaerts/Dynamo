@@ -16,7 +16,7 @@ C:.
 │   │   ├── playerModal.css
 │   │   ├── loader.css
 │   │   └── graph.css
-│   ├── partials/              
+│   ├── layout/              
 │   │   ├── footer.css
 │   │   └── header.css
 │   ├── statistics/           
@@ -34,7 +34,7 @@ C:.
 │   ├── components/            
 │   │   ├── matchModal.html
 │   │   └── playerModal.html
-│   ├── partials/              
+│   ├── layout/              
 │   │   ├── footer.css
 │   │   └── header.css
 │   ├── archive.html            
@@ -44,16 +44,16 @@ C:.
 │   └── statistics.html        
 ├── js/                        # JavaScript files
 │   ├── components/    
-│   │   ├── lineGraph.js        
-│   │   ├── matchModal.js
-│   │   └── playerModal.js
-│   ├── partials/             
+│   │   ├── line-graph.js        
+│   │   ├── match-modal.js
+│   │   └── player-modal.js
+│   ├── layout/             
 │   │   ├── footer.js
 │   │   └── header.js
 │   ├── 404.js
 │   ├── archive.js
 │   ├── general.js             # Shared functionality (e.g., countdown, animations)
-│   ├── index.js          
+│   ├── home.js          
 │   ├── matches.js        
 │   ├── players.js  
 │   ├── search.js     

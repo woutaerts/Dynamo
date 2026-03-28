@@ -1,11 +1,11 @@
 /**
- * utils/match-cards.js
+ * utils/match-card.js
  *
  * Shared utilities for building, animating, and wiring up match cards.
  * Centralises logic that was duplicated across matches.js, search.js, archive.js.
  *
  */
-import { resultToClass, resultToIcon } from './helpers.js';
+import { resultToClass, resultToIcon } from '../core/helpers.js';
 
 // ── Card HTML Builder ─────────────────────────────────────────────────────────
 
@@ -62,21 +62,29 @@ export function buildResultCard(match, { extraClass = '', showSeason = false } =
 
 // ── Card Stagger Animation ────────────────────────────────────────────────────
 
+// Replace the per-call observer with a module-level singleton
+let _matchCardObserver = null;
+
 /**
  * Stagger-reveals match cards as they enter the viewport using IntersectionObserver.
  * Cards within the same container receive incremental delay based on their index.
  *
  * @param {string} cardSelector       CSS selector for the cards to observe.
- *                                    Defaults to '.match-card'.
+ * Defaults to '.match-card'.
  * @param {string|null} containerSelector  Used with `.closest()` inside the observer
- *                                    to scope the stagger index calculation.
- *                                    Pass null to use the card's direct parentElement.
+ * to scope the stagger index calculation.
+ * Pass null to use the card's direct parentElement.
  */
 export function animateMatchCards(
     cardSelector      = '.match-card',
     containerSelector = null
 ) {
-    const observer = new IntersectionObserver((entries, obs) => {
+    if (_matchCardObserver) {
+        _matchCardObserver.disconnect();
+        _matchCardObserver = null;
+    }
+
+    _matchCardObserver = new IntersectionObserver((entries, obs) => {
         entries.forEach(entry => {
             if (!entry.isIntersecting) return;
 
@@ -93,7 +101,7 @@ export function animateMatchCards(
     }, { root: null, rootMargin: '0px', threshold: 0.1 });
 
     document.querySelectorAll(`${cardSelector}:not(.animate-in)`)
-        .forEach(card => observer.observe(card));
+        .forEach(card => _matchCardObserver.observe(card));
 }
 
 // ── Card Click Binding ────────────────────────────────────────────────────────
