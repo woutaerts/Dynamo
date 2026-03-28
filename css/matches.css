@@ -141,7 +141,7 @@
     text-align:    center;
     background:    white;
     padding:       0.3rem 0.6rem;
-    border-radius: var(--radius-sm);
+    border-radius: var(--radius-lg);
     box-shadow:    var(--shadow-medium);
     white-space:   nowrap;
     position:      relative;
