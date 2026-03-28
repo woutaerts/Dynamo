@@ -1,0 +1,100 @@
+/* ============================================================
+   SEARCH.CSS
+   NOTE: .dropdown base styles are now in general.css.
+         .sort-controls base layout is now in general.css.
+         .match-card entrance animation is handled by general.css.
+   ============================================================ */
+
+/* ── Search Section ─────────────────────────────────────────── */
+.search-section {
+    padding:  1.5rem 0;
+    position: relative;
+    z-index:  var(--z-dropdown);
+}
+
+/* ── Autocomplete List ──────────────────────────────────────── */
+.autocomplete-list {
+    position:    absolute;
+    top:         100%;
+    left:        0;
+    right:       0;
+    background:  white;
+    border-radius: var(--radius-md);
+    border:      3px solid var(--medium-gray);
+    box-shadow:  var(--shadow-medium);
+    list-style:  none;
+    margin:      0.2rem 0 0;
+    z-index:     var(--z-dropdown);
+    display:     none;
+    max-height:  200px;
+    overflow-y:  auto;
+}
+
+.autocomplete-item {
+    padding:     0.5rem 1rem;
+    font-family: 'Poppins', sans-serif;
+    font-size:   var(--text-sm);
+    color:       var(--dark-gray);
+    cursor:      pointer;
+    transition:  var(--t-color), var(--t-color);
+}
+
+.autocomplete-item:hover,
+.autocomplete-item.active {
+    color:       var(--medium-gray);
+    font-weight: 700;
+}
+
+/* ── Sort Controls ──────────────────────────────────────────── */
+/* Base layout from general.css; this page centres the controls */
+.sort-controls { justify-content: center; }
+
+.dropdown .options {
+    width: max-content;
+}
+
+/* ── Match Season Label ─────────────────────────────────────── */
+.match-season {
+    color:       var(--medium-gray);
+    font-size:   var(--text-sm);
+    font-family: 'Poppins', sans-serif;
+    font-weight: 500;
+    display:     flex;
+    align-items: center;
+    gap:         6px;
+}
+
+.match-season i { font-size: 0.9em; opacity: 0.8; }
+
+/* ── Match Card (search context) ────────────────────────────── */
+/*
+ * .match-card base animation (opacity: 0, translateY) is handled
+ * by general.css. Only search-specific overrides live here.
+ */
+.matches-section .section-title::after{
+    background-color: var(--dark-blue);
+}
+.match-card {
+    cursor: default;
+}
+
+/* ── Responsive: Tablet (≤ 768 px) ─────────────────────────── */
+@media (max-width: 768px) {
+    .search-section { padding: 2rem 0 1rem; }
+
+    .autocomplete-item { padding: 0.4rem 0.9rem; }
+
+    .match-season { gap: 5px; }
+
+    /* Disable hover lift on touch */
+    .match-card:hover {
+        transform:  translateY(0) !important;
+        box-shadow: var(--shadow-hover);
+    }
+}
+
+/* ── Responsive: Mobile (≤ 480 px) ─────────────────────────── */
+@media (max-width: 480px) {
+    .search-section    { padding: 1rem 0 0.8rem; }
+    .autocomplete-item { padding: 0.4rem 0.8rem; }
+}

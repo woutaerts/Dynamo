@@ -1,0 +1,420 @@
+/* ============================================================
+   INDEX.CSS
+   ============================================================ */
+
+/* ── Hero Section ───────────────────────────────────────────── */
+.hero {
+    height:          20vh;
+    display:         flex;
+    align-items:     center;
+    position:        relative;
+    overflow:        hidden;
+    background-size: cover;
+    width:           var(--content-width);
+    margin:          0 auto;
+    padding:         7rem 1rem;
+}
+
+.hero-content {
+    position:        relative;
+    z-index:         2;
+    text-align:      center;
+    width:           100%;
+    display:         flex;
+    flex-direction:  column;
+    align-items:     center;
+    justify-content: center;
+}
+
+.hero h1 {
+    font-size:     var(--text-hero);
+    font-weight:   900;
+    margin-bottom: 0.2rem;
+    color:         var(--dark-gray);
+}
+
+/* Animated underbar beneath the hero text */
+.hero-content::after {
+    content:          '';
+    position:         absolute;
+    bottom:           -4px;
+    left:             50%;
+    transform:        translateX(-50%) scaleX(0);
+    transform-origin: left center;
+    width:            100%;
+    height:           8px;
+    background:       var(--dynamo-red);
+    border-radius:    var(--radius-sm);
+    transition:       transform var(--dur-slow) var(--ease-out) var(--delay-stagger);
+}
+
+.hero.animate-in .hero-content::after { transform: translateX(-50%) scaleX(1); }
+
+/* ── Carousel Section ───────────────────────────────────────── */
+.carousel-section {
+    padding: 1rem 0;
+}
+
+.carousel-container {
+    position:      relative;
+    width:         100%;
+    max-width:     380px;
+    aspect-ratio:  1365 / 2048;
+    border-radius: var(--radius-xl);
+    overflow:      hidden;
+    box-shadow:    0 20px 40px rgba(0, 0, 0, 0.3);
+    margin:        0 auto;
+    transition:    var(--t-reveal);
+}
+
+.carousel {
+    display:      flex;
+    width:        100%;
+    height:       100%;
+    touch-action: none;
+    user-select:  none;
+    will-change:  transform;
+}
+
+.slide {
+    min-width: 100%;
+    height:    100%;
+}
+
+.slide img {
+    width:      100%;
+    height:     100%;
+    object-fit: cover;
+    display:    block;
+    transition: transform var(--dur-slow) var(--ease-ui);
+}
+
+.slide:hover img { transform: scale(1.05); }
+
+/* ── Carousel Navigation Buttons ────────────────────────────── */
+.nav-btn {
+    position:        absolute;
+    top:             50%;
+    transform:       translateY(-50%);
+    width:           44px;
+    height:          44px;
+    background:      rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border:          1px solid rgba(255, 255, 255, 0.2);
+    border-radius:   var(--radius-circle);
+    color:           white;
+    font-size:       1.1rem;
+    cursor:          pointer;
+    display:         flex;
+    align-items:     center;
+    justify-content: center;
+    transition:      var(--t-interact);
+    z-index:         10;
+    opacity:         0;
+    pointer-events:  auto;
+    touch-action:    pan-y;
+}
+
+.carousel-container:hover .nav-btn,
+.carousel-container:active .nav-btn {
+    opacity: 1;
+}
+
+.nav-btn:hover {
+    background: rgba(255, 255, 255, 0.3);
+    transform:  translateY(-50%) scale(1.1);
+}
+
+.prev-btn { left: 16px; }
+.next-btn { right: 16px; }
+
+/* ── Carousel Dots ──────────────────────────────────────────── */
+.dots-container {
+    position:  absolute;
+    bottom:    20px;
+    left:      50%;
+    transform: translateX(-50%);
+    display:   flex;
+    gap:       8px;
+    z-index:   10;
+}
+
+.dot {
+    width:         8px;
+    height:        8px;
+    border-radius: var(--radius-circle);
+    background:    rgba(255, 255, 255, 0.4);
+    transition:    all var(--dur-base) var(--ease-ui);
+    cursor:        pointer;
+}
+
+.dot.active {
+    width:         24px;
+    border-radius: var(--radius-pill);
+    background:    white;
+}
+
+/* ── Stats Overview ─────────────────────────────────────────── */
+.overview-section {
+    padding: 1.5rem 0 2rem;
+}
+
+.overview-section .section-title::after {
+    background: var(--dark-blue);
+}
+
+/* Grid columns — overrides the base .stats-grid from general.css */
+.overview-section .stats-grid {
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    justify-content:       center;
+    text-align:            center;
+}
+
+.stat-number {
+    color: var(--dark-blue);
+}
+
+/* ── Sponsor CTA Section ────────────────────────────────────── */
+.cta-section {
+    padding:    2rem 0;
+    background: var(--off-white);
+    text-align: center;
+    width:      var(--content-width);
+    margin:     0 auto;
+    opacity:    0;
+    transform:  translateY(var(--reveal-lift));
+    transition: var(--t-reveal);
+}
+
+.cta-section .section-title::after { background: var(--dark-green); }
+
+.cta-section p {
+    max-width: 700px;
+    margin:    0 auto 1.5rem;
+    color:     var(--dark-gray);
+}
+
+/* Internal children also animate in with parent */
+.cta-section .section-title,
+.cta-section p,
+.cta-section .btn-primary {
+    opacity:    0;
+    transform:  translateY(var(--reveal-lift));
+    transition: var(--t-reveal);
+}
+
+.cta-section.animate-in,
+.cta-section.animate-in .section-title,
+.cta-section.animate-in p,
+.cta-section.animate-in .btn-primary {
+    opacity:   1;
+    transform: translateY(0);
+}
+
+/* ── Primary Button ─────────────────────────────────────────── */
+.btn-primary {
+    display:        inline-block;
+    padding:        0.8rem 2rem;
+    background:     var(--dark-green);
+    color:          white;
+    border-radius:  var(--radius-pill);
+    text-decoration: none;
+    font-weight:    600;
+    font-size:      var(--text-body);
+    border:         3px solid var(--dark-green);
+    transition:     all var(--dur-base) var(--ease-ui);
+}
+
+.btn-primary:hover {
+    background: white;
+    color:      var(--dark-green);
+}
+
+/* ── Sponsor Ticker Logos ────────────────────────────────────── */
+.sponsor-logo {
+    transition:
+            filter  var(--dur-base) var(--ease-ui),
+            opacity var(--dur-base) var(--ease-ui);
+}
+
+.sponsor-item {
+    transition: transform var(--dur-base) var(--ease-ui);
+}
+
+/* ── Contact Section ────────────────────────────────────────── */
+.contact-section {
+    padding: 0.5rem 0;
+}
+
+.contact-section .section-title::after { background: var(--dark-yellow); }
+
+.contact-grid {
+    display:               grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap:                   1rem;
+    width:                 var(--content-width);
+    margin:                0 auto;
+}
+
+.contact-card {
+    text-align:      center;
+    background:      white;
+    padding:         1.5rem;
+    border-radius:   var(--radius-lg);
+    box-shadow:      var(--shadow-medium);
+    text-decoration: none;
+    color:           inherit;
+    display:         block;
+    border:          3px solid transparent;
+}
+
+.contact-card:hover {
+    border-color:   var(--dark-yellow);
+}
+
+.contact-card i {
+    font-size:     1.8rem;
+    color:         var(--dark-yellow);
+    margin-bottom: 0.8rem;
+}
+
+.contact-card h3 {
+    font-size:     var(--text-body);
+    color:         var(--dark-gray);
+    margin-bottom: 0.4rem;
+    font-weight:   600;
+}
+
+.contact-card p {
+    color:       var(--medium-gray);
+    font-size:   var(--text-sm);
+    line-height: 1.6;
+}
+
+/* ── Map Section ────────────────────────────────────────────── */
+.map-section {
+    padding: 0.5rem 0;
+}
+
+.map-container {
+    border-radius: var(--radius-lg);
+    overflow:      hidden;
+    box-shadow:    var(--shadow-medium);
+    height:        350px;
+    position:      relative;
+    width:         var(--content-width);
+    margin:        0 auto;
+    /* Entrance animation handled by general.css .map-container rule */
+}
+
+.map-container iframe {
+    width:  100%;
+    height: 100%;
+    border: none;
+}
+
+/* ── Responsive: Tablet (≤ 768 px) ─────────────────────────── */
+@media (max-width: 768px) {
+    .hero h1 { white-space: nowrap; }
+
+    .hero-content::after {
+        height:    7px;
+        width:     124%;
+        max-width: 90vw;
+    }
+
+    /* Disable hover lifts on touch */
+    .overview-section .stat-card:hover,
+    .contact-section .contact-card:hover {
+        transform:  translateY(0) !important;
+        box-shadow: var(--shadow-hover);
+    }
+
+    .slide:hover img           { transform: scale(1) !important; }
+    .nav-btn:hover             { transform: translateY(-50%) scale(1) !important; }
+
+    .carousel-section    { padding: 1.5rem 0; }
+    .carousel-container  { max-width: 320px; }
+
+    .overview-section { padding: 1.3rem 0 1.8rem; }
+
+    .overview-section .stats-grid {
+        grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    }
+
+    .contact-card   { padding: 1.2rem; }
+    .contact-card i { font-size: 1.6rem; }
+
+    .map-container { height: 300px; }
+}
+
+/* ── Responsive: Mobile (≤ 480 px) ─────────────────────────── */
+@media (max-width: 480px) {
+    .hero {
+        padding:         1rem 0.6rem;
+        justify-content: center;
+    }
+
+    .hero-content { gap: 0.5rem; }
+
+    .hero h1 {
+        margin:      0;
+        line-height: 1.1;
+        overflow:    hidden;
+        max-width:   90vw;
+        width:       fit-content;
+        padding:     0 0.5rem;
+    }
+
+    .hero-content::after {
+        bottom: -8px;
+        width:  94%;
+        height: 6px;
+    }
+
+    .carousel-section   { padding: 1rem 0; }
+    .carousel-container { max-width: 280px; }
+
+    .nav-btn {
+        width:     36px;
+        height:    36px;
+        font-size: 0.9rem;
+    }
+
+    .prev-btn      { left: 12px; }
+    .next-btn      { right: 12px; }
+
+    .dots-container { bottom: 16px; gap: 6px; }
+    .dot            { width: 6px; height: 6px; }
+    .dot.active     { width: 20px; }
+
+    .overview-section { padding: 1rem 0 1.8rem; }
+
+    .overview-section .stats-grid {
+        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+        gap: 0.6rem;
+    }
+
+    .stat-card {
+        min-height: 44px;
+        min-width:  150px;
+    }
+
+    .contact-section { padding: 0.3rem 0; }
+
+    .contact-grid {
+        grid-template-columns: 1fr;
+        gap:                   0.6rem;
+    }
+
+    .contact-card {
+        padding:    0.8rem;
+        min-height: 44px;
+    }
+
+    .contact-card i { font-size: 1.4rem; }
+
+    .map-section   { padding: 0.3rem 0; }
+    .map-container { height: 200px; }
+}
