@@ -1,19 +1,5 @@
 /**
  * components/line-graph.js
- *
- * No renames applied. This is a self-contained GSAP-driven graph component
- * whose internal naming (boxLabel, graphDot, nullDot, dragger, etc.) mirrors
- * the SVG element class names it creates. Renaming these would require
- * matching CSS selector updates and would not improve readability given the
- * tight coupling between the JS and the SVG DOM it generates.
- *
- * Audit notes:
- *   - `initGSAP`         → well-named, no change needed
- *   - `buildSVG`         → well-named, no change needed
- *   - `calculateDomain`  → well-named, no change needed
- *   - Internal closures (graphPress, graphRelease, connectLine, updateGraph,
- *     getProgressForX, updateTimeline) are scoped inside initGSAP per-dataset
- *     and do not leak into any other module — no rename needed.
  */
 export class LineGraph {
 
@@ -105,14 +91,16 @@ export class LineGraph {
 
         for (let i = yMin; i <= yMax; i += this.options.yStep) {
             const yPos = this.options.yBase - ((i - yMin) * this.yRatio);
-            yLabels += `<text class="yLabel" transform="translate(20 ${yPos})">${i}</text>`;
-            hLines  += `<line class="horizontalLine" x1="780" y1="${yPos + 6.7}" opacity="0.4" x2="20" y2="${yPos + 6.7}"/>`;
+            hLines += `<line class="horizontalLine" x1="780" y1="${yPos}" opacity="0.4" x2="20" y2="${yPos}"/>`;
+            const labelY = yPos - 10;
+            yLabels += `<text class="yLabel" transform="translate(20 ${labelY})" dy="0.35em">${i}</text>`;
         }
 
-        let linesSVG = '';
+        let linesSVG     = '';
         let interactionSVG = '';
-        let xLabels = '';
-        let barsSVG = '';
+        let overlaysSVG  = '';
+        let xLabels      = '';
+        let barsSVG      = '';
         let barLabelsSVG = '';
 
         if (this.isMultiLine) {
@@ -129,7 +117,7 @@ export class LineGraph {
                     tooltipHTML: d.tooltipHTML || null
                 }));
 
-                const dPath      = `M${dataset.mappedPoints[0].x},${dataset.mappedPoints[0].y} ` + dataset.mappedPoints.slice(1).map(p => `L${p.x},${p.y}`).join(' ');
+                const dPath       = `M${dataset.mappedPoints[0].x},${dataset.mappedPoints[0].y} ` + dataset.mappedPoints.slice(1).map(p => `L${p.x},${p.y}`).join(' ');
                 const strokeColor = this.options.hideLineAndDots ? 'transparent' : dataset.color;
                 linesSVG += `<path class="graphLine graphLine-${key}" fill="none" stroke-linecap="round" stroke="${strokeColor}" stroke-width="4" stroke-miterlimit="10" d="${dPath}"/>`;
 
@@ -156,15 +144,17 @@ export class LineGraph {
                                 <rect x="0" width="80" height="40" rx="20" ry="20" fill="#FFF" stroke="${dataset.color}" stroke-width="2"/>
                                 <text class="boxLabel boxLabel-${key}" x="40" y="28" fill="${dataset.dotColor || dataset.color}"></text>
                             </g>
-                            <foreignObject class="custom-tooltip-fo" x="0" y="0" width="90" height="130" style="display: none; overflow:visible;">
-                                <div xmlns="http://www.w3.org/1999/xhtml" class="box-html-content"></div>
-                            </foreignObject>
                         </g>
                         <circle class="nullDot nullDot-${key}" fill="red" cx="0" cy="0" r="0"/>
                         <circle class="graphDot graphDot-${key}" fill="${dataset.color}" cx="0" cy="0" r="10" stroke="#FFF" stroke-width="2" style="display: ${displayState};"/>
                         <circle class="dragger dragger-${key}" fill="rgba(200,200,200,0.1)" cx="0" cy="0" r="15" stroke="rgba(200,200,200,0.15)" stroke-width="10" style="display: ${displayState};"/>
                     </g>
                 `;
+
+                overlaysSVG += `<div class="custom-tooltip-overlay custom-tooltip-overlay-${key}">
+                    <div class="box-html-content box-html-content-${key}"></div>
+                </div>`;
+
                 firstDataset = false;
             }
         } else {
@@ -182,14 +172,45 @@ export class LineGraph {
 
             this.points.forEach(p => {
                 if (p.stacked && p.stacked.length > 0) {
-                    let currentY  = this.options.yBase - ((0 - yMin) * this.yRatio);
+                    let currentY   = this.options.yBase - ((0 - yMin) * this.yRatio);
                     const barWidth = 34;
 
                     p.stacked.forEach((stack, stackIndex) => {
                         const h = stack.value * this.yRatio;
                         if (h > 0) {
                             currentY -= h;
-                            barsSVG += `<rect class="bar-rect stack-${stackIndex}" x="${p.x - (barWidth / 2)}" y="${currentY}" width="${barWidth}" height="${h}" fill="${stack.color}" stroke="#FFF" stroke-width="2" opacity="0.85" />`;
+                            const barX = p.x - (barWidth / 2);
+
+                            // 1. Define your border radius
+                            const r = 6;
+
+                            // 2. Identify if this is the bottom-most segment
+                            const isLowestBar = stackIndex === 0;
+
+                            // 3. Prevent radius from breaking if a segment is extremely short.
+                            // If it curves both top and bottom, the max radius is half the height.
+                            const maxRadiusY = isLowestBar ? h : h / 2;
+                            const radius = Math.min(r, barWidth / 2, maxRadiusY);
+
+                            // 4. Set radii independently
+                            const rTop = radius;
+                            const rBottom = isLowestBar ? 0 : radius;
+
+                            // 5. Draw the path with dynamic bottom corners
+                            const pathData = `
+                                M ${barX},${currentY + h - rBottom} 
+                                V ${currentY + rTop} 
+                                Q ${barX},${currentY} ${barX + rTop},${currentY} 
+                                H ${barX + barWidth - rTop} 
+                                Q ${barX + barWidth},${currentY} ${barX + barWidth},${currentY + rTop} 
+                                V ${currentY + h - rBottom} 
+                                Q ${barX + barWidth},${currentY + h} ${barX + barWidth - rBottom},${currentY + h} 
+                                H ${barX + rBottom} 
+                                Q ${barX},${currentY + h} ${barX},${currentY + h - rBottom} 
+                                Z
+                            `.replace(/\s+/g, ' ').trim();
+
+                            barsSVG += `<path class="bar-rect stack-${stackIndex}" d="${pathData}" fill="${stack.color}" stroke="#FFF" stroke-width="2" opacity="0.85" />`;
                         }
                     });
 
@@ -197,7 +218,7 @@ export class LineGraph {
                 }
             });
 
-            const dPath      = `M${this.points[0].x},${this.points[0].y} ` + this.points.slice(1).map(p => `L${p.x},${p.y}`).join(' ');
+            const dPath       = `M${this.points[0].x},${this.points[0].y} ` + this.points.slice(1).map(p => `L${p.x},${p.y}`).join(' ');
             const strokeColor = this.options.hideLineAndDots ? 'transparent' : this.options.color;
             linesSVG += `<path class="graphLine" fill="none" stroke-linecap="round" stroke="${strokeColor}" stroke-width="4" stroke-miterlimit="10" d="${dPath}"/>`;
 
@@ -222,19 +243,22 @@ export class LineGraph {
                             <rect x="0" width="80" height="40" rx="20" ry="20" fill="#FFF" stroke="${this.options.color}" stroke-width="2"/>
                             <text class="boxLabel" x="40" y="28" fill="${this.options.dotColor}"></text>
                         </g>
-                        <foreignObject class="custom-tooltip-fo" x="0" y="0" width="90" height="130" style="display: none; overflow:visible;">
-                            <div xmlns="http://www.w3.org/1999/xhtml" class="box-html-content"></div>
-                        </foreignObject>
                     </g>
                     <circle class="nullDot" fill="red" cx="0" cy="0" r="0"/>
                     <circle class="graphDot" fill="${this.options.dotColor}" cx="0" cy="0" r="10" stroke="#FFF" stroke-width="2" style="display: ${displayState};"/>
                     <circle class="dragger" fill="rgba(200,200,200,0.1)" cx="0" cy="0" r="15" stroke="rgba(200,200,200,0.15)" stroke-width="10" style="display: ${displayState};"/>
                 </g>
             `;
+
+            overlaysSVG = `<div class="custom-tooltip-overlay">
+                <div class="box-html-content"></div>
+            </div>`;
         }
 
+        // HTML tooltips now live inside a dedicated .html-overlay-container
+        // that sits exactly over the SVG and perfectly matches its coordinate system.
         this.container.innerHTML = `
-            <div class="comparison-graph-container" style="max-width: 800px; margin: 0 auto 3rem; position: relative; aspect-ratio: 800 / 460;">
+            <div class="comparison-graph-container">
                 <svg class="mainSVG" viewBox="0 0 800 460" preserveAspectRatio="xMidYMid meet">
                     <defs>
                         <filter id="glow-${this.uid}" x="-100%" y="-100%" width="350%" height="350%" color-interpolation-filters="sRGB">
@@ -247,16 +271,22 @@ export class LineGraph {
                             </feMerge>
                         </filter>
                     </defs>
-
+        
                     <text x="400" y="50" font-size="25" fill="#333" font-family="Poppins" font-weight="700" text-anchor="middle">${this.options.title}</text>
                     <g opacity="0.7" font-size="15" fill="#333" font-family="Poppins" font-weight="700" text-anchor="start">${yLabels}</g>
                     <g opacity="0.7" font-size="15" fill="#333" font-family="Poppins" font-weight="700" text-anchor="middle">${xLabels}</g>
-                    <g fill="none" stroke="#999" stroke-miterlimit="10">${hLines}</g>
+        
                     <g class="bar-group">${barsSVG}</g>
                     <g class="bar-labels-group">${barLabelsSVG}</g>
+        
+                    <g fill="none" stroke="#999" stroke-miterlimit="10">${hLines}</g>
+        
                     <g filter="url(#glow-${this.uid})">${linesSVG}</g>
                     ${interactionSVG}
                 </svg>
+                <div class="html-overlay-container">
+                    ${overlaysSVG}
+                </div>
             </div>
         `;
     }
@@ -268,6 +298,22 @@ export class LineGraph {
 
         this.introTimelines = [];
 
+        // Watch the container width to seamlessly scale the HTML overlay wrapper
+        // to match the exact mathematical scale of the SVG's viewBox.
+        const graphContainer = this.container.querySelector('.comparison-graph-container');
+        const overlayContainer = this.container.querySelector('.html-overlay-container');
+        if (graphContainer && overlayContainer) {
+            const ro = new ResizeObserver(entries => {
+                for (let entry of entries) {
+                    // Mobile fix: The HTML layer scales proportionally, so tooltips
+                    // shrink gracefully on phones instead of looking gigantic.
+                    const ratio = entry.contentRect.width / 800;
+                    gsap.set(overlayContainer, { scale: ratio });
+                }
+            });
+            ro.observe(graphContainer);
+        }
+
         const hLines = this.container.querySelectorAll('.horizontalLine');
         hLines.forEach(line => {
             const l = Math.ceil(line.getTotalLength());
@@ -277,22 +323,36 @@ export class LineGraph {
         const datasets = this.isMultiLine ? Object.keys(this.options.data) : ['default'];
 
         datasets.forEach(key => {
-            const suffix      = this.isMultiLine ? `-${key}` : '';
+            const suffix       = this.isMultiLine ? `-${key}` : '';
             const lineSelector = this.isMultiLine ? `.graphLine-${key}` : '.graphLine';
-            const pointsData  = this.isMultiLine ? this.options.data[key].mappedPoints : this.points;
+            const pointsData   = this.isMultiLine ? this.options.data[key].mappedPoints : this.points;
 
             const els = {
-                box:       this.container.querySelector(`.box${suffix}`),
-                connector: this.container.querySelector(`.connector${suffix}`),
-                dragger:   this.container.querySelector(`.dragger${suffix}`),
-                graphDot:  this.container.querySelector(`.graphDot${suffix}`),
-                boxLabel:  this.container.querySelector(`.boxLabel${suffix}`),
-                nullDot:   this.container.querySelector(`.nullDot${suffix}`),
-                graphLine: this.container.querySelector(lineSelector),
-                clickDots: this.container.querySelectorAll(`.static-dot${suffix}`)
+                box:          this.container.querySelector(`.box${suffix}`),
+                connector:    this.container.querySelector(`.connector${suffix}`),
+                dragger:      this.container.querySelector(`.dragger${suffix}`),
+                graphDot:     this.container.querySelector(`.graphDot${suffix}`),
+                boxLabel:     this.container.querySelector(`.boxLabel${suffix}`),
+                nullDot:      this.container.querySelector(`.nullDot${suffix}`),
+                graphLine:    this.container.querySelector(lineSelector),
+                clickDots:    this.container.querySelectorAll(`.static-dot${suffix}`),
+                overlayEl:    this.container.querySelector(`.custom-tooltip-overlay${suffix}`),
             };
 
+            // The tooltip's inner content handles the pop-in scale animation
+            els.tooltipInner = els.overlayEl.querySelector('.box-html-content');
+
+            // Apply starting state ONLY to the inner content
+            gsap.set(els.tooltipInner, {
+                opacity: 0, scale: 0,
+                transformOrigin: 'bottom center'
+            });
+
+            // Because the .html-overlay-container is strictly 800x460 and scaled by
+            // the ResizeObserver, overlayPos translates directly 1:1 with SVG coordinates!
+            // No svgToPx() required anymore.
             let boxPos             = { x: 0, y: 0 };
+            let overlayPos         = { x: 0, y: 0 };
             let isPressed          = false;
             let activeDotIndex     = -1;
             let hasInteracted      = false;
@@ -348,17 +408,23 @@ export class LineGraph {
                 );
 
                 if (nearest.tooltipHTML) {
-                    els.box.querySelector('.default-tooltip').style.display    = 'none';
-                    els.box.querySelector('.custom-tooltip-fo').style.display  = 'block';
+                    els.box.querySelector('.default-tooltip').style.display = 'none';
+                    els.overlayEl.style.display = 'block';
                     if (currentTooltipHTML !== nearest.tooltipHTML) {
-                        els.box.querySelector('.box-html-content').innerHTML = nearest.tooltipHTML;
+                        els.tooltipInner.innerHTML = nearest.tooltipHTML;
                         currentTooltipHTML = nearest.tooltipHTML;
                     }
+
                     boxPos.x = dX - 45;
-                    boxPos.y = dY - 130;
+                    boxPos.y = nearest.y - 130;
+
+                    // Absolute parity - the HTML wrapper is geometrically
+                    // identical to the SVG viewBox.
+                    overlayPos.x = dX - 45;
+                    overlayPos.y = Math.max(8, nearest.y - 130);
                 } else {
-                    els.box.querySelector('.default-tooltip').style.display   = 'block';
-                    els.box.querySelector('.custom-tooltip-fo').style.display = 'none';
+                    els.box.querySelector('.default-tooltip').style.display = 'block';
+                    els.overlayEl.style.display = 'none';
                     els.boxLabel.textContent = nearest.value;
                     boxPos.x = dX - 40;
                     boxPos.y = dY - 70;
@@ -368,8 +434,13 @@ export class LineGraph {
                     gsap.to(els.box, {
                         duration: isPressed ? 1 : 0.4,
                         x: boxPos.x, y: boxPos.y,
-                        ease: 'elastic.out(0.7, 0.7)',
-                        overwrite: 'auto'
+                        ease: 'elastic.out(0.7, 0.7)', overwrite: 'auto'
+                    });
+                    // Only track Position on the HTML element parent
+                    gsap.to(els.overlayEl, {
+                        duration: isPressed ? 1 : 0.4,
+                        x: overlayPos.x, y: overlayPos.y,
+                        ease: 'elastic.out(0.7, 0.7)', overwrite: 'auto'
                     });
                 }
             }
@@ -393,10 +464,31 @@ export class LineGraph {
                         y: gsap.getProperty(els.dragger, 'y'),
                         scale: 0, opacity: 0
                     });
+
+                    // Match starting positions
+                    gsap.set(els.overlayEl, {
+                        x: gsap.getProperty(els.dragger, 'x'),
+                        y: gsap.getProperty(els.dragger, 'y')
+                    });
+                    gsap.set(els.tooltipInner, { scale: 0, opacity: 0 });
                 }
+
                 gsap.to(els.box, {
                     duration: 0.8, scale: 1, opacity: 1,
                     x: boxPos.x, y: boxPos.y,
+                    ease: 'power2.out', overwrite: 'auto'
+                });
+
+                // 1. Move the parent (avoids matrix conflict)
+                gsap.to(els.overlayEl, {
+                    duration: 0.8,
+                    x: overlayPos.x, y: overlayPos.y,
+                    ease: 'back.out(1.2)', overwrite: 'auto'
+                });
+
+                // 2. Scale the child (keeps perfect circle geometry)
+                gsap.to(els.tooltipInner, {
+                    duration: 0.8, scale: 1, opacity: 1,
                     ease: 'back.out(1.2)', overwrite: 'auto'
                 });
             };
@@ -416,6 +508,15 @@ export class LineGraph {
                         y: gsap.getProperty(els.dragger, 'y'),
                         ease: 'back.in(1.2)', overwrite: 'auto'
                     });
+
+                    if (els.overlayEl.style.display !== 'none') {
+                        // Collapse the child back down
+                        gsap.to(els.tooltipInner, {
+                            duration: 0.8, scale: 0, opacity: 0,
+                            ease: 'back.in(1.2)', overwrite: 'auto',
+                            onComplete: () => { els.overlayEl.style.display = 'none'; }
+                        });
+                    }
                     activeDotIndex = -1;
                 } else {
                     activeDotIndex = pointsData.indexOf(nearest);
@@ -428,7 +529,7 @@ export class LineGraph {
                 if (isPressed || activeDotIndex !== -1) {
                     gsap.set(els.connector, {
                         attr: {
-                            x1: gsap.getProperty(els.box, 'x') + (els.box.querySelector('.custom-tooltip-fo').style.display === 'block' ? 45 : 40),
+                            x1: gsap.getProperty(els.box, 'x') + (els.overlayEl.style.display === 'block' ? 45 : 40),
                             x2: gsap.getProperty(els.dragger, 'x'),
                             y1: gsap.getProperty(els.box, 'y') + 40,
                             y2: gsap.getProperty(els.graphDot, 'y')
