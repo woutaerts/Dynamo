@@ -271,6 +271,9 @@
 
 .contact-card:hover {
     border-color:   var(--dark-yellow);
+    transform:  scale(var(--hover-scale)) !important;
+    box-shadow: var(--shadow-hover);
+    transition: var(--t-interact);
 }
 
 .contact-card i {
