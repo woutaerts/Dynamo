@@ -274,7 +274,7 @@ async function loadSeasonData(seasonString) {
         if (innerLoader)  innerLoader.classList.add('hidden');
         if (innerContent) innerContent.classList.remove('hidden');
 
-        animateMatchCards('.archive-match-card', '#archive-matches-grid');
+        animateMatchCards('.match-card', '#archive-matches-grid');
         animateOnScroll([
             { selector: '.stat-card',                         containerSelector: 'section' },
             { selector: '.archive-player-row',                containerSelector: 'section' },
@@ -558,7 +558,7 @@ function renderSortedMatches(sortKey = 'date-asc') {
     bindArchiveMatchClicks();
 
     if (!document.getElementById('archive-season-content').classList.contains('hidden')) {
-        animateMatchCards('.archive-match-card', '#archive-matches-grid');
+        animateMatchCards('.match-card', '#archive-matches-grid');
     }
 }
 

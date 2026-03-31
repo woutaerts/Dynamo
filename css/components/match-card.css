@@ -150,6 +150,7 @@
     font-size:   0.9em;
     opacity:     0.8;
     line-height: 1;
+    transform: translateY(-1px);
 }
 
 /* ── Responsive: Tablet (≤ 1024 px) ────────────────────────── */
