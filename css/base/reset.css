@@ -17,7 +17,7 @@
 html {
     scrollbar-gutter:   stable;
     scroll-behavior:    smooth;
-    scroll-padding-top: 68px; /* matches fixed header height */
+    scroll-padding-top: 68px;
 }
 
 /* ── Body Base ──────────────────────────────────────────────── */
@@ -29,6 +29,11 @@ body {
     overflow-x:  hidden;
     opacity:     0;
     animation:   fadeInPage var(--dur-slow) var(--ease-out) forwards;
+}
+
+input, button, textarea, select {
+    font-family: inherit;
+    font-size: inherit;
 }
 
 /* ── Layout Container ───────────────────────────────────────── */

@@ -17,7 +17,6 @@
     font-weight:   800;
     line-height:   1;
     margin-bottom: 0.5rem;
-    font-family:   'Poppins', sans-serif;
 }
 
 .stat-label {
@@ -27,19 +26,6 @@
     font-size:      var(--text-sm);
     letter-spacing: 1px;
     margin-top:     0.5rem;
-}
-
-/*
- * GPU-composited scale hover — snappier than translateY and avoids
- * triggering layout. Shared with countdown boxes and contact cards
- * (those components define the same rule locally).
- */
-.stat-card:hover,
-.overview-section .stat-card:hover {
-    transform:  scale(var(--hover-scale)) !important;
-    box-shadow: var(--shadow-hover);
-    transition: var(--t-interact);
-    z-index:    10;
 }
 
 /* ── Stats Grid ─────────────────────────────────────────────── */
@@ -58,12 +44,6 @@
 
 /* ── Responsive: Tablet (≤ 1024 px) ────────────────────────── */
 @media (max-width: 1024px) {
-    .stat-card:hover,
-    .overview-section .stat-card:hover {
-        transform:  scale(1) !important;
-        box-shadow: var(--shadow-hover);
-    }
-
     .stat-card { padding: 1.2rem; }
 }
 

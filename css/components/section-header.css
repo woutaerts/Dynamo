@@ -15,7 +15,6 @@
     font-size:   var(--text-h1);
     font-weight: 900;
     color:       var(--dark-gray);
-    font-family: 'Poppins', sans-serif;
     position:    relative;
     display:     inline-block;
 }
@@ -61,7 +60,6 @@
     text-align:  center;
     font-weight: 800;
     color:       var(--dark-gray);
-    font-family: 'Poppins', sans-serif;
     position:    relative;
 }
 

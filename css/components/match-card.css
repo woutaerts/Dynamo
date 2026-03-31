@@ -36,16 +36,12 @@
     cursor:         pointer;
     border:         3px solid transparent;
     position:       relative;
-    transition:     var(--t-reveal);
     display:        flex;
     flex-direction: column;
 }
 
 .match-card:hover {
-    box-shadow:   var(--shadow-hover);
-    transform:    scale(var(--hover-scale)) !important;
     border-color: var(--dusty-blue);
-    transition:   var(--t-interact);
 }
 
 /* Result-state border overrides on hover */
@@ -92,7 +88,6 @@
 .match-body .away-team {
     font-size:   var(--text-lg);
     color:       var(--dark-gray);
-    font-family: 'Poppins', sans-serif;
     font-weight: 600;
     line-height: 1;
     margin:      4px 0;
@@ -113,7 +108,6 @@
     font-size:     2rem;
     font-weight:   700;
     color:         var(--dark-gray);
-    font-family:   'Poppins', sans-serif;
     border:        3px solid var(--dusty-blue);
     margin:        10px 0 20px;
     box-shadow:    var(--shadow-medium);
@@ -145,7 +139,6 @@
 .match-venue {
     color:       var(--medium-gray);
     font-size:   var(--text-sm);
-    font-family: 'Poppins', sans-serif;
     font-weight: 500;
     display:     flex;
     align-items: center;
@@ -164,7 +157,6 @@
     .matches-grid { grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); }
 
     .match-card           { box-shadow: var(--shadow-small); border: none; }
-    .match-card:hover     { box-shadow: var(--shadow-medium); transform: scale(1) !important; }
     .match-body           { padding: 16px; }
     .match-teams          { margin-bottom: 12px; }
     .vs-divider           { margin: 6px 0; }

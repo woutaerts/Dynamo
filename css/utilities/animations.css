@@ -24,14 +24,12 @@
 .page-hero h1,
 .section-title,
 .section-subtitle,
-.overview-card,
 .stat-card,
 .contact-card,
 .countdown-block,
 .form-result,
 .map-container,
 .record-category,
-.scorer-card,
 .player-card,
 .stat-category,
 .match-card,
@@ -61,13 +59,12 @@
 @media (prefers-reduced-motion: reduce) {
 
     /* Cancel scroll-reveal entrances */
-    .overview-card, .stat-card, .contact-card, .countdown-block,
-    .form-result, .map-container, .record-category, .scorer-card,
+    .stat-card, .contact-card, .countdown-block,
+    .form-result, .map-container, .record-category,
     .player-card, .stat-category, .match-card, .timeline-item,
     .modal-match-score, .goalscorers-section, .date-time-section,
     .stadium-section, .form-description, .match-sponsor-block,
-    .section-title, .section-subtitle, .page-hero h1,
-    .archive-match-card, .dropdown-container, .filter-section,
+    .section-title, .section-subtitle, .page-hero h1, .filter-section,
     .carousel-container, .cta-section, .toggles-container,
     .search-container, .upcoming-match-name {
         opacity:    1 !important;

@@ -26,8 +26,8 @@
     padding:       0.8rem;
     border-radius: var(--radius-md);
     box-shadow:    var(--shadow-medium);
-    transition:    var(--t-interact);
     width:         80px;
+    --current-hover-scale: var(--hover-scale-sm) !important;
 }
 
 .countdown-box span {
@@ -35,7 +35,6 @@
     font-size:   var(--text-h3);
     font-weight: bold;
     color:       var(--dynamo-red);
-    font-family: 'Poppins', sans-serif;
 }
 
 .countdown-block small {
@@ -48,14 +47,6 @@
     font-weight:    700;
 }
 
-/* GPU-composited scale hover */
-.countdown-box:hover {
-    transform:  scale(var(--hover-scale)) !important;
-    box-shadow: var(--shadow-hover);
-    transition: var(--t-interact);
-    z-index:    10;
-}
-
 /* ── Upcoming Match Name ────────────────────────────────────── */
 .upcoming-match-name {
     text-align: center;
@@ -66,7 +57,6 @@
     font-size:   var(--text-lg);
     color:       var(--dark-gray);
     margin:      0;
-    font-family: 'Poppins', sans-serif;
     font-weight: 600;
 }
 
@@ -111,11 +101,7 @@
     display:       inline-block;
     border-radius: var(--radius-md);
     transition:    var(--t-interact);
-}
-
-.match-sponsor-link:hover {
-    transform:  scale(1.04);
-    box-shadow: var(--shadow-hover);
+    --current-hover-scale: var(--hover-scale-sm) !important;
 }
 
 .match-sponsor-link img {
@@ -129,17 +115,6 @@
 @media (max-width: 1024px) {
     .countdown     { gap: 0.8rem; flex-wrap: wrap; }
     .countdown-box { width: 70px; padding: 0.7rem; }
-
-    /* Disable scale on touch */
-    .countdown-box:hover {
-        transform:  scale(1) !important;
-        box-shadow: var(--shadow-hover);
-    }
-
-    .match-sponsor-link:hover {
-        transform:  scale(1) !important;
-        box-shadow: var(--shadow-hover);
-    }
 }
 
 @media (max-width: 480px) {

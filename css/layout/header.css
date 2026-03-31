@@ -118,12 +118,11 @@ body {
     color:          var(--dark-gray);
     padding:        5px 13px;
     border-radius:  var(--radius-pill);
-    font-family:    'Poppins', sans-serif;
     font-weight:    600;
     letter-spacing: 1px;
     font-size:      var(--text-body);
     cursor:         pointer;
-    transition:     all var(--dur-base) var(--ease-ui);
+    transition:     var(--t-interact);
     display:        flex;
     align-items:    center;
     justify-content: center;
@@ -195,7 +194,7 @@ body {
 
 .mobile-search-link:hover {
     background: rgba(255, 255, 255, 0.5);
-    transform:  scale(1.05);
+    transform:  scale(var(--hover-scale-sm));
 }
 
 .mobile-search-link i { font-size: 1.5rem; }
@@ -218,7 +217,7 @@ body {
 
 .mobile-menu-toggle:hover {
     background: rgba(255, 255, 255, 0.5);
-    transform:  scale(1.05);
+    transform:  scale(var(--hover-scale-sm));
 }
 
 .mobile-menu-toggle span {
@@ -268,8 +267,6 @@ body {
     left:     0;
     opacity:  1;
 }
-
-.header-logo-red { opacity: 1; }
 
 /* ── Entrance Animation ─────────────────────────────────────── */
 @keyframes slideDown {
@@ -367,12 +364,6 @@ body {
         display: none;
     }
 
-    /* Hide icon-only nav links; show text labels via span.nav-text */
-    .nav-link.search-link,
-    .nav-link i {
-        display: none;
-    }
-
     .nav-link span.nav-text { margin-left: 0; }
 }
 
@@ -437,7 +428,7 @@ body {
         gap:             8px;
     }
 
-    .nav-links.active { box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15); }
+    .nav-links.active { box-shadow: var(--shadow-medium); }
 
     .nav-link { padding: 8px 16px; }
 }

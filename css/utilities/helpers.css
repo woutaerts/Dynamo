@@ -30,7 +30,6 @@
 .empty-state-message {
     text-align:  center;
     padding:     1rem;
-    font-family: 'Poppins', sans-serif;
     font-size:   var(--text-body);
     color:       var(--dark-gray);
 }
@@ -39,6 +38,37 @@
 .loading-message.hidden,
 .empty-state-message.hidden {
     display: none;
+}
+
+/* ── Centralized Hover Targets ─────────────────────────────── */
+/* * Group all interactive cards here. This keeps component files
+ * free of redundant transform/shadow logic without requiring
+ * HTML/JS utility classes.
+ */
+:is(
+    .stat-card, .contact-card, .countdown-box,
+    .match-sponsor-link, .player-card, .stat-category,
+    .record-category, .modal-section, .goalscorers-section,
+    .score-display, #modalSponsorLink, .season-stats-section,
+    .all-time-stats-section, .podium-block, .match-card,
+    .form-result, .overview-section .stat-card
+) {
+    transition: var(--t-interact);
+    --current-hover-scale: var(--hover-scale);
+}
+
+/* ── Standard Hover State ──────────────────────────────────── */
+:is(
+    .stat-card, .contact-card, .countdown-box,
+    .match-sponsor-link, .player-card, .stat-category,
+    .record-category, .modal-section, .goalscorers-section,
+    .score-display, #modalSponsorLink, .season-stats-section,
+    .all-time-stats-section, .podium-block, .match-card,
+    .form-result, .overview-section .stat-card
+):hover {
+    transform:  scale(var(--current-hover-scale)) !important;
+    box-shadow: var(--shadow-hover);
+    z-index:    10;
 }
 
 /* ── Responsive Display Toggles ─────────────────────────────── */
@@ -57,4 +87,18 @@
 @media (max-width: 1024px) {
     .desktop-only { display: none !important; }
     .mobile-only  { display: inline-block !important; }
+}
+
+@media (hover: none) {
+    :is(
+        .stat-card, .contact-card, .countdown-box,
+        .match-sponsor-link, .player-card, .stat-category,
+        .record-category, .modal-section, .goalscorers-section,
+        .score-display, #modalSponsorLink, .season-stats-section,
+        .all-time-stats-section, .podium-block, .match-card,
+        .form-result, .overview-section .stat-card, .timeline-item
+    ):hover {
+        transform:  none !important;
+        box-shadow: var(--shadow-hover);
+    }
 }

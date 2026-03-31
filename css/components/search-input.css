@@ -30,7 +30,6 @@
     padding:       0.6rem 0.8rem 0.6rem 2.2rem;
     border:        3px solid var(--medium-gray);
     border-radius: var(--radius-pill);
-    font-family:   'Poppins', sans-serif;
     font-size:     var(--text-sm);
     width:         100%;
     box-sizing:    border-box;
