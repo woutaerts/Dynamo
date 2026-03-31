@@ -25,10 +25,10 @@ body.filter-attacker    { --hero-pipe-color: var(--dynamo-red); }
 
 .filter-controls {
     display:         flex;
-    justify-content: center;
-    gap:             0.8rem;
-    flex-wrap:       wrap;
-    width:           70%;
+    justify-content: space-between;
+    gap:             1rem;
+    flex-wrap:       nowrap;
+    width:           100%;
     max-width:       var(--content-width);
     min-width:       420px;
     margin:          0 auto;
@@ -44,11 +44,14 @@ body.filter-attacker    { --hero-pipe-color: var(--dynamo-red); }
 .filter-btn[data-position="attacker"]   { --btn-color: var(--dynamo-red); }
 
 /* 2. Base Button Styling */
+/* 2. Base Button Styling */
 .filter-btn {
+    flex:           auto;
+    white-space:    nowrap;
     background:     white;
     border:         3px solid var(--btn-color);
     color:          var(--btn-color);
-    padding:        0.5rem 0.988rem;
+    padding:        0.5rem clamp(0.3rem, 1.5vw, 0.988rem);
     border-radius:  var(--radius-pill);
     font-weight:    700;
     letter-spacing: 1px;
@@ -58,7 +61,7 @@ body.filter-attacker    { --hero-pipe-color: var(--dynamo-red); }
     display:        flex;
     align-items:    center;
     justify-content: center;
-    gap:            0.5rem;
+    gap:            clamp(0.3rem, 1vw, 0.5rem);
     box-shadow:     var(--shadow-small);
     min-height:     44px;
 }
@@ -242,11 +245,11 @@ body.filter-attacker    { --hero-pipe-color: var(--dynamo-red); }
         padding: 1rem 0 0.5rem;
     }
 
-    .filter-controls { gap: 0.6rem; }
+    .filter-controls { gap: 0.6rem; flex-wrap: wrap; }
 
     .filter-btn {
         padding:      0.5rem 1rem;
-        max-width:    150px;
+        max-width:    none;
         justify-content: center;
     }
 
