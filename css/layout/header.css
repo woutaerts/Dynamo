@@ -207,7 +207,7 @@ body {
     padding:         9px 13px;
     z-index:         var(--z-header);
     background:      rgba(255, 255, 255, 0.3);
-    border-radius:   var(--radius-sm);
+    border-radius:   var(--radius-pill);
     backdrop-filter: blur(10px);
     transition:
         background var(--dur-base) var(--ease-ui),
@@ -222,7 +222,7 @@ body {
 
 .mobile-menu-toggle span {
     width:            22px;
-    height:           2px;
+    height:           3px;
     background:       var(--dynamo-red);
     margin:           2px 0;
     border-radius:    var(--radius-sm);
@@ -306,14 +306,15 @@ body {
     .nav-links {
         position:         absolute;
         top:              calc(100% + 10px);
-        left:             10px;
-        right:            10px;
+        left:             0;       /* Align perfectly to the left edge of the nav-container */
+        right:            auto;    /* Remove the right constraint so it stops stretching */
+        min-width:        185px;   /* Add a minimum width so it looks like a proper dropdown menu */
         flex-direction:   column;
         background:       rgba(255, 255, 255, 0.95);
         backdrop-filter:  blur(25px);
-        padding:          18px;
-        gap:              9px;
-        box-shadow:       var(--shadow-medium);
+        padding:          8px;
+        gap:              8px;
+        box-shadow:       var(--shadow-hover);
 
         /* ADD THIS LINE to fix the giant pill shape */
         border-radius:    var(--radius-lg);
@@ -340,7 +341,7 @@ body {
     }
 
     .nav-link {
-        padding: 9px 18px;
+        padding: 8px 8px;
         width:   100%;
         justify-content: center;
     }
@@ -397,13 +398,13 @@ body {
     }
 
     .mobile-menu-toggle span {
-        width:  22px;  /* Restored to desktop width */
-        height: 2px;   /* Restored to desktop thickness */
-        margin: 3px 0; /* Tighter vertical spacing */
+        width:  22px;
+        height: 3px;
+        margin: 3px 0;
     }
 
-    .mobile-menu-toggle.active span:nth-child(1) { transform: rotate(-45deg) translate(-6.5px, 5px); }
-    .mobile-menu-toggle.active span:nth-child(3) { transform: rotate(45deg) translate(-6.5px, -5px); }
+    .mobile-menu-toggle.active span:nth-child(1) { transform: rotate(-45deg) translate(-6.5px, 6.3px); }
+    .mobile-menu-toggle.active span:nth-child(3) { transform: rotate(45deg) translate(-6.5px, -6.3px); }
 
     .header-logo-container {
         display:   flex;
@@ -419,18 +420,29 @@ body {
 
     .nav-links {
         order:           4;
-        left:            6px;
-        right:           6px;
-        top:             calc(100% + 8px);
-        padding:         12px;
+        left:            -8px;
+        right:           auto;
+        top:             calc(100% + 7px);
+        padding:         8px;
         background:      rgba(255, 255, 255, 0.98);
-        backdrop-filter: blur(15px);
-        gap:             8px;
+        backdrop-filter: blur(30px);
+        border:          1px solid rgba(255, 255, 255, 0.5);
+        gap:             4px;
     }
 
-    .nav-links.active { box-shadow: var(--shadow-medium); }
+    .nav-link {
+        padding:         8px 8px;
+        background:      rgba(0, 0, 0, 0.03); /* Subtle inset look */
+        border-radius:   var(--radius-pill);
+        font-weight:     700;
+        justify-content: flex-start; /* Left-align the text for a cleaner list */
+    }
 
-    .nav-link { padding: 8px 16px; }
+    /* Ensure the active state fills the new card shape */
+    .nav-link.active {
+        background: var(--dynamo-red);
+        color:      var(--off-white);
+    }
 }
 
 /* ── Reduced Motion ─────────────────────────────────────────── */
