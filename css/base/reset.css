@@ -1,9 +1,9 @@
 /* ============================================================
    BASE/RESET.CSS
    HTML/body foundation and layout primitives.
-   No class selectors except .container and scrollbar utilities.
+   No class selectors except .container and scrollbar core.
    Note: body references @keyframes fadeInPage, defined in
-         utilities/animations.css — load that file after this one.
+         core/animations.css — load that file after this one.
    ============================================================ */
 
 /* ── Universal Box Model ────────────────────────────────────── */
