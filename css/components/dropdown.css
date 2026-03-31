@@ -19,7 +19,7 @@
     font-weight:   500;
     color:         var(--dark-gray);
     transition:    var(--t-interact);
-    font-size:     var(--text-sm);
+    font-size:     var(--text-body);
 }
 
 /* ── Selected Display ───────────────────────────────────────── */
@@ -41,7 +41,7 @@
     top:         50%;
     transform:   translateY(-55%);
     font-size:   var(--text-lg);
-    color:       var(--dark-gray);
+    color:       var(--dropdown-border-color);
     transition:  transform var(--dur-base) var(--ease-ui);
 }
 
