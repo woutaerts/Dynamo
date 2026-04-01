@@ -104,7 +104,7 @@ async function loadStats() {
             if (el) el.innerHTML = text;
         };
 
-        setTitle('team-season-title',        `Overzicht ${season}`);
+        setTitle('team-season-title',        `Seizoensoverzicht ${season}`);
         setTitle('detailed-team-stats-title', `Teamstatistieken ${season}`);
         setTitle('player-season-title', `Spelersstatistieken ${season}`);
 
