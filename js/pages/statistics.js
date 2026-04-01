@@ -67,8 +67,8 @@ async function loadStats() {
     isLoading = true;
 
     const loaders = [
-        { id: 'team-season-loading',          text: 'Teamstatistieken worden geladen...' },
-        { id: 'team-season-detailed-loading', text: 'Teamstatistieken worden geladen...' }
+        { id: 'team-season-loading',          text: 'Teamstatistieken worden geladen ...' },
+        { id: 'team-season-detailed-loading', text: 'Teamstatistieken worden geladen ...' }
     ];
     const errorIds   = ['team-season-error', 'team-season-detailed-error'];
     const contentIds = ['team-season-grid', 'team-season-detailed-stats'];
