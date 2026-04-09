@@ -467,7 +467,7 @@ function setupAllTimeStatCards() {
             .map(m => ({ title: getOpponent(m), subtitle: getFullDate(m), badge: m.score })); // <-- getFullDate toegepast
         window.statModal.show({
             title: 'Overwinningen',
-            headerIconHtml: '<div class="result-icon win"><i class="fas fa-trophy"></i></div>',
+            headerIconHtml: '<div class="result-icon win"><i class="fas fa-check"></i></div>',
             theme: 'var(--light-green)',
             data
         }, cards[1]);
@@ -520,8 +520,8 @@ function setupAllTimeStatCards() {
         const data = goalsConcededByTeam(past);
         window.statModal.show({
             title: 'Tegendoelpunten',
-            headerIconHtml: '<i class="fas fa-shield-halved"></i>',
-            theme: 'var(--golden-yellow)',
+            headerIconHtml: '<i class="fas fa-futbol"></i>',
+            theme: 'var(--dynamo-red)',
             data
         }, cards[5]);
     });
