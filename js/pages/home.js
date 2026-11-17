@@ -132,23 +132,28 @@ function setupStatCardInteractions() {
 
     // 2. Overwinningen
     cards[1]?.addEventListener('click', () => {
-        const wins = pastMatches.filter(m => m.result === 'winst').sort((a, b) => {
-            const marginA = parseInt(a.score.split('-')[0]) - parseInt(a.score.split('-')[1]);
-            const marginB = parseInt(b.score.split('-')[0]) - parseInt(b.score.split('-')[1]);
-            return marginB - marginA;
+            const wins = pastMatches.filter(m => m.result === 'winst').sort((a, b) => {
+                // Helper functie om de winstmarge correct te berekenen (rekening houdend met uit/thuis)
+                const getMargin = (match) => {
+                    const s = match.score.split('-');
+                    const teamScore = match.isHome ? parseInt(s[0]) : parseInt(s[1]);
+                    const oppScore = match.isHome ? parseInt(s[1]) : parseInt(s[0]);
+                    return teamScore - oppScore;
+                };
+                return getMargin(b) - getMargin(a);
+            });
+    
+            const data = wins.map(m => ({
+                title: getOpponent(m), subtitle: m.dateTime.displayDate, badge: m.score
+            }));
+    
+            window.statModal.show({
+                title: 'Overwinningen',
+                headerIconHtml: '<div class="result-icon win"><i class="icon-check-solid"></i></div>',
+                theme: 'var(--light-green)',
+                data
+            }, cards[1]);
         });
-
-        const data = wins.map(m => ({
-            title: getOpponent(m), subtitle: m.dateTime.displayDate, badge: m.score
-        }));
-
-        window.statModal.show({
-            title: 'Overwinningen',
-            headerIconHtml: '<div class="result-icon win"><i class="icon-check-solid"></i></div>',
-            theme: 'var(--light-green)',
-            data
-        }, cards[1]);
-    });
 
     // 3. Doelpunten
     cards[2]?.addEventListener('click', () => {
@@ -173,23 +178,33 @@ function setupStatCardInteractions() {
 
     // 4. Clean Sheets
     cards[3]?.addEventListener('click', () => {
-        const cleanSheets = pastMatches.filter(m => parseInt(m.score.split('-')[1]) === 0).sort((a, b) => {
-            const marginA = parseInt(a.score.split('-')[0]) - parseInt(a.score.split('-')[1]);
-            const marginB = parseInt(b.score.split('-')[0]) - parseInt(b.score.split('-')[1]);
-            return marginB - marginA;
+            const cleanSheets = pastMatches.filter(m => {
+                const scores = m.score.split('-');
+                // Bij thuiswedstrijd is tegenstander [1], bij uitwedstrijd is tegenstander [0]
+                const opponentScore = m.isHome ? parseInt(scores[1]) : parseInt(scores[0]);
+                return opponentScore === 0;
+            }).sort((a, b) => {
+                // Doelsaldo correct berekenen voor de sortering
+                const getMargin = (match) => {
+                    const s = match.score.split('-');
+                    const teamScore = match.isHome ? parseInt(s[0]) : parseInt(s[1]);
+                    const oppScore = match.isHome ? parseInt(s[1]) : parseInt(s[0]);
+                    return teamScore - oppScore;
+                };
+                return getMargin(b) - getMargin(a);
+            });
+    
+            const data = cleanSheets.map(m => ({
+                title: getOpponent(m), subtitle: m.dateTime.displayDate, badge: m.score
+            }));
+    
+            window.statModal.show({
+                title: 'Clean sheets',
+                headerIconHtml: '<i class="icon-shield-halved-solid"></i>',
+                theme: 'var(--golden-yellow)',
+                data
+            }, cards[3]);
         });
-
-        const data = cleanSheets.map(m => ({
-            title: getOpponent(m), subtitle: m.dateTime.displayDate, badge: m.score
-        }));
-
-        window.statModal.show({
-            title: 'Clean sheets',
-            headerIconHtml: '<i class="icon-shield-halved-solid"></i>',
-            theme: 'var(--golden-yellow)',
-            data
-        }, cards[3]);
-    });
 }
 
 /* Rendering */
